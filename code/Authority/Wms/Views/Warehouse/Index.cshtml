@@ -1,31 +1,5 @@
 ﻿<script type="text/javascript">
-    $(function () {
-        $('#details').treegrid({
-            onClickRow: function (row) {
-                if (row.attributes == "shelf") {
-                    $.post("/Cell/GetCell/", { shelfCode: row.ShelfCode }, function (json) {
-                        if (json) {
-                            var dd = eval(json);
-                            var children = $('#details').treegrid('getChildren', row.ShelfCode);                          
-                            var callbacks = $.Callbacks();
-                            $.each(children, function (c, p) {
-                                callbacks.add(function () {
-                                    $('#details').treegrid('remove', p.CellCode);
-                                });
-                            });
-                            callbacks.fire();
-                            $('#details').treegrid('append', {
-                                parent: row.ShelfCode,
-                                data: dd
-                            });
-                        }
-                    });
-                } else {
-
-                }
-            }
-        });
-    });
+   
 </script>
 
 <div region="center" split="true" border="false" >

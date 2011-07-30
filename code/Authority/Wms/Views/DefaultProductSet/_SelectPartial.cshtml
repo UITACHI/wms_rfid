@@ -1,0 +1,42 @@
+﻿<script type="text/javascript">
+    function searchLoad() {
+        $('#ware-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/Warehouse/Details/?page=1&rows=10',
+            idField: 'WarehouseCode',
+            textField: 'WarehouseName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
+					{ field: 'WarehouseName', title: '仓库名称', align: 'left', width: 40 },
+                    { field: 'WarehouseType', title: '仓库类型', align: 'left', width: 20 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 20 },
+                    { field: 'UpdateTime', title: '时间', align: 'left', width: 30 }
+				]]
+        });
+    }
+
+</script>
+
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:290px;height:130px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-search">
+    <div class="easyui-layout" fit="true">
+        <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <table width="250">
+              <tr>
+				    <td>选择烟草:</td>
+				    <td colspan="3"align="left">
+                    <input name="WarehouseCode" type="text" id="ware-add" />                               
+                    </td>
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons-search">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
+</div>
