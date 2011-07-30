@@ -1,5 +1,55 @@
-﻿@{
-    ViewBag.Title = "_AddPartial";
-}
+﻿<script type="text/javascript">
+    function addClick() {
+        $('#dlg').dialog('open').dialog('setTitle', '新增');        
+    }
+</script>
 
-<h2>_AddPartial</h2>
+<div id="dlg" class="easyui-dialog" modal="true" style="width: 500px; height: 360px;
+    padding: 1px 1px" closed="true" buttons="#dlg-buttons">
+    <div id="ware" class="easyui-layout" fit="true" >
+        <div region="center" border="false" style="padding: 10px 10px; background: #fff; border: 1px solid #ccc;">
+            <form id="warefm"  method="post">
+            <label>
+                当前新增页面：卷烟</label>
+            <table>
+                <tr style="height:30px;">
+                    <td style=" text-align:right">
+                        卷烟编码:
+                    </td>
+                    <td>
+                        <input name="ProductCode" type="text" id="wareID"  class="easyui-validatebox" style="width: 140px;" />
+                    </td>
+                    <td style=" text-align:right">
+                        卷烟名称:
+                    </td>
+                    <td>
+                        <input name="ProductName" type="text"  class="easyui-validatebox" style="width: 140px;" />
+                    </td>
+                </tr>
+                <tr style="height:30px;">
+                    <td style=" text-align:right">
+                        货位数量:
+                    </td>
+                    <td>
+                         <input name="ProductQuantity" type="text"  class="easyui-validatebox" style="width: 140px;" />
+                    </td>
+                </tr>               
+                <tr style="height:30px;">
+                     <td style=" text-align:right">                        
+                    </td>
+                    <td colspan="3">
+                        <div style="width: 340px; height: 80px"></div>
+                    </td>
+                </tr>               
+            </table>
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+<div id="dlg-buttons">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">确定</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">
+        取消</a>
+</div>

@@ -846,7 +846,9 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\DefaultProductSet\Index.cshtml" />
     <Content Include="Views\DefaultProductSet\_AddPartial.cshtml" />
-    <Content Include="Views\DefaultProductSet\_SelectPartial.cshtml" />
+    <Content Include="Views\DefaultProductSet\_SearchPartial.cshtml" />
+    <Content Include="Views\DefaultProductSet\_DeletePartial.cshtml" />
+    <Content Include="Views\DefaultProductSet\_EditPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
