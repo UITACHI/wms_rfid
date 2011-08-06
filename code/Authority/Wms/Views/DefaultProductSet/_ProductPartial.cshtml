@@ -1,4 +1,13 @@
 ﻿<script type="text/javascript">
+    //双击赋值
+    $(function () {
+        $('#productDetail').datagrid({
+            onDblClickRow: function () {
+                productSave();
+            }
+        })
+    });
+    //选中赋值
     function productSave() {
         var productRow = $('#productDetail').datagrid('getSelected');
         if (productRow) {
@@ -7,16 +16,11 @@
             $('#productData').dialog('close');
         }
     }
-    $(function () {
-        $('#productDetail').datagrid({
-            onDblClickRow: function () {
-                productSave();
-            }
-        })
-    });
+    
 </script>
 <div id="productData" class="easyui-dialog" modal="true" style="width: 500px; height: 500px;
     padding: 0px 0px" closed="true" buttons="#dlgProduct-buttons">
+    
     <div split="true" border="false" style="width: 486px; height: 430px">
         <table id="productDetail" class="easyui-datagrid" border="false" toolbar="#btn-query"
             singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true">

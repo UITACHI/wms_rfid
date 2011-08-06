@@ -37,7 +37,7 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string cellCode)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
-            var cell = cellQuery.OrderBy(b => b.CellCode).AsEnumerable().Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer,b.Col,b.ImgX,b.ImgY, b.IsSingle, b.MaxQuantity, b.Description, b.Warehouse.WarehouseName, b.Warehouse.WarehouseCode, b.Area.AreaCode, b.Area.AreaName, b.Shelf.ShelfCode, b.Shelf.ShelfName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var cell = cellQuery.OrderBy(b => b.CellCode).AsEnumerable().Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer, b.Col, b.ImgX, b.ImgY, b.IsSingle, b.MaxQuantity, b.Description, b.Warehouse.WarehouseName, b.Warehouse.WarehouseCode, b.Area.AreaCode, b.Area.AreaName, b.Shelf.ShelfCode, b.Shelf.ShelfName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             int total = cell.Count();
             cell = cell.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = cell.ToArray() };
@@ -58,7 +58,7 @@ namespace THOK.Wms.Bll.Service
             cellAdd.Col = cell.Col;
             cellAdd.ImgX = cell.ImgX;
             cellAdd.ImgY = cell.ImgY;
-            cellAdd.Rfid = cell.Rfid;           
+            cellAdd.Rfid = cell.Rfid;
             cellAdd.Warehouse = warehouse;
             cellAdd.Area = area;
             cellAdd.Shelf = shelf;
@@ -117,6 +117,49 @@ namespace THOK.Wms.Bll.Service
             CellRepository.SaveChanges();
             return true;
         }
+        /// <summary>
+        /// 修改 git_jun  12-08-03
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
+        public bool SaveCell(string wareCodes, string areaCodes, string shelfCodes, string cellCodes, string defaultProductCode)
+        {
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+
+            if (wareCodes != string.Empty && wareCodes!=null)
+            {
+                wareCodes = wareCodes.Substring(0, wareCodes.Length - 1);
+            }
+            else if (areaCodes != string.Empty && areaCodes != null)
+            {
+                areaCodes = areaCodes.Substring(0, areaCodes.Length - 1);
+            }
+            else if (shelfCodes != string.Empty && shelfCodes != null)
+            {
+                shelfCodes = shelfCodes.Substring(0, shelfCodes.Length - 1);
+            }
+            else if (cellCodes != string.Empty && cellCodes != null)
+            {
+                cellCodes = cellCodes.Substring(0, cellCodes.Length - 1);
+            }
+            
+            var cell = cellQuery.Where(c => c.Warehouse.WarehouseCode == wareCodes || c.Area.AreaCode == areaCodes || shelfCodes.Contains( c.ShelfCode) || cellCodes.Contains(c.CellCode));
+
+            foreach (var item in cell.ToArray())
+            {
+                var cellSave = cellQuery.FirstOrDefault(c => c.CellCode == item.CellCode);
+                cellSave.DefaultProductCode = defaultProductCode;
+                if (cellSave != null)
+                {
+                    CellRepository.SaveChanges();
+                }
+                else 
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         /// <summary>
         /// 盘点时用的树形结构数据，可根据货架Code查询
@@ -125,7 +168,7 @@ namespace THOK.Wms.Bll.Service
         /// <returns></returns>
         public object GetWareCheck(string shelfCode)
         {
-            var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();          
+            var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();
             HashSet<Tree> wareSet = new HashSet<Tree>();
             if (shelfCode == null || shelfCode == string.Empty)//判断是否是加载货位
             {
@@ -194,7 +237,7 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
             var cell = cellQuery.Where(c => c.CellCode == cellCode).OrderBy(b => b.CellCode).AsEnumerable()
-                                .Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer,b.Col,b.ImgX,b.ImgY,b.IsSingle, b.MaxQuantity, b.Description, b.Warehouse.WarehouseName, b.Warehouse.WarehouseCode, b.Area.AreaCode, b.Area.AreaName, b.Shelf.ShelfCode, b.Shelf.ShelfName, DefaultProductCode = b.Product == null ? string.Empty : b.Product.ProductCode, ProductName = b.Product == null ? string.Empty : b.Product.ProductName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+                                .Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer, b.Col, b.ImgX, b.ImgY, b.IsSingle, b.MaxQuantity, b.Description, b.Warehouse.WarehouseName, b.Warehouse.WarehouseCode, b.Area.AreaCode, b.Area.AreaName, b.Shelf.ShelfCode, b.Shelf.ShelfName, DefaultProductCode = b.Product == null ? string.Empty : b.Product.ProductCode, ProductName = b.Product == null ? string.Empty : b.Product.ProductName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             return cell.First(c => c.CellCode == cellCode);
         }
 
@@ -311,7 +354,7 @@ namespace THOK.Wms.Bll.Service
                 cellTree.UpdateTime = cell.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss");
                 cellTree.ShortName = cell.ShortName;
                 cellTree.Layer = cell.Layer;
-                cellTree.MaxQuantity = cell.MaxQuantity;                
+                cellTree.MaxQuantity = cell.MaxQuantity;
                 cellTree.ProductName = cell.Product == null ? string.Empty : cell.Product.ProductName;
                 cellTree.attributes = "cell";
 
