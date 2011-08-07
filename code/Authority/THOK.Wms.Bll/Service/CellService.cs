@@ -117,16 +117,13 @@ namespace THOK.Wms.Bll.Service
             CellRepository.SaveChanges();
             return true;
         }
-        /// <summary>
-        /// 修改 git_jun  12-08-03
-        /// </summary>
-        /// <param name="cell"></param>
-        /// <returns></returns>
+
+        /// <summary>修改货位 git_jun</summary>
         public bool SaveCell(string wareCodes, string areaCodes, string shelfCodes, string cellCodes, string defaultProductCode)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
 
-            if (wareCodes != string.Empty && wareCodes!=null)
+            if (wareCodes != string.Empty && wareCodes != null)
             {
                 wareCodes = wareCodes.Substring(0, wareCodes.Length - 1);
             }
@@ -142,8 +139,8 @@ namespace THOK.Wms.Bll.Service
             {
                 cellCodes = cellCodes.Substring(0, cellCodes.Length - 1);
             }
-            
-            var cell = cellQuery.Where(c => c.Warehouse.WarehouseCode == wareCodes || c.Area.AreaCode == areaCodes || shelfCodes.Contains( c.ShelfCode) || cellCodes.Contains(c.CellCode));
+
+            var cell = cellQuery.Where(c => c.Warehouse.WarehouseCode == wareCodes || c.Area.AreaCode == areaCodes || shelfCodes.Contains(c.ShelfCode) || cellCodes.Contains(c.CellCode));
 
             foreach (var item in cell.ToArray())
             {
@@ -153,12 +150,48 @@ namespace THOK.Wms.Bll.Service
                 {
                     CellRepository.SaveChanges();
                 }
-                else 
+                else
                 {
                     return false;
                 }
             }
             return true;
+        }
+        /// <summary>加载卷烟信息</summary>
+        public object GetCellInfo()
+        {
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+
+            var cellInfo = cellQuery.Where(c1 => c1.Product != null)
+                .GroupBy(c2 => c2.Product)
+                .Select(c3 => new
+                {
+                    ProductCode = c3.Key.ProductCode,
+                    ProductName = c3.Key.ProductName,
+                    ProductQuantity = c3.Count()
+                });
+            return cellInfo;
+        }
+        /// <summary>查找卷烟信息</summary>
+        public object GetCellInfo(string productCode)
+        {
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+            var cellInfo = cellQuery.Where(c1 => c1.Product != null && c1.DefaultProductCode == productCode)
+                .GroupBy(c2 => c2.Product)
+                .Select(c3 => new
+                {
+                    ProductCode = c3.Key.ProductCode,
+                    ProductName = c3.Key.ProductName,
+                    ProductQuantity = c3.Count()
+                });
+            return cellInfo;
+        }
+        /// <summary>获得货位编码</summary>
+        public object GetCellCode(string productCode)
+        {
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+            var cellInfo = cellQuery.Where(c1 => c1.DefaultProductCode == productCode);
+            return cellInfo;
         }
 
         /// <summary>
