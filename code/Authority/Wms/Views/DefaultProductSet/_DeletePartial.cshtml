@@ -1,7 +1,10 @@
 ﻿<script type="text/javascript">
     function deleteClick() {
         var productRow = $('#details').datagrid('getSelected');
-        $('#details').datagrid({ url: '/DefaultProductSet/CellDel/?productCode=' + productRow.ProductCode });
+        if (productRow) {
+            $('#details').datagrid({ url: '/DefaultProductSet/CellDel/?productCode=' + productRow.ProductCode });
+        }
+        $('#details').datagrid({ url: '/DefaultProductSet/GetProductCell/' });
         $('#details').datagrid('reload');
     }
 </script>

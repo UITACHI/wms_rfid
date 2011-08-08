@@ -32,7 +32,7 @@ namespace THOK.Wms.Bll.Interfaces
 
         object GetCellCode(string productCode);
 
-        object GetCellCheck(string shelfCode);
+        object GetCellCheck(string shelfCode,string productCode);
 
         bool DeleteCell(string productCode);
     }
