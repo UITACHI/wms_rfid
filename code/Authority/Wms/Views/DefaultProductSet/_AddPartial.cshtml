@@ -14,14 +14,18 @@
     }
 
     function enterSave() {
-        var ware="", area="", shelf="", cell="";
+        var ware, area, shelf, cell;
         var roots = $('#productTree').tree('getRoots');
         var areaChildren, shelfChildren, cellChildren;
         //仓库
         for (i = 0; i < roots.length; i++) {
             if (roots[i].attributes == "ware" && roots[i].checked == true) {
                 ware += roots[i].id + ",";
-            } else {
+            }
+//            else if (roots[i].checked == false) {
+//                ware += roots[i].id + ",";
+//            }
+            else {
                 areaChildren = $('#productTree').tree('getChildren', roots[i].target);
                 //库区
                 for (j = 0; j < areaChildren.length; j++) {
@@ -68,7 +72,7 @@
             });
         }
         else {
-            $.messager.show({ title: '系统提示', msg: '失败！无法获取信息！' });
+            $.messager.show({ title: '系统提示', msg: '失败！输入的信息不完整！' });
         }
     }
     

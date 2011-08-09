@@ -77,9 +77,9 @@ namespace Wms.Controllers.Wms.WarehouseInfo
         }
         //删除货位信息
         //POST: /DefaultProductSet/CellDel/
-        public ActionResult CellDel(string productCode)
+        public ActionResult CellDel(string productCodes)
         {
-            bool bResult = CellService.DeleteCell(productCode);
+            bool bResult = CellService.DeleteCell(productCodes);
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

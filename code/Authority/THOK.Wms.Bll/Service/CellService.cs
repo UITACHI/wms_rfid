@@ -140,32 +140,30 @@ namespace THOK.Wms.Bll.Service
                 cellCodes = cellCodes.Substring(0, cellCodes.Length - 1);
             }
 
-            var cell = cellQuery.Where(c => c.Warehouse.WarehouseCode == wareCodes || c.Area.AreaCode == areaCodes || shelfCodes.Contains(c.ShelfCode) || cellCodes.Contains(c.CellCode));
+            var cell = cellQuery.Where(c => wareCodes.Contains(c.Warehouse.WarehouseCode) || areaCodes.Contains(c.Area.AreaCode) || shelfCodes.Contains(c.ShelfCode) || cellCodes.Contains(c.CellCode));
 
             foreach (var item in cell.ToArray())
             {
                 var cellSave = cellQuery.FirstOrDefault(c => c.CellCode == item.CellCode);
                 cellSave.DefaultProductCode = defaultProductCode;
-                if (cellSave != null)
-                {
-                    CellRepository.SaveChanges();
-                }
-                else
-                {
-                    return false;
-                }
+                CellRepository.SaveChanges();
             }
             return true;
         }
         /// <summary>删除货位数量的信息</summary>
-        public bool DeleteCell(string productCode)
+        public bool DeleteCell(string productCodes)
         {
-
-            var cellSave = CellRepository.GetQueryable().Where(c => c.DefaultProductCode == productCode);
-            foreach (var item in cellSave.ToArray())
+            if (productCodes != string.Empty && productCodes != null)
             {
-                item.Product = null;
-                item.DefaultProductCode = null;
+                productCodes = productCodes.Substring(0, productCodes.Length - 1);
+            }
+            var cell = CellRepository.GetQueryable().Where(c => productCodes.Contains(c.DefaultProductCode));
+
+            foreach (var item in cell.ToArray())
+            {
+                var cellSave = CellRepository.GetQueryable().FirstOrDefault(c => c.DefaultProductCode == item.DefaultProductCode);
+                cellSave.Product = null;
+                cellSave.DefaultProductCode = null;
                 CellRepository.SaveChanges();
             }
             return true;
@@ -240,7 +238,7 @@ namespace THOK.Wms.Bll.Service
                             Tree shelfTree = new Tree();
                             shelfTree.id = shelf.ShelfCode;
                             shelfTree.text = "货架：" + shelf.ShelfName;
-                            shelfTree.attributes = "shelf";                    
+                            shelfTree.attributes = "shelf";
                             shelfTree.state = "closed";
                             shelfSet.Add(shelfTree);
                         }
