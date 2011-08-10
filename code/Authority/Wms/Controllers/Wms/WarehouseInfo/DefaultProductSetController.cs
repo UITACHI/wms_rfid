@@ -70,11 +70,12 @@ namespace Wms.Controllers.Wms.WarehouseInfo
         }
         //获得货位勾选状态
         // GET: /DefaultProductSet/CellCodeSet/
-        public ActionResult CellCodeSet(string id,string productId)
+        public ActionResult CellCodeSet(string productId)
         {
-            var wareCell = CellService.GetCellCheck(id, productId);
+            var wareCell = CellService.GetCellCheck(productId);
             return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
         }
+
         //删除货位信息
         //POST: /DefaultProductSet/CellDel/
         public ActionResult CellDel(string productCodes)
