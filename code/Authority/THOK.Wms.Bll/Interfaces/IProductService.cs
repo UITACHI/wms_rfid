@@ -19,5 +19,7 @@ namespace THOK.Wms.Bll.Interfaces
         object FindProduct();
 
         object LoadProduct(int page, int rows);
+
+        object GetProductBy(int page, int rows, string QueryString, string Value);
     }
 }

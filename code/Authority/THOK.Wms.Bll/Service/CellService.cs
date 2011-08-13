@@ -183,25 +183,41 @@ namespace THOK.Wms.Bll.Service
                 });
             return cellInfo;
         }
+        public object GetCellBy(int page, int rows, string QueryString, string Value)
+        {
+            string productCode = "", productName = "";
+
+            if (QueryString == "ProductCode")
+            {
+                productCode = Value;
+            }
+            else
+            {
+                productName = Value;
+            }
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+            var cell = cellQuery.Where(c => c.Product != null && c.DefaultProductCode.Contains(productCode) && c.Product.ProductName.Contains(productName))
+                 .GroupBy(c => c.Product)
+                 .Select(c => new
+                 {
+                     ProductCode = c.Key.ProductCode,
+                     ProductName = c.Key.ProductName,
+                     ProductQuantity = c.Count()
+                 });
+            return cell;
+        }
         /// <summary>查找卷烟信息</summary>
         public object GetCellInfo(string productCode)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
             var cellInfo = cellQuery.Where(c1 => c1.Product != null && c1.DefaultProductCode == productCode)
-                .GroupBy(c2 => c2.Product)
-                .Select(c3 => new
+                .GroupBy(c => c.Product)
+                .Select(c => new
                 {
-                    ProductCode = c3.Key.ProductCode,
-                    ProductName = c3.Key.ProductName,
-                    ProductQuantity = c3.Count()
+                    ProductCode = c.Key.ProductCode,
+                    ProductName = c.Key.ProductName,
+                    ProductQuantity = c.Count()
                 });
-            return cellInfo;
-        }
-        /// <summary>获得货位编码</summary>
-        public object GetCellCode(string productCode)
-        {
-            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
-            var cellInfo = cellQuery.Where(c1 => c1.DefaultProductCode == productCode);
             return cellInfo;
         }
         /// <summary>编辑储位货位树形菜单</summary>
@@ -251,13 +267,13 @@ namespace THOK.Wms.Bll.Service
                             if (cell.DefaultProductCode == productCode)
                             {
                                 cellTree.@checked = true;
-                                //shelfTree.state = "open";
                             }
                             else
                             {
                                 cellTree.@checked = false;
                                 shelfTree.state = "closed";
                             }
+                            cellTree.state = "open";
                             cellTree.attributes = "cell";
                             cellSet.Add(cellTree);
                         }
@@ -271,6 +287,42 @@ namespace THOK.Wms.Bll.Service
                 wareSet.Add(wareTree);
             }
             return wareSet.ToArray();
+        }
+        //Test 
+        public bool SetTree2( string strId,string proCode)
+        {
+            string[] arrayList = strId.Split(',');
+            string id;
+            string type;
+            bool result = false;
+            for (int i = 0; i < arrayList.Length - 1; i++)
+            {
+                string[] array = arrayList[i].Split('^');
+                type = array[0];
+                id = array[1];
+                string proCode2 = proCode;
+                UpdateTree(type, id, proCode2);
+                result = true;
+            }
+            return result;
+        }
+        public bool UpdateTree(string type,string id,string proCode2)
+        {            
+            bool result = false;
+
+            if (type == "cell")
+            {
+                IQueryable<Cell> queryCell = CellRepository.GetQueryable();
+                var cell = queryCell.FirstOrDefault(i => i.CellCode == id);
+                cell.DefaultProductCode = proCode2;
+                CellRepository.SaveChanges();
+                result = true;
+            }
+            else
+            {
+                return false;
+            }
+            return result;
         }
 
 

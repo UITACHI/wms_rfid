@@ -14,32 +14,61 @@
     }
 
     function enterSave() {
-        var ware="", area="", shelf="", cell="";
-        var roots = $('#productTree').tree('getRoots'); //根节点集合
-        var areaChildren, shelfChildren, cellChildren;
-        //仓库
-        for (i = 0; i < roots.length; i++) {
-            if (roots[i].attributes == "ware" && roots[i].checked == true) {
-                ware += roots[i].id + ",";
-            }
-            else {
-                areaChildren = $('#productTree').tree('getChildren', roots[i].target);
-                //库区
-                for (j = 0; j < areaChildren.length; j++) {
-                    if (areaChildren[j].attributes == "area" && areaChildren[j].checked == true) {
-                        area += areaChildren[j].id + ",";
-                    } else {
-                        shelfChildren = $('#productTree').tree('getChildren', areaChildren[j].target);
-                        //货架
-                        for (h = 0; h < shelfChildren.length; h++) {
-                            if (shelfChildren[h].attributes == "shelf" && shelfChildren[h].checked == true) {
-                                shelf += shelfChildren[h].id + ",";
-                            } else {
-                                cellChildren = $('#productTree').tree('getChildren', shelfChildren[h].target);
-                                //货位
-                                for (k = 0; k < cellChildren.length; k++) {
-                                    if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
-                                        cell += cellChildren[k].id + ",";
+//        var roots = $('#productTree').tree('getRoots'), children,chilren2,chilren3, i, j,h,k, info = "",info2="",info3="",info4="";
+//        for (i = 0; i < roots.length; i++) {
+//            info += children[j].attributes + "^" + roots[i].id + "^" + roots[i].checked + ",";
+//            children = $('#productTree').tree('getChildren', roots[i].target);
+//            for (j = 0; j < children.length; j++) {
+//                info2 += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
+//                chilren2 = $('#productTree').tree('getChildren', chilren[j].target);
+//                for (h = 0; h < chilren2.length; i++) {
+//                    info3 += children2[h].attributes + "^" + children2[h].id + "^" + children2[h].checked + ",";
+//                    chilren3 = $('#productTree').tree('getChildren', chilren2[h].target);
+//                    for (k = 0; k < chilren3.length; k++) {
+//                        info4 += children3[k].attributes + "^" + children3[k].id + "^" + children3[k].checked + ",";
+//                    }
+//                }
+//            }
+//        }
+//        if (info4 != "") {
+//            $.post("/DefaultProductSet/SetTree2/", { strId: info, proCode: $("#productCode").val() }, function (json) {
+//                if (json) {
+//                    $.messager.alert('系统提示', '保存成功！');
+//                }
+//            });
+//        } else {
+//            $.messager.alert('系统提示', '<h3>Game Over！</h3>');
+//        }
+
+                var ware = "", area = "", shelf = "", cell = "";
+                var roots = $('#productTree').tree('getRoots'); //根节点集合
+                var areaChildren, shelfChildren, cellChildren;
+                //仓库
+                for (i = 0; i < roots.length; i++) {
+                    if (roots[i].attributes == "ware" && roots[i].checked == true) {
+                        ware += roots[i].id + ",";
+                    }
+                    else {
+                        areaChildren = $('#productTree').tree('getChildren', roots[i].target);
+                        //库区
+                        for (j = 0; j < areaChildren.length; j++) {
+                            if (areaChildren[j].attributes == "area" && areaChildren[j].checked == true) {
+                                area += areaChildren[j].id + ",";
+                            }
+                            else {
+                                shelfChildren = $('#productTree').tree('getChildren', areaChildren[j].target);
+                                //货架
+                                for (h = 0; h < shelfChildren.length; h++) {
+                                    if (shelfChildren[h].attributes == "shelf" && shelfChildren[h].checked == true) {
+                                        shelf += shelfChildren[h].id + ",";
+                                    }
+                                    else {
+                                        cellChildren = $('#productTree').tree('getChildren', shelfChildren[h].target);
+                                        //货位
+                                        for (k = 0; k < cellChildren.length; k++) {
+                                            if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
+                                                cell += cellChildren[k].id + ",";
+                                            }
                                         }
                                     }
                                 }
@@ -47,31 +76,29 @@
                         }
                     }
                 }
-            }
-        }
-        if ($('#productCode').val() != "") {
-            $.getJSON('/DefaultProductSet/CellInsertCode/?wareCodes=' + ware + '&areaCodes=' + area + '&shelfCodes=' + shelf + '&cellCodes=' + cell + '&defaultProductCode=' + $("#productCode").val(), function (json) {
-                if (json) {
-                    if (json.success) {
-                        $.messager.show({ title: '成功', msg: json.msg });
-                        $('#details').datagrid('reload');
-                        $("#productCode").attr("value", "");
-                        $("#productName").attr("value", "");
-                        $('#dlg').dialog('close'); 
+                if ((ware != "" || area != "" || shelf != "" || cell != "") && ($('#productCode').val() != "")) {
+                    $.getJSON('/DefaultProductSet/CellInsertCode/?wareCodes=' + ware + '&areaCodes=' + area + '&shelfCodes=' + shelf + '&cellCodes=' + cell + '&defaultProductCode=' + $("#productCode").val(), function (json) {
+                        if (json) {
+                            if (json.success) {
+                                $.messager.show({ title: '成功', msg: json.msg });
+                                $('#details').datagrid('reload');
+                                $("#productCode").attr("value", "");
+                                $("#productName").attr("value", "");
+                                $('#dlg').dialog('close');
 
-                    } else {
-                        $.messager.show({ title: '错误', msg: result.msg });
-                        $('#details').datagrid('reload');
-                    }
+                            } else {
+                                $.messager.show({ title: '错误', msg: result.msg });
+                                $('#details').datagrid('reload');
+                            }
+                        }
+                        else {
+                            $.messager.show({ title: '系统提示', msg: '失败！0000x1' });
+                        }
+                    });
                 }
                 else {
-                    $.messager.show({ title: '系统提示', msg: '失败！0000x1' });
+                    $.messager.show({ title: '系统提示', msg: '失败！输入的信息不完整！' });
                 }
-            });
-        }
-        else {
-            $.messager.show({ title: '系统提示', msg: '失败！输入的信息不完整！' });
-        }
     }
     
 </script>
@@ -91,7 +118,8 @@
                             卷烟编码:
                         </div>
                         <div>
-                            <input id="productCode" name="DefaultProductCode" type="text" class="easyui-validatebox" style="width: 140px;" missingmessage="必填" required="true"  />
+                            <input id="productCode" name="DefaultProductCode" type="text" class="easyui-validatebox"
+                                style="width: 140px;" missingmessage="必填" required="true" />
                             <a href="#" id="productSearch" class="easyui-linkbutton" iconcls="icon-search" plain="true"
                                 onclick="productSearchClick()"></a>
                         </div>

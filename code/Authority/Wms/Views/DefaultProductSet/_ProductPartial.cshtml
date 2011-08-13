@@ -1,10 +1,18 @@
 ﻿<script type="text/javascript">
-    //双击赋值
+    
     $(function () {
         $('#productDetail').datagrid({
+            //双击赋值
             onDblClickRow: function () {
                 productSave();
             }
+        })
+        //属性初始化
+        $('#queryType').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 100
         })
     });
     //选中赋值
@@ -16,12 +24,29 @@
             $('#productData').dialog('close');
         }
     }
+    //根据条件查询
+    function productQueryClick() {
+        $("#productDetail").datagrid({
+            url: '/DefaultProductSet/GetProductBy/?QueryString=' + $('#queryType').combogrid('getValue') + '&Value=' + $('#productInfo').val()
+        });
+        $("#productDetail").datagrid('reload');
+    }
+    
     
 </script>
 <div id="productData" class="easyui-dialog" modal="true" style="width: 500px; height: 500px;
     padding: 0px 0px" closed="true" buttons="#dlgProduct-buttons">
-    
-    <div split="true" border="false" style="width: 486px; height: 430px">
+    <div id="btnQuery">
+        <select id="queryType" class="easyui-combobox" style="width: 100px; "
+            readonly="true">
+            <option value="ProductCode">卷烟编码</option>
+            <option value="ProductName">卷烟名称</option>
+        </select>
+        <input id="productInfo">
+        <a href="#" class="easyui-linkbutton" iconcls="icon-search" plain="true" onclick="productQueryClick()"
+            id="productQuery">查询</a>
+    </div>
+    <div split="true" border="false" style="width: 486px; height: 430px;">
         <table id="productDetail" class="easyui-datagrid" border="false" toolbar="#btn-query"
             singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true">
             <thead>
