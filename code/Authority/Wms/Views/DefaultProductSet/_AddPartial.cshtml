@@ -14,26 +14,21 @@
     }
 
     function enterSave() {
-//        var roots = $('#productTree').tree('getRoots'), children,chilren2,chilren3, i, j,h,k, info = "",info2="",info3="",info4="";
+//        var roots = $('#productTree').tree('getRoots'), children, i, j, info = "";
 //        for (i = 0; i < roots.length; i++) {
-//            info += children[j].attributes + "^" + roots[i].id + "^" + roots[i].checked + ",";
+//            info += roots[i].attributes + "^" + roots[i].id + "^" + roots[i].checked + ",";
 //            children = $('#productTree').tree('getChildren', roots[i].target);
 //            for (j = 0; j < children.length; j++) {
-//                info2 += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
-//                chilren2 = $('#productTree').tree('getChildren', chilren[j].target);
-//                for (h = 0; h < chilren2.length; i++) {
-//                    info3 += children2[h].attributes + "^" + children2[h].id + "^" + children2[h].checked + ",";
-//                    chilren3 = $('#productTree').tree('getChildren', chilren2[h].target);
-//                    for (k = 0; k < chilren3.length; k++) {
-//                        info4 += children3[k].attributes + "^" + children3[k].id + "^" + children3[k].checked + ",";
-//                    }
-//                }
+//                info += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
 //            }
 //        }
-//        if (info4 != "") {
+//        if (info != "") {
 //            $.post("/DefaultProductSet/SetTree2/", { strId: info, proCode: $("#productCode").val() }, function (json) {
 //                if (json) {
-//                    $.messager.alert('系统提示', '保存成功！');
+//                    $('#details').datagrid('reload');
+//                    $("#productCode").attr("value", "");
+//                    $("#productName").attr("value", "");
+//                    $('#dlg').dialog('close');
 //                }
 //            });
 //        } else {
@@ -41,8 +36,9 @@
 //        }
 
                 var ware = "", area = "", shelf = "", cell = "";
-                var roots = $('#productTree').tree('getRoots'); //根节点集合
                 var areaChildren, shelfChildren, cellChildren;
+                var roots = $('#productTree').tree('getRoots'); //根节点集合
+
                 //仓库
                 for (i = 0; i < roots.length; i++) {
                     if (roots[i].attributes == "ware" && roots[i].checked == true) {
@@ -67,7 +63,7 @@
                                         //货位
                                         for (k = 0; k < cellChildren.length; k++) {
                                             if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
-                                                cell += cellChildren[k].id + ",";
+                                                cell += cellChildren[k].id + "," + cellChildren[k].checked + ",";
                                             }
                                         }
                                     }
