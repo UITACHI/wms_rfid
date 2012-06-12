@@ -1,0 +1,25 @@
+�?script type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 
+<div region="center" split="true" border="false">    
+    <table class="easyui-datagrid" id="details"
+        url="/User/Details" border="false"
+        fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
+        <thead>
+            <tr>
+                <th field="UserID" hidden="true" width="80">用户编码</th>
+                <th field="UserName" width="100">用户名称</th>
+                <th field="IsLock" width="80" align="left">是否锁定</th>
+                <th field="IsAdmin" width="80" align="left">是否是管理员</th>
+                <th field="Memo" width="80" align="left">用户描述</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@Html.Partial("_ToolPartial") 
+
+

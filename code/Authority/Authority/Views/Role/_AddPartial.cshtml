@@ -1,0 +1,82 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#Role_Add').window({
+            title: '新增信息',
+            width: 600,
+            modal: true,
+            shadow: false,
+            closed: true,
+            height: 300,
+            //            closable: false,
+            resizable: true,
+            minimizable: false,
+            maximizable: false,
+            collapsible: false
+        });
+
+        //打开对话框
+        $('#add').click(function () {
+            $('#Role_Add').window('open');
+            $("input[type=text]").attr("value", "");
+        })
+
+        //表单提交返回数据
+        $('#RoleFromAdd').form({
+            success: function (data) {
+                if (data == 'true') {
+                    $.messager.show({
+                        title: '系统提示',
+                        msg: '新增成功！',
+                        showType: 'slide'
+                    });
+                    $('#Role_Add').window('close');
+                    $("#details").datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '系统提示',
+                        msg: '新增失败！请检查输入信息！',
+                        showType: 'slide'
+                    });
+                }
+            }
+        });
+    });
+
+</script>
+
+<div id="Role_Add" class="easyui-window" title="My Window" iconCls="icon icon-users" style="width:500px;height:200px;padding:5px;">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px;background:#fff;border:1px solid #ccc;">
+               <div style="background:#fafafa;padding:10px;">
+		          <div style="padding:3px 2px;border-bottom:1px solid #ccc;text-align:left;">新增信息</div>
+		            <form id="RoleFromAdd" action="/Role/Create" method="post">
+                    <table style="margin:auto; height:140px; height:100%"><tr>
+			            <td><table >
+				            <tr >
+					            <td align="right" style=" height:40px;">角色名称:</td>
+					            <td><input name="roleName" class="easyui-validatebox" required="true" missingmessage="请输入角色名称" type="text" ></input></td>
+				            </tr>
+				            <tr>
+					            <td align="right" style=" height:20px;">角色描述:</td>
+					            <td><input name="memo" class="easyui-validatebox" required="true" missingmessage="请输入角色描述" type="text"></input></td>
+				            </tr>
+				            <tr>
+					            <td align="right" style=" height:40px;">角色状态:</td>
+					            <td><select name="islock" style="width:80px; height:23px;">
+                                <option value="true">启动</option>
+                                <option value="false">禁用</option>
+                                </select></td>
+				            </tr>
+                            <tr>
+					            <td ></td>
+                                <td ><input type="submit" value="确认" /><input type="reset" value="取消" id="reset" onclick="javascript:$('#Role_Add').dialog('close')" /></td>
+				            </tr>
+			            </table>
+                        </td>
+                        </tr>
+                         </table>
+		            </form>
+	            </div>
+			</div>
+		</div>
+	</div>

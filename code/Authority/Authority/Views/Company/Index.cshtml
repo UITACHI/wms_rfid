@@ -1,0 +1,25 @@
+﻿<script type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 
+<div region="center" split="true" border="false">    
+    <table class="easyui-datagrid"
+        url="datagrid_data2.json" 
+        fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
+        <thead>
+            <tr>
+                <th field="itemid" width="80">公司编码</th>
+                <th field="productid" width="100">公司名称</th>
+                <th field="listprice" width="80" align="right">描述</th>
+                <th field="unitcost" width="80" align="right">状态</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div region="south" split="true" style="height: 250px; background: #D2E0F2; "></div>
+
+@Html.Partial("_ToolPartial") 
+
+

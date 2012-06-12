@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authority", "Authority\Authority.csproj", "{B6AE2761-94D7-45B1-989E-F1BC3B860590}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THOK.Authority", "THOK.Authority\THOK.Authority.csproj", "{C685F8A6-D254-460D-8BB1-B1E4236E633E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6AE2761-94D7-45B1-989E-F1BC3B860590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6AE2761-94D7-45B1-989E-F1BC3B860590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6AE2761-94D7-45B1-989E-F1BC3B860590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6AE2761-94D7-45B1-989E-F1BC3B860590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C685F8A6-D254-460D-8BB1-B1E4236E633E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C685F8A6-D254-460D-8BB1-B1E4236E633E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C685F8A6-D254-460D-8BB1-B1E4236E633E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C685F8A6-D254-460D-8BB1-B1E4236E633E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

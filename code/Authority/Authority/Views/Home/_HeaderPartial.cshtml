@@ -1,0 +1,46 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#loginOut').click(function () {
+            $.messager.confirm('系统提示', '您确定要退出本次登录吗?', function (r) {
+                if (r) {
+                    location.href = '/Account/LogOff';
+                }
+            });
+        })
+
+        $('#changeUser').click(function () {
+            $.messager.confirm('系统提示', '您确定要切换用户登录吗?', function (r) {
+                if (r) {
+                    location.href = '/Account/LogOff';
+                }
+            });
+        })        
+    })
+</script>
+<div class='header'>
+    <table width="100%"  height="72" border="0" cellpadding="0" cellspacing="0"  background="../Content/Images/top_bg.jpg" style="top: 0px; z-index: inherit">
+        <tr>
+            <th align="left" valign="top" scope="col" style="height:71px; background-repeat:no-repeat; width: 100%;" background="../Content/Images/banner.jpg">
+                <div class="topNav">                            
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <a href="javascript:void(0)" id="logOn">登录</a>
+                    }
+                    else
+                    {
+                        <span>厦门</span>
+                        <span>一号服务器</span>
+                        <span>权限管理系统</span> 
+                        <span id="welcome"></span><span>|</span>                           
+                        <a href="javascript:void(0)" id='changeCity'>切换地市</a><span>|</span>                                
+                        <a href="javascript:void(0)" id='changeServer'>切换服务器</a><span>|</span>                                
+                        <a href="javascript:void(0)" id='changeSystem'>切换系统</a><span>|</span>                                
+                        <a href="javascript:void(0)" id='changeUser'>切换用户</a><span>|</span>            
+                        <a href="javascript:void(0)" id='changePassword'>修改密码</a><span>|</span>
+                        <a href="javascript:void(0)" id="loginOut">退出</a>
+                    }
+                </div>
+            </th>
+        </tr>
+    </table>
+</div>

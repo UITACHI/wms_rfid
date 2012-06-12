@@ -1,0 +1,84 @@
+﻿<div id="tool" style="width: auto; height: auto; ">
+    @if (ViewBag.hasSearch != null && ViewBag.hasSearch)
+    {<a id="search" href="#" class="easyui-linkbutton" iconcls="icon-search" plain="true">查询</a>}
+    @if (ViewBag.hasAdd != null && ViewBag.hasAdd)
+    {<a id="add" href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>}
+    @if (ViewBag.hasEdit != null && ViewBag.hasEdit)
+    {<a id="edit" href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true">编辑</a>}
+    @if (ViewBag.hasDelete != null && ViewBag.hasDelete)
+    {<a id="delete" href="#" class="easyui-linkbutton" iconcls="icon-remove" plain="true" >删除</a>}
+    @if (ViewBag.hasSave != null && ViewBag.hasSave)
+    {<a id="save" href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true">保存</a>}
+                                                                                            
+    @if (ViewBag.hasPermissionAdmin != null && ViewBag.hasPermissionAdmin)
+    { <a id="permissionadmin" href="#" class="easyui-linkbutton" iconcls="icon-ok" plain="true">权限</a>}
+    @if (ViewBag.hasRoleAdmin != null && ViewBag.hasRoleAdmin)
+    {<a id="roleadmin" href="#" class="easyui-linkbutton" iconcls="icon-tip" plain="true">角色</a>}
+    @if (ViewBag.hasUserAdmin != null && ViewBag.hasUserAdmin)
+    {<a id="useradmin" href="#" class="easyui-linkbutton" iconcls="icon-tip" plain="true">用户</a>}
+    @if (ViewBag.hasAuthorize != null && ViewBag.hasAuthorize)
+    {<a id="authorize" href="#" class="easyui-linkbutton" iconcls="icon-ok" plain="true">授权</a>}
+                                                                                               
+    @if (ViewBag.hasImport != null && ViewBag.hasImport)
+    {<a id="import" href="#" class="easyui-linkbutton" iconcls="icon-ok" plain="true">导入</a>}
+    @if (ViewBag.hasExport != null && ViewBag.hasExport)
+    {<a id="export" href="#" class="easyui-linkbutton" iconcls="icon-ok" plain="true">导出</a>}
+    @if (ViewBag.hasDownload != null && ViewBag.hasDownload)
+    {<a id="Download" href="#" class="easyui-linkbutton" iconcls="icon-ok" plain="true">下载</a>}
+                                                                                              
+    @if (ViewBag.hasAudit != null && ViewBag.hasAudit)
+    {<a id="audit" href="#" class="easyui-linkbutton" iconcls="icon-ok" plain="true">审核</a>}
+    @if (ViewBag.hasAntiTrial != null && ViewBag.hasAntiTrial)
+    {<a id="antitrial" href="#" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">反审</a>}
+    @if (ViewBag.hasConfirm != null && ViewBag.hasConfirm)
+    {<a id="Confirm" href="#" class="easyui-linkbutton" iconcls="icon-redo" plain="true">确认</a>}
+    @if (ViewBag.hasAntiConfirm != null && ViewBag.hasAntiConfirm)
+    {<a id="anticonfirm" href="#" class="easyui-linkbutton" iconcls="icon-undo" plain="true">反确认</a>}
+                                                                                                    
+    @if (ViewBag.hasPrint != null && ViewBag.hasPrint)
+    {<a id="print" href="#" class="easyui-linkbutton" iconcls="icon-print" plain="true">打印</a>}
+    @if (ViewBag.hasHelp != null && ViewBag.hasHelp)
+    {<a id="help" href="#" class="easyui-linkbutton" iconcls="icon-help" plain="true">帮助</a>}
+</div>
+
+@if (ViewBag.hasSearch != null && ViewBag.hasSearch)
+{    @Html.Partial("_SearchPartial")}
+@if (ViewBag.hasAdd != null && ViewBag.hasAdd)
+{    @Html.Partial("_AddPartial")}
+@if (ViewBag.hasEdit != null && ViewBag.hasEdit)
+{    @Html.Partial("_EditPartial")}
+@if (ViewBag.hasDelete != null && ViewBag.hasDelete)
+{    @Html.Partial("_DeletePartial")}
+@if (ViewBag.hasSave != null && ViewBag.hasSave)
+{    @Html.Partial("_SavePartial")}
+                                                                                              
+@if (ViewBag.hasPermissionAdmin != null && ViewBag.hasPermissionAdmin)
+{    @Html.Partial("_PermissionAdminPartial")}
+@if (ViewBag.hasRoleAdmin != null && ViewBag.hasRoleAdmin)
+{    @Html.Partial("_RoleAdminPartial")}
+@if (ViewBag.hasUserAdmin != null && ViewBag.hasUserAdmin)
+{    @Html.Partial("_UserAdminPartial")}
+@if (ViewBag.hasAuthorize != null && ViewBag.hasAuthorize)
+{    @Html.Partial("_AuthorizePartial")}
+
+@if (ViewBag.hasImport != null && ViewBag.hasImport)
+{   @Html.Partial("_ImportPartial")}
+@if (ViewBag.hasExport != null && ViewBag.hasExport)
+{   @Html.Partial("_ExportPartial")}
+@if (ViewBag.hasDownload != null && ViewBag.hasDownload)
+{@Html.Partial("_DownLoadPartial")}
+
+@if (ViewBag.hasAudit != null && ViewBag.hasAudit)
+{   @Html.Partial("_AuditPartial")}
+@if (ViewBag.hasAntiTrial != null && ViewBag.hasAntiTrial)
+{   @Html.Partial("_AntiTrialPartial")}
+@if (ViewBag.hasConfirm != null && ViewBag.hasConfirm)
+{   @Html.Partial("_ConfirmPartial")}
+@if (ViewBag.hasAntiConfirm != null && ViewBag.hasAntiConfirm)
+{   @Html.Partial("_AntiConfirmPartial")}
+
+
+@if (ViewBag.hasPrint != null && ViewBag.hasPrint)
+{    @Html.Partial("_PrintPartial")}
+@if (ViewBag.hasHelp != null && ViewBag.hasHelp)
+{    @Html.Partial("_HelpPartial")}
