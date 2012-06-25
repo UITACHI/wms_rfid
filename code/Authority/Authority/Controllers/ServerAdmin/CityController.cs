@@ -1,116 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using THOK.Authority.Authority;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 using System.Text;
+using THOK.Authority.Bll.Interfaces.Authority;
+using Microsoft.Practices.Unity;
+using THOK.WebUtil;
 
 namespace Authority.Controllers.ServerAdmin
 {
     public class CityController : Controller
     {
-        public ICityService _CityService { get; set; }
+        [Dependency]
+        public ICityService CityService { get; set; }
 
-        protected override void Initialize(RequestContext requestContext)
-        {
-            if (_CityService == null) { _CityService = new CityService(); }
-            base.Initialize(requestContext);
-        }
-        //
         // GET: /City/
-
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
-            //ViewBag.hasPrint = true;
-            //ViewBag.hasHelp = true;
+            ViewBag.hasPrint = true;
+            ViewBag.hasHelp = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 
-        //
-        // GET: /City/Details/5
-
-        public ActionResult SearchPartial(int page, int rows)
+        // GET: /City/Details/
+        public ActionResult Details(int page, int rows,FormCollection collection)
         {
-            JsonResult jr = new JsonResult();
-            jr.Data = _CityService.GetDetails(page, rows);
-            jr.ContentEncoding = Encoding.UTF8;
-            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            return jr;
+            string cityName = collection["CityName"] ?? "";
+            string description = collection["Description"] ?? "";
+            string isActive = collection["IsActive"] ?? "";
+            var users = CityService.GetDetails(page, rows, cityName, description,isActive);
+            return Json(users, "text", JsonRequestBehavior.AllowGet);
         }
 
+        // POST: /City/Create/
+        [HttpPost]
+        public ActionResult Create(string cityName, string description, bool isActive)
+        {
+            bool bResult = CityService.Add(cityName, description,isActive);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
        
-
-        //
-        // POST: /City/Create
-
+        // POST: /City/Edit/
         [HttpPost]
-        public ActionResult Create(string cityname, bool isactive)
+        public ActionResult Edit(string cityID, string cityName, string description, bool isActive)
         {
-                JsonResult jr = new JsonResult();
-                jr.Data = _CityService.Add(cityname,isactive);
-                jr.ContentEncoding = Encoding.UTF8;
-                jr.ContentType = "text";
-                jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-                return jr;
-          
-        }
-        
-        //
-        // GET: /City/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
+            bool bResult = CityService.Save(cityID, cityName, description, isActive);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
-        // POST: /City/Edit/5
-
+        // POST: /City/Delete/
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Delete(string cityID)
         {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /City/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /City/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            bool bResult = CityService.Delete(cityID);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }
 }

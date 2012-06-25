@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/06/2012 08:51:35
--- Generated from EDMX file: D:\server\Authority\code\Authority\THOK.Authority\DATA\AuthorizeDBModel.edmx
+-- Date Created: 06/12/2012 12:17:19
+-- Generated from EDMX file: D:\server\Authority\code\Authority\THOK.Authority\Data\AuthorizeDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -83,6 +83,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_FunctionRoleFunction]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RoleFunction] DROP CONSTRAINT [FK_FunctionRoleFunction];
 GO
+IF OBJECT_ID(N'[dbo].[FK_CityServer_City]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CityServer] DROP CONSTRAINT [FK_CityServer_City];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CityServer_Server]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CityServer] DROP CONSTRAINT [FK_CityServer_Server];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -129,6 +135,12 @@ IF OBJECT_ID(N'[dbo].[City]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[UserSystem]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserSystem];
+GO
+IF OBJECT_ID(N'[dbo].[Server集]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Server集];
+GO
+IF OBJECT_ID(N'[dbo].[CityServer]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CityServer];
 GO
 
 -- --------------------------------------------------
@@ -258,6 +270,7 @@ GO
 CREATE TABLE [dbo].[City] (
     [CityID] uniqueidentifier  NOT NULL,
     [CityName] varchar(50)  NOT NULL,
+    [Description] nvarchar(max)  NULL,
     [IsActive] bit  NOT NULL
 );
 GO
@@ -269,6 +282,17 @@ CREATE TABLE [dbo].[UserSystem] (
     [User_UserID] uniqueidentifier  NOT NULL,
     [City_CityID] uniqueidentifier  NOT NULL,
     [System_SystemID] uniqueidentifier  NOT NULL
+);
+GO
+
+-- Creating table 'Server'
+CREATE TABLE [dbo].[Server] (
+    [ServerID] uniqueidentifier  NOT NULL,
+    [ServerName] varchar(50)  NOT NULL,
+    [Description] nvarchar(max)  NULL,
+    [Url] nvarchar(max)  NULL,
+    [IsActive] bit  NOT NULL,
+    [City_CityID] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -358,6 +382,12 @@ GO
 ALTER TABLE [dbo].[UserSystem]
 ADD CONSTRAINT [PK_UserSystem]
     PRIMARY KEY CLUSTERED ([UserSystemID] ASC);
+GO
+
+-- Creating primary key on [ServerID] in table 'Server'
+ALTER TABLE [dbo].[Server]
+ADD CONSTRAINT [PK_Server]
+    PRIMARY KEY CLUSTERED ([ServerID] ASC);
 GO
 
 -- --------------------------------------------------
@@ -670,6 +700,20 @@ ADD CONSTRAINT [FK_FunctionRoleFunction]
 CREATE INDEX [IX_FK_FunctionRoleFunction]
 ON [dbo].[RoleFunction]
     ([Function_FunctionID]);
+GO
+
+-- Creating foreign key on [City_CityID] in table 'Server'
+ALTER TABLE [dbo].[Server]
+ADD CONSTRAINT [FK_CityServer]
+    FOREIGN KEY ([City_CityID])
+    REFERENCES [dbo].[City]
+        ([CityID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CityServer'
+CREATE INDEX [IX_FK_CityServer]
+ON [dbo].[Server]
+    ([City_CityID]);
 GO
 
 -- --------------------------------------------------

@@ -20,6 +20,7 @@
     <EntitySet Name="UserModule" EntityType="AuthorizeModel.Store.UserModule" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="City" EntityType="AuthorizeModel.Store.City" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserSystem" EntityType="AuthorizeModel.Store.UserSystem" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Server" EntityType="AuthorizeModel.Store.Server" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="SystemModule" Association="AuthorizeModel.Store.SystemModule">
       <End Role="System" EntitySet="System" />
       <End Role="Module" EntitySet="Module" />
@@ -107,6 +108,10 @@
     <AssociationSet Name="FunctionRoleFunction" Association="AuthorizeModel.Store.FunctionRoleFunction">
       <End Role="Function" EntitySet="Function" />
       <End Role="RoleFunction" EntitySet="RoleFunction" />
+    </AssociationSet>
+    <AssociationSet Name="CityServer" Association="AuthorizeModel.Store.CityServer">
+      <End Role="City" EntitySet="City" />
+      <End Role="Server" EntitySet="Server" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Function">
@@ -234,6 +239,7 @@
     </Key>
     <Property Name="CityID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="CityName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="UserSystem">
@@ -245,6 +251,17 @@
     <Property Name="User_UserID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="City_CityID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="System_SystemID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Server">
+    <Key>
+      <PropertyRef Name="ServerID" />
+    </Key>
+    <Property Name="ServerID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ServerName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Url" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="City_CityID" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <Association Name="SystemModule">
     <End Role="System" Type="AuthorizeModel.Store.System" Multiplicity="1" />
@@ -510,6 +527,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="CityServer">
+    <End Role="City" Type="AuthorizeModel.Store.City" Multiplicity="1" />
+    <End Role="Server" Type="AuthorizeModel.Store.Server" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CityID" />
+      </Principal>
+      <Dependent Role="Server">
+        <PropertyRef Name="City_CityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -616,6 +645,11 @@
           <AssociationSet Name="FunctionRoleFunction" Association="AuthorizeModel.FunctionRoleFunction">
             <End Role="Function" EntitySet="Function" />
             <End Role="RoleFunction" EntitySet="RoleFunction" />
+          </AssociationSet>
+          <EntitySet Name="Server" EntityType="AuthorizeModel.Server" />
+          <AssociationSet Name="CityServer" Association="AuthorizeModel.CityServer">
+            <End Role="City" EntitySet="City" />
+            <End Role="Server" EntitySet="Server" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Function">
@@ -762,9 +796,11 @@
           </Key>
           <Property Type="Guid" Name="CityID" Nullable="false" />
           <Property Type="String" Name="CityName" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <NavigationProperty Name="RoleSystems" Relationship="AuthorizeModel.CityRoleSystem" FromRole="City" ToRole="RoleSystem" />
           <NavigationProperty Name="UserSystems" Relationship="AuthorizeModel.CityUserSystem" FromRole="City" ToRole="UserSystem" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <NavigationProperty Name="Servers" Relationship="AuthorizeModel.CityServer" FromRole="City" ToRole="Server" />
         </EntityType>
         <EntityType Name="UserSystem">
           <Key>
@@ -864,6 +900,21 @@
         <Association Name="FunctionRoleFunction">
           <End Type="AuthorizeModel.Function" Role="Function" Multiplicity="1" />
           <End Type="AuthorizeModel.RoleFunction" Role="RoleFunction" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Server">
+          <Key>
+            <PropertyRef Name="ServerID" />
+          </Key>
+          <Property Type="Guid" Name="ServerID" Nullable="false" />
+          <Property Type="String" Name="ServerName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <NavigationProperty Name="City" Relationship="AuthorizeModel.CityServer" FromRole="Server" ToRole="City" />
+          <Property Type="String" Name="Url" Nullable="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+        </EntityType>
+        <Association Name="CityServer">
+          <End Type="AuthorizeModel.City" Role="City" Multiplicity="1" />
+          <End Type="AuthorizeModel.Server" Role="Server" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -988,6 +1039,7 @@
         <MappingFragment StoreEntitySet="City">
           <ScalarProperty Name="CityID" ColumnName="CityID" />
           <ScalarProperty Name="CityName" ColumnName="CityName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -996,6 +1048,17 @@
       <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.UserSystem)">
         <MappingFragment StoreEntitySet="UserSystem">
           <ScalarProperty Name="UserSystemID" ColumnName="UserSystemID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Server">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.Server)">
+        <MappingFragment StoreEntitySet="Server">
+          <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+          <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1176,6 +1239,14 @@
         <ScalarProperty Name="RoleFunctionID" ColumnName="RoleFunctionID" />
       </EndProperty>
     </AssociationSetMapping>
+    <AssociationSetMapping Name="CityServer" TypeName="AuthorizeModel.CityServer" StoreEntitySet="Server">
+      <EndProperty Name="City">
+        <ScalarProperty Name="CityID" ColumnName="City_CityID" />
+      </EndProperty>
+      <EndProperty Name="Server">
+        <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -1189,7 +1260,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
@@ -1204,12 +1275,12 @@
         <EntityTypeShape EntityType="AuthorizeModel.RoleModule" Width="1.5" PointX="4.375" PointY="3.875" Height="1.7908333333333335" IsExpanded="true" />
         <EntityTypeShape EntityType="AuthorizeModel.RoleSystem" Width="1.5" PointX="2.375" PointY="3.875" Height="1.7908333333333335" IsExpanded="true" />
         <EntityTypeShape EntityType="AuthorizeModel.System" Width="1.5" PointX="0.5" PointY="0.5" Height="2.2966927083333335" IsExpanded="true" />
-        <EntityTypeShape EntityType="AuthorizeModel.User" Width="1.5" PointX="0.5" PointY="8.375" Height="2.2966927083333317" IsExpanded="true" />
-        <EntityTypeShape EntityType="AuthorizeModel.UserRole" Width="1.5" PointX="0.5" PointY="6.375" Height="1.4535937499999996" IsExpanded="true" />
-        <EntityTypeShape EntityType="AuthorizeModel.UserFunction" Width="1.5" PointX="6.375" PointY="8.375" Height="1.4535937499999996" />
-        <EntityTypeShape EntityType="AuthorizeModel.UserModule" Width="1.5" PointX="4.375" PointY="8.375" Height="1.6222135416666657" />
-        <EntityTypeShape EntityType="AuthorizeModel.City" Width="1.5" PointX="8.75" PointY="6.25" Height="1.959453125" />
-        <EntityTypeShape EntityType="AuthorizeModel.UserSystem" Width="1.5" PointX="2.375" PointY="8.375" Height="1.7908333333333317" />
+        <EntityTypeShape EntityType="AuthorizeModel.User" Width="1.5" PointX="0.5" PointY="9.125" Height="2.8025520833333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.UserRole" Width="1.5" PointX="0.5" PointY="6.5" Height="1.4535937499999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.UserFunction" Width="1.5" PointX="6.375" PointY="9.125" Height="1.6222135416666674" />
+        <EntityTypeShape EntityType="AuthorizeModel.UserModule" Width="1.5" PointX="4.375" PointY="9.125" Height="1.7908333333333335" />
+        <EntityTypeShape EntityType="AuthorizeModel.City" Width="1.5" PointX="2.625" PointY="6.5" Height="2.1280729166666674" />
+        <EntityTypeShape EntityType="AuthorizeModel.UserSystem" Width="1.5" PointX="2.375" PointY="9.125" Height="1.9594531249999996" />
         <AssociationConnector Association="AuthorizeModel.SystemModule">
           <ConnectorPoint PointX="2" PointY="1.1571244596354173" />
           <ConnectorPoint PointX="2.375" PointY="1.1571244596354173" />
@@ -1229,56 +1300,44 @@
           <ConnectorPoint PointX="2.375" PointY="5.0622223072916661" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.RoleSystemRoleModule">
-          <ConnectorPoint PointX="3.875" PointY="4.8438241145833345" />
-          <ConnectorPoint PointX="4.041666666666667" PointY="4.8438241145833336" />
-          <ConnectorPoint PointX="4.208333333333333" PointY="4.8438241145833345" />
-          <ConnectorPoint PointX="4.375" PointY="4.8438241145833345" />
+          <ConnectorPoint PointX="3.875" PointY="4.8547265625" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="4.8547265624999989" />
+          <ConnectorPoint PointX="4.208333333333333" PointY="4.8547265625" />
+          <ConnectorPoint PointX="4.375" PointY="4.8547265625" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.RoleModuleRoleFunction">
-          <ConnectorPoint PointX="5.875" PointY="4.5174869791666667" />
-          <ConnectorPoint PointX="6.041666666666667" PointY="4.5174869791666659" />
-          <ConnectorPoint PointX="6.364583333333333" PointY="4.5174869791666667" />
-          <ConnectorPoint PointX="6.375" PointY="4.5174869791666667" />
+          <ConnectorPoint PointX="5.875" PointY="4.6861067708333328" />
+          <ConnectorPoint PointX="6.041666666666667" PointY="4.6861067708333319" />
+          <ConnectorPoint PointX="6.208333333333333" PointY="4.6861067708333328" />
+          <ConnectorPoint PointX="6.375" PointY="4.6861067708333328" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.RoleUserRole">
           <ConnectorPoint PointX="1.25" PointY="5.834453125" />
-          <ConnectorPoint PointX="1.25" PointY="6.375" />
+          <ConnectorPoint PointX="1.25" PointY="6.5" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.UserUserRole">
-          <ConnectorPoint PointX="1.25" PointY="8.375" />
-          <ConnectorPoint PointX="1.25" PointY="7.82859375" />
+          <ConnectorPoint PointX="1.25" PointY="9.125" />
+          <ConnectorPoint PointX="1.25" PointY="7.95359375" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.UserUserSystem">
-          <ConnectorPoint PointX="2" PointY="9.101796875" />
-          <ConnectorPoint PointX="2.375" PointY="9.101796875" />
+          <ConnectorPoint PointX="2" PointY="10.1047265625" />
+          <ConnectorPoint PointX="2.375" PointY="10.1047265625" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.UserSystemUserModule">
-          <ConnectorPoint PointX="3.875" PointY="9.5401201474609376" />
-          <ConnectorPoint PointX="4.375" PointY="9.5401201474609376" />
+          <ConnectorPoint PointX="3.875" PointY="10.020416666666666" />
+          <ConnectorPoint PointX="4.375" PointY="10.020416666666666" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.UserModuleUserFunction">
-          <ConnectorPoint PointX="5.875" PointY="9.4770926627604162" />
-          <ConnectorPoint PointX="6.197916666666667" PointY="9.4770926627604162" />
-          <ConnectorPoint PointX="6.364583333333333" PointY="9.4770926627604162" />
-          <ConnectorPoint PointX="6.375" PointY="9.4770926627604162" />
+          <ConnectorPoint PointX="5.875" PointY="9.9361067708333337" />
+          <ConnectorPoint PointX="6.375" PointY="9.9361067708333337" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.CityRoleSystem">
-          <ConnectorPoint PointX="8.75" PointY="6.82426489432641" />
-          <ConnectorPoint PointX="6.364583333333333" PointY="6.8242648943264088" />
-          <ConnectorPoint PointX="6.041666666666667" PointY="6.82426489432641" />
-          <ConnectorPoint PointX="4.208333333333333" PointY="6.8242648943264088" />
-          <ConnectorPoint PointX="4.041666666666667" PointY="6.82426489432641" />
-          <ConnectorPoint PointX="2.8759765625" PointY="6.82426489432641" />
-          <ConnectorPoint PointX="2.8759765625" PointY="5.834453125" />
+          <ConnectorPoint PointX="3.25" PointY="6.5" />
+          <ConnectorPoint PointX="3.25" PointY="5.834453125" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.CityUserSystem">
-          <ConnectorPoint PointX="8.75" PointY="7.461034788652821" />
-          <ConnectorPoint PointX="6.364583333333333" PointY="7.46103478865282" />
-          <ConnectorPoint PointX="6.041666666666667" PointY="7.461034788652821" />
-          <ConnectorPoint PointX="4.208333333333333" PointY="7.46103478865282" />
-          <ConnectorPoint PointX="4.041666666666667" PointY="7.461034788652821" />
-          <ConnectorPoint PointX="3.376953125" PointY="7.461034788652821" />
-          <ConnectorPoint PointX="3.376953125" PointY="8.375" />
+          <ConnectorPoint PointX="3.25" PointY="8.6280729166666674" />
+          <ConnectorPoint PointX="3.25" PointY="9.125" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.SystemRoleSystem">
           <ConnectorPoint PointX="2" PointY="2.0081605839843761" />
@@ -1292,38 +1351,50 @@
           <ConnectorPoint PointX="4.375" PointY="3.875" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.FunctionRoleModule">
-          <ConnectorPoint PointX="5.0937525" PointY="2.459453125" />
-          <ConnectorPoint PointX="5.0937525" PointY="3.875" />
+          <ConnectorPoint PointX="5.226559625" PointY="2.628072916666667" />
+          <ConnectorPoint PointX="5.226559625" PointY="3.875" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.SystemUserSystem">
-          <ConnectorPoint PointX="1.25" PointY="2.7966927083333335" />
-          <ConnectorPoint PointX="1.25" PointY="3.8125" />
-          <ConnectorPoint PointX="2.0625" PointY="3.8125" />
-          <ConnectorPoint PointX="2.0625" PointY="8.9536082622528888" />
-          <ConnectorPoint PointX="2.375" PointY="8.9536082622528888" />
+          <ConnectorPoint PointX="1.6562519999999998" PointY="2.7966927083333335" />
+          <ConnectorPoint PointX="1.6562519999999998" PointY="3.75" />
+          <ConnectorPoint PointX="2.0625" PointY="3.75" />
+          <ConnectorPoint PointX="2.0625" PointY="9.5836112812499987" />
+          <ConnectorPoint PointX="2.375" PointY="9.5836112812499987" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.ModuleUserModule">
           <ConnectorPoint PointX="3.093748" PointY="3.471171875" />
           <ConnectorPoint PointX="3.093748" PointY="3.7211718749999996" />
           <ConnectorPoint PointX="4.125" PointY="3.7211718749999996" />
-          <ConnectorPoint PointX="4.125" PointY="8.96053335176595" />
-          <ConnectorPoint PointX="4.375" PointY="8.96053335176595" />
+          <ConnectorPoint PointX="4.125" PointY="6.25" />
+          <ConnectorPoint PointX="4.375" PointY="6.25" />
+          <ConnectorPoint PointX="4.375" PointY="8.875" />
+          <ConnectorPoint PointX="4.125" PointY="8.875" />
+          <ConnectorPoint PointX="4.125" PointY="9.5414563333333327" />
+          <ConnectorPoint PointX="4.375" PointY="9.5414563333333327" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.FunctionUserFunction">
-          <ConnectorPoint PointX="4.64062425" PointY="2.459453125" />
-          <ConnectorPoint PointX="4.64062425" PointY="3.625" />
-          <ConnectorPoint PointX="5.0104191666666669" PointY="3.6249999999999996" />
-          <ConnectorPoint PointX="5.1770858333333329" PointY="3.625" />
+          <ConnectorPoint PointX="5.75" PointY="1.5062545104166669" />
+          <ConnectorPoint PointX="6" PointY="1.5062545104166669" />
+          <ConnectorPoint PointX="6" PointY="3.625" />
           <ConnectorPoint PointX="6.125" PointY="3.625" />
-          <ConnectorPoint PointX="6.125" PointY="8.8947943313802078" />
-          <ConnectorPoint PointX="6.197916666666667" PointY="8.8947943313802078" />
-          <ConnectorPoint PointX="6.364583333333333" PointY="8.8947943313802078" />
-          <ConnectorPoint PointX="6.375" PointY="8.8947943313802078" />
+          <ConnectorPoint PointX="6.125" PointY="6.375" />
+          <ConnectorPoint PointX="6.916666666666667" PointY="6.3749999999999991" />
+          <ConnectorPoint PointX="7.083333333333333" PointY="6.375" />
+          <ConnectorPoint PointX="7.125" PointY="6.375" />
+          <ConnectorPoint PointX="7.125" PointY="9.125" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.UserLoginLog">
-          <ConnectorPoint PointX="2" PointY="10.787252604166666" />
-          <ConnectorPoint PointX="6.28125" PointY="10.787252604166666" />
-          <ConnectorPoint PointX="6.28125" PointY="2.459453125" />
+          <ConnectorPoint PointX="2" PointY="11.047391322916667" />
+          <ConnectorPoint PointX="2.3125" PointY="11.047391322916667" />
+          <ConnectorPoint PointX="2.3125" PointY="9.0625" />
+          <ConnectorPoint PointX="4.041666666666667" PointY="9.0625" />
+          <ConnectorPoint PointX="4.208333333333333" PointY="9.0625" />
+          <ConnectorPoint PointX="7" PointY="9.0625" />
+          <ConnectorPoint PointX="7" PointY="5.5597135416666656" />
+          <ConnectorPoint PointX="6.3125" PointY="5.5597135416666656" />
+          <ConnectorPoint PointX="6.3125" PointY="2.553203125" />
+          <ConnectorPoint PointX="7" PointY="2.553203125" />
+          <ConnectorPoint PointX="7" PointY="2.459453125" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.SystemLoginLog">
           <ConnectorPoint PointX="2" PointY="0.5" />
@@ -1333,10 +1404,17 @@
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.FunctionRoleFunction">
           <ConnectorPoint PointX="5.75" PointY="2.5750130208333335" />
-          <ConnectorPoint PointX="6.197916666666667" PointY="2.5750130208333331" />
-          <ConnectorPoint PointX="6.364583333333333" PointY="2.5750130208333335" />
+          <ConnectorPoint PointX="5.916666666666667" PointY="2.5750130208333331" />
+          <ConnectorPoint PointX="6.083333333333333" PointY="2.5750130208333335" />
           <ConnectorPoint PointX="7.84375" PointY="2.5750130208333335" />
           <ConnectorPoint PointX="7.84375" PointY="3.875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="AuthorizeModel.Server" Width="1.5" PointX="4.875" PointY="6.625" Height="1.7908333333333335" />
+        <AssociationConnector Association="AuthorizeModel.CityServer">
+          <ConnectorPoint PointX="4.125" PointY="7.5204166666666667" />
+          <ConnectorPoint PointX="4.291666666666667" PointY="7.5204166666666659" />
+          <ConnectorPoint PointX="4.458333333333333" PointY="7.5204166666666667" />
+          <ConnectorPoint PointX="4.875" PointY="7.5204166666666667" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

@@ -14,5 +14,9 @@ namespace THOK.Authority.Security
         bool ValidateUser(string userName, string password);
         bool delete(string id);
         object GetDetails(int page, int rows);
+
+        bool ValidateUserPermission(string userName, string cityId, string systemId);
+
+        string GetLogOnUrl(System.Security.Principal.IPrincipal iPrincipal, string cityId, string systemId, string serverId);
     }
 }

@@ -40,6 +40,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("AuthorizeModel", "UserLoginLog", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(THOK.Authority.Data.User), "LoginLog", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(THOK.Authority.Data.LoginLog))]
 [assembly: EdmRelationshipAttribute("AuthorizeModel", "SystemLoginLog", "System", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(THOK.Authority.Data.System), "LoginLog", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(THOK.Authority.Data.LoginLog))]
 [assembly: EdmRelationshipAttribute("AuthorizeModel", "FunctionRoleFunction", "Function", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(THOK.Authority.Data.Function), "RoleFunction", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(THOK.Authority.Data.RoleFunction))]
+[assembly: EdmRelationshipAttribute("AuthorizeModel", "CityServer", "City", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(THOK.Authority.Data.City), "Server", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(THOK.Authority.Data.Server))]
 
 #endregion
 
@@ -314,6 +315,22 @@ namespace THOK.Authority.Data
             }
         }
         private ObjectSet<UserSystem> _UserSystem;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<Server> Server
+        {
+            get
+            {
+                if ((_Server == null))
+                {
+                    _Server = base.CreateObjectSet<Server>("Server");
+                }
+                return _Server;
+            }
+        }
+        private ObjectSet<Server> _Server;
 
         #endregion
         #region AddTo 方法
@@ -429,6 +446,14 @@ namespace THOK.Authority.Data
         {
             base.AddObject("UserSystem", userSystem);
         }
+    
+        /// <summary>
+        /// 用于向 Server EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToServer(Server server)
+        {
+            base.AddObject("Server", server);
+        }
 
         #endregion
     }
@@ -520,6 +545,30 @@ namespace THOK.Authority.Data
         /// <summary>
         /// 没有元数据文档可用。
         /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Boolean IsActive
@@ -585,6 +634,28 @@ namespace THOK.Authority.Data
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserSystem>("AuthorizeModel.CityUserSystem", "UserSystem", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AuthorizeModel", "CityServer", "Server")]
+        public EntityCollection<Server> Servers
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Server>("AuthorizeModel.CityServer", "Server");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Server>("AuthorizeModel.CityServer", "Server", value);
                 }
             }
         }
@@ -2135,6 +2206,202 @@ namespace THOK.Authority.Data
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<System>("AuthorizeModel.SystemRoleSystem", "System", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// 没有元数据文档可用。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="AuthorizeModel", Name="Server")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Server : EntityObject
+    {
+        #region 工厂方法
+    
+        /// <summary>
+        /// 创建新的 Server 对象。
+        /// </summary>
+        /// <param name="serverID">ServerID 属性的初始值。</param>
+        /// <param name="serverName">ServerName 属性的初始值。</param>
+        /// <param name="isActive">IsActive 属性的初始值。</param>
+        public static Server CreateServer(global::System.Guid serverID, global::System.String serverName, global::System.Boolean isActive)
+        {
+            Server server = new Server();
+            server.ServerID = serverID;
+            server.ServerName = serverName;
+            server.IsActive = isActive;
+            return server;
+        }
+
+        #endregion
+        #region 基元属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ServerID
+        {
+            get
+            {
+                return _ServerID;
+            }
+            set
+            {
+                if (_ServerID != value)
+                {
+                    OnServerIDChanging(value);
+                    ReportPropertyChanging("ServerID");
+                    _ServerID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ServerID");
+                    OnServerIDChanged();
+                }
+            }
+        }
+        private global::System.Guid _ServerID;
+        partial void OnServerIDChanging(global::System.Guid value);
+        partial void OnServerIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ServerName
+        {
+            get
+            {
+                return _ServerName;
+            }
+            set
+            {
+                OnServerNameChanging(value);
+                ReportPropertyChanging("ServerName");
+                _ServerName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ServerName");
+                OnServerNameChanged();
+            }
+        }
+        private global::System.String _ServerName;
+        partial void OnServerNameChanging(global::System.String value);
+        partial void OnServerNameChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Url
+        {
+            get
+            {
+                return _Url;
+            }
+            set
+            {
+                OnUrlChanging(value);
+                ReportPropertyChanging("Url");
+                _Url = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Url");
+                OnUrlChanged();
+            }
+        }
+        private global::System.String _Url;
+        partial void OnUrlChanging(global::System.String value);
+        partial void OnUrlChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsActive
+        {
+            get
+            {
+                return _IsActive;
+            }
+            set
+            {
+                OnIsActiveChanging(value);
+                ReportPropertyChanging("IsActive");
+                _IsActive = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsActive");
+                OnIsActiveChanged();
+            }
+        }
+        private global::System.Boolean _IsActive;
+        partial void OnIsActiveChanging(global::System.Boolean value);
+        partial void OnIsActiveChanged();
+
+        #endregion
+    
+        #region 导航属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AuthorizeModel", "CityServer", "City")]
+        public City City
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<City>("AuthorizeModel.CityServer", "City").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<City>("AuthorizeModel.CityServer", "City").Value = value;
+            }
+        }
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<City> CityReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<City>("AuthorizeModel.CityServer", "City");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<City>("AuthorizeModel.CityServer", "City", value);
                 }
             }
         }

@@ -1,26 +1,26 @@
 <script type="text/javascript">
     var url;
     $(function () {
-        $('#add').click(function () {
-            $('#dlg').dialog('open').dialog('setTitle', '新增');
-            $('#fm').form('clear');
-            $('#fm .easyui-validatebox').validatebox({
-                required: true
-            });
-            $('form input').removeAttr("disabled");
-            $('form textarea').removeAttr("disabled");
-            $('#cc').combo({
-                hasDownArrow: true
-            });
-            url = '/System/Create/';
-        })
-
         $('#cc').combo({
             required: true,
             editable: false,
             panelHeight: 45
         });
     })
+
+    function addClick() {
+        $('#dlg').dialog('open').dialog('setTitle', '新增');
+        $('#fm').form('clear');
+        $('#fm .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
+        $('#cc').combo({
+            hasDownArrow: true
+        });
+        url = '/System/Create/';
+    };
 
     function save() {
         $('#fm').form('submit', {
@@ -57,15 +57,15 @@
 	            <form id="fm" method="post" novalidate>
                     <table width="250">
                       <tr>
-                        <td width="60">系统信息:</td>
+                        <td width="60">系统名称</td>
                         <td width="168"><input name="SystemName" class="easyui-validatebox" required="true"></td>
                       </tr>
                       <tr>
-                        <td>系统描述:</td>
+                        <td>描述</td>
                         <td><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
                       </tr>
                       <tr>
-                        <td>系统状态:</td>
+                        <td>状态</td>
                         <td><select id="cc" name="Status" class="easyui-combobox" style="width: 50px">
 		                        <option value="true">启用</option>
 		                        <option value="false">禁用</option>

@@ -1,54 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Security.Principal;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web.Security;
-using System.Text;
-using THOK.Authority.Security;
-using THOK.Authority.Authorize;
+using THOK.WebUtil;
+using Microsoft.Practices.Unity;
+using THOK.Authority.Bll.Interfaces.Authority;
+using THOK.Security;
 
 namespace Authority.Controllers
 {
     public class AccountController : Controller
     {
+        [Dependency]
+        public IFormsAuthenticationService FormsService { get; set; }
+        [Dependency]
+        public IUserService UserService { get; set; }
 
-        public IFormsAuthenticationService _FormsService { get; set; }
-        public IUserService _UserService { get; set; }
-
-        protected override void Initialize(RequestContext requestContext)
+        [HttpPost]
+        public ActionResult LogOn(string userName, string password, string cityId, string systemId, string serverId)
         {
-            if (_FormsService == null) { _FormsService = new FormsAuthenticationService(); }
-            if (_UserService == null) { _UserService = new UserService(); }
-            base.Initialize(requestContext);
-        }
-
-        public ActionResult LogOn(string userName, string password)
-        {
-            JsonResult jr = new JsonResult();
-            jr.ContentEncoding = Encoding.UTF8;
-            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            if (ModelState.IsValid)
+            bool bResult = false;
+            string msg = "";
+            if(UserService.ValidateUser(userName, password))
             {
-                bool bResult = _UserService.ValidateUser(userName, password);
-                jr.Data = new { success = bResult, msg = bResult ? "登录成功" : "登录失败", href = "http://localhost:5618/" };
-                if (bResult)
+                if (UserService.ValidateUserPermission(userName, cityId, systemId))
                 {
-                    _FormsService.SignIn(userName, true);                    
+                    bResult = true;
+                    msg = "登录成功!";
+                }
+                else
+                {
+                    msg = "登录失败:当前用户没有访问请求的系统服务器的权限!";
                 }
             }
             else
-                jr.Data = new { success = false, msg = "登录失败" };
-            jr.ContentType = "text";
-            return jr;
+            {
+                msg = "登录失败:用户名或密码错误！";
+            }
+            string url = bResult ? UserService.GetLogOnUrl(User, cityId, systemId, serverId) : "";            
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, url),"text");
+        }
+
+        public ActionResult LogOn(string logOnKey)
+        {
+            //todo
+            string userName = "a";
+            string password = "a";
+            string cityId = "15660ef5-11f5-46f1-a000-6ed7c2bea78c";
+            string systemId = "35995225-9FC6-4373-97CB-D1191A0C8764";
+
+            bool bResult = UserService.ValidateUser(userName, password)
+                && UserService.ValidateUserPermission(userName, cityId, systemId);
+            if (bResult)
+            {
+                FormsService.SignIn(userName, false);
+                this.AddCookie("cityid", cityId);
+                this.AddCookie("systemid", systemId);
+            }
+            return new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Home" } });
         }
 
         public ActionResult LogOff()
         {
-            _FormsService.SignOut();
+            FormsService.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -56,26 +68,36 @@ namespace Authority.Controllers
         [HttpPost]
         public ActionResult ChangePassword(string userName, string password,string newPassword)
         {
-            JsonResult jr = new JsonResult();
-            jr.ContentEncoding = Encoding.UTF8;
-            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            bool bResult = UserService.ChangePassword(userName, password, newPassword); 
+            string msg = bResult ? "修改密码成功" : "修改密码失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult,msg),"text");
+        }
 
-            if (ModelState.IsValid)
+        [Authorize]
+        public ActionResult ChangeServer(string cityId, string systemId, string serverId)
+        {
+            bool bResult = false;
+            string msg = "";
+            string userName = this.User.Identity.Name;
+            cityId = cityId ?? this.GetCookieValue("cityid");
+            systemId = systemId ?? this.GetCookieValue("systemid");
+
+            if (UserService.ValidateUserPermission(userName,cityId, systemId))
             {
-                bool bResult = _UserService.ChangePassword(userName, password, newPassword);
-                jr.Data = new { success = bResult, msg = bResult ? "修改密码成功" : "修改密码失败" };
-                if (bResult)
-                    _FormsService.SignIn(userName, true);
+                bResult = true;                
+                msg = "切换成功!";
             }
             else
-                jr.Data = new { success = false, msg = "修改密码失败" };
-            return jr;
-        }
-        
-        public ActionResult ChangeLogOnServer(string userName)
-        {
-            _FormsService.SignIn(userName, true);
-            return new RedirectToRouteResult(new RouteValueDictionary {{ "controller", "Home" }});
+            {
+                msg = "切换失败:当前用户没有访问请求的系统服务器的权限!";
+            }
+
+            this.AddCookie("c", cityId ?? "NULL");
+            this.AddCookie("s", systemId ?? "NULL");
+            this.AddCookie("ss", serverId ?? "NULL");
+
+            string url = bResult ? UserService.GetLogOnUrl(this.User, cityId, systemId, serverId) : "";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, url),"text", JsonRequestBehavior.AllowGet);
         }
     }
 }

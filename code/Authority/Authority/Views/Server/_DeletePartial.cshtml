@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    function deleteClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $('#dlg').dialog('open').dialog('setTitle', '删除');
+            $('#fm .easyui-validatebox').validatebox({
+                required: false
+            });
+            $('#cg').combogrid({
+                hasDownArrow: false
+            });
+            $('form input').attr("disabled", "disabled");
+            $('#fm').form('load', row);
+            $('#cg').combogrid('setValue', row.CityID).combo('setText', row.CityName);
+            if (row.Status == '启用') {
+                $('#cc').combo('setValue', true).combo('setText', row.IsActive);
+            } else {
+                $('#cc').combo('setValue', false).combo('setText', row.IsActive);
+            }
+            url = '/Server/Delete/?ServerID=' + row.ServerID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>

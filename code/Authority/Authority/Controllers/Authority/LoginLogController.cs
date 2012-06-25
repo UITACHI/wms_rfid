@@ -11,11 +11,12 @@ namespace Authority.Controllers.Authority
         //
         // GET: /LoginLog/
 
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 

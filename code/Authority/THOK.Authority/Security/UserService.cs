@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 using THOK.Authority.Data;
+using System.Web.Script.Serialization;
 
 namespace THOK.Authority.Security
 {
@@ -13,8 +14,6 @@ namespace THOK.Authority.Security
         public UserService()
         {
         }
-
-        #region IUserService 成员
 
         public string FindUsersForFunction(string functionId)
         {
@@ -100,7 +99,6 @@ namespace THOK.Authority.Security
             }
         }
 
-        #endregion
         #region 查找用户信息
         public object GetDetails(int page, int rows)
         {
@@ -174,7 +172,45 @@ namespace THOK.Authority.Security
             data = x.ComputeHash(data);
             return System.Text.Encoding.ASCII.GetString(data);
         }
-       
-    }
-    
+
+        public string GetLogOnUrl(System.Security.Principal.IPrincipal iPrincipal, string cityId, string systemId, string serverId)
+        {
+            string url = "";
+            string logOnKey = "";
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            if (cityId != null && cityId != string.Empty)
+            {
+                url = GetUrlFromCity(new Guid(cityId));
+            }
+
+            if (serverId != null && serverId != string.Empty)
+            {
+                url = GetUrlFromServer(new Guid(cityId));
+            }
+
+            if (systemId != null && serverId != string.Empty)
+            {
+
+            }
+            var key = new { User = iPrincipal, CityID = cityId, ServerID = serverId ,SystemID = systemId};
+            logOnKey = serializer.Serialize(key);
+            url += "/Account/LogOn/?LogOnKey=" + logOnKey;
+            return url;
+        }
+
+        private string GetUrlFromServer(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string GetUrlFromCity(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ValidateUserPermission(string userName, string cityId, string systemId)
+        {
+            return true;
+        }
+    }    
 }

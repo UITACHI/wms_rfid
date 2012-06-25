@@ -63,9 +63,9 @@
 	background:url('icons/mini_refresh.png') no-repeat 3px 2px;
 }
 
-
+/*background: url('icons/tabicons.png') no-repeat;*/
 .icon
-{
+{    
     background: url('icons/tabicons.png') no-repeat;
     width: 18px;
     line-height: 18px;

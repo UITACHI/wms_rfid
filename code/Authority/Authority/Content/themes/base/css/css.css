@@ -16,7 +16,7 @@ body {
 	text-align: left;
 }
 
- input,textarea
+ input,textarea,select
 {
 	border: 1px solid #A4BED4;
 	width:120px;

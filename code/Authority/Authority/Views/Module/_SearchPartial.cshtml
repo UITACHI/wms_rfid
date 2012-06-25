@@ -1,10 +1,5 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#search').click(function () {
-            $('#cg-search').combogrid('setValue', '').combo('setText', '');
-            $('#dlg-search').dialog('open').dialog('setTitle', '查询');
-        });
-
         $('#cg-search').combogrid({
             width: 180,
             panelWidth: 450,
@@ -22,6 +17,11 @@
 				]]
         });
     })
+
+    function searchClick(){
+        $('#cg-search').combogrid('setValue', '').combo('setText', '');
+        $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+    };
 
     function select() {
         $("#details").treegrid({

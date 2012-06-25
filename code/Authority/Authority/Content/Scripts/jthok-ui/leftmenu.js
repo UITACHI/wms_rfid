@@ -28,8 +28,8 @@
 
     //初始化菜单
     function initMenu() {
-        //clearMenu();
-        $.getJSON("/Home/GetMenu/sysid/?t=" + new Date(), function (data) {
+        clearMenu();
+        $.getJSON("/Home/GetMenu/?t=" + new Date(), function (data) {
             menus_root = data[0];
             initMainMenu(menus_root);
             initLeftMenu(menus_root);
@@ -161,8 +161,7 @@
             if (data) {
                 if (!data.Identity.IsAuthenticated) {
                     $.messager.confirm('系统提示', '操作已超时，请重新登录！', function (r) {
-                        clearMenu();
-                        $('#w_LogOn').window('open');
+                        location.reload();
                     });
                 }
                 else {
@@ -171,8 +170,7 @@
             }
             else {
                 $.messager.confirm('系统提示', '操作已超时，请重新登录！', function (r) {
-                    clearMenu();
-                    $('#w_LogOn').window('open');
+                    location.reload();
                 });
             }
         });
@@ -261,7 +259,7 @@
         //刷新
         $('#mm-tabupdate').click(function () {
             var currTab = $('#tabs').tabs('getSelected');
-            var url = currTab.data("src") + '?t=' + new Date();
+            var url = currTab.data("src") + '&t=' + new Date();
             var useiframe = currTab.data("useiframe");
             if (!useiframe) {
                 $.get(url, function (data) {

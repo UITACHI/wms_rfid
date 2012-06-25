@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using THOK.Authority.Data;
-using THOK.Authority.Security;
-using System.Collections.Generic;
-using System.Data;
-using System.Web;
 using System.Data.Objects.DataClasses;
 
 namespace THOK.Authority.Authority

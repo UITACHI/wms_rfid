@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Practices.Unity;
+using THOK.Authority.Bll.Interfaces.Authority;
+using THOK.WebUtil;
 
 namespace Authority.Controllers.ServerAdmin
 {
     public class ServerController : Controller
     {
-        //
-        // GET: /Server/
+        [Dependency]
+        public IServerService ServerService { get; set; }
 
-        public ActionResult Index()
+        // GET: /Server/
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
@@ -19,93 +23,46 @@ namespace Authority.Controllers.ServerAdmin
             ViewBag.hasDelete = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 
-        //
-        // GET: /Server/Details/5
-
-        public ActionResult Details(int id)
+        // GET: /Server/Details/
+        public ActionResult Details(int page, int rows, FormCollection collection)
         {
-            return View();
+            string serverName = collection["ServerName"] ?? "";
+            string description = collection["Description"] ?? "";
+            string url = collection["Url"] ?? "";
+            string isActive = collection["IsActive"] ?? "";
+            var users = ServerService.GetDetails(page, rows, serverName, description, url,isActive);
+            return Json(users, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
-        // GET: /Server/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        } 
-
-        //
         // POST: /Server/Create
-
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(string serverName, string description, string url,bool isActive,string cityID)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        
-        //
-        // GET: /Server/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
+            bool bResult = ServerService.Add(serverName, description, url, isActive, cityID);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
-        // POST: /Server/Edit/5
-
+        // POST: /Server/Edit/ 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string serverID, string serverName, string description, string url, bool isActive,string cityID)
         {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            bool bResult = ServerService.Save(serverID, serverName, description, url,isActive,cityID);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
-        // GET: /Server/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Server/Delete/5
-
+        // POST: /Server/Delete/
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string serverID)
         {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            bool bResult = ServerService.Delete(serverID);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }
 }

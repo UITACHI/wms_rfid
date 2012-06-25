@@ -69,7 +69,7 @@
                         msg: result.msg
                     });
                     $('#dlg-changepassword').dialog('close');
-                    location.href = result.href;
+                    location.href = result.data;
                 } else {
                     $.messager.confirm('系统提示', '用户登录失败！用户名或密码不正确！', function (r) {
                         if (r) {
@@ -82,7 +82,7 @@
     }
 </script>
     <div id="dlg-logon" class="easyui-dialog" modal="true" title="登录"
-        style="width:328px;height:240px;padding:2px 2px"
+        style="width:328px;height:250px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons-logon">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc;">	          
@@ -121,5 +121,5 @@
 
     <div id="dlg-buttons-logon">
 	    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="login()">确定</a>
-	    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-changepassword').dialog('close')">取消</a>
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-logon').dialog('close')">取消</a>
     </div>

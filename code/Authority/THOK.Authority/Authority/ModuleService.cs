@@ -175,5 +175,10 @@ namespace THOK.Authority.Authority
                 context.DeleteObject(item);
             }
         }
+
+        public object GetModuleFuns(string moduleId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

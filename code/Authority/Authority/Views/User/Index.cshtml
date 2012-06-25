@@ -1,4 +1,4 @@
-锘?script type="text/javascript">
+<script type="text/javascript">
     $(function () {
         
     });
@@ -6,20 +6,21 @@
  
 <div region="center" split="true" border="false">    
     <table class="easyui-datagrid" id="details"
-        url="/User/Details" border="false"
+        url="/User/Details" border="false" singleSelect="true"
         fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="UserID" hidden="true" width="80">鐢ㄦ埛缂栫爜</th>
-                <th field="UserName" width="100">鐢ㄦ埛鍚嶇О</th>
-                <th field="IsLock" width="80" align="left">鏄惁閿佸畾</th>
-                <th field="IsAdmin" width="80" align="left">鏄惁鏄鐞嗗憳</th>
-                <th field="Memo" width="80" align="left">鐢ㄦ埛鎻忚堪</th>
+                <th field="UserID" hidden="true" width="80">用户编码</th>
+                <th field="UserName" width="100">用户名</th>
+                <th field="ChineseName" width="100">中文名</th>                
+                <th field="IsAdmin" width="80" align="left">是否是超级管理员</th>
+                <th field="IsLock" width="80" align="left">是否锁定</th>
+                <th field="Memo" width="80" align="left">备注</th>
             </tr>
         </thead>
     </table>
 </div>
 
-@Html.Partial("_ToolPartial") 
+ 
 
 

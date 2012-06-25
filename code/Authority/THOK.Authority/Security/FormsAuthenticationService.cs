@@ -11,7 +11,7 @@ namespace THOK.Authority.Security
         public void SignIn(string userName, bool createPersistentCookie)
         {
             if (String.IsNullOrEmpty(userName)) throw new ArgumentException("值不能为 null 或为空。", "userName");
-            FormsAuthentication.SetAuthCookie(userName, true);
+            FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
         }
 
         public void SignOut()

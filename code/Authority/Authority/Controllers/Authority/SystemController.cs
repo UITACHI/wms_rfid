@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Text;
 using System.Web.Routing;
-using THOK.Authority.Authority;
+using THOK.Authority.Bll.Interfaces.Authority;
+using Microsoft.Practices.Unity;
+using THOK.WebUtil;
 
 namespace Authority.Controllers.Authority
 {
     public class SystemController : Controller
     {
-        public ISystemService _SystemService { get; set; }
+        [Dependency]
+        public ISystemService SystemService { get; set; }
 
-        protected override void Initialize(RequestContext requestContext)
-        {
-            if (_SystemService == null) { _SystemService = new SystemService(); }
-            base.Initialize(requestContext);
-        }
-
-        public ActionResult Index()
+        // GET: /System/
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
@@ -27,55 +21,45 @@ namespace Authority.Controllers.Authority
             ViewBag.hasDelete = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
-            return View("Index");
+            ViewBag.ModuleID = moduleID;
+            return View();
         }
 
+        // GET: /System/Details/
         public ActionResult Details(int page, int rows,FormCollection collection)
         {
             string systemName = collection["SystemName"]??"";
             string description = collection["Description"] ?? "";
             string status = collection["Status"] ?? "";
-
-            object details = _SystemService.GetDetails(page, rows, systemName, description, status);
-            JsonResult jr = new JsonResult();
-            jr.Data = details;
-            jr.ContentEncoding = Encoding.UTF8;
-            jr.ContentType = "text";
-            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            return jr;
+            var systems = SystemService.GetDetails(page, rows, systemName, description, status);
+            return Json(systems,"text",JsonRequestBehavior.AllowGet);
         }
 
+        // POST: /System/Create/
+        [HttpPost]
         public ActionResult Create(string systemName, string description, bool status)
         {
-            bool bResult = _SystemService.AddSystem(systemName, description, status);
-            JsonResult jr = new JsonResult();
-            jr.Data = new { success = bResult, msg = bResult ? "新增成功": "新增失败"};
-            jr.ContentEncoding = Encoding.UTF8;
-            jr.ContentType = "text";
-            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            return jr;
+            bool bResult = SystemService.Add(systemName, description, status);
+            string msg = bResult ? "新增成功": "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult,msg,null),"text",JsonRequestBehavior.AllowGet);
         }
 
+        // POST: /System/Edit/
+        [HttpPost]
         public ActionResult Edit(string systemId, string systemName, string description, bool status)
         {
-            bool bResult = _SystemService.SaveSystemInfo(systemId, systemName, description, status);
-            JsonResult jr = new JsonResult();
-            jr.Data = new { success = bResult, msg = bResult ? "修改成功": "修改失败"};
-            jr.ContentEncoding = Encoding.UTF8;
-            jr.ContentType = "text";
-            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            return jr;
+            bool bResult = SystemService.Save(systemId, systemName, description, status);
+            string msg = bResult ? "修改成功" : "修改失败" ;
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        // POST: /System/Delete/
+        [HttpPost]
         public ActionResult Delete(string systemId)
         {
-            bool bResult = _SystemService.Delete(systemId);
-            JsonResult jr = new JsonResult();
-            jr.Data = new { success = bResult, msg = bResult ? "删除成功": "删除失败"};
-            jr.ContentEncoding = Encoding.UTF8;
-            jr.ContentType = "text";
-            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            return jr;
+            bool bResult = SystemService.Delete(systemId);
+            string msg = bResult ? "删除成功": "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -3,129 +3,69 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using THOK.Authority.Authority;
 using System.Web.Routing;
 using System.Text;
+using Microsoft.Practices.Unity;
+using THOK.Authority.Bll.Interfaces.Authority;
+using THOK.WebUtil;
 
 namespace Authority.Controllers.Authority
 {
     public class RoleController : Controller
     {
-        public IRoleService _RoleService { get; set; }
+        [Dependency]
+        public IRoleService RoleService { get; set; }
 
-        protected override void Initialize(RequestContext requestContext)
-        {
-            if (_RoleService == null) { _RoleService = new RoleService(); }
-            base.Initialize(requestContext);
-        }
-
-        //
         // GET: /Role/
-
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
-            //ViewBag.hasSearch = true;
+            ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
-            //ViewBag.hasEdit = true;
-            //ViewBag.hasDelete = true;
-            //ViewBag.hasPrint = true;
-            //ViewBag.hasHelp = true;
-
-            //ViewBag.hasPermissionAdmin = true;
-            //ViewBag.hasUserAdmin = true;
-
+            ViewBag.hasEdit = true;
+            ViewBag.hasDelete = true;
+            ViewBag.hasPrint = true;
+            ViewBag.hasHelp = true;
+            ViewBag.hasPermissionAdmin = true;
+            ViewBag.hasUserAdmin = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 
-        public ActionResult Permission()
+        // GET: /Role/Details/
+        public ActionResult Details(int page, int rows,FormCollection collection)
         {
-            return View();
-        }
-        //
-        // GET: /Role/Details/5
+            string roleName = collection["RoleName"] ?? "";
+            string description = collection["Description"] ?? "";
+            string status = collection["Status"] ?? "";
+            var roles = RoleService.GetDetails(page, rows, roleName, description, status);
+            return Json(roles,"text",JsonRequestBehavior.AllowGet);
+        }    
 
-        public ActionResult Details(int page, int rows)
-        {
-            JsonResult jr = new JsonResult();
-            jr.Data = _RoleService.GetDetails(page, rows);
-            jr.ContentEncoding = Encoding.UTF8;
-            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            return jr;
-        }
-
-    
-
-        //
-        // POST: /Role/Create
-
+        // POST: /Role/Create/
         [HttpPost]
-        public ActionResult Create(string roleName, string memo, bool islock)
+        public ActionResult Create(string roleName, string description, bool status)
         {
-            try
-            {
-                JsonResult jr = new JsonResult();
-                jr.Data = _RoleService.AddRole(roleName, memo, islock);
-                jr.ContentEncoding = Encoding.UTF8;
-                jr.ContentType = "text";
-                jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-                return jr;
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        
-        //
-        // GET: /Role/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
+            bool bResult = RoleService.Add(roleName, description, status);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
-        // POST: /Role/Edit/5
-
+        // POST: /Role/Edit/
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string roleID, string roleName, string description, bool status)
         {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            bool bResult = RoleService.Save(roleID, roleName, description, status);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
-        // GET: /Role/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Role/Delete/5
-
+        // POST: /Role/Delete/
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string roleID)
         {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            bool bResult = RoleService.Delete(roleID);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }
 }
