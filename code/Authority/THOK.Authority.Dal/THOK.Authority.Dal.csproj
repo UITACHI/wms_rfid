@@ -104,6 +104,12 @@
   <ItemGroup>
     <Content Include="EntityModels\AuthorizeDBModel.edmx.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\THOK.Authority.Common\THOK.Common.csproj">
+      <Project>{2F9C4207-F8A0-4E55-A2CB-3514ADC0A437}</Project>
+      <Name>THOK.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,6 +5,7 @@ using THOK.Authority.Dal.EntityModels;
 using THOK.Authority.Dal.EntityRepository.Authority;
 using Microsoft.Practices.Unity;
 using System.Linq;
+using THOK.Common;
 
 namespace THOK.Authority.Bll.Service.Authority
 {
@@ -12,12 +13,6 @@ namespace THOK.Authority.Bll.Service.Authority
     {
         [Dependency]
         public ICityRepository CityRepository { get; set; }
-        [Dependency]
-        public IServerRepository ServerRepository { get; set; }
-        [Dependency]
-        public IRoleSystemRepository RoleSystemRepository { get; set; }
-        [Dependency]
-        public IUserSystemRepository UserSystemRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -58,10 +53,7 @@ namespace THOK.Authority.Bll.Service.Authority
                 .FirstOrDefault(i => i.CityID == gCityID);
             if (city != null)
             {
-                Del(ServerRepository,city.Servers);
-                Del(RoleSystemRepository, city.RoleSystems);
-                Del(UserSystemRepository,city.UserSystems);
-                CityRepository.Delete(city);
+                CityRepository.Delete(city);                
                 CityRepository.SaveChanges();
             }
             else
@@ -77,7 +69,7 @@ namespace THOK.Authority.Bll.Service.Authority
             city.CityName = cityName;
             city.Description = description;
             city.IsActive = isActive;
-            ServerRepository.SaveChanges();
+            CityRepository.SaveChanges();
             return true;
         }
     }

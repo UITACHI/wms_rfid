@@ -43,6 +43,8 @@ namespace THOK.Authority.Bll.Service.Authority
             get { return this.GetType(); }
         }
 
+        #region 模块信息维护        
+        
         public object GetDetails(string systemID)
         {
             IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
@@ -82,7 +84,7 @@ namespace THOK.Authority.Bll.Service.Authority
                     moduleMenu.iconCls = item.IndicateImage;
                     moduleMenu.ShowOrder = item.ShowOrder;
                     moduleMenuSet.Add(moduleMenu);
-                    SetMenu(moduleMenu, item);
+                    GetChildMenu(moduleMenu, item);
                     moduleMenuSet.Add(moduleMenu);
                 }
                 systemMenu.children = moduleMenuSet.ToArray();
@@ -148,6 +150,40 @@ namespace THOK.Authority.Bll.Service.Authority
             return true;
         }
 
+        private void GetChildMenu(Menu menu, Module module)
+        {
+            HashSet<Menu> childMenuSet = new HashSet<Menu>();
+            var modules = from m in module.Modules
+                          orderby m.ShowOrder
+                          select m;
+            foreach (var item in modules)
+            {
+                if (item != module)
+                {
+                    Menu childMenu = new Menu();
+                    childMenu.ModuleID = item.ModuleID.ToString();
+                    childMenu.ModuleName = item.ModuleName;
+                    childMenu.SystemID = item.System.SystemID.ToString();
+                    childMenu.SystemName = item.System.SystemName;
+                    childMenu.ParentModuleID = item.ParentModule.ModuleID.ToString();
+                    childMenu.ParentModuleName = item.ParentModule.ModuleName;
+                    childMenu.ModuleURL = item.ModuleURL;
+                    childMenu.iconCls = item.IndicateImage;
+                    childMenu.ShowOrder = item.ShowOrder;
+                    childMenuSet.Add(childMenu);
+                    if (item.Modules.Count > 0)
+                    {
+                        GetChildMenu(childMenu, item);
+                    }
+                }
+            }
+            menu.children = childMenuSet.ToArray();
+        }
+
+        #endregion
+
+        #region 页面权限控制        
+        
         public object GetUserMenus(string userName, string cityID, string systemID)
         {
             if (String.IsNullOrEmpty(userName)) throw new ArgumentException("值不能为NULL或为空。", "userName");
@@ -309,6 +345,10 @@ namespace THOK.Authority.Bll.Service.Authority
             moduleMenu.children = childMenuSet.ToArray();
         }
 
+        #endregion
+
+        #region 初始化角色权限
+
         private void InitRoleSystem(Role role, City city, Dal.EntityModels.System system)
         {
             var roleSystems = role.RoleSystems.Where(rs => rs.City.CityID == city.CityID
@@ -376,6 +416,10 @@ namespace THOK.Authority.Bll.Service.Authority
             }
         }
 
+        #endregion
+
+        #region 初始化用户权限
+
         private void InitUserSystem(User user, City city, Dal.EntityModels.System system)
         {
             var userSystems = user.UserSystems.Where(us => us.City.CityID == city.CityID
@@ -440,45 +484,8 @@ namespace THOK.Authority.Bll.Service.Authority
                     UserFunctionRepository.SaveChanges();
                 }
             }
-        }       
-
-        private void SetMenu(Menu menu, Module module)
-        {
-            HashSet<Menu> childMenuSet = new HashSet<Menu>();
-            var modules = from m in module.Modules
-                          orderby m.ShowOrder
-                          select m;
-            foreach (var item in modules)
-            {
-                if (item != module)
-                {
-                    Menu childMenu = new Menu();
-                    childMenu.ModuleID = item.ModuleID.ToString();
-                    childMenu.ModuleName = item.ModuleName;
-                    childMenu.SystemID = item.System.SystemID.ToString();
-                    childMenu.SystemName = item.System.SystemName;
-                    childMenu.ParentModuleID = item.ParentModule.ModuleID.ToString();
-                    childMenu.ParentModuleName = item.ParentModule.ModuleName;
-                    childMenu.ModuleURL = item.ModuleURL;
-                    childMenu.iconCls = item.IndicateImage;
-                    childMenu.ShowOrder = item.ShowOrder;
-                    childMenuSet.Add(childMenu);
-                    if (item.Modules.Count > 0)
-                    {
-                        SetMenu(childMenu, item);
-                    }
-                    if (item.Functions.Count >0)
-                    {
-                        SetFunMenu(childMenu, item);
-                    }
-                }
-            }
-            menu.children = childMenuSet.ToArray();
         }
 
-        private void SetFunMenu(Menu childMenu, Module item)
-        {
-            throw new NotImplementedException();
-        }       
+        #endregion
     }
 }
