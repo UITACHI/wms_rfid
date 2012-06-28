@@ -32,27 +32,27 @@ namespace Authority.Controllers.Authority
 
         // POST: /Module/Edit/
         [HttpPost]
-        public ActionResult Edit(string FunctionId, string FunctionName, string ControlName, string IndicateImage)
+        public ActionResult Edit(string id, string FunctionName, string ControlName, string IndicateImage)
         {
-            bool bResult = FunctionService.Save(FunctionId, FunctionName, ControlName, IndicateImage);
+            bool bResult = FunctionService.Save(id, FunctionName, ControlName, IndicateImage);
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
         // POST: /Module/Delete/
         [HttpPost]
-        public ActionResult Delete(string FunctionId)
+        public ActionResult Delete(string id, string FunctionName, string ControlName, string IndicateImage)
         {
-            bool bResult = FunctionService.Delete(FunctionId);
+            bool bResult = FunctionService.Delete(id);
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
         // POST: /Module/Create/
         [HttpPost]
-        public ActionResult Create(string ModuleId, string FunctionName, string ControlName, string IndicateImage)
+        public ActionResult Create(string id, string FunctionName, string ControlName, string IndicateImage)
         {
-            bool bResult = FunctionService.Add(ModuleId, FunctionName, ControlName, IndicateImage);
+            bool bResult = FunctionService.Add(id, FunctionName, ControlName, IndicateImage);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

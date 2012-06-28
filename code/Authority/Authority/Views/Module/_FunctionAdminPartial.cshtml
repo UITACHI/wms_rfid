@@ -34,28 +34,18 @@
     }
 
     function functionEdit() {
-        var node = $('#moduledatagrid').datagrid('getSelected');
+        var node = $('#moduledatagrid').datagrid('getSelected'); 
         if (node) {
-            $('#function_add').dialog('open').dialog('setTitle', '功能编辑');
+            $('#function_add').dialog('open').dialog('setTitle', '功能编辑');            
         } else {
             $.messager.show({ title: '系统提示', msg: '请选择要编辑的数据！' });
         }
     }
 
     function functionDelete() {
-        var node = $('#moduledatagrid').datagrid('getSelected');       
+        var node = $('#moduledatagrid').datagrid('getSelected');
         if (node) {
-            $.post("/Function/Delete", { FunctionId: node.FunctionID }, function (json) {
-                if (json) {
-                    $.messager.show({ title: '系统提示', msg: '删除成功' });
-                    $('#moduledatagrid').datagrid('options').url = '/Function/Details/?ModuleId=' + moduleId;
-                    $('#moduledatagrid').datagrid('reload');
-                    //$('#details').treegrid('options').url = '/Module/Details/';
-                    //$('#details').treegrid('reload');
-                } else {
-                    $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
-                }
-            });
+            $('#function_add').dialog('open').dialog('setTitle', '功能删除');
         } else {
             $.messager.show({ title: '系统提示', msg: '请选择要删除的数据！' });
         }
@@ -63,10 +53,10 @@
 
 </script>
 
-<div id="module_functionadmin"  split="true" border="false" >    
-    <table id="moduledatagrid" class="easyui-datagrid"  rownumbers="true" singleSelect="true" 
-			idField="FunctionName" treeField="ControlName" toolbar="#tb">
-        <thead>
+<div id="module_functionadmin"  split="true"  >    
+    <table id="moduledatagrid" class="easyui-datagrid"  rownumbers="true" singleSelect="true" border="0px"
+			idField="FunctionName" treeField="ControlName" toolbar="#tb" >
+        <thead >
             <tr>
                 <th field="FunctionID" width="80" hidden="true">功能编码</th>
                 <th field="FunctionName" width="144">功能名称</th>
@@ -79,7 +69,7 @@
     <div id="tb">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="functionAdd()" id="functionAdd">新增</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="functionEdit()" id="functionEdit">编辑</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="functionDelete()">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="functionDelete()" id="functionDelete">删除</a>
 	</div>
 </div>
 

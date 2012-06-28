@@ -67,7 +67,7 @@ namespace THOK.Authority.Bll.Service.Authority
                 function.FunctionName = FunctionName;
                 function.ControlName = ControlName;
                 function.Module = module;
-
+                function.IndicateImage = IndicateImage;
                 FunctionRepository.Add(function);
                 FunctionRepository.SaveChanges();
                 return true;
