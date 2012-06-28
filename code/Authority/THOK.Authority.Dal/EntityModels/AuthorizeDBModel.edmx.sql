@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/20/2012 11:07:53
--- Generated from EDMX file: D:\server\Authority\code\Authority\THOK.Authority.Dal\EntityModels\AuthorizeDBModel.edmx
+-- Date Created: 06/27/2012 11:28:19
+-- Generated from EDMX file: E:\thok\sw-thok\code\Authority\THOK.Authority.Dal\EntityModels\AuthorizeDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;

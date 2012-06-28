@@ -469,7 +469,7 @@ namespace THOK.Authority.Bll.Service.Authority
                     }
                     if (item.Functions.Count >0)
                     {
-                        SetFunMenu(childMenu, item);
+                        //SetFunMenu(childMenu, item);
                     }
                 }
             }
@@ -478,7 +478,6 @@ namespace THOK.Authority.Bll.Service.Authority
 
         private void SetFunMenu(Menu childMenu, Module item)
         {
-            throw new NotImplementedException();
-        }       
+        }   
     }
 }

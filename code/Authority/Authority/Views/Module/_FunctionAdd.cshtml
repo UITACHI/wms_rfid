@@ -1,0 +1,97 @@
+﻿<script type="text/javascript">
+    var isAdd;
+    $(function () {
+        //新增功能
+        $('#functionAdd').click(function () {
+            $('#ModuletID').val(moduleId);
+            $("input[type=text]").attr("value", "");
+            isAdd = true;
+        
+            $.post("/Function/Details", { ModuleId: moduleId }, function (json) {
+                alert(josn);
+                if (json) {
+                    alert(json);
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '所选择的菜单没有功能' });
+                }
+            });
+        })
+
+        //编辑
+        $('#functionEdit').click(function () {
+            var row = $('#moduledatagrid').datagrid('getSelected');
+            $('#ModuletID').val(moduleId);
+            $('#FunctionName').val(row.FunctionName);
+            $('#FunctionID').val(row.FunctionID);
+            $('#ControlName').val(row.ControlName);
+            $('#IndicateImage').val(row.IndicateImage);
+            isAdd = false;
+        })
+    })
+
+    function functionSave() {
+        if (isAdd) {
+            alert($('#IndicateImage').val());
+            $.post("/Function/Create", { ModuleId: $('#ModuletID').val(), FunctionName: $('#FunctionName').val(), ControlName: $('#ControlName').val(), IndicateImage: $('#IndicateImage').val() }, function (json) {
+                if (json) {
+                    save(json);
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
+                }
+            });
+        } else {
+            $.post("/Function/Edit", { FunctionId: $('#FunctionID').val(), FunctionName: $('#FunctionName').val(), ControlName: $('#ControlName').val(), IndicateImage: $('#IndicateImage').val() }, function (json) {
+                if (json) {
+                    save(json);
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
+                }
+            });
+        }
+    }
+
+    function save(json) {
+        if (json) {
+            $.messager.show({ title: '系统提示', msg: '操作成功！' });
+            $('#function_add').window('close');
+
+            $('#moduledatagrid').datagrid('options').url = '/Function/Details/?ModuleId=' + $('#ModuletID').val();
+            $('#moduledatagrid').datagrid('reload');
+
+            //$('#details').treegrid('options').url = '/Module/Details/';
+            //$('#details').treegrid('reload');
+        } else {
+            $.messager.show({ title: '系统提示', msg:  '操作失败，请检查原因！' });
+        }
+    }
+</script>
+     <div id="function_add" class="easyui-dialog" modal="true" 
+        style="width:340px;height:210px;padding:2px 2px"
+        closed="true" buttons="#dlg-buttons">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; "> 
+                    <table width="250">
+                      <tr>
+                        <td width="60">功能名称</td>
+                        <td width="168">
+                        <input name="FunctionName" class="easyui-validatebox" required="true" id='FunctionName' type="text"/>
+                        <input name="FunctionId"  class="easyui-validatebox" id='FunctionID' style="display:none"/>
+                        <input name="ModuletID" class="easyui-validatebox" id='ModuletID' style="display:none"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>控制名称:</td>
+                        <td><input name="ControlName" class="easyui-validatebox" required="true" id='ControlName'type="text" /></td>
+                      </tr>
+                      <tr>
+                        <td>功能图标:</td>
+                        <td><input name="IndicateImage" class="easyui-validatebox"  id='IndicateImage'type="text"/></td>
+                      </tr>
+                    </table>
+            </div>
+        </div>
+    </div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="functionSave()" id='FunctionSave'>确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#function_add').dialog('close')">取消</a>
+</div>
