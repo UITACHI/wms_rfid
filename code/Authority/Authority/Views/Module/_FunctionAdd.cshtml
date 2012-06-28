@@ -11,7 +11,7 @@
 
         //编辑
         $('#functionEdit').click(function () {
-            var row = $('#moduledatagrid').datagrid('getSelected');
+            var row = $('#functiondatagrid').datagrid('getSelected');
             $('#ModuletID').val(moduleId);
             $('#FunctionName').val(row.FunctionName);
             $('#FunctionID').val(row.FunctionID);
@@ -23,7 +23,7 @@
 
         //删除
         $('#functionDelete').click(function () {
-            var row = $('#moduledatagrid').datagrid('getSelected');
+            var row = $('#functiondatagrid').datagrid('getSelected');
             $('#ModuletID').val(moduleId);
             $('#FunctionName').val(row.FunctionName);
             $('#FunctionID').val(row.FunctionID);
@@ -56,9 +56,9 @@
                 if (json) {
                     $.messager.show({ title: '系统提示', msg: '操作成功！' });
                     $('#function_add').window('close');
-                    $('#moduledatagrid').datagrid('options').url = '/Function/Details/?ModuleId=' + $('#ModuletID').val();
-                    $('#moduledatagrid').datagrid('reload');
-                    $('#moduledatagrid').datagrid('clearSelections');//清空所有选择项
+                    $('#functiondatagrid').datagrid('options').url = '/Function/Details/?ModuleId=' + $('#ModuletID').val();
+                    $('#functiondatagrid').datagrid('reload');
+                    $('#functiondatagrid').datagrid('clearSelections'); //清空所有选择项
                 } else {
                     $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
                 }

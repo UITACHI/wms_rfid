@@ -19,7 +19,7 @@
             var row = $('#details').treegrid('getSelected');
             if (row) {
                 moduleId = row.ModuleID;
-                $('#moduledatagrid').datagrid({
+                $('#functiondatagrid').datagrid({
                     url: '/Function/Details/?ModuleId=' + row.ModuleID
                 });
             } else {
@@ -34,7 +34,7 @@
     }
 
     function functionEdit() {
-        var node = $('#moduledatagrid').datagrid('getSelected'); 
+        var node = $('#functiondatagrid').datagrid('getSelected'); 
         if (node) {
             $('#function_add').dialog('open').dialog('setTitle', '功能编辑');            
         } else {
@@ -43,7 +43,7 @@
     }
 
     function functionDelete() {
-        var node = $('#moduledatagrid').datagrid('getSelected');
+        var node = $('#functiondatagrid').datagrid('getSelected');
         if (node) {
             $('#function_add').dialog('open').dialog('setTitle', '功能删除');
         } else {
@@ -54,7 +54,7 @@
 </script>
 
 <div id="module_functionadmin"  split="true"  >    
-    <table id="moduledatagrid" class="easyui-datagrid"  rownumbers="true" singleSelect="true" border="0px"
+    <table id="functiondatagrid" class="easyui-datagrid"  rownumbers="true" singleSelect="true" border="0px"
 			idField="FunctionName" treeField="ControlName" toolbar="#tb" >
         <thead >
             <tr>
