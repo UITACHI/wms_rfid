@@ -14,10 +14,11 @@
         if (row) {
             $("#moname").val(row.ModuleName);
             $("#moid").val(row.ModuleID);
+            alert(row.SystemID);
             $('#cg').combogrid('setValue', row.SystemID).combo('setText', row.SystemName);
-            $('#cg').combogrid({
-                hasDownArrow: false
-            });
+//            $('#cg').combogrid({
+//                hasDownArrow: false
+//            });
         }
         url = '/Module/Create/';
     };
@@ -53,13 +54,13 @@
             width: 120,
             panelWidth: 450,
             url: '/System/Details/?page=1&rows=1',
-            idField: 'SystemID',
+            idField: 'systemId',
             textField: 'SystemName',
             mode: 'local',
             editable: false,
             fitColumns: true,
             columns: [[
-					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'systemId', title: '系统ID', hidden: true, width: 30 },
 					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
 					{ field: 'Description', title: '描述', align: 'left', width: 30 },
 					{ field: 'Status', title: '状态', align: 'left', width: 30 }
@@ -98,7 +99,7 @@
                     <tr>
 				        <td>所属系统</td>
 				        <td colspan="3"align="left">
-                        <input name="SystemId" type="text" id="cg"/>                               
+                        <input name="systemId" type="text" id="cg"/>                               
                         </td>
 			        </tr>
 		        </table>

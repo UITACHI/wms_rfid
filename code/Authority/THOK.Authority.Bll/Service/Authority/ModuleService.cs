@@ -484,6 +484,7 @@ namespace THOK.Authority.Bll.Service.Authority
                     UserFunctionRepository.SaveChanges();
                 }
             }
+
         }
 
         #endregion

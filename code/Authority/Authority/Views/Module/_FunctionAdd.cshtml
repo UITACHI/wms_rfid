@@ -1,0 +1,100 @@
+﻿<script type="text/javascript">
+    var isAdd;
+    $(function () {
+        //新增功能
+        $('#functionAdd').click(function () {
+            $('#ModuletID').val(moduleId);
+            $("input[type=text]").attr("value", "");
+            $("input[type=text]").removeAttr("disabled");
+            isAdd = 1;
+        })
+
+        //编辑
+        $('#functionEdit').click(function () {
+            var row = $('#functiondatagrid').datagrid('getSelected');
+            $('#ModuletID').val(moduleId);
+            $('#FunctionName').val(row.FunctionName);
+            $('#FunctionID').val(row.FunctionID);
+            $('#ControlName').val(row.ControlName);
+            $('#IndicateImage').val(row.IndicateImage);
+            $("input[type=text]").removeAttr("disabled");
+            isAdd = 2;
+        })
+
+        //删除
+        $('#functionDelete').click(function () {
+            var row = $('#functiondatagrid').datagrid('getSelected');
+            $('#ModuletID').val(moduleId);
+            $('#FunctionName').val(row.FunctionName);
+            $('#FunctionID').val(row.FunctionID);
+            $('#ControlName').val(row.ControlName);
+            $('#IndicateImage').val(row.IndicateImage);
+            isAdd = 3;
+            $("input[type=text]").attr("disabled", "disabled");
+        })
+    })
+
+    function functionSave() {
+        if (isAdd == 1) {
+            var url = "/Function/Create";
+            var field = $('#ModuletID').val(); //新增，传模块ID
+            functionAddSave(url, field)
+        } else if (isAdd == 2) {
+            var url = "/Function/Edit";
+            var field = $('#FunctionID').val(); //修改，传功能ID
+            functionAddSave(url, field)
+        } else if (isAdd == 3) {
+            var url = "/Function/Delete";
+            var field = $('#FunctionID').val(); //删除，传功能ID
+            functionAddSave(url, field)
+        }
+    }
+
+    function functionAddSave(url, field) {
+        if ($('#FunctionName').val() != "" && $('#ControlName').val() != "") {
+            $.post(url, { id: field, FunctionName: $('#FunctionName').val(), ControlName: $('#ControlName').val(), IndicateImage: $('#IndicateImage').val() }, function (json) {
+                if (json) {
+                    $.messager.show({ title: '系统提示', msg: '操作成功！' });
+                    $('#function_add').window('close');
+                    $('#functiondatagrid').datagrid('options').url = '/Function/Details/?ModuleId=' + $('#ModuletID').val();
+                    $('#functiondatagrid').datagrid('reload');
+                    $('#functiondatagrid').datagrid('clearSelections'); //清空所有选择项
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
+                }
+            });
+        } else {
+            $.messager.show({ title: '系统提示', msg: '请输入数据！' });
+        }
+    }
+</script>
+     <div id="function_add" class="easyui-dialog" modal="true" 
+        style="width:340px;height:210px;padding:2px 2px"
+        closed="true" buttons="#dlg-buttons">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; "> 
+                    <table width="250">
+                      <tr>
+                        <td width="60">功能名称</td>
+                        <td width="168">
+                        <input  class="easyui-validatebox" required="true" id='FunctionName' type="text"/>
+                        <input  class="easyui-validatebox" id='FunctionID' style="display:none"/>
+                        <input  class="easyui-validatebox" id='ModuletID' style="display:none"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>控制名称:</td>
+                        <td><input class="easyui-validatebox" required="true" id='ControlName'type="text" /></td>
+                      </tr>
+                      <tr>
+                        <td>功能图标:</td>
+                        <td><input class="easyui-validatebox"  id='IndicateImage'type="text"/></td>
+                      </tr>
+                    </table>
+            </div>
+        </div>
+    </div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="functionSave()" id='FunctionSave'>确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#function_add').dialog('close')">取消</a>
+</div>

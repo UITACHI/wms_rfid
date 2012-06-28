@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\Authority\IFunctionService.cs" />
     <Compile Include="Interfaces\Authority\IUserService.cs" />
     <Compile Include="Interfaces\Authority\IRoleService.cs" />
     <Compile Include="Interfaces\Authority\ICityService.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Service\Authority\CityService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Service\Authority\FunctionService.cs" />
     <Compile Include="Service\Authority\ModuleService.cs">
       <SubType>Code</SubType>
     </Compile>
