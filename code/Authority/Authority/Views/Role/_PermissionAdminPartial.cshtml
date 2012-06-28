@@ -1,1 +1,149 @@
-﻿
+﻿<script type="text/javascript">
+    var roleID;
+    var cityID;
+    var systemID;
+    function permissionadminClick() {
+        $('#fm').form('clear');
+        $('#cgCity').combogrid('grid').datagrid('reload');
+        $('#cgSystem').combogrid('grid').datagrid('reload');
+        $("input[type=text]").attr("value", "");
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $('#dlg-permissionadmin').dialog('open').dialog('setTitle', '角色权限编辑');
+            $('#fm').form('load', row);
+            $('#fm .easyui-validatebox').validatebox({
+                required: true
+            });
+            $('form input').removeAttr("disabled");
+            $('form textarea').removeAttr("disabled");
+            $('#roleName').text(row.RoleName);
+            roleID = row.RoleID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+
+    $(function () {
+        $('#cgCity ').combogrid({
+            width: 120,
+            panelWidth: 450,
+            url: '/City/Details/?page=1&rows=1',
+            idField: 'CityID',
+            textField: 'CityName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'CityID', title: '城市ID', hidden: true, width: 30 },
+					{ field: 'CityName', title: '城市名称', align: 'left', width: 40 },
+                    { field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    });
+
+    $(function () {
+        $('#cgSystem').combogrid({
+            width: 120,
+            panelWidth: 450,
+            url: '/System/Details/?page=1&rows=2',
+            idField: 'SystemID',
+            textField: 'SystemName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    });
+
+    function query() {
+        var cID = $('#cgCity').combogrid('getValue');
+        var sID = $('#cgSystem').combogrid('getValue');
+        cityID = cID;
+        systemID = sID;
+        $.getJSON("/Module/InitRoleSystem", { roleID: roleID, cityID: cityID, systemID: systemID }, function (json) {
+            if (json) {
+                $('#tt').tree({url:'/Module/GetRoleSystemDetails/?systemid='+systemID});
+                $.messager.show({ title: '系统提示', msg: '查询成功' });
+
+            } else {
+                $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+            }
+        });
+    }
+</script>
+<div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 600px;
+    height: 400px; padding: 2px 2px" closed="true" buttons="#dlg-buttons">
+    <div class="easyui-layout" fit="true">
+        <table class="easyui-datagrid" id="details" url="/Role/Details/" border="false" fit="true"
+            fitcolumns="true" toolbar="#tool" pagination="true" rownumbers="true">
+            <thead>
+                <tr>
+                    <th field="RoleID" hidden="true" width="80">
+                        角色编码
+                    </th>
+                    <th field="RoleName" width="100">
+                        角色名称
+                    </th>
+                    <th field="Description" width="80" align="left">
+                        描述
+                    </th>
+                    <th field="Status" width="80" align="left">
+                        状态
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div region="center" border="false" style="padding: 10px 10px; background: #fff;
+            border: 1px solid #ccc;">
+            <form id="fm" method="post" novalidate>
+            <table width="515" border="0">
+                <tr>
+                    <td width="48" align="right">
+                        地市：
+                    </td>
+                    <td width="174" align="left">
+                        <label>
+                            <input type="text" name="city" id="cgCity" />
+                        </label>
+                    </td>
+                    <td width="49" align="right">
+                        系统：
+                    </td>
+                    <td width="168" align="left">
+                        <label>
+                            <input type="text" name="system" id="cgSystem" />
+                        </label>
+                    </td>
+                    <td width="60">
+                        <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="query()" style="width: 62px">
+                            查询</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" align="left">
+                        角色：<label id="roleName"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="margin-top: 0px">
+                        <ul id="tt" class="easyui-tree" 
+                            checkbox="true">
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">确定</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-permissionadmin').dialog('close')">
+        取消</a>
+</div>

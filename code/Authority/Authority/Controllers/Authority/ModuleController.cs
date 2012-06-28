@@ -60,5 +60,19 @@ namespace Authority.Controllers.Authority
             string msg = bResult ? "删除成功" : "删除失败" ;
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        // GET: /Module/InitRoleSystem/
+        public ActionResult InitRoleSystem(string roleId,string cityId,string systemId)
+        {
+            ModuleService.InitRoleSys(roleId,cityId,systemId);
+            return Json(1, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: /Module/GetRoleSystemDetails/
+        public ActionResult GetRoleSystemDetails(string systemId)
+        {
+            var modules = ModuleService.GetRoleSystemDetails(systemId);
+            return Json(modules, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }
