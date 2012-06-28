@@ -21,6 +21,7 @@
     <EntitySet Name="City" EntityType="AuthorizeModel.Store.City" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserSystem" EntityType="AuthorizeModel.Store.UserSystem" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Server" EntityType="AuthorizeModel.Store.Server" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SystemEventLogs" EntityType="AuthorizeModel.Store.SystemEventLogs" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="SystemModule" Association="AuthorizeModel.Store.SystemModule">
       <End Role="System" EntitySet="System" />
       <End Role="Module" EntitySet="Module" />
@@ -258,6 +259,19 @@
     <Property Name="Url" Type="nvarchar(max)" Nullable="true" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
     <Property Name="City_CityID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SystemEventLogs">
+    <Key>
+      <PropertyRef Name="EventLogID" />
+    </Key>
+    <Property Name="EventLogID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="EventLogTime" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="EventType" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EventName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EventDescription" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FromPC" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="OperateUser" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TargetSystem" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <Association Name="SystemModule">
     <End Role="System" Type="AuthorizeModel.Store.System" Multiplicity="1" />
@@ -631,6 +645,7 @@
             <End Role="City" EntitySet="City" />
             <End Role="Server" EntitySet="Server" />
           </AssociationSet>
+          <EntitySet Name="SystemEventLogs" EntityType="AuthorizeModel.SystemEventLog" />
         </EntityContainer>
         <EntityType Name="Function">
           <Key>
@@ -891,6 +906,19 @@
           <End Type="AuthorizeModel.City" Role="City" Multiplicity="1" />
           <End Type="AuthorizeModel.Server" Role="Server" Multiplicity="*" />
         </Association>
+        <EntityType Name="SystemEventLog">
+          <Key>
+            <PropertyRef Name="EventLogID" />
+          </Key>
+          <Property Type="Guid" Name="EventLogID" Nullable="false" />
+          <Property Type="String" Name="EventLogTime" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EventType" Nullable="false" />
+          <Property Type="String" Name="EventName" Nullable="false" />
+          <Property Type="String" Name="EventDescription" Nullable="false" MaxLength="Max" />
+          <Property Type="String" Name="FromPC" Nullable="false" />
+          <Property Type="String" Name="OperateUser" Nullable="false" />
+          <Property Type="String" Name="TargetSystem" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1036,6 +1064,20 @@
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Url" ColumnName="Url" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SystemEventLogs">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.SystemEventLog)">
+        <MappingFragment StoreEntitySet="SystemEventLogs">
+          <ScalarProperty Name="EventLogID" ColumnName="EventLogID" />
+          <ScalarProperty Name="EventLogTime" ColumnName="EventLogTime" />
+          <ScalarProperty Name="EventType" ColumnName="EventType" />
+          <ScalarProperty Name="EventName" ColumnName="EventName" />
+          <ScalarProperty Name="EventDescription" ColumnName="EventDescription" />
+          <ScalarProperty Name="FromPC" ColumnName="FromPC" />
+          <ScalarProperty Name="OperateUser" ColumnName="OperateUser" />
+          <ScalarProperty Name="TargetSystem" ColumnName="TargetSystem" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1228,15 +1270,16 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="默认" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="AuthorizeDBModel" ZoomLevel="112">
+      <Diagram Name="AuthorizeDBModel" ZoomLevel="99">
         <EntityTypeShape EntityType="AuthorizeModel.Function" Width="1.5" PointX="4.25" PointY="0.5" Height="2.128072916666667" IsExpanded="true" />
-        <EntityTypeShape EntityType="AuthorizeModel.LoginLog" Width="1.5" PointX="6.25" PointY="0.5" Height="1.959453125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.LoginLog" Width="1.5" PointX="8.25" PointY="0.5" Height="1.959453125" IsExpanded="true" />
         <EntityTypeShape EntityType="AuthorizeModel.Module" Width="1.5" PointX="2.375" PointY="0.5" Height="2.633932291666667" IsExpanded="true" />
         <EntityTypeShape EntityType="AuthorizeModel.Role" Width="1.5" PointX="0.5" PointY="3.875" Height="1.6222135416666657" IsExpanded="true" />
         <EntityTypeShape EntityType="AuthorizeModel.RoleFunction" Width="1.5" PointX="6.375" PointY="3.875" Height="1.2849739583333335" IsExpanded="true" />
@@ -1338,40 +1381,28 @@
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.FunctionUserFunction">
           <ConnectorPoint PointX="5.75" PointY="1.5640364583333333" />
-          <ConnectorPoint PointX="6" PointY="1.5640364583333333" />
-          <ConnectorPoint PointX="6" PointY="3.625" />
-          <ConnectorPoint PointX="6.125" PointY="3.625" />
+          <ConnectorPoint PointX="6.125" PointY="1.5640364583333333" />
           <ConnectorPoint PointX="6.125" PointY="6.25" />
-          <ConnectorPoint PointX="6.916666666666667" PointY="6.2499999999999991" />
-          <ConnectorPoint PointX="7.083333333333333" PointY="6.25" />
           <ConnectorPoint PointX="7.125" PointY="6.25" />
           <ConnectorPoint PointX="7.125" PointY="9.125" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.UserLoginLog">
-          <ConnectorPoint PointX="2" PointY="11.016138822916666" />
-          <ConnectorPoint PointX="2.3125" PointY="11.016138822916666" />
-          <ConnectorPoint PointX="2.3125" PointY="9.0625" />
-          <ConnectorPoint PointX="4.041666666666667" PointY="9.0625" />
-          <ConnectorPoint PointX="4.208333333333333" PointY="9.0625" />
-          <ConnectorPoint PointX="7" PointY="9.0625" />
-          <ConnectorPoint PointX="7" PointY="5.5597135416666656" />
-          <ConnectorPoint PointX="6.3125" PointY="5.5597135416666656" />
-          <ConnectorPoint PointX="6.3125" PointY="2.553203125" />
-          <ConnectorPoint PointX="7" PointY="2.553203125" />
-          <ConnectorPoint PointX="7" PointY="2.459453125" />
+          <ConnectorPoint PointX="2" PointY="11.537252604166666" />
+          <ConnectorPoint PointX="9" PointY="11.537252604166666" />
+          <ConnectorPoint PointX="9" PointY="2.459453125" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.SystemLoginLog">
           <ConnectorPoint PointX="2" PointY="0.5" />
           <ConnectorPoint PointX="2.375" PointY="0.125" />
-          <ConnectorPoint PointX="5.8761528461538459" PointY="0.125" />
-          <ConnectorPoint PointX="6.2511528461538459" PointY="0.5" />
+          <ConnectorPoint PointX="7.875" PointY="0.125" />
+          <ConnectorPoint PointX="8.25" PointY="0.5" />
         </AssociationConnector>
         <AssociationConnector Association="AuthorizeModel.FunctionRoleFunction">
-          <ConnectorPoint PointX="5.75" PointY="2.5906380208333335" />
-          <ConnectorPoint PointX="5.916666666666667" PointY="2.5906380208333331" />
-          <ConnectorPoint PointX="6.083333333333333" PointY="2.5906380208333335" />
-          <ConnectorPoint PointX="7.84375" PointY="2.5906380208333335" />
-          <ConnectorPoint PointX="7.84375" PointY="3.875" />
+          <ConnectorPoint PointX="5.75" PointY="2.1273071875" />
+          <ConnectorPoint PointX="6.041666666666667" PointY="2.1273071874999996" />
+          <ConnectorPoint PointX="6.208333333333333" PointY="2.1273071875" />
+          <ConnectorPoint PointX="7.125" PointY="2.1273071875" />
+          <ConnectorPoint PointX="7.125" PointY="3.875" />
         </AssociationConnector>
         <EntityTypeShape EntityType="AuthorizeModel.Server" Width="1.5" PointX="4.875" PointY="6.5" Height="1.9594531249999996" />
         <AssociationConnector Association="AuthorizeModel.CityServer">
@@ -1380,6 +1411,7 @@
           <ConnectorPoint PointX="4.458333333333333" PointY="7.4797265625" />
           <ConnectorPoint PointX="4.875" PointY="7.4797265625" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="AuthorizeModel.SystemEventLog" Width="1.5" PointX="10.5" PointY="0.5" Height="2.2966927083333331" />
       </Diagram>
     </Diagrams>
   </Designer>

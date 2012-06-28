@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 using System.Web.Routing;
 using Microsoft.Practices.Unity.Configuration;
 using System.Configuration;
+using Microsoft.Practices.ServiceLocation;
 
 namespace THOK.Common
 {
@@ -15,15 +16,19 @@ namespace THOK.Common
         private readonly IUnityContainer _container;
 
         public UnityControllerFactory()
-        {
+        {            
             _container = new UnityContainer();
             UnityConfigurationSection section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
-            section.Configure(_container, "defaultContainer");            
+            section.Configure(_container, "defaultContainer");
+            ServiceLocatorProvider sp = new ServiceLocatorProvider(GetServiceLocator);
+            ServiceLocator.SetLocatorProvider(sp);
         }
 
         public UnityControllerFactory(IUnityContainer container)
         {
             _container = container;
+            ServiceLocatorProvider sp = new ServiceLocatorProvider(GetServiceLocator);
+            ServiceLocator.SetLocatorProvider(sp);
         }
 
         protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
@@ -33,6 +38,11 @@ namespace THOK.Common
                 return _container.Resolve(controllerType) as IController;
             }
             return base.GetControllerInstance(requestContext, controllerType);
+        }
+
+        public IServiceLocator GetServiceLocator()
+        {
+            return new UnityServiceLocator(_container);
         }
     }
 }

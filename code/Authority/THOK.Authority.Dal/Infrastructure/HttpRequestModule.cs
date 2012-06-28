@@ -22,7 +22,15 @@ namespace THOK.Authority.Dal.Infrastructure
 
         private void Application_EndRequest(object source, EventArgs e)
         {
-            ServiceLocator.Current.GetInstance<IRepositoryContext>().Terminate();
+            var repositoryContexts = ServiceLocator.Current.GetAllInstances(typeof(IRepositoryContext));
+
+            foreach (var item in repositoryContexts)
+            {
+                if (item is IRepositoryContext)
+                {
+                    ((IRepositoryContext)item).Terminate();
+                }
+            }
         }
 
         public void Dispose() { }
