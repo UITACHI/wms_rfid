@@ -6,15 +6,6 @@
             $('#ModuletID').val(moduleId);
             $("input[type=text]").attr("value", "");
             isAdd = true;
-        
-            $.post("/Function/Details", { ModuleId: moduleId }, function (json) {
-                alert(josn);
-                if (json) {
-                    alert(json);
-                } else {
-                    $.messager.show({ title: '系统提示', msg: '所选择的菜单没有功能' });
-                }
-            });
         })
 
         //编辑
@@ -31,22 +22,29 @@
 
     function functionSave() {
         if (isAdd) {
-            alert($('#IndicateImage').val());
-            $.post("/Function/Create", { ModuleId: $('#ModuletID').val(), FunctionName: $('#FunctionName').val(), ControlName: $('#ControlName').val(), IndicateImage: $('#IndicateImage').val() }, function (json) {
-                if (json) {
-                    save(json);
-                } else {
-                    $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
-                }
-            });
+            if ($('#FunctionName').val() != "" && $('#ControlName').val() != "") {
+                $.post("/Function/Create", { ModuleId: $('#ModuletID').val(), FunctionName: $('#FunctionName').val(), ControlName: $('#ControlName').val(), IndicateImage: $('#IndicateImage').val() }, function (json) {
+                    if (json) {
+                        save(json);
+                    } else {
+                        $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
+                    }
+                });
+            } else {
+                $.messager.show({ title: '系统提示', msg: '请输入数据！' });
+            }
         } else {
-            $.post("/Function/Edit", { FunctionId: $('#FunctionID').val(), FunctionName: $('#FunctionName').val(), ControlName: $('#ControlName').val(), IndicateImage: $('#IndicateImage').val() }, function (json) {
-                if (json) {
-                    save(json);
-                } else {
-                    $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
-                }
-            });
+            if ($('#FunctionName').val() != "" && $('#ControlName').val() != "") {
+                $.post("/Function/Edit", { FunctionId: $('#FunctionID').val(), FunctionName: $('#FunctionName').val(), ControlName: $('#ControlName').val(), IndicateImage: $('#IndicateImage').val() }, function (json) {
+                    if (json) {
+                        save(json);
+                    } else {
+                        $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
+                    }
+                });
+            } else {
+                $.messager.show({ title: '系统提示', msg: '请输入数据！' });
+            }
         }
     }
 

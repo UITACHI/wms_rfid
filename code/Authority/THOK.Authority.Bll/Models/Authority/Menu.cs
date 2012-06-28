@@ -15,11 +15,7 @@ namespace THOK.Authority.Bll.Models.Authority
         public string ParentModuleName { get; set; }
         public string IndicateImage { get; set; }
         public string ModuleURL { get; set; }
-        public int ShowOrder { get; set; }
-
-        public string FunctionID { get; set; }
-        public string FunctionName { get; set; }
-        public string ControlName { get; set; }
+        public int ShowOrder { get; set; }     
         
 
         public Menu[] children { get; set; }
