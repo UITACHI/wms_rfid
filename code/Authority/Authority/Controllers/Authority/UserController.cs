@@ -4,6 +4,7 @@ using System.Text;
 using THOK.Authority.Bll.Interfaces.Authority;
 using Microsoft.Practices.Unity;
 using THOK.WebUtil;
+using THOK.Authority.Dal.EntityModels;
 
 namespace Authority.Controllers.Authority
 {
@@ -40,6 +41,23 @@ namespace Authority.Controllers.Authority
             return Json(users, "text", JsonRequestBehavior.AllowGet);
         }
 
+        // POST: /User/GetUserRole/
+        [HttpPost]
+        public ActionResult GetUserRole(string UserID)
+        {
+            var users = UserService.GetUserRole(UserID);
+            return Json(users, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: /User/GetRoleInfo/
+        [HttpPost]
+        public ActionResult GetRoleInfo(string UserID)
+        {
+            var users = UserService.GetRoleInfo(UserID);
+            return Json(users, "text", JsonRequestBehavior.AllowGet);
+        }
+
+
         // POST: /User/Create/
         [HttpPost]
         public ActionResult Create(string userName, string pwd, string ChineseName, bool isLock, bool isAdmin, string loginPc, string memo)
@@ -48,6 +66,15 @@ namespace Authority.Controllers.Authority
             bool bResult = UserService.Add(userName, pwd, ChineseName, isLock, isAdmin, memo);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: /User/AddUserRole/
+        [HttpPost]
+        public ActionResult AddUserRole(string userId, string roleIDstr)
+        {
+            bool bResult = UserService.AddUserRole(userId,roleIDstr);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);           
         }
 
         // POST: /User/Edit/
@@ -64,6 +91,15 @@ namespace Authority.Controllers.Authority
         public ActionResult Delete(string userID)
         {
             bool bResult = UserService.Delete(userID);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: /User/DeleteUserRole/
+        [HttpPost]
+        public ActionResult DeleteUserRole(string userRoleIdStr)
+        {
+            bool bResult = UserService.DeleteUserRole(userRoleIdStr);
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

@@ -13,12 +13,11 @@
         var row = $('#details').treegrid('getSelected');
         if (row) {
             $("#moname").val(row.ModuleName);
-            $("#moid").val(row.ModuleID);
-            alert(row.SystemID);
+            $("#moid").val(row.ModuleID);          
             $('#cg').combogrid('setValue', row.SystemID).combo('setText', row.SystemName);
-//            $('#cg').combogrid({
-//                hasDownArrow: false
-//            });
+            $('#cg').combogrid({
+                hasDownArrow: false
+            });
         }
         url = '/Module/Create/';
     };

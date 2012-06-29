@@ -21,5 +21,13 @@ namespace THOK.Authority.Bll.Interfaces.Authority
         string GetLogOnUrl(System.Security.Principal.IPrincipal User, string cityId, string systemId, string serverId);
 
         string FindUsersForFunction(string strFunctionID);
+
+        object GetUserRole(string userID);
+
+        object GetRoleInfo(string userID);
+
+        bool DeleteUserRole(string userRoleIdStr);
+
+        bool AddUserRole(string userID, string roleIDStr);
     }
 }

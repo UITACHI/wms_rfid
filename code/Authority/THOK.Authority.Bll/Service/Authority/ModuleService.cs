@@ -478,6 +478,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         private void SetFunMenu(Menu childMenu, Module item)
         {
+
         }   
     }
 }
