@@ -3,13 +3,15 @@
     var cityID;
     var systemID;
     function permissionadminClick() {
+        $('#tt').tree({ url: '' });
+        $('#tt').tree('reload');
         $('#fm').form('clear');
         $('#cgCity').combogrid('grid').datagrid('reload');
         $('#cgSystem').combogrid('grid').datagrid('reload');
         $("input[type=text]").attr("value", "");
         var row = $('#details').datagrid('getSelected');
         if (row) {
-            $('#dlg-permissionadmin').dialog('open').dialog('setTitle', '角色权限编辑');
+            $('#dlg-permissionadmin').dialog('open').dialog('setTitle', '角色权限编辑：' + row.RoleName);
             $('#fm').form('load', row);
             $('#fm .easyui-validatebox').validatebox({
                 required: true
@@ -22,6 +24,17 @@
             $.messager.confirm('错误', '没有选择行！');
         }
     };
+
+    $(function () {
+//        $('#tt').tree({
+//            onCheck: function (node) {
+//                alert(node.checked+node.text);
+//            },
+//            onClick: function (node) {
+//                alert(node.checked+node.text);
+//            }
+//        });
+    });
 
     $(function () {
         $('#cgCity ').combogrid({
@@ -66,84 +79,49 @@
         var sID = $('#cgSystem').combogrid('getValue');
         cityID = cID;
         systemID = sID;
-        $.getJSON("/Module/InitRoleSystem", { roleID: roleID, cityID: cityID, systemID: systemID }, function (json) {
-            if (json) {
-                $('#tt').tree({url:'/Module/GetRoleSystemDetails/?systemid='+systemID});
-                $.messager.show({ title: '系统提示', msg: '查询成功' });
+        if (cID = !"" & sID != "") {
+            $.getJSON("/Module/InitRoleSystem", { roleID: roleID, cityID: cityID, systemID: systemID }, function (json) {
+                if (json) {
+                    $('#tt').tree({ url: '/Module/GetRoleSystemDetails/?systemid=' + systemID });
+                    $.messager.show({ title: '系统提示', msg: '查询成功' });
 
-            } else {
-                $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
-            }
-        });
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+                }
+            });
+        }
+        else {
+            $.messager.show({ title: '系统提示', msg: '请选择地市和系统' });
+        }
+    }
+
+    function update() {
+       alert($('#tt').tree('options').data[0].toString());
+        var node = $('#tt').tree('getChecked');
+        alert(node[5].text);
+        if (node) {
+            node.text = '<span style="font-weight:bold"><\/span>';
+            node.iconCls = 'icon-save';
+            $('#tt').tree('update', node);
+            alert(2);
+        }
     }
 </script>
 <div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 600px;
-    height: 400px; padding: 2px 2px" closed="true" buttons="#dlg-buttons">
-    <div class="easyui-layout" fit="true">
-        <table class="easyui-datagrid" id="details" url="/Role/Details/" border="false" fit="true"
-            fitcolumns="true" toolbar="#tool" pagination="true" rownumbers="true">
-            <thead>
-                <tr>
-                    <th field="RoleID" hidden="true" width="80">
-                        角色编码
-                    </th>
-                    <th field="RoleName" width="100">
-                        角色名称
-                    </th>
-                    <th field="Description" width="80" align="left">
-                        描述
-                    </th>
-                    <th field="Status" width="80" align="left">
-                        状态
-                    </th>
-                </tr>
-            </thead>
-        </table>
-        <div region="center" border="false" style="padding: 10px 10px; background: #fff;
-            border: 1px solid #ccc;">
-            <form id="fm" method="post" novalidate>
-            <table width="515" border="0">
-                <tr>
-                    <td width="48" align="right">
-                        地市：
-                    </td>
-                    <td width="174" align="left">
-                        <label>
-                            <input type="text" name="city" id="cgCity" />
-                        </label>
-                    </td>
-                    <td width="49" align="right">
-                        系统：
-                    </td>
-                    <td width="168" align="left">
-                        <label>
-                            <input type="text" name="system" id="cgSystem" />
-                        </label>
-                    </td>
-                    <td width="60">
-                        <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="query()" style="width: 62px">
-                            查询</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5" align="left">
-                        角色：<label id="roleName"></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5" style="margin-top: 0px">
-                        <ul id="tt" class="easyui-tree" 
-                            checkbox="true">
-                        </ul>
-                    </td>
-                </tr>
-            </table>
-            </form>
-        </div>
+    height: 400px; padding: 0px 0px" closed="true" toolbar="#toolbar" fit="false">
+    <form id="fm" method="post" novalidate>
+    <table width="515" border="0">
+        <tr>
+            <ul id="tt" class="easyui-tree" checkbox="true">
+            </ul>
+        </tr>
+    </table>
+    </form>
+    <div id="toolbar" style="background-color: e0ecff">
+        地市：<input type="text" name="city" id="cgCity" class="easyui-validatebox" required="true" />
+        系统：<input type="text" name="system" id="cgSystem" class="easyui-validatebox" required="true" />
+        <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="query()">
+            查询</a> <a href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="update()">
+                保存</a>
     </div>
-</div>
-<div id="dlg-buttons">
-    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">确定</a>
-    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-permissionadmin').dialog('close')">
-        取消</a>
 </div>

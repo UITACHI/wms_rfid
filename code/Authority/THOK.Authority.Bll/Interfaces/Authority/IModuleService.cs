@@ -19,5 +19,7 @@ namespace THOK.Authority.Bll.Interfaces.Authority
         void InitRoleSys(string roleID,string cityID,string systemID);
 
         object GetRoleSystemDetails(string systemID);
+
+        bool UpdateRolePermission(string type, string id, bool isActive);
     }
 }

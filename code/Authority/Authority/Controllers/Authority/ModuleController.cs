@@ -74,5 +74,12 @@ namespace Authority.Controllers.Authority
             var modules = ModuleService.GetRoleSystemDetails(systemId);
             return Json(modules, "text", JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult UpdateRolePermission(string type,string id,bool isActive)
+        {
+            bool bResult = ModuleService.UpdateRolePermission(type,id,isActive);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }
