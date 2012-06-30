@@ -91,28 +91,28 @@
             children = $('#tt').tree('getChildren', roots[i].target);
             for (j = 0; j < children.length; j++)
                 info += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
-            $.post("/Module/ProcessRolePermissionStr/", { rolePermissionStr: info }, function (json) {
-                if (json) {
-                    $.messager.show({ title: '系统提示', msg: '保存成功！' });
-                }
-            });
         }
+        $.post("/Module/ProcessRolePermissionStr/", { rolePermissionStr: info }, function (json) {
+            if (json) {
+                $.messager.show({ title: '系统提示', msg: '保存成功！' });
+            }
+        });
     }
 </script>
-<div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 600px;
-    height: 400px; padding: 0px 0px" closed="true" toolbar="#toolbar" fit="false">
-    <form id="fm" method="post" novalidate>
-    <table width="515" border="0">
-        <tr>
-            <ul id="tt" class="easyui-tree" checkbox="true">
-            </ul>
-        </tr>
-    </table>
-    </form>
+<div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 420px;
+    height: 400px; padding: 0px 0px" closed="true" toolbar="#toolbar" buttons="#dlg-buttons-permission" fit="false">
+    <div class="easyui-layout" fit="true">
+	    <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >  
+            <ul id="tt" class="easyui-tree" checkbox="true"></ul>
+        </div>
+    </div>
     <div id="toolbar" style="background-color: e0ecff">
         地市：<input type="text" name="city" id="cgCity" class="easyui-validatebox" required="true" />
         系统：<input type="text" name="system" id="cgSystem" class="easyui-validatebox" required="true" />
         <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="query()">查询</a>
-        <a href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="update()">保存</a>
     </div>
+    <div id="dlg-buttons-permission">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="update()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-permissionadmin').dialog('close')">取消</a>
+</div>
 </div>

@@ -389,6 +389,8 @@ namespace THOK.Authority.Bll.Service.Authority
                         Module = module,
                         IsActive = false
                     };
+                    roleSystem.IsActive = false;
+                    SetParentRoleModuleIsActiveFalse(rm);
                     RoleModuleRepository.Add(rm);
                     RoleModuleRepository.SaveChanges();
                 }
@@ -396,6 +398,16 @@ namespace THOK.Authority.Bll.Service.Authority
                     && rm.RoleSystem.System.SystemID == roleSystem.System.SystemID);
                 InitRoleFunctions(roleModule);
             }
+        }
+
+        private void SetParentRoleModuleIsActiveFalse(RoleModule roleModule)
+        {
+            var parentRoleModule = roleModule.Module.ParentModule.RoleModules.FirstOrDefault(prm => prm.RoleSystem.Role.RoleID == roleModule.RoleSystem.Role.RoleID);
+            parentRoleModule.IsActive = false;
+            if (parentRoleModule.Module.ModuleID != parentRoleModule.Module.ParentModule.ModuleID)
+            {
+                SetParentRoleModuleIsActiveFalse(parentRoleModule);
+            }            
         }
 
         private void InitRoleFunctions(RoleModule roleModule)
@@ -411,7 +423,10 @@ namespace THOK.Authority.Bll.Service.Authority
                         RoleModule = roleModule,
                         Function = function,
                         IsActive = false
-                    };
+                    };                    
+                    roleModule.RoleSystem.IsActive = false;
+                    SetParentRoleModuleIsActiveFalse(roleModule);
+                    roleModule.IsActive = false;                    
                     RoleFunctionRepository.Add(rf);
                     RoleFunctionRepository.SaveChanges();
                 }
