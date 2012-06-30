@@ -20,6 +20,7 @@ namespace THOK.Authority.Bll.Interfaces.Authority
 
         object GetRoleSystemDetails(string systemID);
 
-        bool UpdateRolePermission(string type, string id, bool isActive);
+        bool ProcessRolePermissionStr(string rolePermissionStr);
+
     }
 }

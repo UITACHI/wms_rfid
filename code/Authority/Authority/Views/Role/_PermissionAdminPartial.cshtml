@@ -26,17 +26,6 @@
     };
 
     $(function () {
-//        $('#tt').tree({
-//            onCheck: function (node) {
-//                alert(node.checked+node.text);
-//            },
-//            onClick: function (node) {
-//                alert(node.checked+node.text);
-//            }
-//        });
-    });
-
-    $(function () {
         $('#cgCity ').combogrid({
             width: 120,
             panelWidth: 450,
@@ -96,23 +85,17 @@
     }
 
     function update() {
-        var no = $('#tt').tree('getRoot');
-        alert(no.text);
-        var nod = $('#tt').tree('getData', no.target);
-
-        $.post('/Module/UpdateRolePermission/', { 'nos': '' }, function (result) {
-
-        }, 'json');
-
-        alert(nod.toString());
-        url = '/Module/UpdateRolePermission';
-//        var node = $('#tt').tree('getChecked');
-//        alert(node[5].text);
-        if (node) {
-            node.text = '<span style="font-weight:bold"><\/span>';
-            node.iconCls = 'icon-save';
-            $('#tt').tree('update', node);
-            alert(2);
+        var roots = $('#tt').tree('getRoots'), children, i, j, info = "";
+        for (i = 0; i < roots.length; i++) {
+            info += roots[i].attributes + "^" + roots[i].id + "^" + roots[i].checked + ",";
+            children = $('#tt').tree('getChildren', roots[i].target);
+            for (j = 0; j < children.length; j++)
+                info += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
+            $.post("/Module/ProcessRolePermissionStr/", { rolePermissionStr: info }, function (json) {
+                if (json) {
+                    $.messager.show({ title: '系统提示', msg: '保存成功！' });
+                }
+            });
         }
     }
 </script>
@@ -129,7 +112,7 @@
     <div id="toolbar" style="background-color: e0ecff">
         地市：<input type="text" name="city" id="cgCity" class="easyui-validatebox" required="true" />
         系统：<input type="text" name="system" id="cgSystem" class="easyui-validatebox" required="true" />
-        <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="query()">查询</a> 
+        <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="query()">查询</a>
         <a href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="update()">保存</a>
     </div>
 </div>

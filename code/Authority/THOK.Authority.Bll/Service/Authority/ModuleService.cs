@@ -577,6 +577,25 @@ namespace THOK.Authority.Bll.Service.Authority
             tree.children = childTreeSet.ToArray();
         }
 
+        public bool ProcessRolePermissionStr(string rolePermissionStr)
+        {
+            string[] rolePermissionList = rolePermissionStr.Split(',');
+            string type;
+            string id;
+            bool isActive;
+            bool result = false;
+            for (int i = 0; i < rolePermissionList.Length - 1; i++)
+            {
+                string[] rolePermission=rolePermissionList[i].Split('^');
+                type = rolePermission[0];
+                id = rolePermission[1];
+                isActive = Convert.ToBoolean(rolePermission[2]);
+                UpdateRolePermission(type, id, isActive);
+                result = true;
+            }
+            return result;
+        }
+
         public bool UpdateRolePermission(string type, string id, bool isActive)
         {
             bool result = false;
@@ -584,7 +603,7 @@ namespace THOK.Authority.Bll.Service.Authority
             {
                 IQueryable<THOK.Authority.Dal.EntityModels.RoleSystem> queryRoleSystem = RoleSystemRepository.GetQueryable();
                 Guid sid = new Guid(id);
-                var system = queryRoleSystem.FirstOrDefault(i => i.RoleSystemID == sid);
+                var system = queryRoleSystem.FirstOrDefault(i => i.System.SystemID == sid);
                 system.IsActive = isActive;
                 RoleSystemRepository.SaveChanges();
                 result = true;
@@ -593,7 +612,7 @@ namespace THOK.Authority.Bll.Service.Authority
             {
                 IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
                 Guid mid = new Guid(id);
-                var module = queryRoleModule.FirstOrDefault(i => i.RoleModuleID == mid);
+                var module = queryRoleModule.FirstOrDefault(i => i.Module.ModuleID == mid);
                 module.IsActive = isActive;
                 RoleModuleRepository.SaveChanges();
                 result = true;
@@ -602,7 +621,7 @@ namespace THOK.Authority.Bll.Service.Authority
             {
                 IQueryable<THOK.Authority.Dal.EntityModels.RoleFunction> queryRoleFunction = RoleFunctionRepository.GetQueryable();
                 Guid fid = new Guid(id);
-                var system = queryRoleFunction.FirstOrDefault(i => i.RoleFunctionID== fid);
+                var system = queryRoleFunction.FirstOrDefault(i => i.Function.FunctionID== fid);
                 system.IsActive = isActive;
                 RoleSystemRepository.SaveChanges();
                 result = true;
