@@ -22,10 +22,17 @@ namespace THOK.Authority.Bll.Service.Authority
         public object GetDetails(int page, int rows, string cityName, string description, string isActive)
         {
             IQueryable<THOK.Authority.Dal.EntityModels.City> query = CityRepository.GetQueryable();
-            var citys = query.Where(i => i.CityName.Contains(cityName)
-                && i.Description.Contains(description))
-                .OrderBy(i => i.CityID)
-                .Select(i => new { i.CityID, i.CityName, i.Description, IsActive = i.IsActive ? "启用" : "禁用"});
+            bool isactive;
+            var citys = query.OrderBy(i => i.CityID).Select(i => new { i.CityID, i.CityName, i.Description, IsActive = i.IsActive ? "启用" : "禁用" });
+            if (cityName != "" || description != "" || isActive != "")
+            {
+                if (isActive == "true") isactive = true;
+                else isactive = false;
+                citys = query.Where(i => i.CityName.Contains(cityName)
+                    && i.Description.Contains(description) && i.IsActive == isactive)
+                    .OrderBy(i => i.CityID)
+                    .Select(i => new { i.CityID, i.CityName, i.Description, IsActive = i.IsActive ? "启用" : "禁用" });
+            }
 
             int total = citys.Count();
             citys = citys.Skip((page - 1) * rows).Take(rows);
