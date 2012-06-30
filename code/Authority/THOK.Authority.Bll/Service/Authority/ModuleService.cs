@@ -488,6 +488,10 @@ namespace THOK.Authority.Bll.Service.Authority
             }
         }
 
+        #endregion
+
+        #region
+
         private void SetMenu(Menu menu, Module module)
         {
             IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
@@ -536,9 +540,6 @@ namespace THOK.Authority.Bll.Service.Authority
             }
             childTree.children = functionTreeSet.ToArray();
         }
-
-        #region IModuleService 成员
-
 
         public void InitRoleSys(string roleID, string cityID, string systemID)
         {
