@@ -16,17 +16,6 @@ namespace THOK.Authority.Bll.Models.Authority
         public string IndicateImage { get; set; }
         public string ModuleURL { get; set; }
         public int ShowOrder { get; set; }
-        public string text { get; set; }
-        private bool Checked;
-
-        public bool @checked
-        {
-            get { return Checked; }
-            set { Checked = value; }
-        }
-        public string FunctionID { get; set; }
-        public string FunctionName { get; set; }
-        public string ControlName { get; set; }
   
         public Menu[] children { get; set; }
 

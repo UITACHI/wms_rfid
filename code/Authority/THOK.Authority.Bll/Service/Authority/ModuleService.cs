@@ -465,10 +465,6 @@ namespace THOK.Authority.Bll.Service.Authority
                     childMenu.ModuleURL = item.ModuleURL;
                     childMenu.iconCls = item.IndicateImage;
                     childMenu.ShowOrder = item.ShowOrder;
-                    childMenu.text = item.ModuleName;
-                    string moduleID = item.ModuleID.ToString();
-                    var roleModules = queryRoleModule.FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID));
-                    childMenu.@checked = roleModules == null ? false : roleModules.IsActive;
                     childMenuSet.Add(childMenu);
                     if (item.Modules.Count > 0)
                     {
@@ -479,7 +475,7 @@ namespace THOK.Authority.Bll.Service.Authority
             menu.children = childMenuSet.ToArray();
         }
 
-        private void SetFunMenu(Tree childMenu, Module item)
+        private void SetFunTree(Tree childTree, Module item)
         {
             var function = FunctionRepository.GetQueryable().Where(f => f.Module.ModuleID == item.ModuleID);
             IQueryable<THOK.Authority.Dal.EntityModels.RoleFunction> queryRoleFunction = RoleFunctionRepository.GetQueryable();
@@ -494,7 +490,7 @@ namespace THOK.Authority.Bll.Service.Authority
                 funcTree.attributes = "function";
                 functionTreeSet.Add(funcTree);
             }
-            childMenu.children = functionTreeSet.ToArray();
+            childTree.children = functionTreeSet.ToArray();
         }
 
         #region IModuleService 成员
@@ -574,7 +570,7 @@ namespace THOK.Authority.Bll.Service.Authority
                     }
                     if (item.Functions.Count > 0)
                     {
-                        SetFunMenu(childTree, item);
+                        SetFunTree(childTree, item);
                     }
                 }
             }

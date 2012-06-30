@@ -79,7 +79,7 @@
         var sID = $('#cgSystem').combogrid('getValue');
         cityID = cID;
         systemID = sID;
-        if (cID = !"" & sID != "") {
+        if (cID != "" & sID != "") {
             $.getJSON("/Module/InitRoleSystem", { roleID: roleID, cityID: cityID, systemID: systemID }, function (json) {
                 if (json) {
                     $('#tt').tree({ url: '/Module/GetRoleSystemDetails/?systemid=' + systemID });
@@ -96,9 +96,18 @@
     }
 
     function update() {
-       alert($('#tt').tree('options').data[0].toString());
-        var node = $('#tt').tree('getChecked');
-        alert(node[5].text);
+        var no = $('#tt').tree('getRoot');
+        alert(no.text);
+        var nod = $('#tt').tree('getData', no.target);
+
+        $.post('/Module/UpdateRolePermission/', { 'nos': '' }, function (result) {
+
+        }, 'json');
+
+        alert(nod.toString());
+        url = '/Module/UpdateRolePermission';
+//        var node = $('#tt').tree('getChecked');
+//        alert(node[5].text);
         if (node) {
             node.text = '<span style="font-weight:bold"><\/span>';
             node.iconCls = 'icon-save';
@@ -120,8 +129,7 @@
     <div id="toolbar" style="background-color: e0ecff">
         地市：<input type="text" name="city" id="cgCity" class="easyui-validatebox" required="true" />
         系统：<input type="text" name="system" id="cgSystem" class="easyui-validatebox" required="true" />
-        <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="query()">
-            查询</a> <a href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="update()">
-                保存</a>
+        <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="query()">查询</a> 
+        <a href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="update()">保存</a>
     </div>
 </div>

@@ -1,0 +1,46 @@
+﻿<script type="text/javascript">
+    function RoleUserSaveClick() {
+        var row = $('#RoleAddUserDatagrid').datagrid('getSelections');
+        if (row.length > 0) {
+            var userString = "";
+            for (var i = 0; i < row.length; i++) {
+                userString += row[i].UserID + ",";
+            }
+            $.post("/Role/AddRoleUser/", { roleId: roleId, userIDstr: userString }, function (json) {
+                if (json) {
+                    $.messager.show({ title: '系统提示', msg: '添加成功！' });
+                    $('#RoleAddUser').window('close');
+                    $('#RoleUserDataGrid').datagrid('options').url = '/Role/GetRoleUser/?RoleID=' + roleId;
+                    $('#RoleUserDataGrid').datagrid('reload');
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '添加失败!请检查原因！' });
+                }
+            });
+        } else {
+            $.messager.show({ title: '系统提示', msg: '请选择需添加的用户！' });
+        }
+    }
+</script>
+<div id="RoleAddUser" class="easyui-dialog" modal="true" style="width: 420px; height: 280px;
+    padding: 1px 1px" closed="true" buttons="#dlg-buttons">
+    <div class="easyui-layout" fit="true">
+        <div region="center" style="background: #fff; border: 1px solid #ccc;">
+            <table id="RoleAddUserDatagrid" class="easyui-datagrid" idfield="UserID" border="0px" fit="true">
+                <thead>
+                    <tr>
+                        <th field="ck" checkbox="true"></th>
+                        <th field="UserID" width="180" hidden="true">用户编码</th>
+                        <th field="UserName" width="130">用户名称</th>
+                        <th field="Status" width="100">是否可用</th>
+                        <th field="Description" width="135">用户描述</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="RoleUserSaveClick()"id='RoleUserSave'>确定</a> 
+    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#RoleAddUser').dialog('close')">取消</a>
+</div>
+
