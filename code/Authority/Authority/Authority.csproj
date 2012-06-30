@@ -573,6 +573,7 @@
     <Content Include="Views\Shared\_SearchPartial.cshtml" />
     <Content Include="Views\Module\_FunctionAdd.cshtml" />
     <Content Include="Views\User\_UserRolePartial.cshtml" />
+    <Content Include="Views\Role\_RoleUserPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
