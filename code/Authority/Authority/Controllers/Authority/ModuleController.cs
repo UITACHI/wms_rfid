@@ -75,9 +75,10 @@ namespace Authority.Controllers.Authority
             return Json(modules, "text", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateRolePermission(string type,string id,bool isActive)
+        [HttpPost]
+        public ActionResult ProcessRolePermissionStr(string rolePermissionStr)
         {
-            bool bResult = ModuleService.UpdateRolePermission(type,id,isActive);
+            bool bResult = ModuleService.ProcessRolePermissionStr(rolePermissionStr);
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
