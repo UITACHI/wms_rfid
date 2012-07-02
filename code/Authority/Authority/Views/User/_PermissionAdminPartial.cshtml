@@ -89,11 +89,15 @@
             for (j = 0; j < children.length; j++)
                 info += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
         }
-        $.post("/Module/ProcessUserPermissionStr/", { userPermissionStr: info }, function (json) {
-            if (json) {
-                $.messager.alert('系统提示','保存成功！');
-            }
-        });
+        if (info != "") {
+            $.post("/Module/ProcessUserPermissionStr/", { userPermissionStr: info }, function (json) {
+                if (json) {
+                    $.messager.alert('系统提示', '保存成功！');
+                }
+            });
+        } else {
+            $.messager.alert('系统提示', '请查询数据进行修改！');
+        }
     }
 </script>
 <div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 420px;
