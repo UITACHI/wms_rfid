@@ -15,5 +15,7 @@ namespace THOK.Authority.Bll.Interfaces.Authority
         object GetUserMenus(string userName,string cityID,string systemID);
 
         object GetModuleFuns(string userName, string cityID, string moduleID);
+
+        bool InitUserSystemInfo(string userID, string cityID, string systemID);
     }
 }

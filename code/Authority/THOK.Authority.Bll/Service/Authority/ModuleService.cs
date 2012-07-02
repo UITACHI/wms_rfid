@@ -479,6 +479,16 @@ namespace THOK.Authority.Bll.Service.Authority
         private void SetFunMenu(Menu childMenu, Module item)
         {
 
-        }   
+        }
+
+        public bool InitUserSystemInfo(string userID, string cityID, string systemID)
+        {
+            var user = UserRepository.GetQueryable().Single(u => u.UserID == new Guid(userID));
+            var city = CityRepository.GetQueryable().Single(c => c.CityID == new Guid(cityID));
+            var system = SystemRepository.GetQueryable().Single(s => s.SystemID == new Guid(systemID));
+            InitUserSystem(user, city, system);
+            return true;
+        }
+
     }
 }

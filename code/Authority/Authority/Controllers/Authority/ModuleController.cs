@@ -60,5 +60,15 @@ namespace Authority.Controllers.Authority
             string msg = bResult ? "删除成功" : "删除失败" ;
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        // POST: /Module/InitUserSystemInfo/
+        [HttpPost]
+        public ActionResult InitUserSystemInfo(string userID,string cityID,string systemID)
+        {
+            bool bResult= ModuleService.InitUserSystemInfo(userID, cityID, systemID);
+            string msg = bResult ? "初始化成功" : "初始化失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
