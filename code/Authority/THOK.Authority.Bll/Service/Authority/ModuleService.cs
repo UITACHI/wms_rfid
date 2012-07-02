@@ -538,7 +538,7 @@ namespace THOK.Authority.Bll.Service.Authority
             menu.children = childMenuSet.ToArray();
         }
 
-        private void SetFunTree(Tree childTree, Module item)
+        private void SetFunTree(Tree childTree, Module item,RoleModule roleModules)
         {
             var function = FunctionRepository.GetQueryable().Where(f => f.Module.ModuleID == item.ModuleID);
             IQueryable<THOK.Authority.Dal.EntityModels.RoleFunction> queryRoleFunction = RoleFunctionRepository.GetQueryable();
@@ -546,9 +546,9 @@ namespace THOK.Authority.Bll.Service.Authority
             foreach (var func in function)
             {
                 Tree funcTree = new Tree();
-                funcTree.id = func.FunctionID.ToString();
+                var roleFunction = queryRoleFunction.FirstOrDefault(rf => rf.Function.FunctionID == func.FunctionID&&rf.RoleModule.RoleModuleID==roleModules.RoleModuleID);
+                funcTree.id = roleFunction.RoleFunctionID.ToString();
                 funcTree.text = "功能：" + func.FunctionName;
-                var roleFunction = queryRoleFunction.FirstOrDefault(rf=>rf.Function.FunctionID==func.FunctionID);
                 funcTree.@checked = roleFunction == null ? false : roleFunction.IsActive;
                 funcTree.attributes = "function";
                 functionTreeSet.Add(funcTree);
@@ -567,18 +567,18 @@ namespace THOK.Authority.Bll.Service.Authority
             InitRoleSystem(role, city, system);
         }
 
-        public object GetRoleSystemDetails(string systemID)
+        public object GetRoleSystemDetails(string roleID,string cityID, string systemID)
         {
             IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
             IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
             IQueryable<THOK.Authority.Dal.EntityModels.RoleSystem> queryRoleSystem = RoleSystemRepository.GetQueryable();
             IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
             var systems = querySystem.Single(i => i.SystemID == new Guid(systemID));
+            var roleSystems = queryRoleSystem.FirstOrDefault(i => i.System.SystemID == new Guid(systemID)&&i.Role.RoleID==new Guid(roleID)&&i.City.CityID==new Guid(cityID));
             HashSet<Tree> RolesystemTreeSet = new HashSet<Tree>();
             Tree roleSystemTree = new Tree();
-            roleSystemTree.id = systems.SystemID.ToString();
+            roleSystemTree.id = roleSystems.RoleSystemID.ToString();
             roleSystemTree.text = "系统：" + systems.SystemName;
-            var roleSystems = queryRoleSystem.FirstOrDefault(i => i.System.SystemID == new Guid(systemID));
             roleSystemTree.@checked = roleSystems.IsActive;
             roleSystemTree.attributes = "system";
 
@@ -589,15 +589,15 @@ namespace THOK.Authority.Bll.Service.Authority
             foreach (var item in modules)
             {
                 Tree moduleTree = new Tree();
-                moduleTree.id = item.ModuleID.ToString();
-                moduleTree.text = "模块：" + item.ModuleName;
                 string moduleID = item.ModuleID.ToString();
-                var roleModules = queryRoleModule.FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID));
+                var roleModules = queryRoleModule.FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID)&&i.RoleSystem.RoleSystemID==roleSystems.RoleSystemID);
+                moduleTree.id = roleModules.RoleModuleID.ToString();
+                moduleTree.text = "模块：" + item.ModuleName;
                 moduleTree.@checked = roleModules.IsActive;
                 moduleTree.attributes = "module";
 
                 moduleTreeSet.Add(moduleTree);
-                SetTree(moduleTree, item);
+                SetTree(moduleTree, item,roleSystems);
                 moduleTreeSet.Add(moduleTree);
             }
             roleSystemTree.children = moduleTreeSet.ToArray();
@@ -605,7 +605,7 @@ namespace THOK.Authority.Bll.Service.Authority
             return RolesystemTreeSet.ToArray();
         }
 
-        private void SetTree(Tree tree,Module module )
+        private void SetTree(Tree tree,Module module,RoleSystem roleSystems)
         {
             IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
             HashSet<Tree> childTreeSet = new HashSet<Tree>();
@@ -617,20 +617,20 @@ namespace THOK.Authority.Bll.Service.Authority
                 if (item != module)
                 {
                     Tree childTree = new Tree();
-                    childTree.id = item.ModuleID.ToString();
-                    childTree.text = "模块：" + item.ModuleName;
                     string moduleID = item.ModuleID.ToString();
-                    var roleModules = queryRoleModule.FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID));
+                    var roleModules = queryRoleModule.FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID)&&i.RoleSystem.RoleSystemID==roleSystems.RoleSystemID);
+                    childTree.id = roleModules.RoleModuleID.ToString();
+                    childTree.text = "模块：" + item.ModuleName;
                     childTree.@checked = roleModules == null ? false : roleModules.IsActive;
                     childTree.attributes = "module";
                     childTreeSet.Add(childTree);
                     if (item.Modules.Count > 0)
                     {
-                        SetTree(childTree, item);
+                        SetTree(childTree, item,roleSystems);
                     }
                     if (item.Functions.Count > 0)
                     {
-                        SetFunTree(childTree, item);
+                        SetFunTree(childTree, item,roleModules);
                     }
                 }
             }
@@ -663,7 +663,7 @@ namespace THOK.Authority.Bll.Service.Authority
             {
                 IQueryable<THOK.Authority.Dal.EntityModels.RoleSystem> queryRoleSystem = RoleSystemRepository.GetQueryable();
                 Guid sid = new Guid(id);
-                var system = queryRoleSystem.FirstOrDefault(i => i.System.SystemID == sid);
+                var system = queryRoleSystem.FirstOrDefault(i => i.RoleSystemID== sid);
                 system.IsActive = isActive;
                 RoleSystemRepository.SaveChanges();
                 result = true;
@@ -672,7 +672,7 @@ namespace THOK.Authority.Bll.Service.Authority
             {
                 IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
                 Guid mid = new Guid(id);
-                var module = queryRoleModule.FirstOrDefault(i => i.Module.ModuleID == mid);
+                var module = queryRoleModule.FirstOrDefault(i => i.RoleModuleID == mid);
                 module.IsActive = isActive;
                 RoleModuleRepository.SaveChanges();
                 result = true;
@@ -681,7 +681,7 @@ namespace THOK.Authority.Bll.Service.Authority
             {
                 IQueryable<THOK.Authority.Dal.EntityModels.RoleFunction> queryRoleFunction = RoleFunctionRepository.GetQueryable();
                 Guid fid = new Guid(id);
-                var system = queryRoleFunction.FirstOrDefault(i => i.Function.FunctionID== fid);
+                var system = queryRoleFunction.FirstOrDefault(i => i.RoleFunctionID== fid);
                 system.IsActive = isActive;
                 RoleSystemRepository.SaveChanges();
                 result = true;

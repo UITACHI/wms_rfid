@@ -5,22 +5,13 @@
     function permissionadminClick() {
         $('#tt').tree({ url: '' });
         $('#tt').tree('reload');
-        $('#fm').form('clear');
         $('#cgCity').combogrid('grid').datagrid('reload');
         $('#cgSystem').combogrid('grid').datagrid('reload');
         $('#cgCity').combogrid('clear');
         $('#cgSystem').combogrid('clear');
-        $("input[type=text]").attr("value", "");
         var row = $('#details').datagrid('getSelected');
         if (row) {
             $('#dlg-permissionadmin').dialog('open').dialog('setTitle', '角色权限编辑：' + row.RoleName);
-            $('#fm').form('load', row);
-            $('#fm .easyui-validatebox').validatebox({
-                required: true
-            });
-            $('form input').removeAttr("disabled");
-            $('form textarea').removeAttr("disabled");
-            $('#roleName').text(row.RoleName);
             roleID = row.RoleID;
         } else {
             $.messager.confirm('错误', '没有选择行！');
@@ -73,9 +64,8 @@
         if (cID != "" & sID != "") {
             $.getJSON("/Module/InitRoleSystem", { roleID: roleID, cityID: cityID, systemID: systemID }, function (json) {
                 if (json) {
-                    $('#tt').tree({ url: '/Module/GetRoleSystemDetails/?systemid=' + systemID });
+                    $('#tt').tree({ url: '/Module/GetRoleSystemDetails/?roleId=' + roleID + '&cityId=' + cityID + '&systemID=' + systemID });
                     $.messager.show({ title: '系统提示', msg: '查询成功' });
-
                 } else {
                     $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
                 }
@@ -94,11 +84,15 @@
             for (j = 0; j < children.length; j++)
                 info += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
         }
-        $.post("/Module/ProcessRolePermissionStr/", { rolePermissionStr: info }, function (json) {
-            if (json) {
-                $.messager.alert('系统提示', '保存成功！');
-            }
-        });
+        if (info != "") {
+            $.post("/Module/ProcessRolePermissionStr/", { rolePermissionStr: info }, function (json) {
+                if (json) {
+                    $.messager.alert('系统提示', '保存成功！');
+                }
+            });
+        } else {
+            $.messager.alert('系统提示', '请先查询数据修改后再保存！');
+        }
     }
 </script>
 <div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 420px;
