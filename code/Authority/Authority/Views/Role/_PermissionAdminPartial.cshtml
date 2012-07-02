@@ -91,12 +91,12 @@
             children = $('#tt').tree('getChildren', roots[i].target);
             for (j = 0; j < children.length; j++)
                 info += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
-            $.post("/Module/ProcessRolePermissionStr/", { rolePermissionStr: info }, function (json) {
-                if (json) {
-                    $.messager.show({ title: '系统提示', msg: '保存成功！' });
-                }
-            });
         }
+        $.post("/Module/ProcessRolePermissionStr/", { rolePermissionStr: info }, function (json) {
+            if (json) {
+                $.messager.alert('系统提示', '保存成功！');
+            }
+        });
     }
 </script>
 <div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 600px;
