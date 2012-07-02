@@ -93,9 +93,9 @@ namespace Authority.Controllers.Authority
         }
 
         // GET: /Module/GetUserSystemDetails/
-        public ActionResult GetUserSystemDetails(string systemId)
+        public ActionResult GetUserSystemDetails(string userID,string cityID,string systemID)
         {
-            var modules = ModuleService.GetUserSystemDetails(systemId);
+            var modules = ModuleService.GetUserSystemDetails(userID, cityID, systemID);
             return Json(modules, "text", JsonRequestBehavior.AllowGet);
         }
 
