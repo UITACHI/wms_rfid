@@ -99,20 +99,21 @@
         });
     }
 </script>
-<div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 420px;
-    height: 400px; padding: 0px 0px" closed="true" toolbar="#toolbar" buttons="#dlg-buttons-permission" fit="false">
+<div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 410px;
+    height: 420px;padding:2px 2px" closed="true" toolbar="#toolbar" 
+    buttons="#dlg-buttons-permission">
     <div class="easyui-layout" fit="true">
 	    <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >  
             <ul id="tt" class="easyui-tree" checkbox="true"></ul>
         </div>
     </div>
-    <div id="toolbar" style="background-color: e0ecff">
-        地市：<input type="text" name="city" id="cgCity" class="easyui-validatebox" required="true" />
-        系统：<input type="text" name="system" id="cgSystem" class="easyui-validatebox" required="true" />
-        <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="query()">查询</a>
-    </div>
-    <div id="dlg-buttons-permission">
+</div>
+<div id="toolbar" style="background-color: e0ecff">
+    地市<input type="text" name="city" id="cgCity" class="easyui-validatebox" required="true" />
+    系统<input type="text" name="system" id="cgSystem" class="easyui-validatebox" required="true" />
+    <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="query()">查询</a>
+</div>
+<div id="dlg-buttons-permission" >
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="update()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-permissionadmin').dialog('close')">取消</a>
-</div>
 </div>
