@@ -61,6 +61,7 @@ namespace Authority.Controllers.Authority
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+
         // POST: /Module/InitUserSystemInfo/
         [HttpPost]
         public ActionResult InitUserSystemInfo(string userID,string cityID,string systemID)
@@ -70,5 +71,27 @@ namespace Authority.Controllers.Authority
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+
+        // GET: /Module/InitRoleSystem/
+        public ActionResult InitRoleSystem(string roleId,string cityId,string systemId)
+        {
+            ModuleService.InitRoleSys(roleId,cityId,systemId);
+            return Json(1, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: /Module/GetRoleSystemDetails/
+        public ActionResult GetRoleSystemDetails(string systemId)
+        {
+            var modules = ModuleService.GetRoleSystemDetails(systemId);
+            return Json(modules, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult ProcessRolePermissionStr(string rolePermissionStr)
+        {
+            bool bResult = ModuleService.ProcessRolePermissionStr(rolePermissionStr);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

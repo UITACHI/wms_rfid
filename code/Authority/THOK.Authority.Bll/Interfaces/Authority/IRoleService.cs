@@ -13,5 +13,13 @@ namespace THOK.Authority.Bll.Interfaces.Authority
         bool Save(string roleID, string roleName, string description, bool status);
 
         string FindRolesForFunction(string strFunctionID);
+
+        object GetRoleUser(string roleID);
+
+        object GetUserInfo(string roleID);
+
+        bool DeleteRoleUser(string roleUserIdStr);
+
+        bool AddRoleUser(string roleID, string userIDStr);
     }
 }

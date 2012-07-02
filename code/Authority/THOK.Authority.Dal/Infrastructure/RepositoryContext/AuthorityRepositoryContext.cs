@@ -37,6 +37,5 @@ namespace THOK.Authority.Dal.Infrastructure.RepositoryContext
         {
             ContextManager.SetRepositoryContext(null, OBJECT_CONTEXT_KEY);
         }
-
     }
 }

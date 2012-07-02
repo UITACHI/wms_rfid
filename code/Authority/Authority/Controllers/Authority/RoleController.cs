@@ -67,5 +67,39 @@ namespace Authority.Controllers.Authority
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        // POST: /Role/GetRoleUser/
+        [HttpPost]
+        public ActionResult GetRoleUser(string RoleID)
+        {
+            var users = RoleService.GetRoleUser(RoleID);
+            return Json(users, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: /Role/GetUserInfo/
+        [HttpPost]
+        public ActionResult GetUserInfo(string RoleID)
+        {
+            var users = RoleService.GetUserInfo(RoleID);
+            return Json(users, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: /Role/DeleteRoleUser/
+        [HttpPost]
+        public ActionResult DeleteRoleUser(string roleUserIdStr)
+        {
+            bool bResult = RoleService.DeleteRoleUser(roleUserIdStr);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: /Role/AddRoleUser/
+        [HttpPost]
+        public ActionResult AddRoleUser(string roleId, string userIDstr)
+        {
+            bool bResult = RoleService.AddRoleUser(roleId, userIDstr);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

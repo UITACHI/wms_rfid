@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/27/2012 11:28:19
--- Generated from EDMX file: E:\thok\sw-thok\code\Authority\THOK.Authority.Dal\EntityModels\AuthorizeDBModel.edmx
+-- Date Created: 06/27/2012 17:09:00
+-- Generated from EDMX file: D:\server\Authority\code\Authority\THOK.Authority.Dal\EntityModels\AuthorizeDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -132,6 +132,9 @@ IF OBJECT_ID(N'[dbo].[UserSystem]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Server]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Server];
+GO
+IF OBJECT_ID(N'[dbo].[SystemEventLogs]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[SystemEventLogs];
 GO
 
 -- --------------------------------------------------
@@ -287,6 +290,19 @@ CREATE TABLE [dbo].[Server] (
 );
 GO
 
+-- Creating table 'SystemEventLogs'
+CREATE TABLE [dbo].[SystemEventLogs] (
+    [EventLogID] uniqueidentifier  NOT NULL,
+    [EventLogTime] varchar(30)  NOT NULL,
+    [EventType] nvarchar(max)  NOT NULL,
+    [EventName] nvarchar(max)  NOT NULL,
+    [EventDescription] nvarchar(max)  NOT NULL,
+    [FromPC] nvarchar(max)  NOT NULL,
+    [OperateUser] nvarchar(max)  NOT NULL,
+    [TargetSystem] nvarchar(max)  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -379,6 +395,12 @@ GO
 ALTER TABLE [dbo].[Server]
 ADD CONSTRAINT [PK_Server]
     PRIMARY KEY CLUSTERED ([ServerID] ASC);
+GO
+
+-- Creating primary key on [EventLogID] in table 'SystemEventLogs'
+ALTER TABLE [dbo].[SystemEventLogs]
+ADD CONSTRAINT [PK_SystemEventLogs]
+    PRIMARY KEY CLUSTERED ([EventLogID] ASC);
 GO
 
 -- --------------------------------------------------

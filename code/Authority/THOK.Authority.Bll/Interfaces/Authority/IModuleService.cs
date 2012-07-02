@@ -17,5 +17,13 @@ namespace THOK.Authority.Bll.Interfaces.Authority
         object GetModuleFuns(string userName, string cityID, string moduleID);
 
         bool InitUserSystemInfo(string userID, string cityID, string systemID);
+
+        void InitRoleSys(string roleID,string cityID,string systemID);
+
+        object GetRoleSystemDetails(string systemID);
+
+        bool ProcessRolePermissionStr(string rolePermissionStr);
+
+
     }
 }

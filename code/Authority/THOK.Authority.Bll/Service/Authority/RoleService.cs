@@ -18,6 +18,8 @@ namespace THOK.Authority.Bll.Service.Authority
         public IRoleSystemRepository RoleSystemRepository { get; set; }
         [Dependency]
         public IUserRoleRepository UserRoleRepository { get; set; }
+        [Dependency]
+        public IUserRepository UserRepository { get; set; }
         
         protected override Type LogPrefix
         {
@@ -91,5 +93,75 @@ namespace THOK.Authority.Bll.Service.Authority
         {
             throw new NotImplementedException();
         }
+
+
+
+        #region IRoleService 成员
+
+
+        public object GetRoleUser(string roleID)
+        {
+            Guid rid = new Guid(roleID);
+            IQueryable<THOK.Authority.Dal.EntityModels.User> queryUser = UserRepository.GetQueryable();
+            IQueryable<THOK.Authority.Dal.EntityModels.Role> queryRole = RoleRepository.GetQueryable();
+            var role = queryRole.FirstOrDefault(r => r.RoleID== rid);
+            var users = role.UserRoles.OrderBy(u => u.User.UserID).Select(u => new { u.UserRoleID, u.Role.RoleID, u.Role.RoleName,u.User.UserID, u.User.UserName });
+            return users.ToArray();
+        }
+
+        public object GetUserInfo(string roleID)
+        {
+            Guid rid = new Guid(roleID);
+            IQueryable<THOK.Authority.Dal.EntityModels.User> queryUser = UserRepository.GetQueryable();
+            IQueryable<THOK.Authority.Dal.EntityModels.Role> queryRole = RoleRepository.GetQueryable();
+            var role = queryRole.FirstOrDefault(r => r.RoleID == rid);
+            var userIDs =role.UserRoles.Select(ru => ru.User.UserID);
+            var user = queryUser.Where(u => !userIDs.Any(uid => uid == u.UserID))
+                .Select(u => new { u.UserID, u.UserName, Description = u.Memo, Status = u.IsLock ? "启用" : "禁用" });
+            return user.ToArray();
+        }
+
+        public bool DeleteRoleUser(string roleUserIdStr)
+        {
+            string[] roleUserIdList = roleUserIdStr.Split(',');
+            for (int i = 0; i < roleUserIdList.Length - 1; i++)
+            {
+                Guid roleUserId = new Guid(roleUserIdList[i]);
+                var RoleUser = UserRoleRepository.GetQueryable().FirstOrDefault(ur => ur.UserRoleID == roleUserId);
+                if (RoleUser != null)
+                {
+                    UserRoleRepository.Delete(RoleUser);
+                    UserRoleRepository.SaveChanges();
+                }
+            }
+            return true;
+        }
+
+        public bool AddRoleUser(string roleID, string userIDStr)
+        {
+            try
+            {
+                var role = RoleRepository.GetQueryable().FirstOrDefault(r => r.RoleID== new Guid(roleID));
+                string[] userIdList = userIDStr.Split(',');
+                for (int i = 0; i < userIdList.Length - 1; i++)
+                {
+                    Guid uid = new Guid(userIdList[i]);
+                    var user = UserRepository.GetQueryable().FirstOrDefault(u => u.UserID == uid);
+                    var roleUser = new UserRole();
+                    roleUser.UserRoleID = Guid.NewGuid();
+                    roleUser.User = user;
+                    roleUser.Role = role;
+                    UserRoleRepository.Add(roleUser);
+                    UserRoleRepository.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
     }
 }

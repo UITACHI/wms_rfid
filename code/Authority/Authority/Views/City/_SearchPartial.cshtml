@@ -14,7 +14,7 @@
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.CityName = $('#cityname').val();
         queryParams.Description = $('#description').val();
-        queryParams.IsActive = $('#isactive').val();
+        queryParams.IsActive = $('#isactive').combobox('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,

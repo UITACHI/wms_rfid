@@ -70,5 +70,7 @@ namespace THOK.Authority.Dal.Interfaces
         long Count();
 
         int SaveChanges();
+
+        void Delete<TSub>(TSub[] tsubs);
     }
 }
