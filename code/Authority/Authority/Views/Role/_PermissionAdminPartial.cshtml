@@ -8,6 +8,8 @@
         $('#fm').form('clear');
         $('#cgCity').combogrid('grid').datagrid('reload');
         $('#cgSystem').combogrid('grid').datagrid('reload');
+        $('#cgCity').combogrid('clear');
+        $('#cgSystem').combogrid('clear');
         $("input[type=text]").attr("value", "");
         var row = $('#details').datagrid('getSelected');
         if (row) {
@@ -29,7 +31,7 @@
         $('#cgCity ').combogrid({
             width: 120,
             panelWidth: 450,
-            url: '/City/Details/?page=1&rows=1',
+            url: '/City/Details/?page=1&rows=5',
             idField: 'CityID',
             textField: 'CityName',
             mode: 'local',
