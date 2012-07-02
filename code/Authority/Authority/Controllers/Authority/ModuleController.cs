@@ -82,5 +82,30 @@ namespace Authority.Controllers.Authority
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        // POST: /Module/InitUserSystemInfo/
+        [HttpPost]
+        public ActionResult InitUserSystemInfo(string userID, string cityID, string systemID)
+        {
+            bool bResult = ModuleService.InitUserSystemInfo(userID, cityID, systemID);
+            string msg = bResult ? "初始化成功" : "初始化失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: /Module/GetUserSystemDetails/
+        public ActionResult GetUserSystemDetails(string systemId)
+        {
+            var modules = ModuleService.GetUserSystemDetails(systemId);
+            return Json(modules, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: /Module/ProcessUserPermissionStr/
+        [HttpPost]
+        public ActionResult ProcessUserPermissionStr(string userPermissionStr)
+        {
+            bool bResult = ModuleService.ProcessUserPermissionStr(userPermissionStr);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }
