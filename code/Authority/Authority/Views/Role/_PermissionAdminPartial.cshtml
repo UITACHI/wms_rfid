@@ -94,7 +94,7 @@
         }
         $.post("/Module/ProcessRolePermissionStr/", { rolePermissionStr: info }, function (json) {
             if (json) {
-                $.messager.show({ title: '系统提示', msg: '保存成功！' });
+                $.messager.alert('系统提示', '保存成功！');
             }
         });
     }
