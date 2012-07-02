@@ -45,6 +45,8 @@ namespace THOK.Authority.Bll.Service.Authority
             get { return this.GetType(); }
         }
 
+        #region 模块信息维护        
+        
         public object GetDetails(string systemID)
         {
             IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
@@ -84,7 +86,7 @@ namespace THOK.Authority.Bll.Service.Authority
                     moduleMenu.iconCls = item.IndicateImage;
                     moduleMenu.ShowOrder = item.ShowOrder;
                     moduleMenuSet.Add(moduleMenu);
-                    SetMenu(moduleMenu, item);
+                    GetChildMenu(moduleMenu, item);
                     moduleMenuSet.Add(moduleMenu);
                 }
                 systemMenu.children = moduleMenuSet.ToArray();
@@ -150,6 +152,40 @@ namespace THOK.Authority.Bll.Service.Authority
             return true;
         }
 
+        private void GetChildMenu(Menu menu, Module module)
+        {
+            HashSet<Menu> childMenuSet = new HashSet<Menu>();
+            var modules = from m in module.Modules
+                          orderby m.ShowOrder
+                          select m;
+            foreach (var item in modules)
+            {
+                if (item != module)
+                {
+                    Menu childMenu = new Menu();
+                    childMenu.ModuleID = item.ModuleID.ToString();
+                    childMenu.ModuleName = item.ModuleName;
+                    childMenu.SystemID = item.System.SystemID.ToString();
+                    childMenu.SystemName = item.System.SystemName;
+                    childMenu.ParentModuleID = item.ParentModule.ModuleID.ToString();
+                    childMenu.ParentModuleName = item.ParentModule.ModuleName;
+                    childMenu.ModuleURL = item.ModuleURL;
+                    childMenu.iconCls = item.IndicateImage;
+                    childMenu.ShowOrder = item.ShowOrder;
+                    childMenuSet.Add(childMenu);
+                    if (item.Modules.Count > 0)
+                    {
+                        GetChildMenu(childMenu, item);
+                    }
+                }
+            }
+            menu.children = childMenuSet.ToArray();
+        }
+
+        #endregion
+
+        #region 页面权限控制        
+        
         public object GetUserMenus(string userName, string cityID, string systemID)
         {
             if (String.IsNullOrEmpty(userName)) throw new ArgumentException("值不能为NULL或为空。", "userName");
@@ -311,6 +347,10 @@ namespace THOK.Authority.Bll.Service.Authority
             moduleMenu.children = childMenuSet.ToArray();
         }
 
+        #endregion
+
+        #region 初始化角色权限
+
         private void InitRoleSystem(Role role, City city, Dal.EntityModels.System system)
         {
             var roleSystems = role.RoleSystems.Where(rs => rs.City.CityID == city.CityID
@@ -349,6 +389,8 @@ namespace THOK.Authority.Bll.Service.Authority
                         Module = module,
                         IsActive = false
                     };
+                    roleSystem.IsActive = false;
+                    SetParentRoleModuleIsActiveFalse(rm);
                     RoleModuleRepository.Add(rm);
                     RoleModuleRepository.SaveChanges();
                 }
@@ -356,6 +398,16 @@ namespace THOK.Authority.Bll.Service.Authority
                     && rm.RoleSystem.System.SystemID == roleSystem.System.SystemID);
                 InitRoleFunctions(roleModule);
             }
+        }
+
+        private void SetParentRoleModuleIsActiveFalse(RoleModule roleModule)
+        {
+            var parentRoleModule = roleModule.Module.ParentModule.RoleModules.FirstOrDefault(prm => prm.RoleSystem.Role.RoleID == roleModule.RoleSystem.Role.RoleID);
+            parentRoleModule.IsActive = false;
+            if (parentRoleModule.Module.ModuleID != parentRoleModule.Module.ParentModule.ModuleID)
+            {
+                SetParentRoleModuleIsActiveFalse(parentRoleModule);
+            }            
         }
 
         private void InitRoleFunctions(RoleModule roleModule)
@@ -371,12 +423,19 @@ namespace THOK.Authority.Bll.Service.Authority
                         RoleModule = roleModule,
                         Function = function,
                         IsActive = false
-                    };
+                    };                    
+                    roleModule.RoleSystem.IsActive = false;
+                    SetParentRoleModuleIsActiveFalse(roleModule);
+                    roleModule.IsActive = false;                    
                     RoleFunctionRepository.Add(rf);
                     RoleFunctionRepository.SaveChanges();
                 }
             }
         }
+
+        #endregion
+
+        #region 初始化用户权限
 
         private void InitUserSystem(User user, City city, Dal.EntityModels.System system)
         {
@@ -444,6 +503,10 @@ namespace THOK.Authority.Bll.Service.Authority
             }
         }
 
+        #endregion
+
+        #region
+
         private void SetMenu(Menu menu, Module module)
         {
             IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
@@ -492,9 +555,6 @@ namespace THOK.Authority.Bll.Service.Authority
             }
             childTree.children = functionTreeSet.ToArray();
         }
-
-        #region IModuleService 成员
-
 
         public void InitRoleSys(string roleID, string cityID, string systemID)
         {
@@ -628,6 +688,7 @@ namespace THOK.Authority.Bll.Service.Authority
             }
             return result;
         }
+
         #endregion
     }
 }

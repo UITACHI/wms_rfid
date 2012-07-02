@@ -34,6 +34,10 @@
     <Reference Include="log4net">
       <HintPath>..\Libraries\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\Libraries\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -43,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
@@ -53,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigSettings.cs" />
+    <Compile Include="EntityCollection.cs" />
     <Compile Include="LoggerBase.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="NullHandler.cs" />

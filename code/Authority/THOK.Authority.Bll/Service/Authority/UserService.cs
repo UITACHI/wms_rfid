@@ -16,6 +16,8 @@ namespace THOK.Authority.Bll.Service.Authority
         [Dependency]
         public IUserRepository UserRepository { get; set; }
         [Dependency]
+        public IRoleRepository RoleRepository { get; set; }
+        [Dependency]
         public IUserRoleRepository UserRoleRepository { get; set; }
         [Dependency]
         public IUserSystemRepository UserSystemRepository { get; set; }
@@ -34,7 +36,7 @@ namespace THOK.Authority.Bll.Service.Authority
                 .OrderBy(i => i.UserID)
                 .Select(i => new { i.UserID, i.UserName, i.ChineseName, i.Memo, IsLock = i.IsLock ? "是" : "否", IsAdmin = i.IsAdmin ? "是" : "否" });
 
-
+            
             int total = users.Count();
             users = users.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = users.ToArray() };
@@ -172,6 +174,70 @@ namespace THOK.Authority.Bll.Service.Authority
         {
             throw new NotImplementedException();
         }
+
+        public object GetUserRole(string userID)
+        {
+            Guid uid = new Guid(userID);
+            IQueryable<THOK.Authority.Dal.EntityModels.User> queryUser = UserRepository.GetQueryable();
+            IQueryable<THOK.Authority.Dal.EntityModels.Role> queryRole = RoleRepository.GetQueryable();
+            var user = queryUser.FirstOrDefault(u => u.UserID == uid);
+            var roles = user.UserRoles.OrderBy(r=>r.Role.RoleID).Select(r => new { r.UserRoleID, r.User.UserID, r.User.UserName, r.Role.RoleID, r.Role.RoleName });
+            return roles.ToArray();
+        }
+
+        public object GetRoleInfo(string userID)
+        {
+            Guid uid = new Guid(userID);
+            IQueryable<THOK.Authority.Dal.EntityModels.User> queryUser = UserRepository.GetQueryable();
+            IQueryable<THOK.Authority.Dal.EntityModels.Role> queryRole = RoleRepository.GetQueryable();
+            var user = queryUser.FirstOrDefault(u => u.UserID == uid);
+            var roleIDs = user.UserRoles.Select(ur => ur.Role.RoleID);
+            var role = queryRole.Where(r => !roleIDs.Any(rid => rid == r.RoleID))
+                .Select(r => new { r.RoleID, r.RoleName, Description = r.Memo, Status = r.IsLock ? "启用" : "禁用" });
+            return role.ToArray();
+        }
+
+        public bool DeleteUserRole(string userRoleIdStr)
+        {
+            string[] userRoleIdList = userRoleIdStr.Split(',');
+            for (int i = 0; i < userRoleIdList.Length-1; i++)
+            {
+                Guid userRoleId = new Guid(userRoleIdList[i]);
+                var UserRole = UserRoleRepository.GetQueryable().FirstOrDefault(ur => ur.UserRoleID == userRoleId);
+                if (UserRole != null)
+                {
+                    UserRoleRepository.Delete(UserRole);
+                    UserRoleRepository.SaveChanges();
+                }
+            }
+            return true;
+        }
+
+        public bool AddUserRole(string userID, string roleIDStr)
+        {
+            try
+            {
+                var user = UserRepository.GetQueryable().FirstOrDefault(u => u.UserID == new Guid(userID));
+                string[] roleIdList = roleIDStr.Split(',');
+                for (int i = 0; i < roleIdList.Length - 1; i++)
+                {
+                    Guid rid = new Guid(roleIdList[i]);
+                    var role = RoleRepository.GetQueryable().FirstOrDefault(r => r.RoleID == rid);
+                    var userRole = new UserRole();
+                    userRole.UserRoleID = Guid.NewGuid();
+                    userRole.User = user;
+                    userRole.Role = role;
+                    UserRoleRepository.Add(userRole);
+                    UserRoleRepository.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }
 

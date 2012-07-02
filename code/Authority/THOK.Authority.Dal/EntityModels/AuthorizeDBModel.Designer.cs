@@ -330,6 +330,22 @@ namespace THOK.Authority.Dal.EntityModels
             }
         }
         private ObjectSet<Server> _Server;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<SystemEventLog> SystemEventLogs
+        {
+            get
+            {
+                if ((_SystemEventLogs == null))
+                {
+                    _SystemEventLogs = base.CreateObjectSet<SystemEventLog>("SystemEventLogs");
+                }
+                return _SystemEventLogs;
+            }
+        }
+        private ObjectSet<SystemEventLog> _SystemEventLogs;
 
         #endregion
         #region AddTo 方法
@@ -452,6 +468,14 @@ namespace THOK.Authority.Dal.EntityModels
         public void AddToServer(Server server)
         {
             base.AddObject("Server", server);
+        }
+    
+        /// <summary>
+        /// 用于向 SystemEventLogs EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToSystemEventLogs(SystemEventLog systemEventLog)
+        {
+            base.AddObject("SystemEventLogs", systemEventLog);
         }
 
         #endregion
@@ -2592,6 +2616,243 @@ namespace THOK.Authority.Dal.EntityModels
         }
 
         #endregion
+    }
+    
+    /// <summary>
+    /// 没有元数据文档可用。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="AuthorizeModel", Name="SystemEventLog")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class SystemEventLog : EntityObject
+    {
+        #region 工厂方法
+    
+        /// <summary>
+        /// 创建新的 SystemEventLog 对象。
+        /// </summary>
+        /// <param name="eventLogID">EventLogID 属性的初始值。</param>
+        /// <param name="eventLogTime">EventLogTime 属性的初始值。</param>
+        /// <param name="eventType">EventType 属性的初始值。</param>
+        /// <param name="eventName">EventName 属性的初始值。</param>
+        /// <param name="eventDescription">EventDescription 属性的初始值。</param>
+        /// <param name="fromPC">FromPC 属性的初始值。</param>
+        /// <param name="operateUser">OperateUser 属性的初始值。</param>
+        /// <param name="targetSystem">TargetSystem 属性的初始值。</param>
+        public static SystemEventLog CreateSystemEventLog(global::System.Guid eventLogID, global::System.String eventLogTime, global::System.String eventType, global::System.String eventName, global::System.String eventDescription, global::System.String fromPC, global::System.String operateUser, global::System.String targetSystem)
+        {
+            SystemEventLog systemEventLog = new SystemEventLog();
+            systemEventLog.EventLogID = eventLogID;
+            systemEventLog.EventLogTime = eventLogTime;
+            systemEventLog.EventType = eventType;
+            systemEventLog.EventName = eventName;
+            systemEventLog.EventDescription = eventDescription;
+            systemEventLog.FromPC = fromPC;
+            systemEventLog.OperateUser = operateUser;
+            systemEventLog.TargetSystem = targetSystem;
+            return systemEventLog;
+        }
+
+        #endregion
+        #region 基元属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid EventLogID
+        {
+            get
+            {
+                return _EventLogID;
+            }
+            set
+            {
+                if (_EventLogID != value)
+                {
+                    OnEventLogIDChanging(value);
+                    ReportPropertyChanging("EventLogID");
+                    _EventLogID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("EventLogID");
+                    OnEventLogIDChanged();
+                }
+            }
+        }
+        private global::System.Guid _EventLogID;
+        partial void OnEventLogIDChanging(global::System.Guid value);
+        partial void OnEventLogIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String EventLogTime
+        {
+            get
+            {
+                return _EventLogTime;
+            }
+            set
+            {
+                OnEventLogTimeChanging(value);
+                ReportPropertyChanging("EventLogTime");
+                _EventLogTime = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("EventLogTime");
+                OnEventLogTimeChanged();
+            }
+        }
+        private global::System.String _EventLogTime;
+        partial void OnEventLogTimeChanging(global::System.String value);
+        partial void OnEventLogTimeChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String EventType
+        {
+            get
+            {
+                return _EventType;
+            }
+            set
+            {
+                OnEventTypeChanging(value);
+                ReportPropertyChanging("EventType");
+                _EventType = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("EventType");
+                OnEventTypeChanged();
+            }
+        }
+        private global::System.String _EventType;
+        partial void OnEventTypeChanging(global::System.String value);
+        partial void OnEventTypeChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String EventName
+        {
+            get
+            {
+                return _EventName;
+            }
+            set
+            {
+                OnEventNameChanging(value);
+                ReportPropertyChanging("EventName");
+                _EventName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("EventName");
+                OnEventNameChanged();
+            }
+        }
+        private global::System.String _EventName;
+        partial void OnEventNameChanging(global::System.String value);
+        partial void OnEventNameChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String EventDescription
+        {
+            get
+            {
+                return _EventDescription;
+            }
+            set
+            {
+                OnEventDescriptionChanging(value);
+                ReportPropertyChanging("EventDescription");
+                _EventDescription = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("EventDescription");
+                OnEventDescriptionChanged();
+            }
+        }
+        private global::System.String _EventDescription;
+        partial void OnEventDescriptionChanging(global::System.String value);
+        partial void OnEventDescriptionChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String FromPC
+        {
+            get
+            {
+                return _FromPC;
+            }
+            set
+            {
+                OnFromPCChanging(value);
+                ReportPropertyChanging("FromPC");
+                _FromPC = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("FromPC");
+                OnFromPCChanged();
+            }
+        }
+        private global::System.String _FromPC;
+        partial void OnFromPCChanging(global::System.String value);
+        partial void OnFromPCChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String OperateUser
+        {
+            get
+            {
+                return _OperateUser;
+            }
+            set
+            {
+                OnOperateUserChanging(value);
+                ReportPropertyChanging("OperateUser");
+                _OperateUser = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("OperateUser");
+                OnOperateUserChanged();
+            }
+        }
+        private global::System.String _OperateUser;
+        partial void OnOperateUserChanging(global::System.String value);
+        partial void OnOperateUserChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String TargetSystem
+        {
+            get
+            {
+                return _TargetSystem;
+            }
+            set
+            {
+                OnTargetSystemChanging(value);
+                ReportPropertyChanging("TargetSystem");
+                _TargetSystem = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("TargetSystem");
+                OnTargetSystemChanged();
+            }
+        }
+        private global::System.String _TargetSystem;
+        partial void OnTargetSystemChanging(global::System.String value);
+        partial void OnTargetSystemChanged();
+
+        #endregion
+    
     }
     
     /// <summary>

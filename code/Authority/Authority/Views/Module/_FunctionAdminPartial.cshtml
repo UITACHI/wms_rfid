@@ -1,1 +1,102 @@
-﻿
+﻿<script type="text/javascript">
+    var moduleId;
+    var isAdd;
+    $(function () {
+        $('#module_functionadmin').window({
+            title: '功能模块',
+            width: 450,
+            modal: true,
+            shadow: false,
+            closed: true,
+            height: 300,
+            resizable: false,
+            minimizable: false,
+            maximizable: false,
+            collapsible: false
+        });
+    })
+
+    //加载
+    function functionadminClick() {
+        var row = $('#details').treegrid('getSelected');
+        if (row) {
+            $('#module_functionadmin').window('open');
+            $('#functiondatagrid').datagrid('clearSelections'); //清空所有选择项
+            moduleId = row.ModuleID;
+            $('#functiondatagrid').datagrid({
+                url: '/Function/Details/?ModuleId=' + row.ModuleID
+            });
+        } else {
+            $('#module_functionadmin').window('close');
+            $.messager.show({ title: '系统提示', msg: '请选择模块！' });
+        }
+    }
+
+    //添加
+    function functionAddClick() {
+        $('#function_add').dialog('open').dialog('setTitle', '功能新增');
+        $('#ModuletID').val(moduleId);
+        $("input[type=text]").attr("value", "");
+        $("input[type=text]").removeAttr("disabled");
+        isAdd = 1;
+    }
+
+    //编辑
+    function functionEditClick() {
+        var node = $('#functiondatagrid').datagrid('getSelected');
+        if (node) {            
+            $('#function_add').dialog('open').dialog('setTitle', '功能编辑');
+            current(2);
+        } else {
+            $.messager.show({ title: '系统提示', msg: '请选择要编辑的数据！' });
+        }
+    }
+
+    //删除
+    function functionDeleteClick() {
+        var node = $('#functiondatagrid').datagrid('getSelected');
+        if (node) {
+            $('#function_add').dialog('open').dialog('setTitle', '功能删除');
+            current(3);
+            $("input[type=text]").attr("disabled", "disabled");
+        } else {
+            $.messager.show({ title: '系统提示', msg: '请选择要删除的数据！' });
+        }
+    }
+
+    function current(Parameter) {
+        var row = $('#functiondatagrid').datagrid('getSelected');
+        $('#ModuletID').val(moduleId);
+        $('#FunctionName').val(row.FunctionName);
+        $('#FunctionID').val(row.FunctionID);
+        $('#ControlName').val(row.ControlName);
+        $('#IndicateImage').val(row.IndicateImage);
+        $("input[type=text]").removeAttr("disabled");
+        isAdd = Parameter;
+        $('#functiondatagrid').datagrid('clearSelections'); //清空所有选择项
+    }
+
+</script>
+
+<div id="module_functionadmin"  split="true">    
+    <table id="functiondatagrid" class="easyui-datagrid"  rownumbers="true" singleSelect="true" border="0px"
+			idField="FunctionName" treeField="ControlName" toolbar="#tb" >
+        <thead >
+            <tr>
+                <th field="FunctionID" width="80" hidden="true">功能编码</th>
+                <th field="FunctionName" width="144">功能名称</th>
+                <th field="ControlName" width="115" >控制名称</th>
+                <th field="IndicateImage"  width="115" >功能图标</th>
+                <th field="Module_ModuleID" hidden="true" width="160" >模块编码</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="functionAddClick()" id="functionAdd">新增</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="functionEditClick()" id="functionEdit">编辑</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="functionDeleteClick()" id="functionDelete">删除</a>
+	</div>
+</div>
+
+@Html.Partial("_FunctionAdd")
+                                                                                            

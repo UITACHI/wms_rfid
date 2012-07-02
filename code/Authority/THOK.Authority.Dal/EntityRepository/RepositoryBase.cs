@@ -88,7 +88,14 @@ namespace THOK.Authority.Dal.EntityRepository
             return RepositoryContext.SaveChanges();
         }
 
+        public void Delete<TSub>(TSub[] tsubs)
+        {
+            foreach (var tsub in tsubs)
+            {
+                RepositoryContext.ObjectContext.DeleteObject(tsub);
+            }           
+        }
         #endregion
-
+            
     }
 }

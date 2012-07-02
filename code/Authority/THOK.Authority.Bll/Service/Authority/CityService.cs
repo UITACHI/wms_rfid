@@ -5,6 +5,7 @@ using THOK.Authority.Dal.EntityModels;
 using THOK.Authority.Dal.EntityRepository.Authority;
 using Microsoft.Practices.Unity;
 using System.Linq;
+using THOK.Common;
 
 namespace THOK.Authority.Bll.Service.Authority
 {
@@ -12,12 +13,6 @@ namespace THOK.Authority.Bll.Service.Authority
     {
         [Dependency]
         public ICityRepository CityRepository { get; set; }
-        [Dependency]
-        public IServerRepository ServerRepository { get; set; }
-        [Dependency]
-        public IRoleSystemRepository RoleSystemRepository { get; set; }
-        [Dependency]
-        public IUserSystemRepository UserSystemRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -27,10 +22,17 @@ namespace THOK.Authority.Bll.Service.Authority
         public object GetDetails(int page, int rows, string cityName, string description, string isActive)
         {
             IQueryable<THOK.Authority.Dal.EntityModels.City> query = CityRepository.GetQueryable();
-            var citys = query.Where(i => i.CityName.Contains(cityName)
-                && i.Description.Contains(description))
-                .OrderBy(i => i.CityID)
-                .Select(i => new { i.CityID, i.CityName, i.Description, IsActive = i.IsActive ? "启用" : "禁用"});
+            bool isactive;
+            var citys = query.OrderBy(i => i.CityID).Select(i => new { i.CityID, i.CityName, i.Description, IsActive = i.IsActive ? "启用" : "禁用" });
+            if (cityName != "" || description != "" || isActive != "")
+            {
+                if (isActive == "true") isactive = true;
+                else isactive = false;
+                citys = query.Where(i => i.CityName.Contains(cityName)
+                    && i.Description.Contains(description) && i.IsActive == isactive)
+                    .OrderBy(i => i.CityID)
+                    .Select(i => new { i.CityID, i.CityName, i.Description, IsActive = i.IsActive ? "启用" : "禁用" });
+            }
 
             int total = citys.Count();
             citys = citys.Skip((page - 1) * rows).Take(rows);
@@ -58,10 +60,7 @@ namespace THOK.Authority.Bll.Service.Authority
                 .FirstOrDefault(i => i.CityID == gCityID);
             if (city != null)
             {
-                Del(ServerRepository,city.Servers);
-                Del(RoleSystemRepository, city.RoleSystems);
-                Del(UserSystemRepository,city.UserSystems);
-                CityRepository.Delete(city);
+                CityRepository.Delete(city);                
                 CityRepository.SaveChanges();
             }
             else
@@ -77,7 +76,7 @@ namespace THOK.Authority.Bll.Service.Authority
             city.CityName = cityName;
             city.Description = description;
             city.IsActive = isActive;
-            ServerRepository.SaveChanges();
+            CityRepository.SaveChanges();
             return true;
         }
     }

@@ -58,6 +58,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages" />
     <Reference Include="System.Web.Helpers" />
@@ -83,6 +84,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Authority\AuthorizeController.cs" />
+    <Compile Include="Controllers\Authority\FunctionController.cs" />
     <Compile Include="Controllers\Authority\LoginLogController.cs" />
     <Compile Include="Controllers\Authority\ModuleController.cs" />
     <Compile Include="Controllers\Authority\RoleController.cs" />
@@ -569,6 +571,8 @@
     <Content Include="Views\Shared\_EditPartial.cshtml" />
     <Content Include="Views\Shared\_DeletePartial.cshtml" />
     <Content Include="Views\Shared\_SearchPartial.cshtml" />
+    <Content Include="Views\Module\_FunctionAdd.cshtml" />
+    <Content Include="Views\User\_UserRolePartial.cshtml" />
     <Content Include="Views\Role\_RoleUserPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

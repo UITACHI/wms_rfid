@@ -10,6 +10,7 @@ using System.Data.Objects;
 using THOK.Authority.Dal.Infrastructure;
 using THOK.Authority.Dal.Infrastructure.RepositoryContext;
 using THOK.Authority.Dal.Interfaces.Authority;
+using THOK.Common;
 
 namespace THOK.Authority.Dal.EntityRepository.Authority
 {
@@ -23,6 +24,22 @@ namespace THOK.Authority.Dal.EntityRepository.Authority
         public CityRepository(IAuthorityRepositoryContext repositoryContext)
             : base(repositoryContext)
         {
+        }
+
+        public new void Delete(City city)
+        {
+            Delete(city.Servers.ToArray());
+
+            city.RoleSystems.Do(rs => rs.RoleModules.Do(rm =>
+                Delete(rm.RoleFunctions.ToArray())));
+            city.RoleSystems.Do(rs => Delete(rs.RoleModules.ToArray()));
+            Delete(city.RoleSystems.ToArray());
+
+            city.UserSystems.Do(us => us.UserModules.Do(um => Delete(um.UserFunctions.ToArray())));
+            city.UserSystems.Do(us => Delete(us.UserModules.ToArray()));
+            Delete(city.UserSystems.ToArray());
+
+            this.ObjectSet.DeleteObject(city);
         }
     }
 }
