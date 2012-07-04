@@ -20,7 +20,7 @@ namespace THOK.Authority.Bll.Interfaces.Authority
 
         void InitRoleSys(string roleID,string cityID,string systemID);
 
-        object GetRoleSystemDetails(string systemID);
+        object GetRoleSystemDetails(string roleID,string cityID,string systemID);
 
         bool ProcessRolePermissionStr(string rolePermissionStr);
 
