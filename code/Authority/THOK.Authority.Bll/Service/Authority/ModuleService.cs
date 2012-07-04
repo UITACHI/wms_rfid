@@ -698,19 +698,19 @@ namespace THOK.Authority.Bll.Service.Authority
             return true;
         }
         
-        public object GetUserSystemDetails(string systemID)
+        public object GetUserSystemDetails(string userID,string cityID,string systemID)
         {
             IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
             IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
             IQueryable<THOK.Authority.Dal.EntityModels.UserSystem> queryUserSystem = UserSystemRepository.GetQueryable();
             IQueryable<THOK.Authority.Dal.EntityModels.UserModule> queryUserModule = UserModuleRepository.GetQueryable();
             var systems = querySystem.Single(i => i.SystemID == new Guid(systemID));
+            var userSystems = queryUserSystem.FirstOrDefault(i => i.System.SystemID == new Guid(systemID) && i.User.UserID == new Guid(userID) && i.City.CityID == new Guid(cityID));
             HashSet<Tree> userSystemTreeSet = new HashSet<Tree>();
             Tree userSystemTree = new Tree();
-            userSystemTree.id = systems.SystemID.ToString();
-            userSystemTree.text = "系统：" + systems.SystemName;
-            var roleSystems = queryUserSystem.FirstOrDefault(i => i.System.SystemID == new Guid(systemID));
-            userSystemTree.@checked = roleSystems.IsActive;
+            userSystemTree.id = userSystems.UserSystemID.ToString();
+            userSystemTree.text = "系统：" + systems.SystemName;            
+            userSystemTree.@checked = userSystems.IsActive;
             userSystemTree.attributes = "system";
 
             var modules = queryModule.Where(m => m.System.SystemID == systems.SystemID && m.ModuleID == m.ParentModule.ModuleID)
@@ -720,15 +720,15 @@ namespace THOK.Authority.Bll.Service.Authority
             foreach (var item in modules)
             {
                 Tree moduleTree = new Tree();
-                moduleTree.id = item.ModuleID.ToString();
-                moduleTree.text = "模块：" + item.ModuleName;
                 string moduleID = item.ModuleID.ToString();
-                var userModules = queryUserModule.FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID));
+                var userModules = queryUserModule.FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID) && i.UserSystem.UserSystemID == userSystems.UserSystemID);
+                moduleTree.id = userModules.UserModuleID.ToString();
+                moduleTree.text = "模块：" + item.ModuleName;                
                 moduleTree.@checked = userModules.IsActive;
                 moduleTree.attributes = "module";
 
                 moduleTreeSet.Add(moduleTree);
-                SetModuleTree(moduleTree, item);
+                SetModuleTree(moduleTree, item, userSystems);
                 moduleTreeSet.Add(moduleTree);
             }
             userSystemTree.children = moduleTreeSet.ToArray();
@@ -736,7 +736,7 @@ namespace THOK.Authority.Bll.Service.Authority
             return userSystemTreeSet.ToArray();
         }
 
-        private void SetModuleTree(Tree tree, Module module)
+        private void SetModuleTree(Tree tree, Module module,UserSystem userSystems)
         {
             HashSet<Tree> childTreeSet = new HashSet<Tree>();
             var modules = from m in module.Modules
@@ -747,36 +747,36 @@ namespace THOK.Authority.Bll.Service.Authority
                 if (item != module)
                 {
                     Tree childTree = new Tree();
-                    childTree.id = item.ModuleID.ToString();
-                    childTree.text = "模块：" + item.ModuleName;
                     string moduleID = item.ModuleID.ToString();
-                    var userModules = UserModuleRepository.GetQueryable().FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID));
+                    var userModules = UserModuleRepository.GetQueryable().FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID) && i.UserSystem.UserSystemID == userSystems.UserSystemID);
+                    childTree.id = userModules.UserModuleID.ToString();
+                    childTree.text = "模块：" + item.ModuleName;                   
                     childTree.@checked = userModules == null ? false : userModules.IsActive;
                     childTree.attributes = "module";
                     childTreeSet.Add(childTree);
                     if (item.Modules.Count > 0)
                     {
-                        SetModuleTree(childTree, item);
+                        SetModuleTree(childTree, item, userSystems);
                     }
                     if (item.Functions.Count > 0)
                     {
-                        SetModuleFunTree(childTree, item);
+                        SetModuleFunTree(childTree, item, userModules);
                     }
                 }
             }
             tree.children = childTreeSet.ToArray();
         }
 
-        private void SetModuleFunTree(Tree childTree, Module item)
+        private void SetModuleFunTree(Tree childTree, Module item,UserModule userModules)
         {
             var function = FunctionRepository.GetQueryable().Where(f => f.Module.ModuleID == item.ModuleID);            
             HashSet<Tree> functionTreeSet = new HashSet<Tree>();
             foreach (var func in function)
             {
                 Tree funcTree = new Tree();
-                funcTree.id = func.FunctionID.ToString();
-                funcTree.text = "功能：" + func.FunctionName;
-                var userFunction = UserFunctionRepository.GetQueryable().FirstOrDefault(rf => rf.Function.FunctionID == func.FunctionID);
+                var userFunction = UserFunctionRepository.GetQueryable().FirstOrDefault(rf => rf.Function.FunctionID == func.FunctionID && rf.UserModule.UserModuleID == userModules.UserModuleID);
+                funcTree.id = userFunction.UserFunctionID.ToString();
+                funcTree.text = "功能：" + func.FunctionName;                
                 funcTree.@checked = userFunction == null ? false : userFunction.IsActive;
                 funcTree.attributes = "function";
                 functionTreeSet.Add(funcTree);
@@ -810,7 +810,7 @@ namespace THOK.Authority.Bll.Service.Authority
             {
                 IQueryable<THOK.Authority.Dal.EntityModels.UserSystem> queryUserSystem = UserSystemRepository.GetQueryable();
                 Guid sid = new Guid(id);
-                var system = queryUserSystem.FirstOrDefault(i => i.System.SystemID == sid);
+                var system = queryUserSystem.FirstOrDefault(i => i.UserSystemID == sid);
                 system.IsActive = isActive;
                 RoleSystemRepository.SaveChanges();
                 result = true;
@@ -819,7 +819,7 @@ namespace THOK.Authority.Bll.Service.Authority
             {
                 IQueryable<THOK.Authority.Dal.EntityModels.UserModule> queryUserModule = UserModuleRepository.GetQueryable();
                 Guid mid = new Guid(id);
-                var module = queryUserModule.FirstOrDefault(i => i.Module.ModuleID == mid);
+                var module = queryUserModule.FirstOrDefault(i => i.UserModuleID == mid);
                 module.IsActive = isActive;
                 RoleModuleRepository.SaveChanges();
                 result = true;
@@ -828,7 +828,7 @@ namespace THOK.Authority.Bll.Service.Authority
             {
                 IQueryable<THOK.Authority.Dal.EntityModels.UserFunction> queryUserFunction = UserFunctionRepository.GetQueryable();
                 Guid fid = new Guid(id);
-                var system = queryUserFunction.FirstOrDefault(i => i.Function.FunctionID == fid);
+                var system = queryUserFunction.FirstOrDefault(i => i.UserFunctionID == fid);
                 system.IsActive = isActive;
                 RoleSystemRepository.SaveChanges();
                 result = true;

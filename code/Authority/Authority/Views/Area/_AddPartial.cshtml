@@ -1,0 +1,82 @@
+<script type="text/javascript">
+    var url;
+    $(function () {
+        $('#areaAddStatus').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45
+        });
+    })
+
+    function addClick() {
+        $('#area').dialog('open').dialog('setTitle', '新增');
+        $('#areaAddform').form('clear');
+        $('#areaAddform .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
+        $('#areaAddStatus').combo({
+            hasDownArrow: true
+        });
+        url = '/System/Create/';
+    };
+
+    function save() {
+        $('#areaAddform').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#area').dialog('close'); 
+                    $('#details').datagrid('reload'); 
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').datagrid('reload');
+                }
+            }
+        });
+    }
+</script>
+
+    <div id="area" class="easyui-dialog" modal="true" style="width:300px;height:210px;padding:2px 2px"
+        closed="true" buttons="#dlg-buttons">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
+	            <form id="areaAddform" method="post" novalidate>
+                    <table width="250">
+                      <tr>
+                        <td width="60">区域名称:</td>
+                        <td width="168"><input name="SystemName" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td>区域描述</td>
+                        <td><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
+                      </tr>
+                      <tr>
+                        <td>状态</td>
+                        <td><select id="areaAddStatus" name="Status" class="easyui-combobox" style="width: 50px">
+		                        <option value="true">启用</option>
+		                        <option value="false">禁用</option>
+	                        </select>
+	                    </td>
+                      </tr>
+                    </table>
+	            </form>
+            </div>
+        </div>
+    </div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>

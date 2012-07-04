@@ -3,8 +3,8 @@
     var cityID;
     var systemID;
     function permissionadminClick() {
-        $('#tt').tree({ url: '' });
-        $('#tt').tree('reload');
+        $('#userRoleSystem').tree({ url: '' });
+        $('#userRoleSystem').tree('reload');
         $('#cgCity').combogrid('clear');
         $('#cgSystem').combogrid('clear');
         $('#cgCity').combogrid('grid').datagrid('reload');
@@ -12,14 +12,9 @@
         var row = $('#details').datagrid('getSelected');
         if (row) {
             $('#dlg-permissionadmin').dialog('open').dialog('setTitle', '用户权限编辑：' + row.UserName);
-            $('#fm').form('load', row);
-            $('#fm .easyui-validatebox').validatebox({
-                required: true
-            });
-            $('#roleName').text(row.RoleName);
             userID = row.UserID;
         } else {
-            $.messager.confirm('错误', '没有选择行！');
+            $.messager.confirm('系统提示', '没有选择行！');
         }
     };
 
@@ -69,7 +64,7 @@
         if (cID != "" & sID != "") {
             $.post("/Module/InitUserSystemInfo", { userID: userID, cityID: cityID, systemID: systemID }, function (json) {
                 if (json) {
-                    $('#tt').tree({ url: '/Module/GetUserSystemDetails?systemid=' + systemID });
+                    $('#userRoleSystem').tree({ url: '/Module/GetUserSystemDetails?userID=' + userID + '&cityID=' + cityID + '&systemID=' + systemID });
                     $.messager.show({ title: '系统提示', msg: '查询成功' });
                 } else {
                     $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
@@ -82,10 +77,10 @@
     }
 
     function update() {
-        var roots = $('#tt').tree('getRoots'), children, i, j, info = "";
+        var roots = $('#userRoleSystem').tree('getRoots'), children, i, j, info = "";
         for (i = 0; i < roots.length; i++) {
             info += roots[i].attributes + "^" + roots[i].id + "^" + roots[i].checked + ",";
-            children = $('#tt').tree('getChildren', roots[i].target);
+            children = $('#userRoleSystem').tree('getChildren', roots[i].target);
             for (j = 0; j < children.length; j++)
                 info += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
         }
@@ -104,7 +99,7 @@
     height: 420px; padding: 0px 0px" closed="true" toolbar="#toolbar" buttons="#dlg-buttons-permission" fit="false">
     <div class="easyui-layout" fit="true">
 	    <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >  
-            <ul id="tt" class="easyui-tree" checkbox="true"></ul>
+            <ul id="userRoleSystem" class="easyui-tree" checkbox="true"></ul>
         </div>
     </div>
     <div id="toolbar" style="background-color: e0ecff">

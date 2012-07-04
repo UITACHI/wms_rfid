@@ -24,7 +24,7 @@ namespace THOK.Authority.Bll.Interfaces.Authority
 
         bool ProcessRolePermissionStr(string rolePermissionStr);
 
-        object GetUserSystemDetails(string systemID);
+        object GetUserSystemDetails(string userID, string cityID, string systemID);
 
         bool ProcessUserPermissionStr(string userPermissionStr);
     }
