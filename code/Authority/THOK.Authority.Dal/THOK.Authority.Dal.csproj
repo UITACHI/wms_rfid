@@ -54,6 +54,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthorizeDBModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EntityModels\RFIDWMSDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RFIDWMSDB.edmx</DependentUpon>
+    </Compile>
     <Compile Include="EntityRepository\Authority\SystemRepository.cs" />
     <Compile Include="EntityRepository\Authority\ModuleRepository.cs" />
     <Compile Include="EntityRepository\Authority\UserRepository.cs" />
@@ -99,6 +104,10 @@
     <EntityDeploy Include="EntityModels\AuthorizeDBModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AuthorizeDBModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="EntityModels\RFIDWMSDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>RFIDWMSDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
