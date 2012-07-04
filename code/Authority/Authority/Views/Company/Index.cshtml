@@ -3,14 +3,12 @@
         
     });
 </script>
-@* 1px solid #99BBE8*@
 <div region="center" split="true"  border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
-    <table class="easyui-datagrid" border="false"
-        url="datagrid_data2.json" 
-        fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
+    <table class="easyui-datagrid" border="false" id="details"
+        fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true" >
         <thead>
             <tr>
-                <th field="itemid" width="80">公司编码</th>
+                <th field="itemid" hidden="true" width="80" >公司编码</th>
                 <th field="productid" width="100">公司名称</th>
                 <th field="listprice" width="80" align="right">描述</th>
                 <th field="unitcost" width="80" align="right">状态</th>
@@ -18,7 +16,7 @@
         </thead>
     </table>
 </div>
-<div region="south" split="true" border="false" style="height: 250px; border-top-style: solid; border-top-width: 1px; border-top-color: 99BBE8;"></div>
+@*<div region="south" split="true" border="false" style="height: 250px; border-top-style: solid; border-top-width: 1px; border-top-color: 99BBE8;"></div>*@
 
  
 

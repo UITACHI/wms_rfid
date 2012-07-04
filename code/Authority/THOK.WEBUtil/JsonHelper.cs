@@ -71,7 +71,11 @@ namespace THOK.WebUtil
                                                                 {'menuid':'73','menuname':'产品类别管理','iconCls':'icon-nav','url':'/ProductCategory/Index'},
                                                                 {'menuid':'73','menuname':'单位信息管理','iconCls':'icon-nav','url':'/Units/Index'}
 			                                                ]
-                                                    }
+                                                    },{'menuid':'6','iconCls':'icon-sys','menuname':'仓库信息管理',
+		                                                'children':[
+				                                                {'menuid':'61','menuname':'仓库设置','iconCls':'icon-magic','url':'/Warehouse/'}				                                             
+			                                                ]
+	                                                }
                                                 ]}]";
             return json;
         }

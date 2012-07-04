@@ -37,6 +37,15 @@
     {<a id="print" href="#" class="easyui-linkbutton"  plain="true" fun="true">打印</a>}
     @if (ViewBag.hasHelp != null && ViewBag.hasHelp)
     {<a id="help" href="#" class="easyui-linkbutton"  plain="true" fun="true">帮助</a>}
+   @*                                                                                 
+    @if (ViewBag.hasAddWarehouse != null && ViewBag.hasAddWarehouse)
+    {<a id="addWarehouse" href="#" class="easyui-linkbutton"  plain="true" fun="true">新增仓库</a>}
+    @if (ViewBag.hasAddLibraryArea != null && ViewBag.hasAddLibraryArea)
+    {<a id="addArea" href="#" class="easyui-linkbutton"  plain="true" fun="true">新增库区</a>}
+    @if (ViewBag.hasAddShelf != null && ViewBag.hasAddShelf)
+    {<a id="addShelf" href="#" class="easyui-linkbutton"  plain="true" fun="true">新增货架</a>}
+    @if (ViewBag.hasAddCell != null && ViewBag.hasAddCell)
+    {<a id="addCell" href="#" class="easyui-linkbutton"  plain="true" fun="true">新增货位</a>}                       *@                                                                                                                                                                                                                                                                                                  
 </div>
 @if (ViewBag.hasSearch != null && ViewBag.hasSearch)
 {    @Html.Partial("_SearchPartial")}
@@ -76,3 +85,13 @@
 {    @Html.Partial("_PrintPartial")}
 @if (ViewBag.hasHelp != null && ViewBag.hasHelp)
 {    @Html.Partial("_HelpPartial")}
+                                  
+@*@if (ViewBag.hasAddWarehouse != null && ViewBag.hasAddWarehouse)
+{   @Html.Partial("_WarehouseEdit")}
+@if (ViewBag.hasAddLibraryArea != null && ViewBag.hasAddLibraryArea)
+{   @Html.Partial("_WarehouseEdit")}
+@if (ViewBag.hasAddShelf != null && ViewBag.hasAddShelf)
+{    @Html.Partial("_WarehouseEdit")}
+@if (ViewBag.hasAddCell != null && ViewBag.hasAddCell)
+{    @Html.Partial("_WarehouseEdit")}
+*@

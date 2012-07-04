@@ -29,5 +29,6 @@ namespace THOK.Authority.Bll.Interfaces.Authority
         bool DeleteUserRole(string userRoleIdStr);
 
         bool AddUserRole(string userID, string roleIDStr);
+
     }
 }

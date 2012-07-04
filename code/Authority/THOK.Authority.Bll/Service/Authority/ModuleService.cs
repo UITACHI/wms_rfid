@@ -403,11 +403,14 @@ namespace THOK.Authority.Bll.Service.Authority
         private void SetParentRoleModuleIsActiveFalse(RoleModule roleModule)
         {
             var parentRoleModule = roleModule.Module.ParentModule.RoleModules.FirstOrDefault(prm => prm.RoleSystem.Role.RoleID == roleModule.RoleSystem.Role.RoleID);
-            parentRoleModule.IsActive = false;
-            if (parentRoleModule.Module.ModuleID != parentRoleModule.Module.ParentModule.ModuleID)
+            if (parentRoleModule != null)
             {
-                SetParentRoleModuleIsActiveFalse(parentRoleModule);
-            }            
+                parentRoleModule.IsActive = false;
+                if (parentRoleModule.Module.ModuleID != parentRoleModule.Module.ParentModule.ModuleID)
+                {
+                    SetParentRoleModuleIsActiveFalse(parentRoleModule);
+                }
+            }
         }
 
         private void InitRoleFunctions(RoleModule roleModule)
@@ -646,7 +649,7 @@ namespace THOK.Authority.Bll.Service.Authority
             bool result = false;
             for (int i = 0; i < rolePermissionList.Length - 1; i++)
             {
-                string[] rolePermission=rolePermissionList[i].Split('^');
+                string[] rolePermission = rolePermissionList[i].Split('^');
                 type = rolePermission[0];
                 id = rolePermission[1];
                 isActive = Convert.ToBoolean(rolePermission[2]);
@@ -682,6 +685,153 @@ namespace THOK.Authority.Bll.Service.Authority
                 IQueryable<THOK.Authority.Dal.EntityModels.RoleFunction> queryRoleFunction = RoleFunctionRepository.GetQueryable();
                 Guid fid = new Guid(id);
                 var system = queryRoleFunction.FirstOrDefault(i => i.RoleFunctionID== fid);
+                system.IsActive = isActive;
+                RoleSystemRepository.SaveChanges();
+                result = true;
+            }
+            return result;
+        }
+
+        public bool InitUserSystemInfo(string userID, string cityID, string systemID)
+        {
+            var user = UserRepository.GetQueryable().Single(u => u.UserID == new Guid(userID));
+            var city = CityRepository.GetQueryable().Single(c => c.CityID == new Guid(cityID));
+            var system = SystemRepository.GetQueryable().Single(s => s.SystemID == new Guid(systemID));
+            InitUserSystem(user, city, system);
+            return true;
+        }
+        
+        public object GetUserSystemDetails(string userID,string cityID,string systemID)
+        {
+            IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
+            IQueryable<THOK.Authority.Dal.EntityModels.UserSystem> queryUserSystem = UserSystemRepository.GetQueryable();
+            IQueryable<THOK.Authority.Dal.EntityModels.UserModule> queryUserModule = UserModuleRepository.GetQueryable();
+            var systems = querySystem.Single(i => i.SystemID == new Guid(systemID));
+            var userSystems = queryUserSystem.FirstOrDefault(i => i.System.SystemID == new Guid(systemID) && i.User.UserID == new Guid(userID) && i.City.CityID == new Guid(cityID));
+            HashSet<Tree> userSystemTreeSet = new HashSet<Tree>();
+            Tree userSystemTree = new Tree();
+            userSystemTree.id = userSystems.UserSystemID.ToString();
+            userSystemTree.text = "系统：" + systems.SystemName;            
+            userSystemTree.@checked = userSystems.IsActive;
+            userSystemTree.attributes = "system";
+
+            var modules = queryModule.Where(m => m.System.SystemID == systems.SystemID && m.ModuleID == m.ParentModule.ModuleID)
+                                     .OrderBy(m => m.ShowOrder)
+                                     .Select(m => m);
+            HashSet<Tree> moduleTreeSet = new HashSet<Tree>();
+            foreach (var item in modules)
+            {
+                Tree moduleTree = new Tree();
+                string moduleID = item.ModuleID.ToString();
+                var userModules = queryUserModule.FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID) && i.UserSystem.UserSystemID == userSystems.UserSystemID);
+                moduleTree.id = userModules.UserModuleID.ToString();
+                moduleTree.text = "模块：" + item.ModuleName;                
+                moduleTree.@checked = userModules.IsActive;
+                moduleTree.attributes = "module";
+
+                moduleTreeSet.Add(moduleTree);
+                SetModuleTree(moduleTree, item, userSystems);
+                moduleTreeSet.Add(moduleTree);
+            }
+            userSystemTree.children = moduleTreeSet.ToArray();
+            userSystemTreeSet.Add(userSystemTree);
+            return userSystemTreeSet.ToArray();
+        }
+
+        private void SetModuleTree(Tree tree, Module module,UserSystem userSystems)
+        {
+            HashSet<Tree> childTreeSet = new HashSet<Tree>();
+            var modules = from m in module.Modules
+                          orderby m.ShowOrder
+                          select m;
+            foreach (var item in modules)
+            {
+                if (item != module)
+                {
+                    Tree childTree = new Tree();
+                    string moduleID = item.ModuleID.ToString();
+                    var userModules = UserModuleRepository.GetQueryable().FirstOrDefault(i => i.Module.ModuleID == new Guid(moduleID) && i.UserSystem.UserSystemID == userSystems.UserSystemID);
+                    childTree.id = userModules.UserModuleID.ToString();
+                    childTree.text = "模块：" + item.ModuleName;                   
+                    childTree.@checked = userModules == null ? false : userModules.IsActive;
+                    childTree.attributes = "module";
+                    childTreeSet.Add(childTree);
+                    if (item.Modules.Count > 0)
+                    {
+                        SetModuleTree(childTree, item, userSystems);
+                    }
+                    if (item.Functions.Count > 0)
+                    {
+                        SetModuleFunTree(childTree, item, userModules);
+                    }
+                }
+            }
+            tree.children = childTreeSet.ToArray();
+        }
+
+        private void SetModuleFunTree(Tree childTree, Module item,UserModule userModules)
+        {
+            var function = FunctionRepository.GetQueryable().Where(f => f.Module.ModuleID == item.ModuleID);            
+            HashSet<Tree> functionTreeSet = new HashSet<Tree>();
+            foreach (var func in function)
+            {
+                Tree funcTree = new Tree();
+                var userFunction = UserFunctionRepository.GetQueryable().FirstOrDefault(rf => rf.Function.FunctionID == func.FunctionID && rf.UserModule.UserModuleID == userModules.UserModuleID);
+                funcTree.id = userFunction.UserFunctionID.ToString();
+                funcTree.text = "功能：" + func.FunctionName;                
+                funcTree.@checked = userFunction == null ? false : userFunction.IsActive;
+                funcTree.attributes = "function";
+                functionTreeSet.Add(funcTree);
+            }
+            childTree.children = functionTreeSet.ToArray();
+        }
+
+        public bool ProcessUserPermissionStr(string userPermissionStr)
+        {
+            string[] rolePermissionList = userPermissionStr.Split(',');
+            string type;
+            string id;
+            bool isActive;
+            bool result = false;
+            for (int i = 0; i < rolePermissionList.Length - 1; i++)
+            {
+                string[] rolePermission = rolePermissionList[i].Split('^');
+                type = rolePermission[0];
+                id = rolePermission[1];
+                isActive = Convert.ToBoolean(rolePermission[2]);
+                UpdateUserPermission(type, id, isActive);
+                result = true;
+            }
+            return result;
+        }
+
+        private bool UpdateUserPermission(string type, string id, bool isActive)
+        {
+            bool result = false;
+            if (type == "system")
+            {
+                IQueryable<THOK.Authority.Dal.EntityModels.UserSystem> queryUserSystem = UserSystemRepository.GetQueryable();
+                Guid sid = new Guid(id);
+                var system = queryUserSystem.FirstOrDefault(i => i.UserSystemID == sid);
+                system.IsActive = isActive;
+                RoleSystemRepository.SaveChanges();
+                result = true;
+            }
+            else if (type == "module")
+            {
+                IQueryable<THOK.Authority.Dal.EntityModels.UserModule> queryUserModule = UserModuleRepository.GetQueryable();
+                Guid mid = new Guid(id);
+                var module = queryUserModule.FirstOrDefault(i => i.UserModuleID == mid);
+                module.IsActive = isActive;
+                RoleModuleRepository.SaveChanges();
+                result = true;
+            }
+            else if (type == "function")
+            {
+                IQueryable<THOK.Authority.Dal.EntityModels.UserFunction> queryUserFunction = UserFunctionRepository.GetQueryable();
+                Guid fid = new Guid(id);
+                var system = queryUserFunction.FirstOrDefault(i => i.UserFunctionID == fid);
                 system.IsActive = isActive;
                 RoleSystemRepository.SaveChanges();
                 result = true;

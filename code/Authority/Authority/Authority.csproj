@@ -103,6 +103,7 @@
     <Compile Include="Controllers\ProductInfo\UnitsController.cs" />
     <Compile Include="Controllers\ServerAdmin\CityController.cs" />
     <Compile Include="Controllers\ServerAdmin\ServerController.cs" />
+    <Compile Include="Controllers\WarehouseInfo\WarehouseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -527,7 +528,30 @@
     <Content Include="Views\Authorize\_DeletePartial.cshtml" />
     <Content Include="Views\Authorize\_EditPartial.cshtml" />
     <Content Include="Views\Authorize\_SearchPartial.cshtml" />
-    <Content Include="Views\Factory\Index.cshtml" />
+    <Content Include="Views\Company\_AddPartial.cshtml" />
+    <Content Include="Views\Company\_DeletePartial.cshtml" />
+    <Content Include="Views\Company\_EditPartial.cshtml" />
+    <Content Include="Views\Company\_HelpPartial.cshtml" />
+    <Content Include="Views\Company\_SearchPartial.cshtml" />
+    <Content Include="Views\Company\_PrintPartial.cshtml" />
+    <Content Include="Views\Area\_AddPartial.cshtml" />
+    <Content Include="Views\Area\_DeletePartial.cshtml" />
+    <Content Include="Views\Area\_EditPartial.cshtml" />
+    <Content Include="Views\Area\_SearchPartial.cshtml" />
+    <Content Include="Views\Area\_HelpPartial.cshtml" />
+    <Content Include="Views\Area\_PrintPartial.cshtml" />
+    <Content Include="Views\Department\_AddPartial.cshtml" />
+    <Content Include="Views\Department\_DeletePartial.cshtml" />
+    <Content Include="Views\Department\_EditPartial.cshtml" />
+    <Content Include="Views\Department\_SearchPartial.cshtml" />
+    <Content Include="Views\Employee\_AddPartial.cshtml" />
+    <Content Include="Views\Employee\_DeletePartial.cshtml" />
+    <Content Include="Views\Employee\_EditPartial.cshtml" />
+    <Content Include="Views\Employee\_SearchPartial.cshtml" />
+    <Content Include="Views\Employee\_HelpPartial.cshtml" />
+    <Content Include="Views\Employee\_PrintPartial.cshtml" />
+    <Content Include="Views\Department\_HelpPartial.cshtml" />
+    <Content Include="Views\Department\_PrintPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
@@ -579,9 +603,12 @@
     <Content Include="Views\Module\_FunctionAdd.cshtml" />
     <Content Include="Views\User\_UserRolePartial.cshtml" />
     <Content Include="Views\Role\_RoleUserPartial.cshtml" />
+    <Content Include="Views\Factory\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Units\Index.cshtml" />
     <Content Include="Views\ProductCategory\Index.cshtml" />
+    <Content Include="Views\Warehouse\Index.cshtml" />
+    <Content Include="Views\Warehouse\_AddWarehousePartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
