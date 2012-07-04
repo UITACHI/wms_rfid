@@ -403,11 +403,14 @@ namespace THOK.Authority.Bll.Service.Authority
         private void SetParentRoleModuleIsActiveFalse(RoleModule roleModule)
         {
             var parentRoleModule = roleModule.Module.ParentModule.RoleModules.FirstOrDefault(prm => prm.RoleSystem.Role.RoleID == roleModule.RoleSystem.Role.RoleID);
-            parentRoleModule.IsActive = false;
-            if (parentRoleModule.Module.ModuleID != parentRoleModule.Module.ParentModule.ModuleID)
+            if (parentRoleModule != null)
             {
-                SetParentRoleModuleIsActiveFalse(parentRoleModule);
-            }            
+                parentRoleModule.IsActive = false;
+                if (parentRoleModule.Module.ModuleID != parentRoleModule.Module.ParentModule.ModuleID)
+                {
+                    SetParentRoleModuleIsActiveFalse(parentRoleModule);
+                }
+            }
         }
 
         private void InitRoleFunctions(RoleModule roleModule)
