@@ -1,0 +1,13 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#help').click(function () {
+            $('#dlg-help').dialog('open').dialog('setTitle', '帮助');
+        });
+    });
+</script>
+<div id="dlg-help" class="easyui-dialog" modal="true" maximized="true" border="false"
+        style="width:auto;height:auto;padding:10px 20px"
+		closed="true">
+    <div id="help-text">
+    </div>
+</div>

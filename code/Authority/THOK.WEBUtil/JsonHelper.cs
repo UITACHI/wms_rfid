@@ -66,7 +66,7 @@ namespace THOK.WebUtil
 			                                                ]
                                                     },{'menuid':'6','iconCls':'icon-sys','menuname':'仓库信息管理',
 		                                                'children':[
-				                                                {'menuid':'61','menuname':'仓库设置','iconCls':'icon-magic','url':'/Company/','enable':'true'}				                                             
+				                                                {'menuid':'61','menuname':'仓库设置','iconCls':'icon-magic','url':'/Warehouse/'}				                                             
 			                                                ]
 	                                                }
                                                 ]}]";

@@ -1,0 +1,13 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#print').click(function () {
+            $('#dlg-print').dialog('open').dialog('setTitle', '打印');
+        });
+    });
+</script>
+<div id="dlg-print" class="easyui-dialog" modal="true" maximized="true" border="false"
+        style="width:auto;height:auto;padding:10px 20px"
+		closed="true">
+    <div id="print-text">
+    </div>
+</div>

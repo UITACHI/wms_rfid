@@ -1,0 +1,182 @@
+﻿<script type="text/javascript">   
+    $(function () {
+        alert(1);
+        $('#addShelf').attr('disabled', true);
+        $('#addCell').attr('disabled', true);
+    });
+
+    function treeClick() {
+        var treeRow = $('#warehouseTree').tree('getSelected');
+        alert(treeRow.id + "," + treeRow.text + "," + treeRow.attributes);
+        if (treeRow.attributes == "system") {
+            $('#addCell').attr('disabled', true);
+            $('#addShelf').attr('disabled', true);
+            $('#addArea').removeAttr("disabled");
+        } else if (treeRow.attributes == "module") {
+            $('#addArea').attr('disabled', true);
+            $('#addCell').attr('disabled', true);
+            $('#addShelf').removeAttr("disabled");
+        } else if (treeRow.attributes == "function") {
+            $('#addArea').attr('disabled', true);
+            $('#addShelf').attr('disabled', true);
+            $('#addCell').removeAttr("disabled");
+        }
+    }
+
+    function addShelfClick() {
+        alert("货架");
+    }
+    function addCellClick() {
+        alert("货位");
+    }
+    function addAreaClick() {
+        alert("库区");
+    }
+</script>
+<style type="text/css">    
+    html, body
+    {
+        font: 100% 微软雅黑, 宋体, 新宋体;
+        margin: 0; /* 最好将 body 元素的边距和填充设置为 0 以覆盖不同的浏览器默认值 */
+        padding: 0;
+        text-align: center; /* 在 IE 5* 浏览器中，这会将容器居中。文本随后将在 #container 选择器中设置为默认左对齐 */
+        height: 100%; /*这里将高度设置为100%是这个布局实现自适应高度的关键，只有这里设置了高度，下面div的高度设置才起作用*/
+    }
+    #layout
+    {
+        width: 100%;
+        height: 100%;
+        margin: 0px auto;
+    }
+    #header
+    {
+        height: 6%;
+    }
+    #container
+    {
+        height: 94%;
+    }
+    #container #sidebar
+    {
+        height: 100%;
+        width: 28%;
+        float: left;
+        overflow: scroll;
+        margin: 0px 0px 0px 0xp;
+    }
+    #container #main
+    {
+        height: 100%;
+        width: 72%;
+        float: left;
+    }
+    .clearfloat
+    {
+        /* 此类应当放在 div 或 break 元素上，而且该元素应当是完全包含浮动的容器关闭之前的最后一个元素 */
+        clear: both;
+        height: 0;
+        font-size: 1px;
+        line-height: 0px;
+    }
+</style>
+<div id="layout">
+    <div id="header" style="text-align: left; border: 1px solid #ccc;">
+        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addMarehouse" onclick="addMarehouseClick()">新增仓库</a> 
+        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addArea" onclick="addAreaClick()">新增库区</a> 
+        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addShelf" onclick="addShelfClick()">新增货架</a>
+        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addCell" onclick="addCellClick()">新增货架</a>
+    </div>
+    <div id="container">
+        <div id="sidebar">
+            <ul id="warehouseTree" style="text-align: left;" class="easyui-tree" checkbox="false" onclick="treeClick()"
+                url='/Module/GetUserSystemDetails?userID=797c0b4c-932d-4ec9-acad-815ebb858c26&cityID=5100f6ff-d0e8-4e00-b2a3-125d40f19f99&systemID=3281ac28-9241-4371-8fce-84af5e1610bd'>
+            </ul>
+        </div>
+        <div id="main">
+            <div id="top" style="text-align: left;font-size:12px;font-weight: lighter;font-family:"宋体";">当前选中的节点：muji</div>
+            <form id="fm" action="/Module/Create/" method="post">
+            <fieldset style="width: 509px; height: 276px;">
+                <legend>仓库库区</legend>
+                <table>
+                    <tr>
+                        <td colspan="4">
+                            <input name="txtAreaID" type="text" value="2" id="txtAreaID" class="HiddenControl"
+                                style="display: none" />
+                            <input class="ButtonCreate" name="btnBack" onclick="openwin()" type="button" value="批量分配指定卷烟" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle" style="height: 26px">
+                            <font color="red">*</font>仓库编码
+                        </td>
+                        <td style="height: 26px">
+                            <input name="txtWhCode" type="text" value="0101" id="txtWhCode" class="TextBox" onfocus="CannotEdit(this)"
+                                style="width: 140px;" />
+                        </td>
+                        <td class="tdTitle" style="height: 26px">
+                            <font color="red">*</font>库区类别
+                        </td>
+                        <td style="height: 26px">
+                            <input name="txtAreaType" type="text" value="0" id="txtAreaType" class="TextBox"
+                                onfocus="CannotEdit(this)" style="width: 140px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">
+                            <font color="red">*</font>库区编码
+                        </td>
+                        <td>
+                            <input name="txtAreaCode" type="text" value="001-01" readonly="readonly" id="txtAreaCode"
+                                class="TextBox" style="width: 140px;" />
+                        </td>
+                        <td class="tdTitle">
+                            <font color="red">*</font>库区名称
+                        </td>
+                        <td>
+                            <input name="txtAreaName" type="text" value="主库区" id="txtAreaName" class="TextBox"
+                                style="width: 140px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">
+                            库区简称
+                        </td>
+                        <td>
+                            <input name="txtShortName" type="text" value="主库区" id="txtShortName" class="TextBox"
+                                style="width: 140px;" />
+                        </td>
+                        <td class="tdTitle">
+                            是否启用
+                        </td>
+                        <td>
+                            <select name="ddlActive" id="ddlActive">
+                                <option selected="selected" value="1">启用</option>
+                                <option value="0">未启用</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">
+                            备注
+                        </td>
+                        <td colspan="3">
+                            <textarea name="txtMemo" rows="10" cols="20" id="txtMemo" class="MultilineTextbox"
+                                style="width: 374px;">主库区</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="height: 35px; text-align: center;">
+                            &nbsp;
+                            <input type="submit" name="btnSave" value="保存" onclick="return CheckBeforeSubmit();"
+                                id="btnSave" class="button" />
+                            &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<input type="submit" name="btnDelete" value="删除"
+                                onclick="return DeleteConfirm();" id="btnDelete" class="button" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            </form>
+        </div>
+        <br class="clearfloat" />
+    </div>
+</div>

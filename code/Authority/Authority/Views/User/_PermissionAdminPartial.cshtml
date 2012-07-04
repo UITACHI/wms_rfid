@@ -61,7 +61,6 @@
         var sID = $('#cgSystem').combogrid('getValue');
         cityID = cID;
         systemID = sID;
-       // alert(systemID);
         if (cID != "" & sID != "") {
             $.post("/Module/InitUserSystemInfo", { userID: userID, cityID: cityID, systemID: systemID }, function (json) {
                 if (json) {
