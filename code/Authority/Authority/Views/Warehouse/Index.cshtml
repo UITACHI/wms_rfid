@@ -98,11 +98,13 @@
     }
 </style>
 <div id="layout">
-    <div id="header" style="text-align: left; border: 1px solid #ccc;">
-        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addMarehouse" onclick="addMarehouseClick()">新增仓库</a> 
-        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addArea" onclick="addAreaClick()">新增库区</a> 
-        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addShelf" onclick="addShelfClick()">新增货架</a>
-        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addCell" onclick="addCellClick()">新增货位</a>
+    <div id="header" toolbar="#toolbar" fit="true" style="text-align: left; border: 1px solid #ccc;">
+        <div id="toolbar" class="datagrid-toolbar">
+                <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addMarehouse" onclick="addMarehouseClick()">新增仓库</a> 
+                <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addArea" onclick="addAreaClick()">新增库区</a> 
+                <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addShelf" onclick="addShelfClick()">新增货架</a>
+                <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addCell" onclick="addCellClick()">新增货位</a>
+        </div>
     </div>
     <div id="container">
         <div id="sidebar">
