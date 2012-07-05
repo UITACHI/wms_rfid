@@ -97,6 +97,10 @@
     <Compile Include="Controllers\Organization\CompanyController.cs" />
     <Compile Include="Controllers\Organization\DepartmentController.cs" />
     <Compile Include="Controllers\Organization\EmployeeController.cs" />
+    <Compile Include="Controllers\ProductInfo\FactoryController.cs" />
+    <Compile Include="Controllers\ProductInfo\ProductCategoryController.cs" />
+    <Compile Include="Controllers\ProductInfo\ProductController.cs" />
+    <Compile Include="Controllers\ProductInfo\UnitsController.cs" />
     <Compile Include="Controllers\ServerAdmin\CityController.cs" />
     <Compile Include="Controllers\ServerAdmin\ServerController.cs" />
     <Compile Include="Controllers\WarehouseInfo\WarehouseController.cs" />
@@ -603,6 +607,10 @@
     <Content Include="Views\Module\_FunctionAdd.cshtml" />
     <Content Include="Views\User\_UserRolePartial.cshtml" />
     <Content Include="Views\Role\_RoleUserPartial.cshtml" />
+    <Content Include="Views\Factory\Index.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Units\Index.cshtml" />
+    <Content Include="Views\ProductCategory\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
     <Content Include="Views\Warehouse\_AddWarehousePartial.cshtml" />
   </ItemGroup>
