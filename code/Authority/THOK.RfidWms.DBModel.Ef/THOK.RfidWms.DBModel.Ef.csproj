@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{259E5E16-41D8-420F-A11C-72BEE784B5CB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>THOK.RfidWms.DBModel.Ef</RootNamespace>
+    <AssemblyName>THOK.RfidWms.DBModel.Ef</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Migrations\201207050121487_init_001.cs" />
+    <Compile Include="Migrations\201207050121487_init_001.Designer.cs">
+      <DependentUpon>201207050121487_init_001.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AuthorizeContext.cs" />
+    <Compile Include="Models\Authority\City.cs" />
+    <Compile Include="Models\Authority\Function.cs" />
+    <Compile Include="Models\Authority\LoginLog.cs" />
+    <Compile Include="Models\MappingStrategy\EntityMappingBase.cs" />
+    <Compile Include="Models\MappingStrategy\IMapping.cs" />
+    <Compile Include="Models\MappingStrategy\Strategies\AddPrefixMappingStrategy.cs" />
+    <Compile Include="Models\MappingStrategy\Strategies\AddUnderscoresBetweenWordsMappingStrategy.cs" />
+    <Compile Include="Models\MappingStrategy\Strategies\CompositeMappingStrategy.cs" />
+    <Compile Include="Models\MappingStrategy\Strategies\IMappingStrategy.cs" />
+    <Compile Include="Models\MappingStrategy\Strategies\ToLowerMappingStrategy.cs" />
+    <Compile Include="Models\Authority\Mapping\CityMap.cs" />
+    <Compile Include="Models\Authority\Mapping\FunctionMap.cs" />
+    <Compile Include="Models\Authority\Mapping\LoginLogMap.cs" />
+    <Compile Include="Models\Authority\Mapping\ModuleMap.cs" />
+    <Compile Include="Models\Authority\Mapping\RoleFunctionMap.cs" />
+    <Compile Include="Models\Authority\Mapping\RoleMap.cs" />
+    <Compile Include="Models\Authority\Mapping\RoleModuleMap.cs" />
+    <Compile Include="Models\Authority\Mapping\RoleSystemMap.cs" />
+    <Compile Include="Models\Authority\Mapping\ServerMap.cs" />
+    <Compile Include="Models\Authority\Mapping\SystemEventLogMap.cs" />
+    <Compile Include="Models\Authority\Mapping\SystemMap.cs" />
+    <Compile Include="Models\Authority\Mapping\UserFunctionMap.cs" />
+    <Compile Include="Models\Authority\Mapping\UserMap.cs" />
+    <Compile Include="Models\Authority\Mapping\UserModuleMap.cs" />
+    <Compile Include="Models\Authority\Mapping\UserRoleMap.cs" />
+    <Compile Include="Models\Authority\Mapping\UserSystemMap.cs" />
+    <Compile Include="Models\Authority\Module.cs" />
+    <Compile Include="Models\Authority\Role.cs" />
+    <Compile Include="Models\Authority\RoleFunction.cs" />
+    <Compile Include="Models\Authority\RoleModule.cs" />
+    <Compile Include="Models\Authority\RoleSystem.cs" />
+    <Compile Include="Models\Authority\Server.cs" />
+    <Compile Include="Models\Authority\System.cs" />
+    <Compile Include="Models\Authority\SystemEventLog.cs" />
+    <Compile Include="Models\Authority\User.cs" />
+    <Compile Include="Models\Authority\UserFunction.cs" />
+    <Compile Include="Models\Authority\UserModule.cs" />
+    <Compile Include="Models\Authority\UserRole.cs" />
+    <Compile Include="Models\Authority\UserSystem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Wms\Mapping\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
