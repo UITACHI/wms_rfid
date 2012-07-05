@@ -116,13 +116,6 @@
     <fieldset style="width: 520px; height: 260px">
         <legend>仓库库区</legend>
         <table>
-            @* <tr>
-                <td colspan="4">
-                    <input name="txtAreaID" type="text" value="2" id="txtAreaID" class="HiddenControl"
-                        style="display: none" />
-                    <input class="ButtonCreate" name="btnBack" onclick="openwin()" type="button" value="批量分配指定卷烟" />
-                </td>
-            </tr>*@
             <tr>
                 <td class="tdTitle" style="height: 26px">
                     仓库编码:
@@ -300,7 +293,8 @@
     </fieldset>
     </form>
 </div>
-<div id="celldlg" class="easyui-dialog" style="display: none; margin: 10px 0px 0px 30px;">
+<div id="celldlg" class="easyui-dialog" style="display: none; margin: 10px 0px 0px 30px;"
+    buttons="#dlg-buttons">
     <form id="cellfm" action="/Module/Create/" method="post">
     <fieldset style="width: 520px; height: 260px">
         <legend>货位</legend>
