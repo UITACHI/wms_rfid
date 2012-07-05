@@ -80,7 +80,10 @@
   <ItemGroup>
     <None Include="ClassDiagram\ClassDiagramService.cd" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\Wms\" />
+    <Folder Include="Service\Wms\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\THOK.Authority.Common\THOK.Common.csproj">
       <Project>{2F9C4207-F8A0-4E55-A2CB-3514ADC0A437}</Project>

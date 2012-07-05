@@ -93,17 +93,17 @@
     <Compile Include="Controllers\Authority\UserController.cs" />
     <Compile Include="Controllers\Authority\UserPermissionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Organization\AreaController.cs" />
-    <Compile Include="Controllers\Organization\CompanyController.cs" />
-    <Compile Include="Controllers\Organization\DepartmentController.cs" />
-    <Compile Include="Controllers\Organization\EmployeeController.cs" />
-    <Compile Include="Controllers\ProductInfo\FactoryController.cs" />
-    <Compile Include="Controllers\ProductInfo\ProductCategoryController.cs" />
-    <Compile Include="Controllers\ProductInfo\ProductController.cs" />
-    <Compile Include="Controllers\ProductInfo\UnitsController.cs" />
-    <Compile Include="Controllers\ServerAdmin\CityController.cs" />
-    <Compile Include="Controllers\ServerAdmin\ServerController.cs" />
-    <Compile Include="Controllers\WarehouseInfo\WarehouseController.cs" />
+    <Compile Include="Controllers\Wms\Organization\AreaController.cs" />
+    <Compile Include="Controllers\Wms\Organization\CompanyController.cs" />
+    <Compile Include="Controllers\Wms\Organization\DepartmentController.cs" />
+    <Compile Include="Controllers\Wms\Organization\EmployeeController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\FactoryController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\ProductCategoryController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\ProductController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\UnitsController.cs" />
+    <Compile Include="Controllers\Authority\ServerAdmin\CityController.cs" />
+    <Compile Include="Controllers\Authority\ServerAdmin\ServerController.cs" />
+    <Compile Include="Controllers\Wms\WarehouseInfo\WarehouseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
