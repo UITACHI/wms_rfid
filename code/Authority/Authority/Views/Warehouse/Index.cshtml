@@ -9,18 +9,18 @@
         var treeRow = $('#warehouseTree').tree('getSelected');
         $('#lblTree').text(treeRow.text);
         if (treeRow.attributes == "system") {
-            $('#addCell').attr('disabled', 'true');
-            $('#addShelf').attr('disabled', 'true');
+            $('#addCell').attr('disabled', true);
+            $('#addShelf').attr('disabled', true);
             $('#addArea').removeAttr("disabled");
             addAreaClick();                    
         } else if (treeRow.attributes == "module") {
-            $('#addArea').attr('disabled', 'true');
-            $('#addCell').attr('disabled', 'true');
+            $('#addArea').attr('disabled', true);
+            $('#addCell').attr('disabled', true);
             $('#addShelf').removeAttr("disabled");
             addShelfClick();
         } else if (treeRow.attributes == "function") {
-            $('#addArea').attr('disabled', 'true');
-            $('#addShelf').attr('disabled', 'true');
+            $('#addArea').attr('disabled', true);
+            $('#addShelf').attr('disabled', true);
             $('#addCell').removeAttr("disabled");
             addCellClick();
         }
@@ -102,7 +102,7 @@
 </style>
 <div id="layout">
     <div id="header" toolbar="#toolbar" fit="true" style="text-align: left; border: 1px solid #ccc;">
-        <div id="toolbar" class="datagrid-toolbar">
+        <div id="toolbar" class="datagrid-toolbar" style="width: auto; height: auto; background-color: #FFFFFF;">
                 <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addMarehouse" onclick="addMarehouseClick()">新增仓库</a> 
                 <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addArea" onclick="addAreaClick()">新增库区</a> 
                 <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addShelf" onclick="addShelfClick()">新增货架</a>
