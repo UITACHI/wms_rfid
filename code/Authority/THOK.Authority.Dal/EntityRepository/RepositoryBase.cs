@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Data.Objects;
 using System.Linq.Expressions;
 using THOK.Authority.Dal.Interfaces;
-using THOK.Authority.Dal.Infrastructure;
-using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using THOK.Authority.Dal.Infrastructure.RepositoryContext;
 using System.Data.Entity;
 

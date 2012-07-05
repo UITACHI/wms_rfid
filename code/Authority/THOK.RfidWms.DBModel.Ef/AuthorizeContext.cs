@@ -1,6 +1,7 @@
 using System.Data.Entity;
 using THOK.RfidWms.DBModel.Ef.Models.Authority.Mapping;
 using THOK.RfidWms.DBModel.Ef.Models.Authority;
+using THOK.RfidWms.DBModel.Ef.Migrations;
 
 namespace THOK.RfidWms.DBModel.Ef
 {
@@ -8,7 +9,7 @@ namespace THOK.RfidWms.DBModel.Ef
     {
         static AuthorizeContext()
         {
-            Database.SetInitializer<AuthorizeContext>(null);
+            Database.SetInitializer<AuthorizeContext>(new MigrateDatabaseToLatestVersion<AuthorizeContext, Configuration>());
         }
 
 		public AuthorizeContext()
