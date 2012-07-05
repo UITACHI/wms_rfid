@@ -14,7 +14,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                         company_id = c.Guid(nullable: false),
                         company_code = c.String(nullable: false, maxLength: 20),
                         company_name = c.String(nullable: false, maxLength: 100),
-                        company_type = c.String(nullable: false, maxLength: 1),
+                        company_type = c.String(nullable: false, maxLength: 1, fixedLength: true),
                         description = c.String(),
                         parent_company_id = c.Guid(nullable: false),
                         uniform_code = c.String(maxLength: 20),
@@ -22,7 +22,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                         warehouse_count = c.Decimal(nullable: false, precision: 18, scale: 2),
                         warehouse_capacity = c.Decimal(nullable: false, precision: 18, scale: 2),
                         sorting_count = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        is_active = c.String(nullable: false, maxLength: 1),
+                        is_active = c.String(nullable: false, maxLength: 1, fixedLength: true),
                         update_time = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.company_id)

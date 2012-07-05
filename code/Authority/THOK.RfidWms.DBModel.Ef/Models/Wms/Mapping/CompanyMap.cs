@@ -24,6 +24,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
 
             this.Property(t => t.CompanyType)
                 .IsRequired()
+                .IsFixedLength()
                 .HasMaxLength(1);
 
             this.Property(t => t.UniformCode)
@@ -31,6 +32,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
 
             this.Property(t => t.IsActive)
                 .IsRequired()
+                .IsFixedLength()
                 .HasMaxLength(1);
 
             // Table & Column Mappings

@@ -49,9 +49,9 @@
     <Compile Include="Migrations\201207050121487_init_001.Designer.cs">
       <DependentUpon>201207050121487_init_001.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201207050710049_add_company.cs" />
-    <Compile Include="Migrations\201207050710049_add_company.Designer.cs">
-      <DependentUpon>201207050710049_add_company.cs</DependentUpon>
+    <Compile Include="Migrations\201207050909427_add_company.cs" />
+    <Compile Include="Migrations\201207050909427_add_company.Designer.cs">
+      <DependentUpon>201207050909427_add_company.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
