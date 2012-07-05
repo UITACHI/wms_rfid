@@ -5,32 +5,33 @@ using System.Text;
 using System.Data.Objects;
 using THOK.Authority.Dal.Interfaces;
 using THOK.Authority.Dal.Interfaces.Authority;
+using System.Data.Entity;
 
 namespace THOK.Authority.Dal.Infrastructure.RepositoryContext
 {
     public class AuthorityRepositoryContext : IAuthorityRepositoryContext, IRepositoryContext
     {
-        private const string OBJECT_CONTEXT_KEY = "THOK.Authority.Dal.EntityModels.AuthorizeEntities";
-        public IObjectSet<T> GetObjectSet<T>() 
+        private const string OBJECT_CONTEXT_KEY = "THOK.RfidWms.DBModel.Ef.AuthorizeContext,THOK.RfidWms.DBModel.Ef.dll";
+        public DbSet<T> GetObjectSet<T>() 
             where T : class
         {
-            return ContextManager.GetObjectContext(OBJECT_CONTEXT_KEY).CreateObjectSet<T>();
+            return ContextManager.GetDbContext(OBJECT_CONTEXT_KEY).Set<T>();
         }
 
         /// <summary>
         /// Returns the active object context
         /// </summary>
-        public ObjectContext ObjectContext
+        public DbContext DbContext
         {
             get
             {
-                return ContextManager.GetObjectContext(OBJECT_CONTEXT_KEY);
+                return ContextManager.GetDbContext(OBJECT_CONTEXT_KEY);
             }
         }
 
         public int SaveChanges()
         {
-            return this.ObjectContext.SaveChanges();
+            return this.DbContext.SaveChanges();
         }
 
         public void Terminate()

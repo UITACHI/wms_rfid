@@ -80,7 +80,10 @@
   <ItemGroup>
     <None Include="ClassDiagram\ClassDiagramService.cd" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\Wms\" />
+    <Folder Include="Service\Wms\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\THOK.Authority.Common\THOK.Common.csproj">
       <Project>{2F9C4207-F8A0-4E55-A2CB-3514ADC0A437}</Project>
@@ -89,6 +92,10 @@
     <ProjectReference Include="..\THOK.Authority.Dal\THOK.Authority.Dal.csproj">
       <Project>{A8E32F0A-A9F4-4CDD-8C7A-8304CD034070}</Project>
       <Name>THOK.Authority.Dal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THOK.RfidWms.DBModel.Ef\THOK.RfidWms.DBModel.Ef.csproj">
+      <Project>{259E5E16-41D8-420F-A11C-72BEE784B5CB}</Project>
+      <Name>THOK.RfidWms.DBModel.Ef</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

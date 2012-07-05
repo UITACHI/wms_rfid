@@ -93,13 +93,17 @@
     <Compile Include="Controllers\Authority\UserController.cs" />
     <Compile Include="Controllers\Authority\UserPermissionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Organization\AreaController.cs" />
-    <Compile Include="Controllers\Organization\CompanyController.cs" />
-    <Compile Include="Controllers\Organization\DepartmentController.cs" />
-    <Compile Include="Controllers\Organization\EmployeeController.cs" />
-    <Compile Include="Controllers\ServerAdmin\CityController.cs" />
-    <Compile Include="Controllers\ServerAdmin\ServerController.cs" />
-    <Compile Include="Controllers\WarehouseInfo\WarehouseController.cs" />
+    <Compile Include="Controllers\Wms\Organization\AreaController.cs" />
+    <Compile Include="Controllers\Wms\Organization\CompanyController.cs" />
+    <Compile Include="Controllers\Wms\Organization\DepartmentController.cs" />
+    <Compile Include="Controllers\Wms\Organization\EmployeeController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\FactoryController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\ProductCategoryController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\ProductController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\UnitsController.cs" />
+    <Compile Include="Controllers\Authority\ServerAdmin\CityController.cs" />
+    <Compile Include="Controllers\Authority\ServerAdmin\ServerController.cs" />
+    <Compile Include="Controllers\Wms\WarehouseInfo\WarehouseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -499,6 +503,10 @@
       <Project>{A8E32F0A-A9F4-4CDD-8C7A-8304CD034070}</Project>
       <Name>THOK.Authority.Dal</Name>
     </ProjectReference>
+    <ProjectReference Include="..\THOK.RfidWms.DBModel.Ef\THOK.RfidWms.DBModel.Ef.csproj">
+      <Project>{259E5E16-41D8-420F-A11C-72BEE784B5CB}</Project>
+      <Name>THOK.RfidWms.DBModel.Ef</Name>
+    </ProjectReference>
     <ProjectReference Include="..\THOK.WEBUtil\THOK.WebUtil.csproj">
       <Project>{EC6DCF36-B010-4E48-88FC-BABC33EBCCFB}</Project>
       <Name>THOK.WebUtil</Name>
@@ -599,6 +607,10 @@
     <Content Include="Views\Module\_FunctionAdd.cshtml" />
     <Content Include="Views\User\_UserRolePartial.cshtml" />
     <Content Include="Views\Role\_RoleUserPartial.cshtml" />
+    <Content Include="Views\Factory\Index.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Units\Index.cshtml" />
+    <Content Include="Views\ProductCategory\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
     <Content Include="Views\Warehouse\_AddWarehousePartial.cshtml" />
   </ItemGroup>

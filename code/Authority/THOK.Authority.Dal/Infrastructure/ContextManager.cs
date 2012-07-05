@@ -6,137 +6,104 @@ using System.Collections;
 using System.Data.Objects;
 using System.Web;
 using System.Threading;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
+using System.Data.Entity;
+using System.Runtime.Remoting.Activation;
 
 namespace THOK.Authority.Dal.Infrastructure
 {
-    /// <summary>
-    /// Manages the lifecycle of the EF's object context
-    /// </summary>
-    /// <remarks>Uses a context per http request approach or one per thread in non web applications</remarks>
     public static class ContextManager
     {
-        #region Private Members
+        private static readonly Hashtable _threadDbContexts = new Hashtable();
 
-        // accessed via lock(_threadObjectContexts), only required for multi threaded non web applications
-        private static readonly Hashtable _threadObjectContexts = new Hashtable();
-
-        #endregion
-
-        public static IObjectSet<T> GetObjectSet<T>(T entity, string contextKey) 
+        public static DbSet<T> GetObjectSet<T>(T entity, string contextKey) 
             where T : class
         {
-            return GetObjectContext(contextKey).CreateObjectSet<T>();
+            return GetDbContext(contextKey).Set<T>();
         }
 
-        /// <summary>
-        /// Returns the active object context
-        /// </summary>
-        public static ObjectContext GetObjectContext(string contextKey)
+        public static DbContext GetDbContext(string contextKey)
         {
-            ObjectContext objectContext = GetCurrentObjectContext(contextKey);
-            if (objectContext == null) // create and store the object context
+            DbContext DbContext = GetCurrentDbContext(contextKey);
+            if (DbContext == null) 
             {
-                objectContext = CreateObjectContext(contextKey);
-                StoreCurrentObjectContext(objectContext, contextKey);
+                DbContext = CreateDbContext(contextKey);
+                StoreCurrentDbContext(DbContext, contextKey);
             }
-            return objectContext;
+            return DbContext;
         }
 
-        /// <summary>
-        /// Gets the repository context
-        /// </summary>
-        /// <returns>An object representing the repository context</returns>
         public static object GetRepositoryContext(string contextKey)
         {
-            return GetObjectContext(contextKey);
+            return GetDbContext(contextKey);
         }
 
-        /// <summary>
-        /// Sets the repository context
-        /// </summary>
-        /// <param name="repositoryContext">An object representing the repository context</param>
         public static void SetRepositoryContext(object repositoryContext, string contextKey)
         {
             if (repositoryContext == null)
             {
-                RemoveCurrentObjectContext(contextKey);
+                RemoveCurrentDbContext(contextKey);
             }
-            else if (repositoryContext is ObjectContext)
+            else if (repositoryContext is DbContext)
             {
-                StoreCurrentObjectContext((ObjectContext)repositoryContext, contextKey);
+                StoreCurrentDbContext((DbContext)repositoryContext, contextKey);
             }
         }
 
 
         #region Object Context Lifecycle Management
 
-        /// <summary>
-        /// gets the current object context 		
-        /// </summary>
-        private static ObjectContext GetCurrentObjectContext(string contextKey)
+        private static DbContext GetCurrentDbContext(string contextKey)
         {
-            ObjectContext objectContext = null;
+            DbContext DbContext = null;
             if (HttpContext.Current == null)
-                objectContext = GetCurrentThreadObjectContext(contextKey);
+                DbContext = GetCurrentThreadDbContext(contextKey);
             else
-                objectContext = GetCurrentHttpContextObjectContext(contextKey);
-            return objectContext;
+                DbContext = GetCurrentHttpContextDbContext(contextKey);
+            return DbContext;
         }
 
-        /// <summary>
-        /// sets the current session 		
-        /// </summary>
-        private static void StoreCurrentObjectContext(ObjectContext objectContext, string contextKey)
+        private static void StoreCurrentDbContext(DbContext DbContext, string contextKey)
         {
             if (HttpContext.Current == null)
-                StoreCurrentThreadObjectContext(objectContext, contextKey);
+                StoreCurrentThreadDbContext(DbContext, contextKey);
             else
-                StoreCurrentHttpContextObjectContext(objectContext, contextKey);
+                StoreCurrentHttpContextDbContext(DbContext, contextKey);
         }
 
-        /// <summary>
-        /// remove current object context 		
-        /// </summary>
-        private static void RemoveCurrentObjectContext(string contextKey)
+        private static void RemoveCurrentDbContext(string contextKey)
         {
             if (HttpContext.Current == null)
-                RemoveCurrentThreadObjectContext(contextKey);
+                RemoveCurrentThreadDbContext(contextKey);
             else
-                RemoveCurrentHttpContextObjectContext(contextKey);
+                RemoveCurrentHttpContextDbContext(contextKey);
         }
 
         #region private methods - HttpContext related
 
-        /// <summary>
-        /// gets the object context for the current thread
-        /// </summary>
-        private static ObjectContext GetCurrentHttpContextObjectContext(string contextKey)
+        private static DbContext GetCurrentHttpContextDbContext(string contextKey)
         {
-            ObjectContext objectContext = null;
+            DbContext DbContext = null;
             if (HttpContext.Current.Items.Contains(contextKey))
-                objectContext = (ObjectContext)HttpContext.Current.Items[contextKey];
-            return objectContext;
+                DbContext = (DbContext)HttpContext.Current.Items[contextKey];
+            return DbContext;
         }
 
-        private static void StoreCurrentHttpContextObjectContext(ObjectContext objectContext, string contextKey)
+        private static void StoreCurrentHttpContextDbContext(DbContext DbContext, string contextKey)
         {
             if (HttpContext.Current.Items.Contains(contextKey))
-                HttpContext.Current.Items[contextKey] = objectContext;
+                HttpContext.Current.Items[contextKey] = DbContext;
             else
-                HttpContext.Current.Items.Add(contextKey, objectContext);
+                HttpContext.Current.Items.Add(contextKey, DbContext);
         }
 
-        /// <summary>
-        /// remove the session for the currennt HttpContext
-        /// </summary>
-        private static void RemoveCurrentHttpContextObjectContext(string contextKey)
+        private static void RemoveCurrentHttpContextDbContext(string contextKey)
         {
-            ObjectContext objectContext = GetCurrentHttpContextObjectContext(contextKey);
-            if (objectContext != null)
+            DbContext DbContext = GetCurrentHttpContextDbContext(contextKey);
+            if (DbContext != null)
             {
                 HttpContext.Current.Items.Remove(contextKey);
-                objectContext.Dispose();
+                DbContext.Dispose();
             }
         }
 
@@ -144,73 +111,80 @@ namespace THOK.Authority.Dal.Infrastructure
 
         #region private methods - ThreadContext related
 
-        /// <summary>
-        /// gets the session for the current thread
-        /// </summary>
-        private static ObjectContext GetCurrentThreadObjectContext(string contextKey)
+        private static DbContext GetCurrentThreadDbContext(string contextKey)
         {
-            ObjectContext objectContext = null;
+            DbContext DbContext = null;
             Thread threadCurrent = Thread.CurrentThread;
             if (threadCurrent.Name == null)
                 threadCurrent.Name = contextKey;
             else
             {
-                object threadObjectContext = null;
-                lock (_threadObjectContexts.SyncRoot)
+                object threadDbContext = null;
+                lock (_threadDbContexts.SyncRoot)
                 {
-                    threadObjectContext = _threadObjectContexts[contextKey];
+                    threadDbContext = _threadDbContexts[contextKey];
                 }
-                if (threadObjectContext != null)
-                    objectContext = (ObjectContext)threadObjectContext;
+                if (threadDbContext != null)
+                    DbContext = (DbContext)threadDbContext;
             }
-            return objectContext;
+            return DbContext;
         }
 
-        private static void StoreCurrentThreadObjectContext(ObjectContext objectContext, string contextKey)
+        private static void StoreCurrentThreadDbContext(DbContext DbContext, string contextKey)
         {
-            lock (_threadObjectContexts.SyncRoot)
+            lock (_threadDbContexts.SyncRoot)
             {
-                if (_threadObjectContexts.Contains(contextKey))
-                    _threadObjectContexts[contextKey] = objectContext;
+                if (_threadDbContexts.Contains(contextKey))
+                    _threadDbContexts[contextKey] = DbContext;
                 else
-                    _threadObjectContexts.Add(contextKey, objectContext);
+                    _threadDbContexts.Add(contextKey, DbContext);
             }
         }
 
-        private static void RemoveCurrentThreadObjectContext(string contextKey)
+        private static void RemoveCurrentThreadDbContext(string contextKey)
         {
-            lock (_threadObjectContexts.SyncRoot)
+            lock (_threadDbContexts.SyncRoot)
             {
-                if (_threadObjectContexts.Contains(contextKey))
+                if (_threadDbContexts.Contains(contextKey))
                 {
-                    ObjectContext objectContext = (ObjectContext)_threadObjectContexts[contextKey];
-                    if (objectContext != null)
+                    DbContext DbContext = (DbContext)_threadDbContexts[contextKey];
+                    if (DbContext != null)
                     {
-                        objectContext.Dispose();
+                        DbContext.Dispose();
                     }
-                    _threadObjectContexts.Remove(contextKey);
+                    _threadDbContexts.Remove(contextKey);
                 }
             }
         }
 
-        /*
-        private static string BuildContextThreadName()
-        {
-            return Thread.CurrentThread.Name;
-        }
-
-        private static string BuildHttpContextName()
-        {
-            return OBJECT_CONTEXT_KEY;
-        }*/
-
         #endregion
 
         #endregion
 
-        private static ObjectContext CreateObjectContext(string typeName, params object[] args)
+        private static Dictionary<string, System.Reflection.Assembly> assemblys = new Dictionary<string, System.Reflection.Assembly>();
+        private static DbContext CreateDbContext(string typeName, params object[] args)
         {
-            return (ObjectContext)Activator.CreateInstance(Type.GetType(typeName), args);
+            System.Reflection.Assembly assembly = null;
+            if (assemblys.ContainsKey(typeName.Split(","[0])[1]))
+            {
+                assembly = assemblys[typeName.Split(","[0])[1]];
+            }
+            else
+            {
+                lock (assemblys)
+                {
+                    if (assemblys.ContainsKey(typeName.Split(","[0])[1]))
+                    {
+                        assembly = assemblys[typeName.Split(","[0])[1]];
+                    }
+                    else
+                    {
+                        assembly = System.Reflection.Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory + "bin\\" + typeName.Split(","[0])[1]);
+                        assemblys.Add(typeName.Split(","[0])[1], assembly);
+                    }
+                }
+            }
+            return (DbContext)assembly.CreateInstance(typeName.Split(","[0])[0],false, System.Reflection.BindingFlags.Default,null,args,null,null);
         }
     }
 }

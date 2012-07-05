@@ -1,7 +1,7 @@
 ﻿using System;
 using THOK.Authority.Bll.Interfaces.Authority;
 using THOK.Authority.Dal.Interfaces.Authority;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using THOK.Authority.Dal.EntityRepository.Authority;
 using THOK.Authority.Bll.Models.Authority;
 using System.Collections.Generic;
@@ -49,8 +49,8 @@ namespace THOK.Authority.Bll.Service.Authority
         
         public object GetDetails(string systemID)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Module> queryModule = ModuleRepository.GetQueryable();
             var systems = querySystem.AsEnumerable();
             if (systemID != null && systemID != string.Empty)
             {
@@ -98,8 +98,8 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public bool Add(string moduleName, int showOrder, string moduleUrl, string indicateImage, string desktopImage, string systemID, string moduleID)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Module> queryModule = ModuleRepository.GetQueryable();
             moduleID = !String.IsNullOrEmpty(moduleID) ? moduleID : "40DD7298-F410-43F2-840A-7C04F09B5CE2";
             var system = querySystem.FirstOrDefault(i => i.SystemID == new Guid(systemID));
             var parentModule = queryModule.FirstOrDefault(i => i.ModuleID == new Guid(moduleID));
@@ -119,7 +119,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public bool Delete(string moduleID)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Module> queryModule = ModuleRepository.GetQueryable();
 
             Guid gmoduleId = new Guid(moduleID);
             var module = queryModule.FirstOrDefault(i => i.ModuleID == gmoduleId);
@@ -140,7 +140,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public bool Save(string moduleID, string moduleName, int showOrder, string moduleUrl, string indicateImage, string deskTopImage)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Module> queryModule = ModuleRepository.GetQueryable();
             Guid sid = new Guid(moduleID);
             var module = queryModule.FirstOrDefault(i => i.ModuleID == sid);
             module.ModuleName = moduleName;
@@ -192,10 +192,10 @@ namespace THOK.Authority.Bll.Service.Authority
             if (String.IsNullOrEmpty(cityID)) throw new ArgumentException("值不能为NULL或为空。", "cityID");
             if (String.IsNullOrEmpty(systemID)) throw new ArgumentException("值不能为NULL或为空。", "systemId");
 
-            IQueryable<THOK.Authority.Dal.EntityModels.User> queryUser = UserRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.City> queryCity = CityRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.User> queryUser = UserRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.City> queryCity = CityRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
 
             Guid gSystemID = new Guid(systemID);
             Guid gCityID = new Guid(cityID);
@@ -264,9 +264,9 @@ namespace THOK.Authority.Bll.Service.Authority
             if (String.IsNullOrEmpty(cityID)) throw new ArgumentException("值不能为NULL或为空。", "cityID");
             if (String.IsNullOrEmpty(moduleID)) throw new ArgumentException("值不能为NULL或为空。", "moduleID");
 
-            IQueryable<THOK.Authority.Dal.EntityModels.User> queryUser = UserRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.City> queryCity = CityRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.User> queryUser = UserRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.City> queryCity = CityRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Module> queryModule = ModuleRepository.GetQueryable();
 
             Guid gCityID = new Guid(cityID);
             Guid gModuleID = new Guid(moduleID);
@@ -307,7 +307,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         private void GetChildMenu(Menu moduleMenu, UserSystem userSystem, Module module)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
             HashSet<Menu> childMenuSet = new HashSet<Menu>();
             var userModules = from um in userSystem.UserModules
                               where um.Module.ParentModule == module
@@ -351,7 +351,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         #region 初始化角色权限
 
-        private void InitRoleSystem(Role role, City city, Dal.EntityModels.System system)
+        private void InitRoleSystem(Role role, City city, THOK.RfidWms.DBModel.Ef.Models.Authority.System system)
         {
             var roleSystems = role.RoleSystems.Where(rs => rs.City.CityID == city.CityID
                 && rs.System.SystemID == system.SystemID);
@@ -440,7 +440,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         #region 初始化用户权限
 
-        private void InitUserSystem(User user, City city, Dal.EntityModels.System system)
+        private void InitUserSystem(User user, City city,THOK.RfidWms.DBModel.Ef.Models.Authority.System system)
         {
             var userSystems = user.UserSystems.Where(us => us.City.CityID == city.CityID
                 && us.System.SystemID == system.SystemID);
@@ -512,7 +512,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         private void SetMenu(Menu menu, Module module)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
             HashSet<Menu> childMenuSet = new HashSet<Menu>();
             var modules = from m in module.Modules
                           orderby m.ShowOrder
@@ -544,7 +544,7 @@ namespace THOK.Authority.Bll.Service.Authority
         private void SetFunTree(Tree childTree, Module item,RoleModule roleModules)
         {
             var function = FunctionRepository.GetQueryable().Where(f => f.Module.ModuleID == item.ModuleID);
-            IQueryable<THOK.Authority.Dal.EntityModels.RoleFunction> queryRoleFunction = RoleFunctionRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleFunction> queryRoleFunction = RoleFunctionRepository.GetQueryable();
             HashSet<Tree> functionTreeSet = new HashSet<Tree>();
             foreach (var func in function)
             {
@@ -561,9 +561,9 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public void InitRoleSys(string roleID, string cityID, string systemID)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.Role> queryRole = RoleRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.City> queryCity = CityRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Role> queryRole = RoleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.City> queryCity = CityRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.System> querySystem = SystemRepository.GetQueryable();
             var role = queryRole.Single(i => i.RoleID == new Guid(roleID));
             var city = queryCity.Single(i => i.CityID == new Guid(cityID));
             var system = querySystem.Single(i => i.SystemID == new Guid(systemID));
@@ -572,10 +572,10 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public object GetRoleSystemDetails(string roleID,string cityID, string systemID)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.RoleSystem> queryRoleSystem = RoleSystemRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Module> queryModule = ModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleSystem> queryRoleSystem = RoleSystemRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
             var systems = querySystem.Single(i => i.SystemID == new Guid(systemID));
             var roleSystems = queryRoleSystem.FirstOrDefault(i => i.System.SystemID == new Guid(systemID)&&i.Role.RoleID==new Guid(roleID)&&i.City.CityID==new Guid(cityID));
             HashSet<Tree> RolesystemTreeSet = new HashSet<Tree>();
@@ -610,7 +610,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         private void SetTree(Tree tree,Module module,RoleSystem roleSystems)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
             HashSet<Tree> childTreeSet = new HashSet<Tree>();
             var modules = from m in module.Modules
                           orderby m.ShowOrder
@@ -664,7 +664,7 @@ namespace THOK.Authority.Bll.Service.Authority
             bool result = false;
             if (type=="system")
             {
-                IQueryable<THOK.Authority.Dal.EntityModels.RoleSystem> queryRoleSystem = RoleSystemRepository.GetQueryable();
+                IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleSystem> queryRoleSystem = RoleSystemRepository.GetQueryable();
                 Guid sid = new Guid(id);
                 var system = queryRoleSystem.FirstOrDefault(i => i.RoleSystemID== sid);
                 system.IsActive = isActive;
@@ -673,7 +673,7 @@ namespace THOK.Authority.Bll.Service.Authority
             }
             else if (type=="module")
             {
-                IQueryable<THOK.Authority.Dal.EntityModels.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
+                IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
                 Guid mid = new Guid(id);
                 var module = queryRoleModule.FirstOrDefault(i => i.RoleModuleID == mid);
                 module.IsActive = isActive;
@@ -682,7 +682,7 @@ namespace THOK.Authority.Bll.Service.Authority
             }
             else if (type=="function")
             {
-                IQueryable<THOK.Authority.Dal.EntityModels.RoleFunction> queryRoleFunction = RoleFunctionRepository.GetQueryable();
+                IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.RoleFunction> queryRoleFunction = RoleFunctionRepository.GetQueryable();
                 Guid fid = new Guid(id);
                 var system = queryRoleFunction.FirstOrDefault(i => i.RoleFunctionID== fid);
                 system.IsActive = isActive;
@@ -703,10 +703,10 @@ namespace THOK.Authority.Bll.Service.Authority
         
         public object GetUserSystemDetails(string userID,string cityID,string systemID)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.System> querySystem = SystemRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.Module> queryModule = ModuleRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.UserSystem> queryUserSystem = UserSystemRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.UserModule> queryUserModule = UserModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Module> queryModule = ModuleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.UserSystem> queryUserSystem = UserSystemRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.UserModule> queryUserModule = UserModuleRepository.GetQueryable();
             var systems = querySystem.Single(i => i.SystemID == new Guid(systemID));
             var userSystems = queryUserSystem.FirstOrDefault(i => i.System.SystemID == new Guid(systemID) && i.User.UserID == new Guid(userID) && i.City.CityID == new Guid(cityID));
             HashSet<Tree> userSystemTreeSet = new HashSet<Tree>();
@@ -811,7 +811,7 @@ namespace THOK.Authority.Bll.Service.Authority
             bool result = false;
             if (type == "system")
             {
-                IQueryable<THOK.Authority.Dal.EntityModels.UserSystem> queryUserSystem = UserSystemRepository.GetQueryable();
+                IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.UserSystem> queryUserSystem = UserSystemRepository.GetQueryable();
                 Guid sid = new Guid(id);
                 var system = queryUserSystem.FirstOrDefault(i => i.UserSystemID == sid);
                 system.IsActive = isActive;
@@ -820,7 +820,7 @@ namespace THOK.Authority.Bll.Service.Authority
             }
             else if (type == "module")
             {
-                IQueryable<THOK.Authority.Dal.EntityModels.UserModule> queryUserModule = UserModuleRepository.GetQueryable();
+                IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.UserModule> queryUserModule = UserModuleRepository.GetQueryable();
                 Guid mid = new Guid(id);
                 var module = queryUserModule.FirstOrDefault(i => i.UserModuleID == mid);
                 module.IsActive = isActive;
@@ -829,7 +829,7 @@ namespace THOK.Authority.Bll.Service.Authority
             }
             else if (type == "function")
             {
-                IQueryable<THOK.Authority.Dal.EntityModels.UserFunction> queryUserFunction = UserFunctionRepository.GetQueryable();
+                IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.UserFunction> queryUserFunction = UserFunctionRepository.GetQueryable();
                 Guid fid = new Guid(id);
                 var system = queryUserFunction.FirstOrDefault(i => i.UserFunctionID == fid);
                 system.IsActive = isActive;

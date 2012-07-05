@@ -4,7 +4,7 @@ using System.Text;
 using THOK.Authority.Bll.Interfaces.Authority;
 using Microsoft.Practices.Unity;
 using THOK.WebUtil;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 
 namespace Authority.Controllers.Authority
 {

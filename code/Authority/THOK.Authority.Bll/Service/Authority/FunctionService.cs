@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using THOK.Authority.Bll.Interfaces.Authority;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using Microsoft.Practices.Unity;
 using THOK.Authority.Dal.Interfaces.Authority;
 

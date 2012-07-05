@@ -1,7 +1,7 @@
 ﻿using System;
 using THOK.Authority.Bll.Interfaces.Authority;
 using THOK.Authority.Dal.Interfaces.Authority;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using THOK.Authority.Dal.EntityRepository.Authority;
 using Microsoft.Practices.Unity;
 using System.Linq;
@@ -28,7 +28,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public object GetDetails(int page, int rows, string roleName, string description,string status)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.Role> queryRole = RoleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Role> queryRole = RoleRepository.GetQueryable();
             var roles = queryRole.Where(r => r.RoleName.Contains(roleName) && r.Memo.Contains(description))
                     .OrderBy(r => r.RoleName)
                     .Select(r => new { r.RoleID, r.RoleName, Description = r.Memo, Status = r.IsLock ? "启用" : "禁用" });
@@ -102,8 +102,8 @@ namespace THOK.Authority.Bll.Service.Authority
         public object GetRoleUser(string roleID)
         {
             Guid rid = new Guid(roleID);
-            IQueryable<THOK.Authority.Dal.EntityModels.User> queryUser = UserRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.Role> queryRole = RoleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.User> queryUser = UserRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Role> queryRole = RoleRepository.GetQueryable();
             var role = queryRole.FirstOrDefault(r => r.RoleID== rid);
             var users = role.UserRoles.OrderBy(u => u.User.UserID).Select(u => new { u.UserRoleID, u.Role.RoleID, u.Role.RoleName,u.User.UserID, u.User.UserName });
             return users.ToArray();
@@ -112,8 +112,8 @@ namespace THOK.Authority.Bll.Service.Authority
         public object GetUserInfo(string roleID)
         {
             Guid rid = new Guid(roleID);
-            IQueryable<THOK.Authority.Dal.EntityModels.User> queryUser = UserRepository.GetQueryable();
-            IQueryable<THOK.Authority.Dal.EntityModels.Role> queryRole = RoleRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.User> queryUser = UserRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Role> queryRole = RoleRepository.GetQueryable();
             var role = queryRole.FirstOrDefault(r => r.RoleID == rid);
             var userIDs =role.UserRoles.Select(ru => ru.User.UserID);
             var user = queryUser.Where(u => !userIDs.Any(uid => uid == u.UserID))

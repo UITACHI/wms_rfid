@@ -64,6 +64,13 @@ namespace THOK.WebUtil
 				                                                {'menuid':'52','menuname':'文档维护管理','iconCls':'icon-nav','url':'/LoginLog/'},
                                                                 {'menuid':'53','menuname':'帮助文档主页','iconCls':'icon-nav','url':'/Home/ChangeServer/?ip=a.wms.sw&port=8090'}
 			                                                ]
+                                                    },{'menuid':'7','iconCls':'icon-sys','menuname':'产品信息管理',
+		                                                'children':[
+				                                                {'menuid':'71','menuname':'产品信息管理','iconCls':'icon-nav','url':'/Product/Index'},
+				                                                {'menuid':'72','menuname':'厂商信息管理','iconCls':'icon-nav','url':'/Factory/Index'},
+                                                                {'menuid':'73','menuname':'产品类别管理','iconCls':'icon-nav','url':'/ProductCategory/Index'},
+                                                                {'menuid':'73','menuname':'单位信息管理','iconCls':'icon-nav','url':'/Units/Index'}
+			                                                ]
                                                     },{'menuid':'6','iconCls':'icon-sys','menuname':'仓库信息管理',
 		                                                'children':[
 				                                                {'menuid':'61','menuname':'仓库设置','iconCls':'icon-magic','url':'/Warehouse/'}				                                             

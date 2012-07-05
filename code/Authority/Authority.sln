@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THOK.Authority.Dal", "THOK.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THOK.Authority.Bll", "THOK.Authority.Bll\THOK.Authority.Bll.csproj", "{8375EB8C-20CB-4E3E-BCF4-85E54F61D241}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THOK.RfidWms.DBModel.Ef", "THOK.RfidWms.DBModel.Ef\THOK.RfidWms.DBModel.Ef.csproj", "{259E5E16-41D8-420F-A11C-72BEE784B5CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{8375EB8C-20CB-4E3E-BCF4-85E54F61D241}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8375EB8C-20CB-4E3E-BCF4-85E54F61D241}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8375EB8C-20CB-4E3E-BCF4-85E54F61D241}.Release|Any CPU.Build.0 = Release|Any CPU
+		{259E5E16-41D8-420F-A11C-72BEE784B5CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{259E5E16-41D8-420F-A11C-72BEE784B5CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{259E5E16-41D8-420F-A11C-72BEE784B5CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{259E5E16-41D8-420F-A11C-72BEE784B5CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
