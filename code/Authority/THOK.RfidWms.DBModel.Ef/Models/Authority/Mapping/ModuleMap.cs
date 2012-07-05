@@ -38,8 +38,8 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Authority.Mapping
             this.Property(t => t.ParentModule_ModuleID).HasColumnName(ColumnMap.Value.To("ParentModule_ModuleID"));
 
             // Relationships
-            this.HasRequired(t => t.Module2)
-                .WithMany(t => t.Module1)
+            this.HasRequired(t => t.ParentModule)
+                .WithMany(t => t.Modules)
                 .HasForeignKey(d => d.ParentModule_ModuleID);
             this.HasRequired(t => t.System)
                 .WithMany(t => t.Modules)

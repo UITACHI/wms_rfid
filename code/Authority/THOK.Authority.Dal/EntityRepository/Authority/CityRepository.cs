@@ -5,7 +5,7 @@ using System.Web;
 using System.Collections;
 using System.Linq.Expressions;
 using THOK.Authority.Dal.Interfaces;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using System.Data.Objects;
 using THOK.Authority.Dal.Infrastructure;
 using THOK.Authority.Dal.Infrastructure.RepositoryContext;
@@ -39,7 +39,7 @@ namespace THOK.Authority.Dal.EntityRepository.Authority
             city.UserSystems.Do(us => Delete(us.UserModules.ToArray()));
             Delete(city.UserSystems.ToArray());
 
-            this.ObjectSet.DeleteObject(city);
+            this.ObjectSet.Remove(city);
         }
     }
 }

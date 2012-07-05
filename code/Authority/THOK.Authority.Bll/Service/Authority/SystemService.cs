@@ -1,7 +1,7 @@
 ﻿using System;
 using THOK.Authority.Bll.Interfaces.Authority;
 using THOK.Authority.Dal.Interfaces.Authority;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using THOK.Authority.Dal.EntityRepository.Authority;
 using System.Linq;
 using Microsoft.Practices.Unity;
@@ -10,7 +10,7 @@ using System.Data.Objects.DataClasses;
 
 namespace THOK.Authority.Bll.Service.Authority
 {
-    public class SystemService : ServiceBase<THOK.Authority.Dal.EntityModels.System>, ISystemService
+    public class SystemService : ServiceBase<THOK.RfidWms.DBModel.Ef.Models.Authority.System>, ISystemService
     {
         [Dependency]
         public ISystemRepository SystemRepository { get; set; }
@@ -30,7 +30,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public object GetDetails(int page, int rows, string systemName, string description, string status)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.System> query = SystemRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.System> query = SystemRepository.GetQueryable();
             var systems = query.Where(i => i.SystemName.Contains(systemName) && i.Description.Contains(description))
                 .OrderBy(i => i.SystemID)
                 .Select(i => new { i.SystemID, i.SystemName, i.Description, Status = i.Status ? "启用" : "禁用" });
@@ -48,7 +48,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public bool Add(string systemName, string description, bool status)
         {
-            var system = new THOK.Authority.Dal.EntityModels.System()
+            var system = new THOK.RfidWms.DBModel.Ef.Models.Authority.System()
             {
                 SystemID = Guid.NewGuid(),
                 SystemName = systemName,

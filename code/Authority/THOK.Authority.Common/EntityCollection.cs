@@ -10,7 +10,7 @@ namespace THOK.Common
     {
         public delegate void DoFun<TEntity>(TEntity entity);
 
-        public static void Do<TEntity>(this EntityCollection<TEntity> entitys, DoFun<TEntity> func) where TEntity : class
+        public static void Do<TEntity>(this ICollection<TEntity> entitys, DoFun<TEntity> func) where TEntity : class
         {
             foreach (var entity in entitys)
             {
@@ -18,7 +18,7 @@ namespace THOK.Common
             }
         }
 
-        public static void Del<TEntity>(this EntityCollection<TEntity> entitys) where TEntity : class
+        public static void Del<TEntity>(this ICollection<TEntity> entitys) where TEntity : class
         {
             var entityArray = entitys.ToArray();
             foreach (var entity in entityArray)

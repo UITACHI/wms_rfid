@@ -50,7 +50,7 @@
       <DependentUpon>201207050121487_init_001.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AuthorizeContext.cs" />
+    <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Models\Authority\City.cs" />
     <Compile Include="Models\Authority\Function.cs" />
     <Compile Include="Models\Authority\LoginLog.cs" />
@@ -91,6 +91,8 @@
     <Compile Include="Models\Authority\UserRole.cs" />
     <Compile Include="Models\Authority\UserSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\EntityRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

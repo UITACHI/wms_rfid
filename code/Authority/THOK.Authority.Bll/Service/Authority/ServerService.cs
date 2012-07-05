@@ -1,7 +1,7 @@
 ﻿using System;
 using THOK.Authority.Bll.Interfaces.Authority;
 using THOK.Authority.Dal.Interfaces.Authority;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using THOK.Authority.Dal.EntityRepository.Authority;
 using Microsoft.Practices.Unity;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public object GetDetails(int page, int rows, string serverName, string description, string url, string isActive)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.Server> query = ServerRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Server> query = ServerRepository.GetQueryable();
             var servers = query.Where(i => i.ServerName.Contains(serverName)
                 && i.Description.Contains(description)
                 && i.Url.Contains(url))
@@ -38,7 +38,7 @@ namespace THOK.Authority.Bll.Service.Authority
         {
             Guid gCityID = new Guid(cityID);
             var city = CityRepository.GetQueryable().Single(c => c.CityID == gCityID);
-            var server = new THOK.Authority.Dal.EntityModels.Server()
+            var server = new THOK.RfidWms.DBModel.Ef.Models.Authority.Server()
             {
                 ServerID = Guid.NewGuid(),
                 ServerName = serverName,

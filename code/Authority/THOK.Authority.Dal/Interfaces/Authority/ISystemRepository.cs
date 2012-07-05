@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using THOK.Authority.Dal.Infrastructure;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 
 namespace THOK.Authority.Dal.Interfaces.Authority
 {
-    public interface ISystemRepository : IRepository<THOK.Authority.Dal.EntityModels.System>
+    public interface ISystemRepository : IRepository<THOK.RfidWms.DBModel.Ef.Models.Authority.System>
     {
     }
 }

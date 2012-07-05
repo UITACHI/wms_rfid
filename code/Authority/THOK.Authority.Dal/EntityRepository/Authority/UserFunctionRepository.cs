@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using THOK.Authority.Dal.Interfaces;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using System.Data.Objects;
 using THOK.Authority.Dal.Infrastructure;
 using THOK.Authority.Dal.Infrastructure.RepositoryContext;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.Objects;
+using System.Data.Entity;
 
 namespace THOK.Authority.Dal.Interfaces
 {
@@ -12,9 +13,9 @@ namespace THOK.Authority.Dal.Interfaces
     public interface IRepositoryContext
     {
 
-        IObjectSet<T> GetObjectSet<T>() where T : class;
+        DbSet<T> GetObjectSet<T>() where T : class;
 
-        ObjectContext ObjectContext { get; }
+        DbContext DbContext { get; }
 
         /// <summary>
         /// Save all changes to all repositories

@@ -6,14 +6,18 @@ using System.Data.Objects;
 using System.Linq.Expressions;
 using THOK.Authority.Dal.Interfaces;
 using THOK.Authority.Dal.Infrastructure;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using THOK.Authority.Dal.Infrastructure.RepositoryContext;
+using System.Data.Entity;
 
 namespace THOK.Authority.Dal.EntityRepository
 {
     public abstract class RepositoryBase<T> : IRepository<T>
         where T: class
     {
+        public DbSet<T> ObjectSet { get; set; }
+        public IRepositoryContext RepositoryContext { get; set; }
+
         public RepositoryBase()
             : this(new AuthorityRepositoryContext())
         {
@@ -22,30 +26,21 @@ namespace THOK.Authority.Dal.EntityRepository
         public RepositoryBase(IRepositoryContext repositoryContext)
         {
             RepositoryContext = repositoryContext ?? new AuthorityRepositoryContext();
-            _objectSet = RepositoryContext.GetObjectSet<T>();
+            ObjectSet = RepositoryContext.GetObjectSet<T>();
         }
-
-        private IObjectSet<T> _objectSet;
-        public IObjectSet<T> ObjectSet
-        {
-            get
-            {
-                return _objectSet;
-            }
-        }
-
-        public IRepositoryContext RepositoryContext {get;set;}
-
+        
         #region IRepository Members
 
         public void Add(T entity)
         {
-            this.ObjectSet.AddObject(entity);
+            ObjectSet.Add(entity);
+            RepositoryContext.SaveChanges();
         }
 
         public void Delete(T entity)
         {
-            this.ObjectSet.DeleteObject(entity);
+            ObjectSet.Remove(entity);
+            RepositoryContext.SaveChanges();
         }
 
         public IList<T> GetAll()
@@ -92,7 +87,7 @@ namespace THOK.Authority.Dal.EntityRepository
         {
             foreach (var tsub in tsubs)
             {
-                RepositoryContext.ObjectContext.DeleteObject(tsub);
+                RepositoryContext.DbContext.Set(tsub.GetType()).Remove(tsub);
             }           
         }
         #endregion

@@ -1,9 +1,8 @@
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using THOK.RfidWms.DBModel.Ef.Models.Authority.Mapping;
 using THOK.RfidWms.DBModel.Ef.Models.Authority;
 
-namespace THOK.RfidWms.DBModel.Ef.Models
+namespace THOK.RfidWms.DBModel.Ef
 {
     public class AuthorizeContext : DbContext
     {

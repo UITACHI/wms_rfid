@@ -1,4 +1,4 @@
-﻿using THOK.Authority.Dal.EntityModels;
+﻿using THOK.RfidWms.DBModel.Ef.Models.Authority;
 
 namespace THOK.Authority.Bll.Interfaces.Authority
 {

@@ -56,7 +56,7 @@ namespace THOK.Authority.Bll.Service
             throw new NotImplementedException();
         }
 
-        public void Del<TEntity>(IRepository<TEntity> context, EntityCollection<TEntity> entities) where TEntity : class
+        public void Del<TEntity>(IRepository<TEntity> context, ICollection<TEntity> entities) where TEntity : class
         {
             var arrEntities = entities.ToArray();
             foreach (var item in arrEntities)

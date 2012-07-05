@@ -1,7 +1,7 @@
 ﻿using System;
 using THOK.Authority.Bll.Interfaces.Authority;
 using THOK.Authority.Dal.Interfaces.Authority;
-using THOK.Authority.Dal.EntityModels;
+using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using THOK.Authority.Dal.EntityRepository.Authority;
 using Microsoft.Practices.Unity;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public object GetDetails(int page, int rows, string cityName, string description, string isActive)
         {
-            IQueryable<THOK.Authority.Dal.EntityModels.City> query = CityRepository.GetQueryable();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.City> query = CityRepository.GetQueryable();
             bool isactive;
             var citys = query.OrderBy(i => i.CityID).Select(i => new { i.CityID, i.CityName, i.Description, IsActive = i.IsActive ? "启用" : "禁用" });
             if (cityName != "" || description != "" || isActive != "")
@@ -41,7 +41,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         public bool Add(string cityName, string description, bool isActive)
         {
-            var city = new THOK.Authority.Dal.EntityModels.City()
+            var city = new THOK.RfidWms.DBModel.Ef.Models.Authority.City()
             {
                 CityID = Guid.NewGuid(),
                 CityName = cityName,

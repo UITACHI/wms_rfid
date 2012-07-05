@@ -33,10 +33,14 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\Libraries\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
@@ -49,16 +53,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntityModels\AuthorizeDBModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AuthorizeDBModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModels\RFIDWMSDB.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RFIDWMSDB.edmx</DependentUpon>
-    </Compile>
     <Compile Include="EntityRepository\Authority\SystemRepository.cs" />
     <Compile Include="EntityRepository\Authority\ModuleRepository.cs" />
     <Compile Include="EntityRepository\Authority\UserRepository.cs" />
@@ -101,22 +95,16 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="ClassDiagram\ClassDiagram.Dal.cd" />
-    <EntityDeploy Include="EntityModels\AuthorizeDBModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AuthorizeDBModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <EntityDeploy Include="EntityModels\RFIDWMSDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RFIDWMSDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="EntityModels\AuthorizeDBModel.edmx.sql" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\THOK.Authority.Common\THOK.Common.csproj">
       <Project>{2F9C4207-F8A0-4E55-A2CB-3514ADC0A437}</Project>
       <Name>THOK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THOK.RfidWms.DBModel.Ef\THOK.RfidWms.DBModel.Ef.csproj">
+      <Project>{259E5E16-41D8-420F-A11C-72BEE784B5CB}</Project>
+      <Name>THOK.RfidWms.DBModel.Ef</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

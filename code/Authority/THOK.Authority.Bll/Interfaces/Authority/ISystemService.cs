@@ -1,8 +1,8 @@
-﻿using THOK.Authority.Dal.EntityModels;
+﻿using THOK.RfidWms.DBModel.Ef.Models.Authority;
 
 namespace THOK.Authority.Bll.Interfaces.Authority
 {
-    public interface ISystemService : IService<THOK.Authority.Dal.EntityModels.System>
+    public interface ISystemService : IService<THOK.RfidWms.DBModel.Ef.Models.Authority.System>
     {
         object GetDetails(int page, int rows, string systemName, string description, string status);
 
