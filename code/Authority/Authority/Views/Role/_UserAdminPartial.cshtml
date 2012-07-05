@@ -1,0 +1,90 @@
+﻿<script type="text/javascript">
+    var roleId;
+    var roleName;
+    $(function () {
+        $('#UserAdminAdd').window({
+            width: 500,
+            modal: true,
+            shadow: false,
+            closed: true,
+            height: 350,
+            resizable: false,
+            minimizable: false,
+            maximizable: false,
+            collapsible: false
+        });
+    });
+
+    //加载
+    function useradminClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $('#UserAdminAdd').window('open');
+            $('#RoleUserDataGrid').datagrid('clearSelections'); //清空所有选择项
+            $('#UserAdminAdd').dialog('open').dialog('setTitle', "角色用户编辑：" + row.RoleName);
+            roleId = row.RoleID;
+            roleName = row.RoleName;
+            $('#RoleUserDataGrid').datagrid({
+                url: '/Role/GetRoleUser/?RoleID=' + row.RoleID
+            });
+        } else {
+            $('#UserAdminAdd').window('close');
+            $.messager.show({ title: '系统提示', msg: '请选择角色！' });
+        }
+    }
+
+    //添加用户
+    function RoleUserAddClick() {
+        $('#RoleAddUser').dialog('open').dialog('setTitle', "角色添加用户：" + roleName);
+        $('#RoleAddUserDatagrid').datagrid({
+            url: '/Role/GetUserInfo/?RoleID=' + roleId
+        });
+        $('#RoleAddUserDatagrid').datagrid('clearSelections'); //清空所有选择项
+    }
+
+    //删除用户
+    function RoleUserDeleteClick() {
+        var row = $('#RoleUserDataGrid').datagrid('getSelections');
+        if (row.length > 0) {
+        $.messager.confirm('确认','你确认要删除这个用户吗？',function(r){
+        if(r){
+            var roleUserString = "";
+            for (var i = 0; i < row.length; i++) {
+                roleUserString += row[i].UserRoleID + ",";
+            }
+            $.post("/Role/DeleteRoleUser/", { roleUserIdStr: roleUserString }, function (json) {
+                if (json) {
+                    $.messager.show({ title: '系统提示', msg: '删除成功！' });
+                    $('#RoleUserDataGrid').datagrid('options').url = '/Role/GetRoleUser/?RoleID=' + roleId;
+                    $('#RoleUserDataGrid').datagrid('reload');
+                    $('#RoleUserDataGrid').datagrid('clearSelections'); //清空所有选择项
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '删除失败!请检查原因！' });
+                }
+            });
+        }
+            });
+        } else {
+            $.messager.show({ title: '系统提示', msg: '请选择要删除的数据！' });
+        }
+    }
+</script>
+<div id="UserAdminAdd" split="true">
+    <table id="RoleUserDataGrid" class="easyui-datagrid" border="0px" fit="true" idfield="UserRoleID" toolbar="#tb" rownumbers="true" fitColumns="true">
+        <thead>
+            <tr>
+                <th field="ck" checkbox="true"></th>
+                <th field="UserRoleID" width="80" hidden="true">角色用户编码</th>
+                <th field="UserID" width="120" hidden="true">用户编码</th>
+                <th field="RoleID" width="80" hidden="true">角色编码</th>
+                <th field="RoleName" width="150" hidden="true">角色名称</th>
+                <th field="UserName" width="480">用户名称</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb">
+        <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="RoleUserAddClick()" id="RoleUserAddButton">添加</a> 
+        <a href="#" class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="RoleUserDeleteClick()" id="RoleUserDeleteButton">删除</a>
+    </div>
+</div>
+@Html.Partial("_RoleUserPartial")

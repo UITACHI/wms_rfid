@@ -1,0 +1,125 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#logOn').click(function () {
+            $('#dlg-logon').dialog('open');
+        });
+
+        $('#cg-logon-changecity').combogrid({
+            width: 180,
+            panelWidth: 450,
+            url: '/System/Details/?page=1&rows=1',
+            idField: 'SystemID',
+            textField: 'SystemName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+
+        $('#cg-logon-changesystem').combogrid({
+            width: 180,
+            panelWidth: 450,
+            url: '/System/Details/?page=1&rows=1',
+            idField: 'SystemID',
+            textField: 'SystemName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+
+        $('#cg-logon-changeserver').combogrid({
+            width: 180,
+            panelWidth: 450,
+            url: '/System/Details/?page=1&rows=1',
+            idField: 'SystemID',
+            textField: 'SystemName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    });
+
+    function login() {
+        $('#fm-logon').form('submit', {
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg-changepassword').dialog('close');
+                    location.href = result.data;
+                } else {
+                    $.messager.confirm('系统提示', '用户登录失败！用户名或密码不正确！', function (r) {
+                        if (r) {
+                            location.href = '/Account/LogOff';
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>
+    <div id="dlg-logon" class="easyui-dialog" border="false" modal="true" title="登录"
+        style="width:328px;height:250px;padding:2px 2px"
+        closed="true" buttons="#dlg-buttons-logon">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc;">	          
+		            <form id="fm-logon" action="/Account/LogOn" method="post">
+			            <table width="auto">
+				            <tr>
+								<td></td>
+					            <td width="72">用户名</td>
+				              <td width="188"><input style="width: 180px"  name="username" type="text" required="true" class="easyui-validatebox"></input></td> 
+				            </tr>
+				            <tr>
+								<td></td>
+					            <td>密码</td>
+					            <td><input style="width: 180px"  width="180px" name="password" type="password" required="true" class="easyui-validatebox"></input></td>
+				            </tr>
+				            <tr>
+								<td></td>
+					            <td>地市</td>
+					            <td><input name="cityid" type="text" id="cg-logon-changecity" /></td>
+				            </tr>
+				            <tr>
+								<td></td>
+					            <td>系统</td>
+					            <td><input name="systemid" type="text" id="cg-logon-changesystem" /></td>
+				            </tr>
+							<tr>
+								<td></td>
+					            <td>服务器</td>
+					            <td><input name="serverid" type="text" id="cg-logon-changeserver" /></td>
+				            </tr>
+		              </table>
+		            </form>
+			</div>
+		</div>
+	</div>
+
+    <div id="dlg-buttons-logon">
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="login()">确定</a>
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-logon').dialog('close')">取消</a>
+    </div>

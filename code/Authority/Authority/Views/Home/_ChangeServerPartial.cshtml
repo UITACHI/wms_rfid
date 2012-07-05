@@ -1,0 +1,71 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#changeServer').click(function () {
+            $('#cg-changeserver').combogrid('setValue', '').combo('setText', '');
+            $('#dlg-changeserver').dialog('open').dialog('setTitle', '切换服务器');
+        });
+    })
+
+    function init_changeserver(username) {
+        $('#cg-changeserver').combogrid({
+            width: 180,
+            panelWidth: 450,
+            url: '/System/Details/?page=1&rows=1&username=' + username,
+            idField: 'SystemID',
+            textField: 'SystemName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    }
+
+    function changeToServer() {
+        $('#fm-changeserver').form('submit', {
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '系统提示',
+                        msg: result.msg
+                    });
+                    $('#dlg-changeserver').dialog('close');
+                    location.href = result.href;
+                } else {
+                    $.messager.confirm('系统提示', result.msg);
+                }
+            }
+        });
+    }
+
+</script>
+
+<div id="dlg-changeserver" class="easyui-dialog" modal="true" style="width:290px;height:140px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-changeserver">
+    <div class="easyui-layout" fit="true">
+        <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >  
+            <form id="fm-changeserver" action="/Home/ChangeServer/" method="post"> 
+                <table width="250">
+                  <tr>
+				        <td>服务器</td>
+				        <td colspan="3"align="left">
+                        <input name="SystemId" type="text" id="cg-changeserver" />                               
+                        </td>
+                  </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons-changeserver">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="changeToServer()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-changeserver').dialog('close')">取消</a>
+</div>

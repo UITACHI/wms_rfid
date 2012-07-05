@@ -1,0 +1,37 @@
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	font-size:12px;
+	font-weight: lighter;
+	font-family:"ËÎÌו";
+	background-image: url(../images/bg.gif);
+}
+
+ table, tr, td
+{
+	margin: 0;
+	font-size: 12px;
+	text-align: left;
+}
+
+ input,textarea,select,span.combo
+{
+	border: 1px solid #A4BED4;
+	height: 20px;
+	display: inline-block;
+	white-space: nowrap;
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+}
+
+.login
+{
+    border: 1px solid #67aef0;
+    border-radius: 20px;
+    -webkit-box-shadow: 4px 3px 2px 2px black;
+    -moz-box-shadow: 4px 3px 2px 2px black;
+    box-shadow: 4px 3px 2px 2px black;
+}

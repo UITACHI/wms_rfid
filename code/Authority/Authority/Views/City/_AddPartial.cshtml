@@ -1,0 +1,83 @@
+﻿<script type="text/javascript">
+    var url;
+    $(function () {
+        $('#cc').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45
+        });
+    })
+
+    function addClick() {
+        $('#dlg').dialog('open').dialog('setTitle', '新增');
+        $('#fm').form('clear');
+        $('#fm .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
+        $('#cc').combo({
+            hasDownArrow: true
+        });
+        url = '/City/Create/';
+    };
+
+    function save() {
+        $('#fm').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').datagrid('reload');
+                }
+            }
+        });
+    }
+</script>
+
+    <div id="dlg" class="easyui-dialog" modal="true" 
+        style="width:300px;height:210px;padding:2px 2px"
+        closed="true" buttons="#dlg-buttons">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
+	            <form id="fm" method="post" novalidate>
+                    <table width="250">
+                      <tr>
+                        <td width="60">地市名称</td>
+                        <td width="168"><input name="CityName" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td>描述</td>
+                        <td><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
+                      </tr>
+                      <tr>
+                        <td>状态</td>
+                        <td><select id="cc" name="IsActive" class="easyui-combobox" style="width: 50px">
+		                        <option value="true">启用</option>
+		                        <option value="false">禁用</option>
+	                        </select>
+	                    </td>
+                      </tr>
+                    </table>
+	            </form>
+            </div>
+        </div>
+    </div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>

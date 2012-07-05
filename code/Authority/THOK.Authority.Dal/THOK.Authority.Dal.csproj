@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A8E32F0A-A9F4-4CDD-8C7A-8304CD034070}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>THOK.Authority.Dal</RootNamespace>
+    <AssemblyName>THOK.Authority.Dal</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\thok.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\Libraries\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EntityRepository\Authority\SystemRepository.cs" />
+    <Compile Include="EntityRepository\Authority\ModuleRepository.cs" />
+    <Compile Include="EntityRepository\Authority\UserRepository.cs" />
+    <Compile Include="EntityRepository\Authority\CityRepository.cs" />
+    <Compile Include="EntityRepository\Authority\RoleRepository.cs" />
+    <Compile Include="EntityRepository\Authority\FunctionRepository.cs" />
+    <Compile Include="EntityRepository\Authority\ServerRepository.cs" />
+    <Compile Include="EntityRepository\Authority\LoginLogRepository.cs" />
+    <Compile Include="EntityRepository\Authority\UserSystemRepository.cs" />
+    <Compile Include="EntityRepository\Authority\UserModuleRepository.cs" />
+    <Compile Include="EntityRepository\Authority\UserFunctionRepository.cs" />
+    <Compile Include="EntityRepository\Authority\RoleModuleRepository.cs" />
+    <Compile Include="EntityRepository\Authority\RoleSystemRepository.cs" />
+    <Compile Include="EntityRepository\Authority\RoleFunctionRepository.cs" />
+    <Compile Include="EntityRepository\Authority\UserRoleRepository.cs" />
+    <Compile Include="Infrastructure\ContextManager.cs" />
+    <Compile Include="Infrastructure\HttpRequestModule.cs" />
+    <Compile Include="Infrastructure\RepositoryContext\AuthorityRepositoryContext.cs" />
+    <Compile Include="Interfaces\Authority\IAuthorityRepositoryContext.cs" />
+    <Compile Include="Interfaces\Authority\ISystemRepository.cs" />
+    <Compile Include="Interfaces\Authority\IModuleRepository.cs" />
+    <Compile Include="Interfaces\Authority\IUserRepository.cs" />
+    <Compile Include="Interfaces\Authority\ICityRepository.cs" />
+    <Compile Include="Interfaces\Authority\IRoleRepository.cs" />
+    <Compile Include="Interfaces\Authority\IFunctionRepository.cs" />
+    <Compile Include="Interfaces\Authority\IServerRepository.cs" />
+    <Compile Include="Interfaces\Authority\ILoginLogRepository.cs" />
+    <Compile Include="Interfaces\Authority\IUserSystemRepository.cs" />
+    <Compile Include="Interfaces\Authority\IUserModuleRepository.cs" />
+    <Compile Include="Interfaces\Authority\IUserFunctionRepository.cs" />
+    <Compile Include="Interfaces\Authority\IRoleModuleRepository.cs" />
+    <Compile Include="Interfaces\Authority\IRoleSystemRepository.cs" />
+    <Compile Include="Interfaces\Authority\IRoleFunctionRepository.cs" />
+    <Compile Include="Interfaces\Authority\IUserRoleRepository.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IRepositoryContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EntityRepository\RepositoryBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="ClassDiagram\ClassDiagram.Dal.cd" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\THOK.Authority.Common\THOK.Common.csproj">
+      <Project>{2F9C4207-F8A0-4E55-A2CB-3514ADC0A437}</Project>
+      <Name>THOK.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THOK.RfidWms.DBModel.Ef\THOK.RfidWms.DBModel.Ef.csproj">
+      <Project>{259E5E16-41D8-420F-A11C-72BEE784B5CB}</Project>
+      <Name>THOK.RfidWms.DBModel.Ef</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EntityRepository\Wms\" />
+    <Folder Include="Interfaces\Wms\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,27 @@
+﻿<script type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 
+<div region="center" split="true" border="false">    
+    <table id="details" class="easyui-datagrid"
+        url="/Server/Details/" border="false" singleSelect="true"
+        fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
+        <thead>
+            <tr>
+                <th field="ServerID" width="80" hidden="true">服务器编码</th>
+                <th field="ServerName" width="100">服务器名称</th>
+                <th field="CityID" width="80" hidden="true">地市名称</th>
+                <th field="CityName" width="100">地市名称</th>
+                <th field="Url" width="80" align="right">URL</th>
+                <th field="Description" width="80" align="right">描述</th>                
+                <th field="IsActive" width="80" align="right">状态</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+ 
+
+

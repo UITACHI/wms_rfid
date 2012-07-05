@@ -1,0 +1,21 @@
+﻿<script type="text/javascript">
+function editClick(){
+    var row = $('#details').treegrid('getSelected');
+    if (row) {
+        $('#dlg').dialog('open').dialog('setTitle', '编辑');
+        $('#fm .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('form input').removeAttr("disabled");
+        $('#cg').combogrid({
+            hasDownArrow: false
+        });
+        $('#fm').form('load', row);
+        $('#cg').combogrid('setValue', row.SystemID).combo('setText', row.SystemName);
+        url = '/Module/Edit/?ModuleID=' + row.ModuleID;
+    } else {
+        $.messager.confirm('错误', '没有选择行！');
+    }
+};
+</script>
+   

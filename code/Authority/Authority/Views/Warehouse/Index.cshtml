@@ -1,0 +1,123 @@
+﻿<script type="text/javascript">
+    var treeObj = new Array();
+    $(function () {
+        alert(1);
+        $('#addShelf').attr('disabled', true);
+        $('#addCell').attr('disabled', true);
+    });
+
+    function treeClick() {
+        var treeRow = $('#warehouseTree').tree('getSelected');
+        var treeRoot= $('#warehouseTree').tree('getRoot');
+        $('#lblTree').text(treeRow.text);
+        if (treeRow.attributes == "system") {
+            $('#addCell').attr('disabled', true);
+            $('#addShelf').attr('disabled', true);
+            $('#addArea').removeAttr("disabled");                       
+        } else if (treeRow.attributes == "module") {
+            $('#addArea').attr('disabled', true);
+            $('#addCell').attr('disabled', true);
+            $('#addShelf').removeAttr("disabled");
+        } else if (treeRow.attributes == "function") {
+            $('#addArea').attr('disabled', true);
+            $('#addShelf').attr('disabled', true);
+            $('#addCell').removeAttr("disabled");
+        }
+    }
+
+    function addShelfClick() {
+        $('#shelfdlg').css({ display: "block" });
+        $('#celldlg').css({ display: "none" });
+        $('#areadlg').css({ display: "none" });
+        $('#waredlg').css({ display: "none" });
+    }
+    function addCellClick() {
+        $('#shelfdlg').css({ display: "none" });
+        $('#celldlg').css({ display: "block" });
+        $('#areadlg').css({ display: "none" });
+        $('#waredlg').css({ display: "none" });
+    }
+    function addAreaClick() {
+        $('#shelfdlg').css({ display: "none" });
+        $('#celldlg').css({ display: "none" });
+        $('#areadlg').css({ display: "block" });
+        $('#waredlg').css({ display: "none" });
+    }
+    function addMarehouseClick(){
+        $('#shelfdlg').css({ display: "none" });
+        $('#celldlg').css({ display: "none" });
+        $('#areadlg').css({ display: "none" });
+        $('#waredlg').css({ display: "block" });
+    }
+</script>
+<style type="text/css">    
+    html, body
+    {
+        font: 100% 微软雅黑, 宋体, 新宋体;
+        margin: 0; /* 最好将 body 元素的边距和填充设置为 0 以覆盖不同的浏览器默认值 */
+        padding: 0;
+        text-align: center; /* 在 IE 5* 浏览器中，这会将容器居中。文本随后将在 #container 选择器中设置为默认左对齐 */
+        height: 100%; /*这里将高度设置为100%是这个布局实现自适应高度的关键，只有这里设置了高度，下面div的高度设置才起作用*/
+    }
+    #layout
+    {
+        width: 100%;
+        height: 100%;
+        margin: 0px auto;
+    }
+    #header
+    {
+        height: 6%;
+    }
+    #container
+    {
+        height: 94%;
+    }
+    #container #sidebar
+    {
+        height: 100%;
+        width: 28%;
+        float: left;
+        overflow: scroll;
+        margin: 0px 0px 0px 0xp;
+    }
+    #container #main
+    {
+        height: 100%;
+        width: 72%;
+        float: left;
+        margin:0;
+        padding:0;        
+        text-align:center;
+    }
+    .clearfloat
+    {
+        /* 此类应当放在 div 或 break 元素上，而且该元素应当是完全包含浮动的容器关闭之前的最后一个元素 */
+        clear: both;
+        height: 0;
+        font-size: 1px;
+        line-height: 0px;
+    }
+</style>
+<div id="layout">
+    <div id="header" toolbar="#toolbar" fit="true" style="text-align: left; border: 1px solid #ccc;">
+        <div id="toolbar" class="datagrid-toolbar">
+                <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addMarehouse" onclick="addMarehouseClick()">新增仓库</a> 
+                <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addArea" onclick="addAreaClick()">新增库区</a> 
+                <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addShelf" onclick="addShelfClick()">新增货架</a>
+                <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="addCell" onclick="addCellClick()">新增货位</a>
+        </div>
+    </div>
+    <div id="container">
+        <div id="sidebar">
+            <ul id="warehouseTree" style="text-align: left;" class="easyui-tree" checkbox="false" onclick="treeClick()"
+                url='/Module/GetUserSystemDetails?userID=797c0b4c-932d-4ec9-acad-815ebb858c26&cityID=5100f6ff-d0e8-4e00-b2a3-125d40f19f99&systemID=3281ac28-9241-4371-8fce-84af5e1610bd'>
+            </ul>
+        </div>
+        <div id="main">
+           <div id="top" style="text-align: left;font-size:12px;font-weight: lighter;font-family:"宋体";">当前选中的节点：<label id="lblTree"></label></div>          
+           @Html.Partial("_AddWarehousePartial")
+        </div>
+        <br class="clearfloat" />
+    </div>
+</div>

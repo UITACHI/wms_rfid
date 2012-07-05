@@ -1,0 +1,73 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#changeCity').click(function () {
+            $('#cg-changecity').combogrid('setValue', '').combo('setText', '');
+            $('#dlg-changecity').dialog('open').dialog('setTitle', '切换地市');
+        });
+    })
+
+    function init_changecity(useraame) {
+        $('#cg-changecity').combogrid({
+            width: 180,
+            panelWidth: 450,
+            url: '/System/Details/?page=1&rows=1&usernaem=' + useraame,
+            idField: 'SystemID',
+            textField: 'SystemName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    }
+
+    function changeToCity() {
+        $('#fm-changecity').form('submit', {
+            url: '/Account/ChangeServer/?FunID=EEB02601-9BF6-412F-A63E-92857BF38638',
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {                
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '系统提示',
+                        msg: result.msg
+                    });
+                    $('#dlg-changecity').dialog('close');
+                    location.href = result.data;
+                    return;
+                } else {
+                    $.messager.confirm('系统提示', result.msg);
+                    return;
+                }
+            }
+        });
+    }
+</script>
+
+<div id="dlg-changecity" class="easyui-dialog" modal="true" style="width:290px;height:140px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-changecity">
+    <div class="easyui-layout" fit="true">
+        <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <form id="fm-changecity" method="post">
+                <table width="250">
+                  <tr>
+				        <td>地市</td>
+				        <td colspan="3"align="left">
+                        <input name="SystemId" type="text" id="cg-changecity" />                               
+                        </td>
+                  </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons-changecity">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="changeToCity()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-changecity').dialog('close')">取消</a>
+</div>

@@ -1,0 +1,115 @@
+﻿<script type="text/javascript">
+    var roleID;
+    var cityID;
+    var systemID;
+    function permissionadminClick() {
+        $('#tt').tree({ url: '' });
+        $('#tt').tree('reload');
+        $('#cgCity').combogrid('grid').datagrid('reload');
+        $('#cgSystem').combogrid('grid').datagrid('reload');
+        $('#cgCity').combogrid('clear');
+        $('#cgSystem').combogrid('clear');
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $('#dlg-permissionadmin').dialog('open').dialog('setTitle', '角色权限编辑：' + row.RoleName);
+            roleID = row.RoleID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+
+    $(function () {
+        $('#cgCity ').combogrid({
+            width: 120,
+            panelWidth: 450,
+            url: '/City/Details/?page=1&rows=5',
+            idField: 'CityID',
+            textField: 'CityName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'CityID', title: '城市ID', hidden: true, width: 30 },
+					{ field: 'CityName', title: '城市名称', align: 'left', width: 40 },
+                    { field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    });
+
+    $(function () {
+        $('#cgSystem').combogrid({
+            width: 120,
+            panelWidth: 450,
+            url: '/System/Details/?page=1&rows=2',
+            idField: 'SystemID',
+            textField: 'SystemName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    });
+
+    function query() {
+        var cID = $('#cgCity').combogrid('getValue');
+        var sID = $('#cgSystem').combogrid('getValue');
+        cityID = cID;
+        systemID = sID;
+        if (cID != "" & sID != "") {
+            $.getJSON("/Module/InitRoleSystem", { roleID: roleID, cityID: cityID, systemID: systemID }, function (json) {
+                if (json) {
+                    $('#tt').tree({ url: '/Module/GetRoleSystemDetails/?roleId=' + roleID + '&cityId=' + cityID + '&systemID=' + systemID });
+                    $.messager.show({ title: '系统提示', msg: '查询成功' });
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+                }
+            });
+        }
+        else {
+            $.messager.show({ title: '系统提示', msg: '请选择地市和系统' });
+        }
+    }
+
+    function update() {
+        var roots = $('#tt').tree('getRoots'), children, i, j, info = "";
+        for (i = 0; i < roots.length; i++) {
+            info += roots[i].attributes + "^" + roots[i].id + "^" + roots[i].checked + ",";
+            children = $('#tt').tree('getChildren', roots[i].target);
+            for (j = 0; j < children.length; j++)
+                info += children[j].attributes + "^" + children[j].id + "^" + children[j].checked + ",";
+        }
+        if (info != "") {
+            $.post("/Module/ProcessRolePermissionStr/", { rolePermissionStr: info }, function (json) {
+                if (json) {
+                    $.messager.alert('系统提示', '保存成功！');
+                }
+            });
+        } else {
+            $.messager.alert('系统提示', '请先查询数据修改后再保存！');
+        }
+    }
+</script>
+<div id="dlg-permissionadmin" class="easyui-dialog" modal="true" style="width: 450px;
+    height: 420px;padding:2px 2px" closed="true" toolbar="#toolbar" 
+    buttons="#dlg-buttons-permission">
+    <div class="easyui-layout" fit="true">
+	    <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >  
+            <ul id="tt" class="easyui-tree" checkbox="true"></ul>
+        </div>
+    </div>
+</div>
+<div id="toolbar" style="background-color: e0ecff">
+    地市 <input type="text" name="city" id="cgCity" class="easyui-validatebox" required="true" />
+    系统 <input type="text" name="system" id="cgSystem" class="easyui-validatebox" required="true" />
+    <a href="#" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="query()">查询</a>
+</div>
+<div id="dlg-buttons-permission" >
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="update()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-permissionadmin').dialog('close')">取消</a>
+</div>

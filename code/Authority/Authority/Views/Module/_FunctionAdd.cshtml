@@ -1,0 +1,64 @@
+﻿<script type="text/javascript">
+    function functionSaveClick() {
+        if (isAdd == 1) {
+            var url = "/Function/Create";
+            var field = $('#ModuletID').val(); //新增，传模块ID
+            functionAddSave(url, field)
+        } else if (isAdd == 2) {
+            var url = "/Function/Edit";
+            var field = $('#FunctionID').val(); //修改，传功能ID
+            functionAddSave(url, field)
+        } else if (isAdd == 3) {
+            var url = "/Function/Delete";
+            var field = $('#FunctionID').val(); //删除，传功能ID
+            functionAddSave(url, field)
+        }
+    }
+
+    function functionAddSave(url, field) {
+        if ($('#FunctionName').val() != "" && $('#ControlName').val() != "") {
+            $.post(url, { id: field, FunctionName: $('#FunctionName').val(), ControlName: $('#ControlName').val(), IndicateImage: $('#IndicateImage').val() }, function (json) {
+                if (json) {
+                    $.messager.show({ title: '系统提示', msg: '操作成功！' });
+                    $('#function_add').window('close');
+                    $('#functiondatagrid').datagrid('options').url = '/Function/Details/?ModuleId=' + $('#ModuletID').val();
+                    $('#functiondatagrid').datagrid('reload');
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });
+                }
+            });
+        } else {
+            $.messager.show({ title: '系统提示', msg: '请输入数据！' });
+        }
+    }
+</script>
+     <div id="function_add" class="easyui-dialog" modal="true" 
+        style="width:340px;height:210px;padding:2px 2px"
+        closed="true" buttons="#dlg-buttons">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; "> 
+                    <table width="250">
+                      <tr>
+                        <td width="60">功能名称</td>
+                        <td width="168">
+                        <input  class="easyui-validatebox" required="true" id='FunctionName' type="text"/>
+                        <input  class="easyui-validatebox" id='FunctionID' style="display:none"/>
+                        <input  class="easyui-validatebox" id='ModuletID' style="display:none"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>控制名称:</td>
+                        <td><input class="easyui-validatebox" required="true" id='ControlName'type="text" /></td>
+                      </tr>
+                      <tr>
+                        <td>功能图标:</td>
+                        <td><input class="easyui-validatebox"  id='IndicateImage'type="text"/></td>
+                      </tr>
+                    </table>
+            </div>
+        </div>
+    </div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="functionSaveClick()" id='FunctionSave'>确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#function_add').dialog('close')">取消</a>
+</div>

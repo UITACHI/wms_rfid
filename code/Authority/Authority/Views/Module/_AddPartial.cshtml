@@ -1,0 +1,112 @@
+﻿<script type="text/javascript">
+    var url;
+    function addClick() {
+        $('#dlg').dialog('open').dialog('setTitle', '新增');
+        $('#fm .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('form input').removeAttr("disabled");
+        $('#cg').combogrid({
+            hasDownArrow: true
+        });
+        $('#fm').form('clear');            
+        var row = $('#details').treegrid('getSelected');
+        if (row) {
+            $("#moname").val(row.ModuleName);
+            $("#moid").val(row.ModuleID);
+            $('#cg').combogrid({
+                hasDownArrow: false
+            });
+            $('#cg').combogrid('setValue', row.SystemID).combogrid('setText', row.SystemName);
+        }
+        url = '/Module/Create/';
+    };
+
+    function save() {
+        $('#fm').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg').dialog('close');
+                    $('#details').treegrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').treegrid('reload');
+                }
+            }
+        });
+    }
+
+    $(function () {
+        $('#cg').combogrid({
+            width: 120,
+            panelWidth: 450,
+            url: '/System/Details/?page=1&rows=1',
+            idField: 'systemId',
+            textField: 'SystemName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'systemId', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    });
+</script>
+
+<div id="dlg" class="easyui-dialog" modal="true" 
+    style="width:420px;height:230px;padding:2px 2px"
+    closed="true" buttons="#dlg-buttons">
+    <div class="easyui-layout" fit="true">
+	    <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <form id="fm" action="/Module/Create/" method="post">
+		        <table  border="0" align="center" style="margin:auto; width:100%; height:100%">
+			        <tr style=" height:35px;">
+				        <td >模块名称</td>
+				        <td align="left"><input name="ModuleName" type="text" required="true" class="easyui-validatebox" /></td>
+                        <td >系统图标</td>
+				        <td align="left"><input name="IndicateImage" type="text"  /></td>
+			        </tr>
+			        <tr>
+				        <td>显示顺序</td>
+				        <td align="left"><input name="ShowOrder" class="easyui-numberbox"  type="text" required="true" missingmessage="请输入显示顺序（必须为数字）" /></td>
+                            <td>桌面图片</td>
+				        <td align="left"><input name="DesktopImage" type="text"  /></td>
+			        </tr>
+			        <tr style=" height:35px;">
+				        <td>模块路径</td>
+				        <td  align="left"><input name="ModuleURL" type="text" required="true" missingmessage="请输入模块地址"  /></td>
+                        <td>上级菜单</td>
+				        <td  align="left"><input name="ParentModuleName" type="text" id="moname"  disabled="disabled" />
+                        <input name="ParentModuleID" type="text" id="moid"  style= "display:none " />
+                        </td>
+			        </tr>
+                    <tr>
+				        <td>所属系统</td>
+				        <td colspan="3"align="left">
+                        <input name="systemId" type="text" id="cg"/>                               
+                        </td>
+			        </tr>
+		        </table>
+	        </form>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>

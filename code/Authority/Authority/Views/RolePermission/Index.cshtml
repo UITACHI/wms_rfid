@@ -1,0 +1,27 @@
+﻿<script type="text/javascript">
+    $(function () {
+        
+    });
+</script>
+ 
+<div region="center" split="true" border="false">    
+   <table id="test" class="easyui-treegrid" 
+			url="/Home/GetMenu/sysid/"
+			rownumbers="true"
+			idField="menuid" treeField="menuname" toolbar="#tool"  pagination="true" fit="true">
+		<thead>
+			<tr>
+                <th field="menuid" width="50">编号</th>
+				<th field="menuname" width="200" align="left" iconCls="icon">名称</th>
+				<th field="iconCls" width="150">图标</th>                
+                <th field="url" width="150">路径</th>
+                <th field="enable" width="150">是否启用</th>
+                <th field="order" width="150">显示顺序</th>
+			</tr>
+		</thead>
+	</table>
+</div>
+
+ 
+
+

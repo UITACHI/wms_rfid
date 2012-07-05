@@ -1,0 +1,1345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AuthorizeModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="AuthorizeModelStoreContainer">
+    <EntitySet Name="City" EntityType="AuthorizeModel.Store.City" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Functions" EntityType="AuthorizeModel.Store.Functions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="LoginLogs" EntityType="AuthorizeModel.Store.LoginLogs" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Module" EntityType="AuthorizeModel.Store.Module" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Roles" EntityType="AuthorizeModel.Store.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RoleFunctions" EntityType="AuthorizeModel.Store.RoleFunctions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RoleModules" EntityType="AuthorizeModel.Store.RoleModules" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RoleSystems" EntityType="AuthorizeModel.Store.RoleSystems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Server" EntityType="AuthorizeModel.Store.Server" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Systems" EntityType="AuthorizeModel.Store.Systems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="AuthorizeModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserFunctions" EntityType="AuthorizeModel.Store.UserFunctions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserModules" EntityType="AuthorizeModel.Store.UserModules" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserRoles" EntityType="AuthorizeModel.Store.UserRoles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserSystems" EntityType="AuthorizeModel.Store.UserSystems" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="RoleRoleSystem" Association="AuthorizeModel.Store.RoleRoleSystem">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="RoleSystem" EntitySet="RoleSystems" />
+    </AssociationSet>
+    <AssociationSet Name="RoleSystemRoleModule" Association="AuthorizeModel.Store.RoleSystemRoleModule">
+      <End Role="RoleSystem" EntitySet="RoleSystems" />
+      <End Role="RoleModule" EntitySet="RoleModules" />
+    </AssociationSet>
+    <AssociationSet Name="RoleModuleRoleFunction" Association="AuthorizeModel.Store.RoleModuleRoleFunction">
+      <End Role="RoleModule" EntitySet="RoleModules" />
+      <End Role="RoleFunction" EntitySet="RoleFunctions" />
+    </AssociationSet>
+    <AssociationSet Name="UserLoginLog" Association="AuthorizeModel.Store.UserLoginLog">
+      <End Role="User" EntitySet="Users" />
+      <End Role="LoginLog" EntitySet="LoginLogs" />
+    </AssociationSet>
+    <AssociationSet Name="UserUserSystem" Association="AuthorizeModel.Store.UserUserSystem">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserSystem" EntitySet="UserSystems" />
+    </AssociationSet>
+    <AssociationSet Name="UserSystemUserModule" Association="AuthorizeModel.Store.UserSystemUserModule">
+      <End Role="UserSystem" EntitySet="UserSystems" />
+      <End Role="UserModule" EntitySet="UserModules" />
+    </AssociationSet>
+    <AssociationSet Name="UserModuleUserFunction" Association="AuthorizeModel.Store.UserModuleUserFunction">
+      <End Role="UserModule" EntitySet="UserModules" />
+      <End Role="UserFunction" EntitySet="UserFunctions" />
+    </AssociationSet>
+    <AssociationSet Name="UserUserRole" Association="AuthorizeModel.Store.UserUserRole">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserRole" EntitySet="UserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="RoleUserRole" Association="AuthorizeModel.Store.RoleUserRole">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="UserRole" EntitySet="UserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="CityServer" Association="AuthorizeModel.Store.CityServer">
+      <End Role="City" EntitySet="City" />
+      <End Role="Server" EntitySet="Server" />
+    </AssociationSet>
+    <AssociationSet Name="SystemModule" Association="AuthorizeModel.Store.SystemModule">
+      <End Role="System" EntitySet="Systems" />
+      <End Role="Module" EntitySet="Module" />
+    </AssociationSet>
+    <AssociationSet Name="ModuleFunction" Association="AuthorizeModel.Store.ModuleFunction">
+      <End Role="Module" EntitySet="Module" />
+      <End Role="Function" EntitySet="Functions" />
+    </AssociationSet>
+    <AssociationSet Name="CityUserSystem" Association="AuthorizeModel.Store.CityUserSystem">
+      <End Role="City" EntitySet="City" />
+      <End Role="UserSystem" EntitySet="UserSystems" />
+    </AssociationSet>
+    <AssociationSet Name="CityRoleSystem" Association="AuthorizeModel.Store.CityRoleSystem">
+      <End Role="City" EntitySet="City" />
+      <End Role="RoleSystem" EntitySet="RoleSystems" />
+    </AssociationSet>
+    <AssociationSet Name="SystemRoleSystem" Association="AuthorizeModel.Store.SystemRoleSystem">
+      <End Role="System" EntitySet="Systems" />
+      <End Role="RoleSystem" EntitySet="RoleSystems" />
+    </AssociationSet>
+    <AssociationSet Name="ModuleRoleModule" Association="AuthorizeModel.Store.ModuleRoleModule">
+      <End Role="Module" EntitySet="Module" />
+      <End Role="RoleModule" EntitySet="RoleModules" />
+    </AssociationSet>
+    <AssociationSet Name="FunctionRoleFunction" Association="AuthorizeModel.Store.FunctionRoleFunction">
+      <End Role="Function" EntitySet="Functions" />
+      <End Role="RoleFunction" EntitySet="RoleFunctions" />
+    </AssociationSet>
+    <AssociationSet Name="SystemUserSystem" Association="AuthorizeModel.Store.SystemUserSystem">
+      <End Role="System" EntitySet="Systems" />
+      <End Role="UserSystem" EntitySet="UserSystems" />
+    </AssociationSet>
+    <AssociationSet Name="ModuleUserModule" Association="AuthorizeModel.Store.ModuleUserModule">
+      <End Role="Module" EntitySet="Module" />
+      <End Role="UserModule" EntitySet="UserModules" />
+    </AssociationSet>
+    <AssociationSet Name="FunctionUserFunction" Association="AuthorizeModel.Store.FunctionUserFunction">
+      <End Role="Function" EntitySet="Functions" />
+      <End Role="UserFunction" EntitySet="UserFunctions" />
+    </AssociationSet>
+    <AssociationSet Name="ModuleModule" Association="AuthorizeModel.Store.ModuleModule">
+      <End Role="Module" EntitySet="Module" />
+      <End Role="Module1" EntitySet="Module" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="CityID" />
+    </Key>
+    <Property Name="CityID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CityName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Functions">
+    <Key>
+      <PropertyRef Name="FunctionID" />
+    </Key>
+    <Property Name="FunctionID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FunctionName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="ControlName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Module_ModuleID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LoginLogs">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LoginPC" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="LoginTime" Type="varchar" Nullable="false" MaxLength="30" />
+    <Property Name="LogoutTime" Type="varchar" Nullable="true" MaxLength="30" />
+    <Property Name="User_UserID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Module">
+    <Key>
+      <PropertyRef Name="ModuleID" />
+    </Key>
+    <Property Name="ModuleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ModuleName" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="ShowOrder" Type="int" Nullable="false" />
+    <Property Name="ModuleURL" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="IndicateImage" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="DeskTopImage" Type="varchar" Nullable="true" MaxLength="100" />
+    <Property Name="System_SystemID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ParentModule_ModuleID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RoleName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="IsLock" Type="bit" Nullable="false" />
+    <Property Name="Memo" Type="varchar" Nullable="true" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="RoleFunctions">
+    <Key>
+      <PropertyRef Name="RoleFunctionID" />
+    </Key>
+    <Property Name="RoleFunctionID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="RoleModule_RoleModuleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Function_FunctionID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RoleModules">
+    <Key>
+      <PropertyRef Name="RoleModuleID" />
+    </Key>
+    <Property Name="RoleModuleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="RoleSystem_RoleSystemID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Module_ModuleID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RoleSystems">
+    <Key>
+      <PropertyRef Name="RoleSystemID" />
+    </Key>
+    <Property Name="RoleSystemID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Role_RoleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="City_CityID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="System_SystemID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Server">
+    <Key>
+      <PropertyRef Name="ServerID" />
+    </Key>
+    <Property Name="ServerID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ServerName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Url" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="City_CityID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Systems">
+    <Key>
+      <PropertyRef Name="SystemID" />
+    </Key>
+    <Property Name="SystemID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="SystemName" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Pwd" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="ChineseName" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="IsLock" Type="bit" Nullable="false" />
+    <Property Name="IsAdmin" Type="bit" Nullable="false" />
+    <Property Name="LoginPC" Type="varchar" Nullable="true" MaxLength="50" />
+    <Property Name="Memo" Type="varchar" Nullable="true" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="UserFunctions">
+    <Key>
+      <PropertyRef Name="UserFunctionID" />
+    </Key>
+    <Property Name="UserFunctionID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="UserModule_UserModuleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Function_FunctionID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserModules">
+    <Key>
+      <PropertyRef Name="UserModuleID" />
+    </Key>
+    <Property Name="UserModuleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="UserSystem_UserSystemID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Module_ModuleID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserRoles">
+    <Key>
+      <PropertyRef Name="UserRoleID" />
+    </Key>
+    <Property Name="UserRoleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="User_UserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Role_RoleID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserSystems">
+    <Key>
+      <PropertyRef Name="UserSystemID" />
+    </Key>
+    <Property Name="UserSystemID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="User_UserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="City_CityID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="System_SystemID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <Association Name="RoleRoleSystem">
+    <End Role="Role" Type="AuthorizeModel.Store.Roles" Multiplicity="1" />
+    <End Role="RoleSystem" Type="AuthorizeModel.Store.RoleSystems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="RoleSystem">
+        <PropertyRef Name="Role_RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoleSystemRoleModule">
+    <End Role="RoleSystem" Type="AuthorizeModel.Store.RoleSystems" Multiplicity="1" />
+    <End Role="RoleModule" Type="AuthorizeModel.Store.RoleModules" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoleSystem">
+        <PropertyRef Name="RoleSystemID" />
+      </Principal>
+      <Dependent Role="RoleModule">
+        <PropertyRef Name="RoleSystem_RoleSystemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoleModuleRoleFunction">
+    <End Role="RoleModule" Type="AuthorizeModel.Store.RoleModules" Multiplicity="1" />
+    <End Role="RoleFunction" Type="AuthorizeModel.Store.RoleFunctions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoleModule">
+        <PropertyRef Name="RoleModuleID" />
+      </Principal>
+      <Dependent Role="RoleFunction">
+        <PropertyRef Name="RoleModule_RoleModuleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserLoginLog">
+    <End Role="User" Type="AuthorizeModel.Store.Users" Multiplicity="1" />
+    <End Role="LoginLog" Type="AuthorizeModel.Store.LoginLogs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="LoginLog">
+        <PropertyRef Name="User_UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserUserSystem">
+    <End Role="User" Type="AuthorizeModel.Store.Users" Multiplicity="1" />
+    <End Role="UserSystem" Type="AuthorizeModel.Store.UserSystems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="UserSystem">
+        <PropertyRef Name="User_UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSystemUserModule">
+    <End Role="UserSystem" Type="AuthorizeModel.Store.UserSystems" Multiplicity="1" />
+    <End Role="UserModule" Type="AuthorizeModel.Store.UserModules" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSystem">
+        <PropertyRef Name="UserSystemID" />
+      </Principal>
+      <Dependent Role="UserModule">
+        <PropertyRef Name="UserSystem_UserSystemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserModuleUserFunction">
+    <End Role="UserModule" Type="AuthorizeModel.Store.UserModules" Multiplicity="1" />
+    <End Role="UserFunction" Type="AuthorizeModel.Store.UserFunctions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserModule">
+        <PropertyRef Name="UserModuleID" />
+      </Principal>
+      <Dependent Role="UserFunction">
+        <PropertyRef Name="UserModule_UserModuleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserUserRole">
+    <End Role="User" Type="AuthorizeModel.Store.Users" Multiplicity="1" />
+    <End Role="UserRole" Type="AuthorizeModel.Store.UserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="User_UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoleUserRole">
+    <End Role="Role" Type="AuthorizeModel.Store.Roles" Multiplicity="1" />
+    <End Role="UserRole" Type="AuthorizeModel.Store.UserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="Role_RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CityServer">
+    <End Role="City" Type="AuthorizeModel.Store.City" Multiplicity="1" />
+    <End Role="Server" Type="AuthorizeModel.Store.Server" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CityID" />
+      </Principal>
+      <Dependent Role="Server">
+        <PropertyRef Name="City_CityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SystemModule">
+    <End Role="System" Type="AuthorizeModel.Store.Systems" Multiplicity="1" />
+    <End Role="Module" Type="AuthorizeModel.Store.Module" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="System">
+        <PropertyRef Name="SystemID" />
+      </Principal>
+      <Dependent Role="Module">
+        <PropertyRef Name="System_SystemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ModuleFunction">
+    <End Role="Module" Type="AuthorizeModel.Store.Module" Multiplicity="1" />
+    <End Role="Function" Type="AuthorizeModel.Store.Functions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Module">
+        <PropertyRef Name="ModuleID" />
+      </Principal>
+      <Dependent Role="Function">
+        <PropertyRef Name="Module_ModuleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CityUserSystem">
+    <End Role="City" Type="AuthorizeModel.Store.City" Multiplicity="1" />
+    <End Role="UserSystem" Type="AuthorizeModel.Store.UserSystems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CityID" />
+      </Principal>
+      <Dependent Role="UserSystem">
+        <PropertyRef Name="City_CityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CityRoleSystem">
+    <End Role="City" Type="AuthorizeModel.Store.City" Multiplicity="1" />
+    <End Role="RoleSystem" Type="AuthorizeModel.Store.RoleSystems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CityID" />
+      </Principal>
+      <Dependent Role="RoleSystem">
+        <PropertyRef Name="City_CityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SystemRoleSystem">
+    <End Role="System" Type="AuthorizeModel.Store.Systems" Multiplicity="1" />
+    <End Role="RoleSystem" Type="AuthorizeModel.Store.RoleSystems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="System">
+        <PropertyRef Name="SystemID" />
+      </Principal>
+      <Dependent Role="RoleSystem">
+        <PropertyRef Name="System_SystemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ModuleRoleModule">
+    <End Role="Module" Type="AuthorizeModel.Store.Module" Multiplicity="1" />
+    <End Role="RoleModule" Type="AuthorizeModel.Store.RoleModules" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Module">
+        <PropertyRef Name="ModuleID" />
+      </Principal>
+      <Dependent Role="RoleModule">
+        <PropertyRef Name="Module_ModuleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FunctionRoleFunction">
+    <End Role="Function" Type="AuthorizeModel.Store.Functions" Multiplicity="1" />
+    <End Role="RoleFunction" Type="AuthorizeModel.Store.RoleFunctions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Function">
+        <PropertyRef Name="FunctionID" />
+      </Principal>
+      <Dependent Role="RoleFunction">
+        <PropertyRef Name="Function_FunctionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SystemUserSystem">
+    <End Role="System" Type="AuthorizeModel.Store.Systems" Multiplicity="1" />
+    <End Role="UserSystem" Type="AuthorizeModel.Store.UserSystems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="System">
+        <PropertyRef Name="SystemID" />
+      </Principal>
+      <Dependent Role="UserSystem">
+        <PropertyRef Name="System_SystemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ModuleUserModule">
+    <End Role="Module" Type="AuthorizeModel.Store.Module" Multiplicity="1" />
+    <End Role="UserModule" Type="AuthorizeModel.Store.UserModules" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Module">
+        <PropertyRef Name="ModuleID" />
+      </Principal>
+      <Dependent Role="UserModule">
+        <PropertyRef Name="Module_ModuleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FunctionUserFunction">
+    <End Role="Function" Type="AuthorizeModel.Store.Functions" Multiplicity="1" />
+    <End Role="UserFunction" Type="AuthorizeModel.Store.UserFunctions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Function">
+        <PropertyRef Name="FunctionID" />
+      </Principal>
+      <Dependent Role="UserFunction">
+        <PropertyRef Name="Function_FunctionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ModuleModule">
+    <End Role="Module" Type="AuthorizeModel.Store.Module" Multiplicity="1" />
+    <End Role="Module1" Type="AuthorizeModel.Store.Module" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Module">
+        <PropertyRef Name="ModuleID" />
+      </Principal>
+      <Dependent Role="Module1">
+        <PropertyRef Name="ParentModule_ModuleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AuthorizeModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="AuthorizeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="City" EntityType="AuthorizeModel.City" />
+          <EntitySet Name="Functions" EntityType="AuthorizeModel.Function" />
+          <EntitySet Name="LoginLogs" EntityType="AuthorizeModel.LoginLog" />
+          <EntitySet Name="Module" EntityType="AuthorizeModel.Module" />
+          <EntitySet Name="Roles" EntityType="AuthorizeModel.Role" />
+          <EntitySet Name="RoleFunctions" EntityType="AuthorizeModel.RoleFunction" />
+          <EntitySet Name="RoleModules" EntityType="AuthorizeModel.RoleModule" />
+          <EntitySet Name="RoleSystems" EntityType="AuthorizeModel.RoleSystem" />
+          <EntitySet Name="Server" EntityType="AuthorizeModel.Server" />
+          <EntitySet Name="Systems" EntityType="AuthorizeModel.System" />
+          <EntitySet Name="Users" EntityType="AuthorizeModel.User" />
+          <EntitySet Name="UserFunctions" EntityType="AuthorizeModel.UserFunction" />
+          <EntitySet Name="UserModules" EntityType="AuthorizeModel.UserModule" />
+          <EntitySet Name="UserRoles" EntityType="AuthorizeModel.UserRole" />
+          <EntitySet Name="UserSystems" EntityType="AuthorizeModel.UserSystem" />
+          <AssociationSet Name="RoleRoleSystem" Association="AuthorizeModel.RoleRoleSystem">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="RoleSystem" EntitySet="RoleSystems" />
+          </AssociationSet>
+          <AssociationSet Name="RoleSystemRoleModule" Association="AuthorizeModel.RoleSystemRoleModule">
+            <End Role="RoleSystem" EntitySet="RoleSystems" />
+            <End Role="RoleModule" EntitySet="RoleModules" />
+          </AssociationSet>
+          <AssociationSet Name="RoleModuleRoleFunction" Association="AuthorizeModel.RoleModuleRoleFunction">
+            <End Role="RoleModule" EntitySet="RoleModules" />
+            <End Role="RoleFunction" EntitySet="RoleFunctions" />
+          </AssociationSet>
+          <AssociationSet Name="UserLoginLog" Association="AuthorizeModel.UserLoginLog">
+            <End Role="User" EntitySet="Users" />
+            <End Role="LoginLog" EntitySet="LoginLogs" />
+          </AssociationSet>
+          <AssociationSet Name="UserUserSystem" Association="AuthorizeModel.UserUserSystem">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserSystem" EntitySet="UserSystems" />
+          </AssociationSet>
+          <AssociationSet Name="UserSystemUserModule" Association="AuthorizeModel.UserSystemUserModule">
+            <End Role="UserSystem" EntitySet="UserSystems" />
+            <End Role="UserModule" EntitySet="UserModules" />
+          </AssociationSet>
+          <AssociationSet Name="UserModuleUserFunction" Association="AuthorizeModel.UserModuleUserFunction">
+            <End Role="UserModule" EntitySet="UserModules" />
+            <End Role="UserFunction" EntitySet="UserFunctions" />
+          </AssociationSet>
+          <AssociationSet Name="UserUserRole" Association="AuthorizeModel.UserUserRole">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="RoleUserRole" Association="AuthorizeModel.RoleUserRole">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="CityServer" Association="AuthorizeModel.CityServer">
+            <End Role="City" EntitySet="City" />
+            <End Role="Server" EntitySet="Server" />
+          </AssociationSet>
+          <AssociationSet Name="SystemModule" Association="AuthorizeModel.SystemModule">
+            <End Role="System" EntitySet="Systems" />
+            <End Role="Module" EntitySet="Module" />
+          </AssociationSet>
+          <AssociationSet Name="ModuleFunction" Association="AuthorizeModel.ModuleFunction">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="Function" EntitySet="Functions" />
+          </AssociationSet>
+          <AssociationSet Name="CityUserSystem" Association="AuthorizeModel.CityUserSystem">
+            <End Role="City" EntitySet="City" />
+            <End Role="UserSystem" EntitySet="UserSystems" />
+          </AssociationSet>
+          <AssociationSet Name="CityRoleSystem" Association="AuthorizeModel.CityRoleSystem">
+            <End Role="City" EntitySet="City" />
+            <End Role="RoleSystem" EntitySet="RoleSystems" />
+          </AssociationSet>
+          <AssociationSet Name="SystemRoleSystem" Association="AuthorizeModel.SystemRoleSystem">
+            <End Role="System" EntitySet="Systems" />
+            <End Role="RoleSystem" EntitySet="RoleSystems" />
+          </AssociationSet>
+          <AssociationSet Name="ModuleRoleModule" Association="AuthorizeModel.ModuleRoleModule">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RoleModule" EntitySet="RoleModules" />
+          </AssociationSet>
+          <AssociationSet Name="FunctionRoleFunction" Association="AuthorizeModel.FunctionRoleFunction">
+            <End Role="Function" EntitySet="Functions" />
+            <End Role="RoleFunction" EntitySet="RoleFunctions" />
+          </AssociationSet>
+          <AssociationSet Name="SystemUserSystem" Association="AuthorizeModel.SystemUserSystem">
+            <End Role="System" EntitySet="Systems" />
+            <End Role="UserSystem" EntitySet="UserSystems" />
+          </AssociationSet>
+          <AssociationSet Name="ModuleUserModule" Association="AuthorizeModel.ModuleUserModule">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="UserModule" EntitySet="UserModules" />
+          </AssociationSet>
+          <AssociationSet Name="FunctionUserFunction" Association="AuthorizeModel.FunctionUserFunction">
+            <End Role="Function" EntitySet="Functions" />
+            <End Role="UserFunction" EntitySet="UserFunctions" />
+          </AssociationSet>
+          <AssociationSet Name="ModuleModule" Association="AuthorizeModel.ModuleModule">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="Module1" EntitySet="Module" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="CityID" />
+          </Key>
+          <Property Name="CityID" Type="Guid" Nullable="false" />
+          <Property Name="CityName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Servers" Relationship="AuthorizeModel.CityServer" FromRole="City" ToRole="Server" />
+          <NavigationProperty Name="UserSystems" Relationship="AuthorizeModel.CityUserSystem" FromRole="City" ToRole="UserSystem" />
+          <NavigationProperty Name="RoleSystems" Relationship="AuthorizeModel.CityRoleSystem" FromRole="City" ToRole="RoleSystem" />
+        </EntityType>
+        <EntityType Name="Function">
+          <Key>
+            <PropertyRef Name="FunctionID" />
+          </Key>
+          <Property Name="FunctionID" Type="Guid" Nullable="false" />
+          <Property Name="FunctionName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ControlName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Module" Relationship="AuthorizeModel.ModuleFunction" FromRole="Function" ToRole="Module" />
+          <NavigationProperty Name="RoleFunctions" Relationship="AuthorizeModel.FunctionRoleFunction" FromRole="Function" ToRole="RoleFunction" />
+          <NavigationProperty Name="UserFunctions" Relationship="AuthorizeModel.FunctionUserFunction" FromRole="Function" ToRole="UserFunction" />
+        </EntityType>
+        <EntityType Name="LoginLog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="Guid" Nullable="false" />
+          <Property Name="LoginPC" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LoginTime" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="LogoutTime" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="User" Relationship="AuthorizeModel.UserLoginLog" FromRole="LoginLog" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Module">
+          <Key>
+            <PropertyRef Name="ModuleID" />
+          </Key>
+          <Property Name="ModuleID" Type="Guid" Nullable="false" />
+          <Property Name="ModuleName" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="ShowOrder" Type="Int32" Nullable="false" />
+          <Property Name="ModuleURL" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="IndicateImage" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="DeskTopImage" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="System" Relationship="AuthorizeModel.SystemModule" FromRole="Module" ToRole="System" />
+          <NavigationProperty Name="Functions" Relationship="AuthorizeModel.ModuleFunction" FromRole="Module" ToRole="Function" />
+          <NavigationProperty Name="RoleModules" Relationship="AuthorizeModel.ModuleRoleModule" FromRole="Module" ToRole="RoleModule" />
+          <NavigationProperty Name="UserModules" Relationship="AuthorizeModel.ModuleUserModule" FromRole="Module" ToRole="UserModule" />
+          <NavigationProperty Name="Modules" Relationship="AuthorizeModel.ModuleModule" FromRole="Module" ToRole="Module1" />
+          <NavigationProperty Name="ParentModule" Relationship="AuthorizeModel.ModuleModule" FromRole="Module1" ToRole="Module" />
+          </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Guid" Nullable="false" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IsLock" Type="Boolean" Nullable="false" />
+          <Property Name="Memo" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="RoleSystems" Relationship="AuthorizeModel.RoleRoleSystem" FromRole="Role" ToRole="RoleSystem" />
+          <NavigationProperty Name="UserRoles" Relationship="AuthorizeModel.RoleUserRole" FromRole="Role" ToRole="UserRole" />
+        </EntityType>
+        <EntityType Name="RoleFunction">
+          <Key>
+            <PropertyRef Name="RoleFunctionID" />
+          </Key>
+          <Property Name="RoleFunctionID" Type="Guid" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="RoleModule" Relationship="AuthorizeModel.RoleModuleRoleFunction" FromRole="RoleFunction" ToRole="RoleModule" />
+          <NavigationProperty Name="Function" Relationship="AuthorizeModel.FunctionRoleFunction" FromRole="RoleFunction" ToRole="Function" />
+        </EntityType>
+        <EntityType Name="RoleModule">
+          <Key>
+            <PropertyRef Name="RoleModuleID" />
+          </Key>
+          <Property Name="RoleModuleID" Type="Guid" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="RoleSystem" Relationship="AuthorizeModel.RoleSystemRoleModule" FromRole="RoleModule" ToRole="RoleSystem" />
+          <NavigationProperty Name="RoleFunctions" Relationship="AuthorizeModel.RoleModuleRoleFunction" FromRole="RoleModule" ToRole="RoleFunction" />
+          <NavigationProperty Name="Module" Relationship="AuthorizeModel.ModuleRoleModule" FromRole="RoleModule" ToRole="Module" />
+        </EntityType>
+        <EntityType Name="RoleSystem">
+          <Key>
+            <PropertyRef Name="RoleSystemID" />
+          </Key>
+          <Property Name="RoleSystemID" Type="Guid" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="AuthorizeModel.RoleRoleSystem" FromRole="RoleSystem" ToRole="Role" />
+          <NavigationProperty Name="RoleModules" Relationship="AuthorizeModel.RoleSystemRoleModule" FromRole="RoleSystem" ToRole="RoleModule" />
+          <NavigationProperty Name="City" Relationship="AuthorizeModel.CityRoleSystem" FromRole="RoleSystem" ToRole="City" />
+          <NavigationProperty Name="System" Relationship="AuthorizeModel.SystemRoleSystem" FromRole="RoleSystem" ToRole="System" />
+        </EntityType>
+        <EntityType Name="Server">
+          <Key>
+            <PropertyRef Name="ServerID" />
+          </Key>
+          <Property Name="ServerID" Type="Guid" Nullable="false" />
+          <Property Name="ServerName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Url" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="City" Relationship="AuthorizeModel.CityServer" FromRole="Server" ToRole="City" />
+        </EntityType>
+        <EntityType Name="System">
+          <Key>
+            <PropertyRef Name="SystemID" />
+          </Key>
+          <Property Name="SystemID" Type="Guid" Nullable="false" />
+          <Property Name="SystemName" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Modules" Relationship="AuthorizeModel.SystemModule" FromRole="System" ToRole="Module" />
+          <NavigationProperty Name="RoleSystems" Relationship="AuthorizeModel.SystemRoleSystem" FromRole="System" ToRole="RoleSystem" />
+          <NavigationProperty Name="UserSystems" Relationship="AuthorizeModel.SystemUserSystem" FromRole="System" ToRole="UserSystem" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Pwd" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ChineseName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IsLock" Type="Boolean" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="LoginPC" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Memo" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="LoginLogs" Relationship="AuthorizeModel.UserLoginLog" FromRole="User" ToRole="LoginLog" />
+          <NavigationProperty Name="UserSystems" Relationship="AuthorizeModel.UserUserSystem" FromRole="User" ToRole="UserSystem" />
+          <NavigationProperty Name="UserRoles" Relationship="AuthorizeModel.UserUserRole" FromRole="User" ToRole="UserRole" />
+        </EntityType>
+        <EntityType Name="UserFunction">
+          <Key>
+            <PropertyRef Name="UserFunctionID" />
+          </Key>
+          <Property Name="UserFunctionID" Type="Guid" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="UserModule" Relationship="AuthorizeModel.UserModuleUserFunction" FromRole="UserFunction" ToRole="UserModule" />
+          <NavigationProperty Name="Function" Relationship="AuthorizeModel.FunctionUserFunction" FromRole="UserFunction" ToRole="Function" />
+        </EntityType>
+        <EntityType Name="UserModule">
+          <Key>
+            <PropertyRef Name="UserModuleID" />
+          </Key>
+          <Property Name="UserModuleID" Type="Guid" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="UserSystem" Relationship="AuthorizeModel.UserSystemUserModule" FromRole="UserModule" ToRole="UserSystem" />
+          <NavigationProperty Name="UserFunctions" Relationship="AuthorizeModel.UserModuleUserFunction" FromRole="UserModule" ToRole="UserFunction" />
+          <NavigationProperty Name="Module" Relationship="AuthorizeModel.ModuleUserModule" FromRole="UserModule" ToRole="Module" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleID" />
+          </Key>
+          <Property Name="UserRoleID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="AuthorizeModel.UserUserRole" FromRole="UserRole" ToRole="User" />
+          <NavigationProperty Name="Role" Relationship="AuthorizeModel.RoleUserRole" FromRole="UserRole" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="UserSystem">
+          <Key>
+            <PropertyRef Name="UserSystemID" />
+          </Key>
+          <Property Name="UserSystemID" Type="Guid" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="AuthorizeModel.UserUserSystem" FromRole="UserSystem" ToRole="User" />
+          <NavigationProperty Name="UserModules" Relationship="AuthorizeModel.UserSystemUserModule" FromRole="UserSystem" ToRole="UserModule" />
+          <NavigationProperty Name="City" Relationship="AuthorizeModel.CityUserSystem" FromRole="UserSystem" ToRole="City" />
+          <NavigationProperty Name="System" Relationship="AuthorizeModel.SystemUserSystem" FromRole="UserSystem" ToRole="System" />
+        </EntityType>
+        <Association Name="RoleRoleSystem">
+          <End Type="AuthorizeModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="AuthorizeModel.RoleSystem" Role="RoleSystem" Multiplicity="*" />
+        </Association>
+        <Association Name="RoleSystemRoleModule">
+          <End Type="AuthorizeModel.RoleSystem" Role="RoleSystem" Multiplicity="1" />
+          <End Type="AuthorizeModel.RoleModule" Role="RoleModule" Multiplicity="*" />
+        </Association>
+        <Association Name="RoleModuleRoleFunction">
+          <End Type="AuthorizeModel.RoleModule" Role="RoleModule" Multiplicity="1" />
+          <End Type="AuthorizeModel.RoleFunction" Role="RoleFunction" Multiplicity="*" />
+        </Association>
+        <Association Name="UserLoginLog">
+          <End Type="AuthorizeModel.User" Role="User" Multiplicity="1" />
+          <End Type="AuthorizeModel.LoginLog" Role="LoginLog" Multiplicity="*" />
+        </Association>
+        <Association Name="UserUserSystem">
+          <End Type="AuthorizeModel.User" Role="User" Multiplicity="1" />
+          <End Type="AuthorizeModel.UserSystem" Role="UserSystem" Multiplicity="*" />
+        </Association>
+        <Association Name="UserSystemUserModule">
+          <End Type="AuthorizeModel.UserSystem" Role="UserSystem" Multiplicity="1" />
+          <End Type="AuthorizeModel.UserModule" Role="UserModule" Multiplicity="*" />
+        </Association>
+        <Association Name="UserModuleUserFunction">
+          <End Type="AuthorizeModel.UserModule" Role="UserModule" Multiplicity="1" />
+          <End Type="AuthorizeModel.UserFunction" Role="UserFunction" Multiplicity="*" />
+        </Association>
+        <Association Name="UserUserRole">
+          <End Type="AuthorizeModel.User" Role="User" Multiplicity="1" />
+          <End Type="AuthorizeModel.UserRole" Role="UserRole" Multiplicity="*" />
+        </Association>
+        <Association Name="RoleUserRole">
+          <End Type="AuthorizeModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="AuthorizeModel.UserRole" Role="UserRole" Multiplicity="*" />
+        </Association>
+        <Association Name="CityServer">
+          <End Type="AuthorizeModel.City" Role="City" Multiplicity="1" />
+          <End Type="AuthorizeModel.Server" Role="Server" Multiplicity="*" />
+        </Association>
+        <Association Name="SystemModule">
+          <End Type="AuthorizeModel.System" Role="System" Multiplicity="1" />
+          <End Type="AuthorizeModel.Module" Role="Module" Multiplicity="*" />
+        </Association>
+        <Association Name="ModuleFunction">
+          <End Type="AuthorizeModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="AuthorizeModel.Function" Role="Function" Multiplicity="*" />
+        </Association>
+        <Association Name="CityUserSystem">
+          <End Type="AuthorizeModel.City" Role="City" Multiplicity="1" />
+          <End Type="AuthorizeModel.UserSystem" Role="UserSystem" Multiplicity="*" />
+        </Association>
+        <Association Name="CityRoleSystem">
+          <End Type="AuthorizeModel.City" Role="City" Multiplicity="1" />
+          <End Type="AuthorizeModel.RoleSystem" Role="RoleSystem" Multiplicity="*" />
+        </Association>
+        <Association Name="SystemRoleSystem">
+          <End Type="AuthorizeModel.System" Role="System" Multiplicity="1" />
+          <End Type="AuthorizeModel.RoleSystem" Role="RoleSystem" Multiplicity="*" />
+        </Association>
+        <Association Name="ModuleRoleModule">
+          <End Type="AuthorizeModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="AuthorizeModel.RoleModule" Role="RoleModule" Multiplicity="*" />
+        </Association>
+        <Association Name="FunctionRoleFunction">
+          <End Type="AuthorizeModel.Function" Role="Function" Multiplicity="1" />
+          <End Type="AuthorizeModel.RoleFunction" Role="RoleFunction" Multiplicity="*" />
+        </Association>
+        <Association Name="SystemUserSystem">
+          <End Type="AuthorizeModel.System" Role="System" Multiplicity="1" />
+          <End Type="AuthorizeModel.UserSystem" Role="UserSystem" Multiplicity="*" />
+        </Association>
+        <Association Name="ModuleUserModule">
+          <End Type="AuthorizeModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="AuthorizeModel.UserModule" Role="UserModule" Multiplicity="*" />
+        </Association>
+        <Association Name="FunctionUserFunction">
+          <End Type="AuthorizeModel.Function" Role="Function" Multiplicity="1" />
+          <End Type="AuthorizeModel.UserFunction" Role="UserFunction" Multiplicity="*" />
+        </Association>
+        <Association Name="ModuleModule">
+          <End Type="AuthorizeModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="AuthorizeModel.Module" Role="Module1" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AuthorizeModelStoreContainer" CdmEntityContainer="AuthorizeEntities">
+    <EntitySetMapping Name="City">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.City)">
+        <MappingFragment StoreEntitySet="City">
+          <ScalarProperty Name="CityID" ColumnName="CityID" />
+          <ScalarProperty Name="CityName" ColumnName="CityName" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Functions">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.Function)">
+        <MappingFragment StoreEntitySet="Functions">
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+          <ScalarProperty Name="ControlName" ColumnName="ControlName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoginLogs">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.LoginLog)">
+        <MappingFragment StoreEntitySet="LoginLogs">
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+          <ScalarProperty Name="LoginPC" ColumnName="LoginPC" />
+          <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
+          <ScalarProperty Name="LogoutTime" ColumnName="LogoutTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Module">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.Module)">
+        <MappingFragment StoreEntitySet="Module">
+          <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+          <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+          <ScalarProperty Name="ShowOrder" ColumnName="ShowOrder" />
+          <ScalarProperty Name="ModuleURL" ColumnName="ModuleURL" />
+          <ScalarProperty Name="IndicateImage" ColumnName="IndicateImage" />
+          <ScalarProperty Name="DeskTopImage" ColumnName="DeskTopImage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.Role)">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+          <ScalarProperty Name="Memo" ColumnName="Memo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoleFunctions">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.RoleFunction)">
+        <MappingFragment StoreEntitySet="RoleFunctions">
+          <ScalarProperty Name="RoleFunctionID" ColumnName="RoleFunctionID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoleModules">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.RoleModule)">
+        <MappingFragment StoreEntitySet="RoleModules">
+          <ScalarProperty Name="RoleModuleID" ColumnName="RoleModuleID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoleSystems">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.RoleSystem)">
+        <MappingFragment StoreEntitySet="RoleSystems">
+          <ScalarProperty Name="RoleSystemID" ColumnName="RoleSystemID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Server">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.Server)">
+        <MappingFragment StoreEntitySet="Server">
+          <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+          <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Systems">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.System)">
+        <MappingFragment StoreEntitySet="Systems">
+          <ScalarProperty Name="SystemID" ColumnName="SystemID" />
+          <ScalarProperty Name="SystemName" ColumnName="SystemName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Pwd" ColumnName="Pwd" />
+          <ScalarProperty Name="ChineseName" ColumnName="ChineseName" />
+          <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="LoginPC" ColumnName="LoginPC" />
+          <ScalarProperty Name="Memo" ColumnName="Memo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserFunctions">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.UserFunction)">
+        <MappingFragment StoreEntitySet="UserFunctions">
+          <ScalarProperty Name="UserFunctionID" ColumnName="UserFunctionID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserModules">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.UserModule)">
+        <MappingFragment StoreEntitySet="UserModules">
+          <ScalarProperty Name="UserModuleID" ColumnName="UserModuleID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserRoles">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.UserRole)">
+        <MappingFragment StoreEntitySet="UserRoles">
+          <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserSystems">
+      <EntityTypeMapping TypeName="IsTypeOf(AuthorizeModel.UserSystem)">
+        <MappingFragment StoreEntitySet="UserSystems">
+          <ScalarProperty Name="UserSystemID" ColumnName="UserSystemID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="RoleRoleSystem" TypeName="AuthorizeModel.RoleRoleSystem" StoreEntitySet="RoleSystems">
+      <EndProperty Name="Role">
+        <ScalarProperty Name="RoleID" ColumnName="Role_RoleID" />
+      </EndProperty>
+      <EndProperty Name="RoleSystem">
+        <ScalarProperty Name="RoleSystemID" ColumnName="RoleSystemID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RoleSystemRoleModule" TypeName="AuthorizeModel.RoleSystemRoleModule" StoreEntitySet="RoleModules">
+      <EndProperty Name="RoleSystem">
+        <ScalarProperty Name="RoleSystemID" ColumnName="RoleSystem_RoleSystemID" />
+      </EndProperty>
+      <EndProperty Name="RoleModule">
+        <ScalarProperty Name="RoleModuleID" ColumnName="RoleModuleID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RoleModuleRoleFunction" TypeName="AuthorizeModel.RoleModuleRoleFunction" StoreEntitySet="RoleFunctions">
+      <EndProperty Name="RoleModule">
+        <ScalarProperty Name="RoleModuleID" ColumnName="RoleModule_RoleModuleID" />
+      </EndProperty>
+      <EndProperty Name="RoleFunction">
+        <ScalarProperty Name="RoleFunctionID" ColumnName="RoleFunctionID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserLoginLog" TypeName="AuthorizeModel.UserLoginLog" StoreEntitySet="LoginLogs">
+      <EndProperty Name="User">
+        <ScalarProperty Name="UserID" ColumnName="User_UserID" />
+      </EndProperty>
+      <EndProperty Name="LoginLog">
+        <ScalarProperty Name="LogID" ColumnName="LogID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserUserSystem" TypeName="AuthorizeModel.UserUserSystem" StoreEntitySet="UserSystems">
+      <EndProperty Name="User">
+        <ScalarProperty Name="UserID" ColumnName="User_UserID" />
+      </EndProperty>
+      <EndProperty Name="UserSystem">
+        <ScalarProperty Name="UserSystemID" ColumnName="UserSystemID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserSystemUserModule" TypeName="AuthorizeModel.UserSystemUserModule" StoreEntitySet="UserModules">
+      <EndProperty Name="UserSystem">
+        <ScalarProperty Name="UserSystemID" ColumnName="UserSystem_UserSystemID" />
+      </EndProperty>
+      <EndProperty Name="UserModule">
+        <ScalarProperty Name="UserModuleID" ColumnName="UserModuleID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserModuleUserFunction" TypeName="AuthorizeModel.UserModuleUserFunction" StoreEntitySet="UserFunctions">
+      <EndProperty Name="UserModule">
+        <ScalarProperty Name="UserModuleID" ColumnName="UserModule_UserModuleID" />
+      </EndProperty>
+      <EndProperty Name="UserFunction">
+        <ScalarProperty Name="UserFunctionID" ColumnName="UserFunctionID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserUserRole" TypeName="AuthorizeModel.UserUserRole" StoreEntitySet="UserRoles">
+      <EndProperty Name="User">
+        <ScalarProperty Name="UserID" ColumnName="User_UserID" />
+      </EndProperty>
+      <EndProperty Name="UserRole">
+        <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RoleUserRole" TypeName="AuthorizeModel.RoleUserRole" StoreEntitySet="UserRoles">
+      <EndProperty Name="Role">
+        <ScalarProperty Name="RoleID" ColumnName="Role_RoleID" />
+      </EndProperty>
+      <EndProperty Name="UserRole">
+        <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="CityServer" TypeName="AuthorizeModel.CityServer" StoreEntitySet="Server">
+      <EndProperty Name="City">
+        <ScalarProperty Name="CityID" ColumnName="City_CityID" />
+      </EndProperty>
+      <EndProperty Name="Server">
+        <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SystemModule" TypeName="AuthorizeModel.SystemModule" StoreEntitySet="Module">
+      <EndProperty Name="System">
+        <ScalarProperty Name="SystemID" ColumnName="System_SystemID" />
+      </EndProperty>
+      <EndProperty Name="Module">
+        <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ModuleFunction" TypeName="AuthorizeModel.ModuleFunction" StoreEntitySet="Functions">
+      <EndProperty Name="Module">
+        <ScalarProperty Name="ModuleID" ColumnName="Module_ModuleID" />
+      </EndProperty>
+      <EndProperty Name="Function">
+        <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="CityUserSystem" TypeName="AuthorizeModel.CityUserSystem" StoreEntitySet="UserSystems">
+      <EndProperty Name="City">
+        <ScalarProperty Name="CityID" ColumnName="City_CityID" />
+      </EndProperty>
+      <EndProperty Name="UserSystem">
+        <ScalarProperty Name="UserSystemID" ColumnName="UserSystemID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="CityRoleSystem" TypeName="AuthorizeModel.CityRoleSystem" StoreEntitySet="RoleSystems">
+      <EndProperty Name="City">
+        <ScalarProperty Name="CityID" ColumnName="City_CityID" />
+      </EndProperty>
+      <EndProperty Name="RoleSystem">
+        <ScalarProperty Name="RoleSystemID" ColumnName="RoleSystemID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SystemRoleSystem" TypeName="AuthorizeModel.SystemRoleSystem" StoreEntitySet="RoleSystems">
+      <EndProperty Name="System">
+        <ScalarProperty Name="SystemID" ColumnName="System_SystemID" />
+      </EndProperty>
+      <EndProperty Name="RoleSystem">
+        <ScalarProperty Name="RoleSystemID" ColumnName="RoleSystemID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ModuleRoleModule" TypeName="AuthorizeModel.ModuleRoleModule" StoreEntitySet="RoleModules">
+      <EndProperty Name="Module">
+        <ScalarProperty Name="ModuleID" ColumnName="Module_ModuleID" />
+      </EndProperty>
+      <EndProperty Name="RoleModule">
+        <ScalarProperty Name="RoleModuleID" ColumnName="RoleModuleID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FunctionRoleFunction" TypeName="AuthorizeModel.FunctionRoleFunction" StoreEntitySet="RoleFunctions">
+      <EndProperty Name="Function">
+        <ScalarProperty Name="FunctionID" ColumnName="Function_FunctionID" />
+      </EndProperty>
+      <EndProperty Name="RoleFunction">
+        <ScalarProperty Name="RoleFunctionID" ColumnName="RoleFunctionID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SystemUserSystem" TypeName="AuthorizeModel.SystemUserSystem" StoreEntitySet="UserSystems">
+      <EndProperty Name="System">
+        <ScalarProperty Name="SystemID" ColumnName="System_SystemID" />
+      </EndProperty>
+      <EndProperty Name="UserSystem">
+        <ScalarProperty Name="UserSystemID" ColumnName="UserSystemID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ModuleUserModule" TypeName="AuthorizeModel.ModuleUserModule" StoreEntitySet="UserModules">
+      <EndProperty Name="Module">
+        <ScalarProperty Name="ModuleID" ColumnName="Module_ModuleID" />
+      </EndProperty>
+      <EndProperty Name="UserModule">
+        <ScalarProperty Name="UserModuleID" ColumnName="UserModuleID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FunctionUserFunction" TypeName="AuthorizeModel.FunctionUserFunction" StoreEntitySet="UserFunctions">
+      <EndProperty Name="Function">
+        <ScalarProperty Name="FunctionID" ColumnName="Function_FunctionID" />
+      </EndProperty>
+      <EndProperty Name="UserFunction">
+        <ScalarProperty Name="UserFunctionID" ColumnName="UserFunctionID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ModuleModule" TypeName="AuthorizeModel.ModuleModule" StoreEntitySet="Module">
+      <EndProperty Name="Module">
+        <ScalarProperty Name="ModuleID" ColumnName="ParentModule_ModuleID" />
+      </EndProperty>
+      <EndProperty Name="Module1">
+        <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="AuthorizeDBModel">
+        <EntityTypeShape EntityType="AuthorizeModel.City" Width="1.5" PointX="0.5" PointY="0.5" Height="2.1280729166666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.Function" Width="1.5" PointX="8.875" PointY="0.5" Height="1.4535937500000002" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.LoginLog" Width="1.5" PointX="2.625" PointY="9.25" Height="1.6222135416666657" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.Module" Width="1.5" PointX="6.875" PointY="0.5" Height="1.959453125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.Role" Width="1.5" PointX="0.5" PointY="4" Height="1.6222135416666665" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.RoleFunction" Width="1.5" PointX="6.625" PointY="4" Height="1.2849739583333326" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.RoleModule" Width="1.5" PointX="4.5" PointY="4" Height="1.2849739583333326" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.RoleSystem" Width="1.5" PointX="2.5" PointY="4" Height="1.2849739583333326" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.Server" Width="1.5" PointX="2.5" PointY="0.5" Height="1.7908333333333331" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.System" Width="1.5" PointX="4.625" PointY="0.5" Height="1.622213541666667" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.User" Width="1.5" PointX="0.5" PointY="9.25" Height="2.2966927083333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.UserFunction" Width="1.5" PointX="6.625" PointY="7" Height="1.2849739583333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.UserModule" Width="1.5" PointX="4.75" PointY="7" Height="1.2849739583333353" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.UserRole" Width="1.5" PointX="0.5" PointY="7" Height="1.1163541666666657" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuthorizeModel.UserSystem" Width="1.5" PointX="2.625" PointY="7" Height="1.2849739583333353" IsExpanded="true" />
+        <AssociationConnector Association="AuthorizeModel.RoleRoleSystem">
+          <ConnectorPoint PointX="2" PointY="4.8954166666666659" />
+          <ConnectorPoint PointX="2.1687499999999997" PointY="4.895416666666665" />
+          <ConnectorPoint PointX="2.3354166666666667" PointY="4.8954166666666659" />
+          <ConnectorPoint PointX="2.5" PointY="4.8954166666666659" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.RoleSystemRoleModule">
+          <ConnectorPoint PointX="4" PointY="4.8954166666666659" />
+          <ConnectorPoint PointX="4.010416666666667" PointY="4.895416666666665" />
+          <ConnectorPoint PointX="4.177083333333333" PointY="4.8954166666666659" />
+          <ConnectorPoint PointX="4.5" PointY="4.8954166666666659" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.RoleModuleRoleFunction">
+          <ConnectorPoint PointX="6" PointY="4.726796875" />
+          <ConnectorPoint PointX="6.010416666666667" PointY="4.7267968749999989" />
+          <ConnectorPoint PointX="6.177083333333333" PointY="4.726796875" />
+          <ConnectorPoint PointX="6.625" PointY="4.726796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.UserLoginLog">
+          <ConnectorPoint PointX="2" PointY="10.145416666666666" />
+          <ConnectorPoint PointX="2.625" PointY="10.145416666666666" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.UserUserSystem">
+          <ConnectorPoint PointX="2" PointY="9.2511528461538468" />
+          <ConnectorPoint PointX="2.375" PointY="8.8761528461538468" />
+          <ConnectorPoint PointX="2.375" PointY="8.82859375" />
+          <ConnectorPoint PointX="2.2511171490384605" PointY="8.82859375" />
+          <ConnectorPoint PointX="2.6261171490384614" PointY="8.45359375" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.UserSystemUserModule">
+          <ConnectorPoint PointX="4.125" PointY="7.8954166666666667" />
+          <ConnectorPoint PointX="4.75" PointY="7.8954166666666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.UserModuleUserFunction">
+          <ConnectorPoint PointX="6.25" PointY="7.8111067708333328" />
+          <ConnectorPoint PointX="6.625" PointY="7.8111067708333328" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.UserUserRole">
+          <ConnectorPoint PointX="1.2187475" PointY="9.25" />
+          <ConnectorPoint PointX="1.2187475" PointY="8.2849739583333335" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.RoleUserRole">
+          <ConnectorPoint PointX="1.25" PointY="5.959453125" />
+          <ConnectorPoint PointX="1.25" PointY="7" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.CityServer">
+          <ConnectorPoint PointX="2" PointY="1.3261042298655019" />
+          <ConnectorPoint PointX="2.5" PointY="1.3261042298655019" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.SystemModule">
+          <ConnectorPoint PointX="6.125" PointY="1.5640364583333335" />
+          <ConnectorPoint PointX="6.875" PointY="1.5640364583333335" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.ModuleFunction">
+          <ConnectorPoint PointX="8.375" PointY="1.4797265625000002" />
+          <ConnectorPoint PointX="8.875" PointY="1.4797265625000002" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.CityUserSystem" ManuallyRouted="true">
+          <ConnectorPoint PointX="2" PointY="2.4301452748069345" />
+          <ConnectorPoint PointX="2.2520833333333332" PointY="2.4301452748069345" />
+          <ConnectorPoint PointX="2.2520833333333332" PointY="6.3634268545512818" />
+          <ConnectorPoint PointX="3.2796342081906937" PointY="6.3634268545512818" />
+          <ConnectorPoint PointX="3.2796342081906937" PointY="7" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.CityRoleSystem">
+          <ConnectorPoint PointX="2" PointY="2.6269180705128208" />
+          <ConnectorPoint PointX="2.1930446366613778" PointY="2.8192221607237209" />
+          <ConnectorPoint PointX="2.311122030005289" PointY="2.9368465925348248" />
+          <ConnectorPoint PointX="2.375" PointY="3.0004795176282051" />
+          <ConnectorPoint PointX="2.375" PointY="3.6249999999999991" />
+          <ConnectorPoint PointX="2.3354166666666667" PointY="3.6249999999999987" />
+          <ConnectorPoint PointX="2.1687499999999997" PointY="3.6249999999999991" />
+          <ConnectorPoint PointX="2.1235559073724106" PointY="3.6249999999999991" />
+          <ConnectorPoint PointX="2.1930446366613778" PointY="3.6942221607237209" />
+          <ConnectorPoint PointX="2.311122030005289" PointY="3.8118465925348248" />
+          <ConnectorPoint PointX="2.5" PointY="3.9999999999999991" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.SystemRoleSystem">
+          <ConnectorPoint PointX="6.09375" PointY="2.628072916666667" />
+          <ConnectorPoint PointX="6.09375" PointY="5.9063932291666656" />
+          <ConnectorPoint PointX="4.177083333333333" PointY="5.9063932291666648" />
+          <ConnectorPoint PointX="4.010416666666667" PointY="5.9063932291666656" />
+          <ConnectorPoint PointX="4" PointY="5.9063932291666656" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.ModuleRoleModule">
+          <ConnectorPoint PointX="6.875" PointY="3.0808723958333335" />
+          <ConnectorPoint PointX="6.177083333333333" PointY="3.0808723958333331" />
+          <ConnectorPoint PointX="6.010416666666667" PointY="3.0808723958333335" />
+          <ConnectorPoint PointX="4.53125" PointY="3.0808723958333335" />
+          <ConnectorPoint PointX="4.53125" PointY="4" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.FunctionRoleFunction">
+          <ConnectorPoint PointX="9.79687375" PointY="2.459453125" />
+          <ConnectorPoint PointX="9.79687375" PointY="4.8111067708333328" />
+          <ConnectorPoint PointX="9.3880177083333347" PointY="4.8111067708333319" />
+          <ConnectorPoint PointX="9.3880177083333347" PointY="4.811106770833331" />
+          <ConnectorPoint PointX="9.2213510416666669" PointY="4.8111067708333328" />
+          <ConnectorPoint PointX="9.2213510416666669" PointY="4.8111067708333328" />
+          <ConnectorPoint PointX="8.3645833333333339" PointY="4.8111067708333319" />
+          <ConnectorPoint PointX="8.3645833333333339" PointY="4.811106770833331" />
+          <ConnectorPoint PointX="8.1979166666666661" PointY="4.8111067708333319" />
+          <ConnectorPoint PointX="8.1666641666666653" PointY="4.8111067708333328" />
+          <ConnectorPoint PointX="8.125" PointY="4.8111067708333328" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.SystemUserSystem">
+          <ConnectorPoint PointX="4.625" PointY="2.5750130208333335" />
+          <ConnectorPoint PointX="4.09375" PointY="2.5750130208333335" />
+          <ConnectorPoint PointX="4.09375" PointY="7" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.ModuleUserModule">
+          <ConnectorPoint PointX="8.28125" PointY="3.471171875" />
+          <ConnectorPoint PointX="8.28125" PointY="8.7377734375" />
+          <ConnectorPoint PointX="6.25" PointY="8.7377734375" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.FunctionUserFunction">
+          <ConnectorPoint PointX="9.304684375" PointY="2.459453125" />
+          <ConnectorPoint PointX="9.304684375" PointY="7.8111067708333328" />
+          <ConnectorPoint PointX="8.3333308333333331" PointY="7.8111067708333319" />
+          <ConnectorPoint PointX="8.1666641666666653" PointY="7.8111067708333328" />
+          <ConnectorPoint PointX="8.125" PointY="7.8111067708333328" />
+        </AssociationConnector>
+        <AssociationConnector Association="AuthorizeModel.ModuleModule">
+          <ConnectorPoint PointX="7.4069230769230776" PointY="0.5" />
+          <ConnectorPoint PointX="7.4069230769230776" PointY="0.25" />
+          <ConnectorPoint PointX="7.8534615384615387" PointY="0.25" />
+          <ConnectorPoint PointX="7.8534615384615387" PointY="0.5" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

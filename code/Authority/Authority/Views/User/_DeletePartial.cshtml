@@ -1,0 +1,34 @@
+<script type="text/javascript">
+    function deleteClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $('#dlg').dialog('open').dialog('setTitle', '删除');
+            $('#fm .easyui-validatebox').validatebox({
+                required: false
+            });
+            $('form input').attr("disabled", "disabled");
+            $('form textarea').attr("disabled", "disabled");
+            $('#c1').combo({
+                hasDownArrow: false
+            });
+            $('#c2').combo({
+                hasDownArrow: false
+            });
+            $('#fm').form('clear');
+            $('#fm').form('load', row);
+            if (row.IsLock == '是') {
+                $('#c1').combo('setValue', true).combo('setText', row.IsLock);
+            } else {
+                $('#c1').combo('setValue', false).combo('setText', row.IsLock);
+            }
+            if (row.IsAdmin == '是') {
+                $('#c2').combo('setValue', true).combo('setText', row.IsAdmin);
+            } else {
+                $('#c2').combo('setValue', false).combo('setText', row.IsAdmin);
+            }
+            url = '/User/Delete/?UserID=' + row.UserID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>
