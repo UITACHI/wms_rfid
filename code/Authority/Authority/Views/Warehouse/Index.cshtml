@@ -1,4 +1,5 @@
-﻿<script type="text/javascript">   
+﻿<script type="text/javascript">
+    var treeObj = new Array();
     $(function () {
         alert(1);
         $('#addShelf').attr('disabled', true);
@@ -7,11 +8,12 @@
 
     function treeClick() {
         var treeRow = $('#warehouseTree').tree('getSelected');
+        var treeRoot= $('#warehouseTree').tree('getRoot');
         $('#lblTree').text(treeRow.text);
         if (treeRow.attributes == "system") {
             $('#addCell').attr('disabled', true);
             $('#addShelf').attr('disabled', true);
-            $('#addArea').removeAttr("disabled");
+            $('#addArea').removeAttr("disabled");                       
         } else if (treeRow.attributes == "module") {
             $('#addArea').attr('disabled', true);
             $('#addCell').attr('disabled', true);
