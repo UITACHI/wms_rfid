@@ -42,10 +42,10 @@ namespace THOK.RfidWms.DBModel.Ef
 
         #region wms
 
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<Department> Departments { get; set; }
-        public DbSet<Job> Jobs { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        //public DbSet<Company> Companies { get; set; }
+        //public DbSet<Department> Departments { get; set; }
+        //public DbSet<Job> Jobs { get; set; }
+        //public DbSet<Employee> Employees { get; set; }
 
         #endregion
 
