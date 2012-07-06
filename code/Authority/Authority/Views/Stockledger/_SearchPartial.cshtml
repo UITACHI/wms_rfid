@@ -1,0 +1,42 @@
+﻿<script type="text/javascript">
+    function searchClick() {
+        $('#zh-search').dialog('open').dialog('setTitle', '查询');
+    };
+
+
+
+
+
+
+
+</script>
+<div id="zh-search" class="easyui-dialog" modal="true" style="width:300px;height:210px;padding:2px 2px"
+		closed="true" buttons="#zh-buttons-search">
+    <div class="easyui-layout" fit="true">
+		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <table width="250">
+              <tr style="padding-bottom: 30px;">
+                <td width="60">日期:</td>
+                <td width="168" align="left"><input type="text" class="easyui-datebox" ></input>  </td>
+              </tr>
+              <tr >
+                <td style="text-align:right;">到</td>
+                <td align="left"><input id="dy" type="text" class="easyui-datebox" ></input> </td>
+              </tr>
+              <tr style="padding-top:10px;">
+                <td>仓库:</td>
+                <td align="left">      
+		            <select id="isactive" required="true" class="easyui-combobox" style="width: 100px">
+		                <option value="天海">天海</option>
+		                <option value="烟草">烟草</option>
+	                </select>
+	            </td>
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="zh-buttons-search">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#zh-search').dialog('close')">取消</a>
+</div>

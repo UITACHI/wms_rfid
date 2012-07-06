@@ -93,6 +93,11 @@
     <Compile Include="Controllers\Authority\UserController.cs" />
     <Compile Include="Controllers\Authority\UserPermissionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Wms\Inventory management\CargospaceController.cs" />
+    <Compile Include="Controllers\Wms\Inventory management\CigaretteController.cs" />
+    <Compile Include="Controllers\Wms\Inventory management\distributionController.cs" />
+    <Compile Include="Controllers\Wms\Inventory management\ReservoirController.cs" />
+    <Compile Include="Controllers\Wms\Inventory management\StockledgerController.cs" />
     <Compile Include="Controllers\Wms\Organization\AreaController.cs" />
     <Compile Include="Controllers\Wms\Organization\CompanyController.cs" />
     <Compile Include="Controllers\Wms\Organization\DepartmentController.cs" />
@@ -556,6 +561,11 @@
     <Content Include="Views\Employee\_PrintPartial.cshtml" />
     <Content Include="Views\Department\_HelpPartial.cshtml" />
     <Content Include="Views\Department\_PrintPartial.cshtml" />
+    <Content Include="Views\Cigarette\Index.cshtml" />
+    <Content Include="Views\Cigarette\_SearchPartial.cshtml" />
+    <Content Include="Views\distribution\Index.cshtml" />
+    <Content Include="Views\distribution\_SearchPartial.cshtml" />
+    <Content Include="Views\Cargospace\Index.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
@@ -613,6 +623,10 @@
     <Content Include="Views\ProductCategory\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
     <Content Include="Views\Warehouse\_AddWarehousePartial.cshtml" />
+    <Content Include="Views\Stockledger\_SearchPartial.cshtml" />
+    <Content Include="Views\Stockledger\Index.cshtml" />
+    <Content Include="Views\Reservoir\Index.cshtml" />
+    <Content Include="Views\Reservoir\_SearchPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
