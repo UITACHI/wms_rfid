@@ -53,7 +53,8 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             // Relationships
             this.HasRequired(t => t.ParentCompany)
                 .WithMany(t => t.Companies)
-                .HasForeignKey(d => d.ParentCompanyID);
+                .HasForeignKey(d => d.ParentCompanyID)
+                .WillCascadeOnDelete(false);
         }
     }
 }

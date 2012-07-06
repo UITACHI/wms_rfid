@@ -43,6 +43,9 @@ namespace THOK.RfidWms.DBModel.Ef
         #region wms
 
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         #endregion
 
@@ -72,6 +75,9 @@ namespace THOK.RfidWms.DBModel.Ef
             #region wms
 
             modelBuilder.Configurations.Add(new CompanyMap());
+            modelBuilder.Configurations.Add(new DepartmentMap());
+            modelBuilder.Configurations.Add(new JobMap());
+            modelBuilder.Configurations.Add(new EmployeeMap());
 
             #endregion
         }

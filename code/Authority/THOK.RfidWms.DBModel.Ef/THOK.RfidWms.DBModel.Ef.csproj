@@ -53,6 +53,10 @@
     <Compile Include="Migrations\201207050909427_add_company.Designer.cs">
       <DependentUpon>201207050909427_add_company.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207051045156_add_org.cs" />
+    <Compile Include="Migrations\201207051045156_add_org.Designer.cs">
+      <DependentUpon>201207051045156_add_org.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Models\Authority\City.cs" />
@@ -96,6 +100,12 @@
     <Compile Include="Models\Authority\UserSystem.cs" />
     <Compile Include="Models\Wms\Company.cs" />
     <Compile Include="Models\Wms\Mapping\CompanyMap.cs" />
+    <Compile Include="Models\Wms\Department.cs" />
+    <Compile Include="Models\Wms\Employee.cs" />
+    <Compile Include="Models\Wms\Job.cs" />
+    <Compile Include="Models\Wms\Mapping\DepartmentMap.cs" />
+    <Compile Include="Models\Wms\Mapping\EmployeeMap.cs" />
+    <Compile Include="Models\Wms\Mapping\JobMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EntityRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
