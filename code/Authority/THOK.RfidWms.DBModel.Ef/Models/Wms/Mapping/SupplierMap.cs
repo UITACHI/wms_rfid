@@ -18,9 +18,18 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
                 .IsRequired()
                 .HasMaxLength(20);
 
+            this.Property(t => t.UniformCode)
+                .HasMaxLength(20);
+
+            this.Property(t => t.CustomCode)
+                .HasMaxLength(20);
+
             this.Property(t => t.SupplierName)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            this.Property(t => t.ProvinceName)
+                .HasMaxLength(20);
 
             this.Property(t => t.IsActive)
                 .IsRequired()
