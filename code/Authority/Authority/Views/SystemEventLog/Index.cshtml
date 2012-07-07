@@ -1,0 +1,25 @@
+﻿<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
+ 
+<div region="center" split="true" border="false">    
+    <table id="details" class="easyui-datagrid"
+        url="/SystemEventLog/Details/" border="false" singleSelect="true"
+        fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
+        <thead>
+            <tr>
+                <th field="EventLogID" width="80" hidden="true">登录事件编码</th>
+                <th field="EventLogTime" width="100">登录时间</th>
+                <th field="EventType" width="80">登录事件类别</th>
+                <th field="EventName" width="80">登录事件名称</th>
+                <th field="EventDescription" width="80" hidden="true">登录事件描述</th>
+                <th field="FromPC" width="100">登录的客户端</th>
+                <th field="OperateUser" width="80">登录的用户名</th>
+                <th field="TargetSystem" width="80">登录的系统</th>
+
+            </tr>
+        </thead>
+    </table>
+</div>

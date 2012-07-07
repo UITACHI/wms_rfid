@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Authority.Controllers.Wms.Inventory_management
+namespace Authority.Controllers.Wms.Inventory
 {
     public class ReservoirController : Controller
     {

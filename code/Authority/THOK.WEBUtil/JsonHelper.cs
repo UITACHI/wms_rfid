@@ -45,7 +45,7 @@ namespace THOK.WebUtil
 				                                                {'menuid':'22','menuname':'模块信息管理','iconCls':'icon-users','url':'/Module/'},
 				                                                {'menuid':'23','menuname':'角色信息管理','iconCls':'icon-role','url':'/Role/'},
 				                                                {'menuid':'24','menuname':'用户信息管理','iconCls':'icon-set','url':'/User/'},				                                   
-				                                                {'menuid':'28','menuname':'系统登录日志','iconCls':'icon-log','url':'/LoginLog/'}
+				                                                {'menuid':'28','menuname':'系统登录日志','iconCls':'icon-log','url':'/SystemEventLog/'}
 			                                                ]
 	                                                },{'menuid':'3','iconCls':'icon-sys','menuname':'多服务器应用管理',
 		                                                'children':[

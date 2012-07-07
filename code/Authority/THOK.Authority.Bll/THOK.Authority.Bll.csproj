@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\Authority\IFunctionService.cs" />
+    <Compile Include="Interfaces\Authority\ISystemEventLogService.cs" />
     <Compile Include="Interfaces\Authority\IUserService.cs" />
     <Compile Include="Interfaces\Authority\IRoleService.cs" />
     <Compile Include="Interfaces\Authority\ICityService.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Service\Authority\RoleService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Service\Authority\SystemEventLogService.cs" />
     <Compile Include="Service\Authority\SystemService.cs">
       <SubType>Code</SubType>
     </Compile>
