@@ -5,15 +5,22 @@
 </script>
  
 <div region="center" split="true" border="false">    
-    <table class="easyui-datagrid"
-        url="datagrid_data2.json" 
+    <table class="easyui-datagrid" url="/Department/Details/" 
         fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="itemid" width="80">公司编码</th>
-                <th field="productid" width="100">公司名称</th>
-                <th field="listprice" width="80" align="right">描述</th>
-                <th field="unitcost" width="80" align="right">状态</th>
+                <th field="ID" hidden="true" width="80">部门ID</th>
+                <th field="DepartmentCode" width="80">部门编号</th>
+                <th field="DepartmentName" width="100">部门名称</th>
+                <th field="DepartmentLeaderID" hidden="true" width="80">负责人ID</th>
+                <th field="EmployeeName" width="100">负责人名称</th>
+                <th field="Description" width="80" align="right">描述</th>
+                <th field="companyID" hidden="true" width="80">所属公司ID</th>
+                <th field="CompanyName" width="100">公司名称</th>
+                <th field="ParentDepartmentID" hidden="true" width="80">上级ID</th>
+                <th field="ParentDepartmentName" width="100">上级名称</th>
+                <th field="IsActive" width="80" align="right">是否可用</th>
+                <th field="UpdateTime" width="80" align="right">更新时间</th>
             </tr>
         </thead>
     </table>

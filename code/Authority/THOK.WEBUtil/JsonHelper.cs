@@ -35,7 +35,7 @@ namespace THOK.WebUtil
                                                     {'menuid':'1','iconCls':'icon-sys','menuname':'组织结构管理',
 		                                                'children':[
 				                                                {'menuid':'11','menuname':'公司信息管理','iconCls':'icon-magic','url':'/Company/','enable':'true'},
-				                                                {'menuid':'12','menuname':'区域信息管理','iconCls':'icon-nav','url':'/Area/'},
+				                                                {'menuid':'12','menuname':'岗位信息管理','iconCls':'icon-nav','url':'/Job/'},
                                                                 {'menuid':'13','menuname':'部门信息管理','iconCls':'icon-nav','url':'/Department/'},
                                                                 {'menuid':'14','menuname':'员工信息管理','iconCls':'icon-nav','url':'/Employee/'}
 			                                                ]

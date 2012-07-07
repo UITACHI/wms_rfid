@@ -68,6 +68,10 @@
     <Compile Include="EntityRepository\Authority\RoleSystemRepository.cs" />
     <Compile Include="EntityRepository\Authority\RoleFunctionRepository.cs" />
     <Compile Include="EntityRepository\Authority\UserRoleRepository.cs" />
+    <Compile Include="EntityRepository\Wms\CompanyRepository.cs" />
+    <Compile Include="EntityRepository\Wms\DepartmentRepository.cs" />
+    <Compile Include="EntityRepository\Wms\EmployeeRepository.cs" />
+    <Compile Include="EntityRepository\Wms\JobRepository.cs" />
     <Compile Include="Infrastructure\ContextManager.cs" />
     <Compile Include="Infrastructure\HttpRequestModule.cs" />
     <Compile Include="Infrastructure\RepositoryContext\AuthorityRepositoryContext.cs" />
@@ -89,6 +93,10 @@
     <Compile Include="Interfaces\Authority\IUserRoleRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryContext.cs" />
+    <Compile Include="Interfaces\Wms\ICompanyRepository.cs" />
+    <Compile Include="Interfaces\Wms\IDepartmentRepository.cs" />
+    <Compile Include="Interfaces\Wms\IEmployeeRepository.cs" />
+    <Compile Include="Interfaces\Wms\IJobRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntityRepository\RepositoryBase.cs" />
   </ItemGroup>
@@ -110,10 +118,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EntityRepository\Wms\" />
-    <Folder Include="Interfaces\Wms\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

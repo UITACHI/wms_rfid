@@ -2,6 +2,7 @@
 function deleteClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
+        url = '/Department/Delete/?departId=' + row.ID;
         $('#dlg').dialog('open').dialog('setTitle', '删除');
         $('#fm .easyui-validatebox').validatebox({
             required: false
@@ -17,7 +18,6 @@ function deleteClick() {
         } else {
             $('#cc').combo('setValue', false).combo('setText', row.Status);
         }
-        url = '/System/Delete/?SystemID=' + row.SystemID;
     } else {
         $.messager.confirm('错误', '没有选择行！');
     }

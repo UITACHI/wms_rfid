@@ -5,19 +5,19 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using THOK.Authority.Bll.Interfaces.Wms;
-using THOK.WebUtil;
 using THOK.RfidWms.DBModel.Ef.Models.Wms;
+using THOK.WebUtil;
 
-namespace Authority.Controllers.Organization
+namespace Authority.Controllers.Wms.Organization
 {
-    public class CompanyController : Controller
+    public class JobController : Controller
     {
         [Dependency]
-        public ICompanyService CompanyService { get; set; }
+        public IJobService JobService { get; set; }
         //
-        // GET: /Company/
+        // GET: /Job/
 
-        public ActionResult Index(string moduleID)
+        public ActionResult Index()
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
@@ -25,53 +25,52 @@ namespace Authority.Controllers.Organization
             ViewBag.hasDelete = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
-            ViewBag.ModuleID = moduleID;
             return View();
         }
 
         //
-        // GET: /Company/Details/
+        // GET: /Department/Details/
 
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
-            string CompanyCode = collection["CompanyCode"] ?? "";
-            string CompanyName = collection["CompanyName"] ?? "";
-            string CompanyType = collection["CompanyType"] ?? "";
-            string Status = collection["Status"] ?? "";
-            var systems = CompanyService.GetDetails(page, rows, CompanyCode, CompanyName, CompanyType, Status);
-            return Json(systems, "text", JsonRequestBehavior.AllowGet);
+            string JobCode = collection["JobCode"] ?? "";
+            string JobName = collection["JobName"] ?? "";
+            string IsActive = collection["IsActive"] ?? "";
+            var job = JobService.GetDetails(page, rows, JobCode, JobName, IsActive);
+            return Json(job, "text", JsonRequestBehavior.AllowGet);
         }
 
         //
-        // POST: /Company/Create
+        // POST: /Department/Create/
 
         [HttpPost]
-        public ActionResult Create(Company company)
+        public ActionResult Create(Job job)
         {
-            bool bResult = CompanyService.Add(company);
+            bool bResult = JobService.Add(job);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
-        
-        //
-        // GET: /Company/Edit/
 
-        public ActionResult Edit(Company company)
+        //
+        // POST: /Department/Edit/5
+
+        public ActionResult Edit(Job job)
         {
-            bool bResult = CompanyService.Save(company);
+            bool bResult = JobService.Save(job);
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
-        // POST: /Company/Delete/
+        // POST: /Department/Delete/
 
         [HttpPost]
-        public ActionResult Delete(string companyID)
+        public ActionResult Delete(string jobId)
         {
-            bool bResult = CompanyService.Delete(companyID);
+            bool bResult = JobService.Delete(jobId);
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
     }
 }

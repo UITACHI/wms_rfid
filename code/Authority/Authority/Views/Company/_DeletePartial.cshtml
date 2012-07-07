@@ -2,8 +2,9 @@
     function deleteClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
+            url = '/Company/Delete/?companyID=' + row.ID;
             $('#dlg').dialog('open').dialog('setTitle', '删除');
-            $('#fm .easyui-validatebox').validatebox({
+            $('#companyfm .easyui-validatebox').validatebox({
                 required: false
             });
             $('form input').attr("disabled", "disabled");
@@ -11,13 +12,12 @@
             $('#cc').combo({
                 hasDownArrow: false
             });
-            $('#fm').form('load', row);
+            $('#companyfm').form('load', row);
             if (row.Status == '启用') {
-                $('#cc').combo('setValue', true).combo('setText', row.Status);
+                $('#cc').combo('setValue', true).combo('setText', row.IsActive);
             } else {
-                $('#cc').combo('setValue', false).combo('setText', row.Status);
+                $('#cc').combo('setValue', false).combo('setText', row.IsActive);
             }
-            url = '/Role/Delete/?RoleID=' + row.RoleID;
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }

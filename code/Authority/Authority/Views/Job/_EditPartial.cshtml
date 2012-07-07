@@ -1,0 +1,27 @@
+<script type="text/javascript">
+function editClick() {
+    var row = $('#details').datagrid('getSelected');
+    if (row) {
+        url = '/Job/Edit/';
+        $('#dlg').dialog('open').dialog('setTitle', '编辑');
+        $('#fm .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('#Status').combo({
+            hasDownArrow: true
+        });   
+        if (row.IsAdmin == '可用') {
+            $('#Status').combo('setValue', 1).combo('setText', row.IsAdmin);
+        } else {
+            $('#Status').combo('setValue', 0).combo('setText', row.IsAdmin);
+        }
+        $('#fm').form('clear');
+        $('#fm').form('load', row);
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
+    } else {
+        $.messager.confirm('错误', '没有选择行！');
+    }
+};
+</script>
+   

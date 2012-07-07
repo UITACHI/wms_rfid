@@ -19,7 +19,7 @@
         $('#cc').combo({
             hasDownArrow: true
         });
-        url = '/System/Create/';
+        url = '/Department/Create/';
     };
 
     function save() {
@@ -48,29 +48,43 @@
         });
     }
 </script>
-
-    <div id="dlg" class="easyui-dialog" modal="true" 
-        style="width:300px;height:210px;padding:2px 2px"
-        closed="true" buttons="#dlg-buttons">
+    <div id="dlg" class="easyui-dialog" modal="true"  style="width:540px;height:340px;padding:2px 2px"  closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
-                    <table width="250">
+                    <table width="520">
                       <tr>
-                        <td width="60">部门名称：</td>
-                        <td width="168"><input name="SystemName" class="easyui-validatebox" required="true"></td>
+                        <td width="60" align="right">部门名称：</td>
+                        <td width="168"><input name="DepartmentCode" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" align="right">部门编码：</td>
+                        <td width="168"><input name="DepartmentName" class="easyui-validatebox" required="true"/></td>
                       </tr>
                       <tr>
-                        <td>描述：</td>
-                        <td><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
+                       <td  align="right">负责人名称：</td>
+                        <td ><input name="DepartmentLeaderID" class="easyui-validatebox" required="true"/></td>
+                        <td align="right">公司编码：</td>
+                        <td ><input name="CompanyID" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
-                        <td>状态：</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width: 50px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
+                        <td align="right">上级编码：</td>
+                        <td><input name="ParentDepartmentID" class="easyui-validatebox" />
+	                    </td>
+                        <td align="right">是否可用：</td>
+                        <td><select id="Active" name="IsActive" class="easyui-combobox" style="width: 80px">
+		                        <option value="1">可用</option>
+		                        <option value="0">不可用</option>
 	                        </select>
 	                    </td>
+                      </tr>
+                      <tr>
+                       <td align="right">统一编码：</td>
+                        <td width="168" colspan="3">
+                        <input name="UniformCode" required="true" type="text" />
+                        </td>
+                      </tr>
+                       <tr>
+                       <td width="60" align="right">描述：</td>
+                        <td width="168" colspan="3" ><textarea name="Description" style="width: 380px; height: 80px"></textarea> </td>
                       </tr>
                     </table>
 	            </form>

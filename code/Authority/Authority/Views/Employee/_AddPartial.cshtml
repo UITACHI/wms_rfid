@@ -1,12 +1,46 @@
 <script type="text/javascript">
     var url;
+
     $(function () {
         $('#cc').combo({
             required: true,
             editable: false,
             panelHeight: 45
         });
-    })
+        $('#DepartmentID').combogrid({
+            width: 120,
+            panelWidth: 450,
+            url: '/Department/Details/?page=1&rows=100',
+            idField: 'ID',
+            textField: 'DepartmentName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'ID', title: '部门ID', hidden: true, width: 30 },
+					{ field: 'DepartmentCode', title: '部门编码', align: 'left', width: 40 },
+                    { field: 'DepartmentName', title: '部门名称', align: 'left', width: 40 },
+					{ field: 'EmployeeName', title: '负责人名称', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+        $('#JobID').combogrid({
+            width: 120,
+            panelWidth: 450,
+            url: '/Job/Details/?page=1&rows=100',
+            idField: 'ID',
+            textField: 'JobName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'ID', title: '部门ID', hidden: true, width: 30 },
+					{ field: 'JobCode', title: '岗位编码', align: 'left', width: 40 },
+                    { field: 'JobName', title: '岗位名称', align: 'left', width: 40 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    });
 
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
@@ -19,7 +53,7 @@
         $('#cc').combo({
             hasDownArrow: true
         });
-        url = '/System/Create/';
+        url = '/Employee/Create/';
     };
 
     function save() {
@@ -49,28 +83,57 @@
     }
 </script>
 
-    <div id="dlg" class="easyui-dialog" modal="true" 
-        style="width:300px;height:210px;padding:2px 2px"
+    <div id="dlg" class="easyui-dialog" modal="true"  style="width:560px;height:320px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
-                    <table width="250">
+                    <table width="520">
                       <tr>
-                        <td width="60">员工名称</td>
-                        <td width="168"><input name="SystemName" class="easyui-validatebox" required="true"></td>
+                        <td width="60" align="right">员工姓名：</td>
+                        <td width="168"><input name="EmployeeCode" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" align="right">员工编码：</td>
+                        <td width="168"><input name="EmployeeName" class="easyui-validatebox" required="true"/></td>
                       </tr>
                       <tr>
-                        <td>描述</td>
-                        <td><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
+                       <td  align="right">性别：</td>
+                        <td ><input name="Sex" class="easyui-validatebox" required="true"/></td>
+                        <td align="right">电话：</td>
+                        <td ><input name="Tel" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
-                        <td>状态</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width: 50px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
+                        <td align="right">状态：</td>
+                        <td><select id="cc" name="Status" class="easyui-combobox" style="width: 80px">
+		                        <option value="3701">在职</option>
+		                        <option value="3702">离职</option>
+                                <option value="3703">退休</option>
+		                        <option value="3704">试用</option>
+                                <option value="3705">外调</option>
+		                        <option value="3706">停薪留职</option>
+                                 <option value="3707">借用</option>
+                                 <option value="3708">其他</option>
 	                        </select>
 	                    </td>
+                        <td align="right">是否可用：</td>
+                        <td><select id="Active" name="IsActive" class="easyui-combobox" style="width: 80px">
+		                        <option value="1">可用</option>
+		                        <option value="0">不可用</option>
+	                        </select>
+	                    </td>
+                      </tr>
+                      <tr>
+                       <td align="right">部门名称：</td>
+                        <td width="168">
+                        <input name="DepartmentName" id="DepartmentID" type="text" />
+                        </td>
+                        <td width="60" align="right">岗位：</td>
+                        <td width="168">
+                        <input name="JobName" id="JobID" type="text"/>
+                        </td>
+                      </tr>
+                       <tr>
+                       <td width="60" align="right">描述：</td>
+                        <td width="168" colspan="3" ><textarea name="Description" style="width: 380px; height: 80px"></textarea> </td>
                       </tr>
                     </table>
 	            </form>

@@ -97,6 +97,7 @@
     <Compile Include="Controllers\Wms\Organization\CompanyController.cs" />
     <Compile Include="Controllers\Wms\Organization\DepartmentController.cs" />
     <Compile Include="Controllers\Wms\Organization\EmployeeController.cs" />
+    <Compile Include="Controllers\Wms\Organization\JobController.cs" />
     <Compile Include="Controllers\Wms\ProductInfo\FactoryController.cs" />
     <Compile Include="Controllers\Wms\ProductInfo\ProductCategoryController.cs" />
     <Compile Include="Controllers\Wms\ProductInfo\ProductController.cs" />
@@ -688,6 +689,13 @@
     <Content Include="Views\ProfitLossBillType\_DeletePartial.cshtml" />
     <Content Include="Views\ProfitLossBillType\_EditPartial.cshtml" />
     <Content Include="Views\ProfitLossBillType\_SearchPartial.cshtml" />
+    <Content Include="Views\Job\Index.cshtml" />
+    <Content Include="Views\Job\_AddPartial.cshtml" />
+    <Content Include="Views\Job\_DeletePartial.cshtml" />
+    <Content Include="Views\Job\_EditPartial.cshtml" />
+    <Content Include="Views\Job\_SearchPartial.cshtml" />
+    <Content Include="Views\Job\_PrintPartial.cshtml" />
+    <Content Include="Views\Job\_HelpPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
