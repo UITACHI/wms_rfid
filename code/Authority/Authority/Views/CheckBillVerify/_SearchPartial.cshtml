@@ -1,0 +1,67 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#status').combo({
+            editable: false,
+            panelHeight: 45
+        });
+    })
+
+    function searchClick() {
+        $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+    };
+
+    function select() {
+        var queryParams = $('#details').datagrid('options').queryParams;
+        queryParams.SystemName = $('#systemname').val();
+        queryParams.Description = $('#description').val();
+        queryParams.Status = $('#status').val();
+        $('#details').datagrid('options').queryParams = queryParams;
+        $('#details').datagrid({
+            pageNumber: 1,
+            pageSize: 10
+        }); 
+        $("#details").datagrid('reload');
+        $('#dlg-search').dialog('close'); 
+    }
+
+</script>
+
+<div id="dlg-search" class="easyui-dialog" modal="true"  style="width:320px;height:280px;padding:2px 2px"
+        closed="true" buttons="#dlg-buttons">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
+	            <form id="sortingfm" method="post" novalidate>
+                   <table width="320">
+                     <tr>
+                        <td width="60">盘点单号：</td>
+                        <td width="168"><input name="checkID" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td width="60">制单日期：</td>
+                        <td width="168"><input name="checkDate" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td width="60">操作员：</td>
+                        <td width="168"><input name="caozuoren" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td width="60">审核人：</td>
+                        <td width="168"><input name="shenheren" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td width="60">审核日期：</td>
+                        <td width="168"><input name="shenheriqi" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td width="60">处理状态：</td>
+                        <td width="168"><input name="zhuangai" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                    </table>
+	            </form>
+            </div>
+        </div>
+    </div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
+</div>

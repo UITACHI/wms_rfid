@@ -100,24 +100,24 @@ namespace THOK.WebUtil
 			                                                ]
 	                                                },{'menuid':'11','iconCls':'icon-sys','menuname':'分拣管理',
 		                                                'children':[
-				                                                {'menuid':'111','menuname':'分拣线管理','iconCls':'icon-add','url':'/System/'},
-				                                                {'menuid':'112','menuname':'分拣线下限设置','iconCls':'icon-users','url':'/Module/'},
-				                                                {'menuid':'113','menuname':'分拣订单管理','iconCls':'icon-role','url':'/Role/'},
-				                                                {'menuid':'114','menuname':'分拣订单优化','iconCls':'icon-set','url':'/User/'}
+				                                                {'menuid':'111','menuname':'分拣线管理','iconCls':'icon-add','url':'/SortingLine/'},
+				                                                {'menuid':'112','menuname':'分拣线下限设置','iconCls':'icon-users','url':'/SortingLowerLimit/'},
+				                                                {'menuid':'113','menuname':'分拣订单管理','iconCls':'icon-role','url':'/SortingOrder/'},
+				                                                {'menuid':'114','menuname':'分拣订单优化','iconCls':'icon-set','url':'/SortingOrderOptimize/'}
 			                                                ]
 	                                                },{'menuid':'12','iconCls':'icon-sys','menuname':'盘点管理',
 		                                                'children':[
-				                                                {'menuid':'121','menuname':'盘点单据类型设置','iconCls':'icon-add','url':'/System/'},
-				                                                {'menuid':'122','menuname':'盘点单生成','iconCls':'icon-users','url':'/Module/'},
-				                                                {'menuid':'123','menuname':'盘点单','iconCls':'icon-role','url':'/Role/'},
-				                                                {'menuid':'124','menuname':'盘点单审核','iconCls':'icon-set','url':'/User/'},				                                   
-				                                                {'menuid':'125','menuname':'盘点损益确认','iconCls':'icon-log','url':'/LoginLog/'}
+				                                                {'menuid':'121','menuname':'盘点单据类型设置','iconCls':'icon-add','url':'/CheckBillType/'},
+				                                                {'menuid':'122','menuname':'盘点单生成','iconCls':'icon-users','url':'/CheckBillGenerate/'},
+				                                                {'menuid':'123','menuname':'盘点单','iconCls':'icon-role','url':'/CheckBill/'},
+				                                                {'menuid':'124','menuname':'盘点单审核','iconCls':'icon-set','url':'/CheckBillVerify/'},				                                   
+				                                                {'menuid':'125','menuname':'盘点损益确认','iconCls':'icon-log','url':'/CheckBillConfirm/'}
 			                                                ]
 	                                                },{'menuid':'13','iconCls':'icon-sys','menuname':'损益管理',
 		                                                'children':[
-				                                                {'menuid':'131','menuname':'损益单据类型设置','iconCls':'icon-add','url':'/System/'},
-				                                                {'menuid':'132','menuname':'损益单','iconCls':'icon-users','url':'/Module/'},
-				                                                {'menuid':'133','menuname':'损益单审核','iconCls':'icon-role','url':'/Role/'}
+				                                                {'menuid':'131','menuname':'损益单据类型设置','iconCls':'icon-add','url':'/ProfitLossBillType/'},
+				                                                {'menuid':'132','menuname':'损益单','iconCls':'icon-users','url':'/ProfitLossBill/'},
+				                                                {'menuid':'133','menuname':'损益单审核','iconCls':'icon-role','url':'/ProfitLossBillVerify/'}
 			                                                ]
 	                                                },{'menuid':'14','iconCls':'icon-sys','menuname':'预警管理',
 		                                                'children':[
