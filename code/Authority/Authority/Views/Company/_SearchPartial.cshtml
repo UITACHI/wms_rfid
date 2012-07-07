@@ -1,6 +1,6 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#status').combo({
+        $('#IsActive').combo({
             editable: false,
             panelHeight: 45
         });
@@ -15,7 +15,7 @@
         queryParams.CompanyCode = $('#CompanyCode').val();
         queryParams.CompanyName = $('#CompanyName').val();
         queryParams.CompanyType = $('#CompanyType').val();
-        queryParams.Status = $('#Status').val();
+        queryParams.Status = $('#IsActive').val();
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -37,7 +37,7 @@
                         公司编码:
                     </td>
                     <td width="168">
-                        <input name="CompanyCode" class="easyui-validatebox" required="true">
+                        <input id="CompanyCode" class="easyui-validatebox" required="true">
                     </td>
                 </tr>
                 <tr>
@@ -45,7 +45,7 @@
                         公司名称：
                     </td>
                     <td width="168">
-                        <input name="CompanyName" class="easyui-validatebox" required="true">
+                        <input id="CompanyName" class="easyui-validatebox" required="true">
                     </td>
                 </tr>
                 <tr>
@@ -53,7 +53,11 @@
                         公司类型：
                     </td>
                     <td width="168">
-                        <input name="CompanyType" class="easyui-validatebox" required="true">
+                        <select id="CompanyType" name="CompanyType" class="easyui-combobox" required="true" style="width: 80px">
+		                        <option value="1">配送中心</option>
+		                        <option value="2">市公司</option>
+                                <option value="3">县公司</option>
+	                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -61,7 +65,7 @@
                         状态:
                     </td>
                     <td>
-                        <select id="cc" name="Status" class="easyui-combobox" style="width: 50px">
+                        <select id="IsActive" name="IsActive" class="easyui-combobox" style="width: 50px">
                             <option value="1">可用</option>
                             <option value="0">不可用</option>
                         </select>

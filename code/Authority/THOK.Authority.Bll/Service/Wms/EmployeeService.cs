@@ -17,6 +17,9 @@ namespace THOK.Authority.Bll.Service.Wms
         [Dependency]
         public IJobRepository JobRepository { get; set; }
 
+        [Dependency]
+        public IDepartmentRepository DepartmentRepository { get; set; }
+
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -27,12 +30,16 @@ namespace THOK.Authority.Bll.Service.Wms
         public object GetDetails(int page, int rows, string EmployeeCode, string EmployeeName, string DepartmentID, string Status, string IsActive)
         {
             IQueryable<Employee> employeeQuery = EmployeeRepository.GetQueryable();
-
-            var departId = new Guid(DepartmentID);
             var employee = employeeQuery.Where(e => e.EmployeeCode.Contains(EmployeeCode) && e.EmployeeName.Contains(EmployeeName)
-                            && e.Department.ID == departId && e.Status.Contains(Status))
+                             && e.Status.Contains(Status))
                             .OrderBy(e => e.EmployeeCode).Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, DepartmentID = e.Department.ID, DepartmentName = e.Department.DepartmentName, e.Description, JobID = e.Job.ID, JobName = e.Job.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", e.UpdateTime });
-
+            if (!DepartmentID.Equals(""))
+            {
+                Guid departID = new Guid(DepartmentID);
+                employee = employeeQuery.Where(e => e.EmployeeCode.Contains(EmployeeCode) && e.EmployeeName.Contains(EmployeeName)
+                             &&e.DepartmentID==departID && e.Status.Contains(Status))
+                            .OrderBy(e => e.EmployeeCode).Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, DepartmentID = e.Department.ID, DepartmentName = e.Department.DepartmentName, e.Description, JobID = e.Job.ID, JobName = e.Job.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", e.UpdateTime });
+            }
             int total = employee.Count();
             employee = employee.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = employee.ToArray() };
@@ -41,12 +48,14 @@ namespace THOK.Authority.Bll.Service.Wms
         public bool Add(Employee employee)
         {
             var emp = new Employee();
+            var job = JobRepository.GetQueryable().FirstOrDefault(j => j.ID == employee.JobID);
+            var department =DepartmentRepository.GetQueryable().FirstOrDefault(d=>d.ID==employee.DepartmentID);
             emp.ID = Guid.NewGuid();
             emp.EmployeeCode = employee.EmployeeCode;
             emp.EmployeeName = employee.EmployeeName;
             emp.Description = employee.Description;
-            emp.DepartmentID = employee.DepartmentID;
-            emp.JobID = employee.JobID;
+            //emp.Department = department;
+            emp.Job = job;
             emp.Sex = employee.Sex;
             emp.Tel = employee.Tel;
             emp.Status = employee.Status;
@@ -75,8 +84,20 @@ namespace THOK.Authority.Bll.Service.Wms
 
         public bool Save(Employee employee)
         {
-            var emp = new Employee();
-            emp = employee;
+            var emp = EmployeeRepository.GetQueryable().FirstOrDefault(e => e.ID == employee.ID);
+            var department = DepartmentRepository.GetQueryable().FirstOrDefault(d => d.ID == employee.DepartmentID);
+            var job = JobRepository.GetQueryable().FirstOrDefault(j => j.ID == employee.JobID);
+            emp.EmployeeCode = employee.EmployeeCode;
+            emp.EmployeeName = employee.EmployeeName;
+            emp.Description = employee.Description;
+            emp.Department = department;
+            emp.Job = job;
+            emp.Sex = employee.Sex;
+            emp.Tel = employee.Tel;
+            emp.Status = employee.Status;
+            emp.IsActive = employee.IsActive;
+            emp.UpdateTime = employee.UpdateTime;
+
             EmployeeRepository.SaveChanges();
             return true;
         }

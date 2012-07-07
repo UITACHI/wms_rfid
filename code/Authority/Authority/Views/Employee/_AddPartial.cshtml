@@ -1,16 +1,15 @@
 <script type="text/javascript">
     var url;
-
     $(function () {
         $('#cc').combo({
             required: true,
             editable: false,
             panelHeight: 45
         });
-        $('#DepartmentID').combogrid({
+        $('#depar-add').combogrid({
             width: 120,
-            panelWidth: 450,
-            url: '/Department/Details/?page=1&rows=100',
+            panelWidth: 340,
+            url: '/Department/Details/?page=1&rows=10',
             idField: 'ID',
             textField: 'DepartmentName',
             mode: 'local',
@@ -19,25 +18,25 @@
             columns: [[
 					{ field: 'ID', title: '部门ID', hidden: true, width: 30 },
 					{ field: 'DepartmentCode', title: '部门编码', align: 'left', width: 40 },
-                    { field: 'DepartmentName', title: '部门名称', align: 'left', width: 40 },
-					{ field: 'EmployeeName', title: '负责人名称', align: 'left', width: 30 },
-					{ field: 'IsActive', title: '状态', align: 'left', width: 30 }
+					{ field: 'DepartmentName', title: '部门名称', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
 				]]
         });
-        $('#JobID').combogrid({
+
+        $('#job-add').combogrid({
             width: 120,
-            panelWidth: 450,
-            url: '/Job/Details/?page=1&rows=100',
+            panelWidth: 340,
+            url: '/Job/Details/?page=1&rows=10',
             idField: 'ID',
             textField: 'JobName',
             mode: 'local',
             editable: false,
             fitColumns: true,
             columns: [[
-					{ field: 'ID', title: '部门ID', hidden: true, width: 30 },
+					{ field: 'ID', title: '岗位ID', hidden: true, width: 30 },
 					{ field: 'JobCode', title: '岗位编码', align: 'left', width: 40 },
-                    { field: 'JobName', title: '岗位名称', align: 'left', width: 40 },
-					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+					{ field: 'JobName', title: '岗位名称', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
 				]]
         });
     });
@@ -97,7 +96,7 @@
                       </tr>
                       <tr>
                        <td  align="right">性别：</td>
-                        <td ><input name="Sex" class="easyui-validatebox" required="true"/></td>
+                        <td ><input name="Sex" class="easyui-validatebox" /></td>
                         <td align="right">电话：</td>
                         <td ><input name="Tel" class="easyui-validatebox" /></td>
                       </tr>
@@ -124,11 +123,11 @@
                       <tr>
                        <td align="right">部门名称：</td>
                         <td width="168">
-                        <input name="DepartmentName" id="DepartmentID" type="text" />
+                        <input name="DepartmentID" id="depar-add"  />
                         </td>
                         <td width="60" align="right">岗位：</td>
                         <td width="168">
-                        <input name="JobName" id="JobID" type="text"/>
+                        <input name="JobID" id="job-add" />
                         </td>
                       </tr>
                        <tr>

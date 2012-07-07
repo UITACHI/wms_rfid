@@ -49,20 +49,8 @@ namespace Authority.Controllers.Organization
         // POST: /Department/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Employee employee)
         {
-            Employee employee = new Employee();
-            employee.EmployeeCode = collection["EmployeeCode"].ToString();
-            employee.EmployeeName = collection["EmployeeName"].ToString();
-            employee.Description = collection["Description"].ToString();
-            employee.DepartmentID = new Guid(collection["DepartmentID"].ToString());
-            employee.JobID = new Guid(collection["JobID"].ToString());
-            employee.Sex = collection["Sex"].ToString();
-            employee.Tel = collection["Tel"].ToString();
-            employee.Status = collection["Status"].ToString();
-            employee.IsActive = collection["IsActive"].ToString();
-            employee.UpdateTime = Convert.ToDateTime(collection["UpdateTime"].ToString());
-
             bool bResult = EmployeeService.Add(employee);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
@@ -72,19 +60,8 @@ namespace Authority.Controllers.Organization
         //
         // POST: /Department/Edit/5
 
-        public ActionResult Edit(FormCollection collection)
+        public ActionResult Edit(Employee employee)
         {
-            Employee employee = new Employee();
-            employee.EmployeeCode = collection["EmployeeCode"].ToString();
-            employee.EmployeeName = collection["EmployeeName"].ToString();
-            employee.Description = collection["Description"].ToString();
-            employee.DepartmentID = new Guid(collection["DepartmentID"].ToString());
-            employee.JobID = new Guid(collection["JobID"].ToString());
-            employee.Sex = collection["Sex"].ToString();
-            employee.Tel = collection["Tel"].ToString();
-            employee.Status = collection["Status"].ToString();
-            employee.IsActive = collection["IsActive"].ToString();
-            employee.UpdateTime = Convert.ToDateTime(collection["UpdateTime"].ToString());
             bool bResult = EmployeeService.Save(employee);
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);

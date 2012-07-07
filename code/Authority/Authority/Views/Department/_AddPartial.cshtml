@@ -1,10 +1,61 @@
 <script type="text/javascript">
     var url;
     $(function () {
-        $('#cc').combo({
+        $('#IsActive').combo({
             required: true,
             editable: false,
             panelHeight: 45
+        });
+
+        $('#employee-add').combogrid({
+            width: 120,
+            panelWidth: 340,
+            url: '/Employee/Details/?page=1&rows=10',
+            idField: 'ID',
+            textField: 'EmployeeName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'ID', title: '员工ID', hidden: true, width: 30 },
+					{ field: 'EmployeeCode', title: '员工编码', align: 'left', width: 40 },
+					{ field: 'EmployeeName', title: '员工名称', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+				]]
+        });
+
+        $('#company-add').combogrid({
+            width: 120,
+            panelWidth: 340,
+            url: '/Company/Details/?page=1&rows=10',
+            idField: 'ID',
+            textField: 'CompanyName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'ID', title: '公司ID', hidden: true, width: 30 },
+					{ field: 'CompanyCode', title: '公司编码', align: 'left', width: 40 },
+					{ field: 'CompanyName', title: '公司名称', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+				]]
+        });
+
+        $('#depart-add').combogrid({
+            width: 120,
+            panelWidth: 340,
+            url: '/Department/Details/?page=1&rows=10',
+            idField: 'ID',
+            textField: 'DepartmentName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'ID', title: '部门ID', hidden: true, width: 30 },
+					{ field: 'DepartmentCode', title: '部门编码', align: 'left', width: 40 },
+					{ field: 'DepartmentName', title: '部门名称', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+				]]
         });
     })
 
@@ -16,7 +67,7 @@
         });
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
-        $('#cc').combo({
+        $('#IsActive').combo({
             hasDownArrow: true
         });
         url = '/Department/Create/';
@@ -51,7 +102,7 @@
     <div id="dlg" class="easyui-dialog" modal="true"  style="width:540px;height:340px;padding:2px 2px"  closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
-	            <form id="fm" method="post" novalidate>
+	            <form id="fm" method="post">
                     <table width="520">
                       <tr>
                         <td width="60" align="right">部门名称：</td>
@@ -61,16 +112,16 @@
                       </tr>
                       <tr>
                        <td  align="right">负责人名称：</td>
-                        <td ><input name="DepartmentLeaderID" class="easyui-validatebox" required="true"/></td>
+                        <td width="168"><input name="DepartmentLeaderID" id="employee-add"/></td>
                         <td align="right">公司编码：</td>
-                        <td ><input name="CompanyID" class="easyui-validatebox" /></td>
+                        <td width="168"><input name="CompanyID" id="company-add"/></td>
                       </tr>
                       <tr>
                         <td align="right">上级编码：</td>
-                        <td><input name="ParentDepartmentID" class="easyui-validatebox" />
+                        <td><input name="ParentDepartmentID" id="depart-add"/>
 	                    </td>
                         <td align="right">是否可用：</td>
-                        <td><select id="Active" name="IsActive" class="easyui-combobox" style="width: 80px">
+                        <td><select id="IsActive" name="IsActive" class="easyui-combobox" style="width: 80px">
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>

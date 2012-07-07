@@ -47,7 +47,7 @@ namespace THOK.Authority.Bll.Service.Wms
         public bool Add(Department department)
         {
             var newDepartment = new Department();
-            var depart = DepartmentRepository.GetQueryable().FirstOrDefault(d => d.ID == department.ParentDepartment.ID);
+            var depart = DepartmentRepository.GetQueryable().FirstOrDefault(d => d.ID == department.ParentDepartmentID);
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(e => e.ID == department.DepartmentLeaderID);
             var company = CompanyRepository.GetQueryable().FirstOrDefault(c => c.ID == department.CompanyID);
             newDepartment.ID = Guid.NewGuid();
