@@ -96,7 +96,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Wms\Inventory\CargospaceController.cs" />
     <Compile Include="Controllers\Wms\Inventory\CigaretteController.cs" />
-    <Compile Include="Controllers\Wms\Inventory\distributionController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\DistributionController.cs" />
     <Compile Include="Controllers\Wms\Inventory\ReservoirController.cs" />
     <Compile Include="Controllers\Wms\Inventory\StockledgerController.cs" />
     <Compile Include="Controllers\Wms\Organization\AreaController.cs" />
@@ -564,8 +564,8 @@
     <Content Include="Views\Department\_PrintPartial.cshtml" />
     <Content Include="Views\Cigarette\Index.cshtml" />
     <Content Include="Views\Cigarette\_SearchPartial.cshtml" />
-    <Content Include="Views\distribution\Index.cshtml" />
-    <Content Include="Views\distribution\_SearchPartial.cshtml" />
+    <Content Include="Views\Distribution\Index.cshtml" />
+    <Content Include="Views\Distribution\_SearchPartial.cshtml" />
     <Content Include="Views\Cargospace\Index.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
