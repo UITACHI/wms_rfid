@@ -1,10 +1,11 @@
 ﻿<div region="center" split="true" border="false">    
     <table id="masters" class="easyui-datagrid" 
-        url="/StockMoveSearch/masters/" border="false" singleSelect="true"
+        url="/StockDifferSearch/masters/" border="false" singleSelect="true"
         fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="MoveBillNo" width="120" align="center">移库单号</th>
+                <th field="MoveBillNo" width="120" align="center">损益单号</th>
+                <th field="CheckBillNo" width="120" align="center">来源盘点单号</th>
                 <th field="WarehouseName" width="120" align="center">仓库名称</th>
                 <th field="MakeDate" width="120" align="center">制单日期</th>
                 <th field="OperatePerson" width="120" align="center">操作员</th>
@@ -18,21 +19,19 @@
 </div>
 <div region="south" split="true" border="false" style="height: 250px; border-top-style: solid; border-top-width: 1px; border-top-color: 99BBE8;">
 <table id="details" class="easyui-datagrid" 
-        url="/StockMoveSearch/Details/" border="false" singleSelect="true"
+        url="/StockDifferSearch/Details/" border="false" singleSelect="true"
         fit="true"  pagination="true" rownumbers="true">
         <thead>
             <tr>
                 <th field="IdNo" width="80" align="center">序号</th>
-                <th field="PlaceCode_Out" width="100" align="center">货位编码(出)</th>
-                <th field="PlaceName_Out" width="140" align="center">货位名称(出)</th>
-                <th field="PlaceCode_In" width="100" align="center">货位编码(入)</th>
-                <th field="PlaceName_In" width="140" align="center">货位名称(入)</th>
+                <th field="PlaceCode_Out" width="100" align="center">货位编码</th>
+                <th field="PlaceName_Out" width="140" align="center">货位名称</th>
                 <th field="ProduceCode" width="100" align="center">产品代码</th>
                 <th field="ProduceName" width="140" align="center">产品名称</th>
                 <th field="UnitCode" width="100" align="center">单位编码</th>
                 <th field="UnitName" width="120" align="center">单位名称</th>
-                <th field="Quantity" width="80" align="center">数量</th>
+                <th field="DifferQuantity" width="100" align="center">损益数量</th>
             </tr>
         </thead>
     </table>
-</div>
+</div> 
