@@ -126,9 +126,11 @@ namespace THOK.WebUtil
 			                                                ]
 	                                                },{'menuid':'15','iconCls':'icon-sys','menuname':'库存管理',
 		                                                'children':[
-				                                                {'menuid':'151','menuname':'库存总账','iconCls':'icon-add','url':'/System/'},
-				                                                {'menuid':'152','menuname':'产品库存分布','iconCls':'icon-users','url':'/Module/'},
-				                                                {'menuid':'153','menuname':'货位查询','iconCls':'icon-role','url':'/Role/'}
+				                                                {'menuid':'151','menuname':'库存总账','iconCls':'icon-add','url':'/Stockledger/'},
+				                                                {'menuid':'152','menuname':'产品库存分布','iconCls':'icon-users','url':'/distribution/'},
+				                                                {'menuid':'153','menuname':'货位查询','iconCls':'icon-role','url':'/Cargospace/'},
+				                                                {'menuid':'152','menuname':'库区库存查询','iconCls':'icon-users','url':'/Reservoir/'},
+				                                                {'menuid':'153','menuname':'卷烟库存查询','iconCls':'icon-role','url':'/Cigarette/'}
 			                                                ]
 	                                                },{'menuid':'16','iconCls':'icon-sys','menuname':'综合管理',
 		                                                'children':[
