@@ -13,6 +13,64 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             // Primary Key
             this.HasKey(t => t.UnitListCode);
 
+            // Properties
+            this.Property(t => t.UnitListCode)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            this.Property(t => t.UnitListName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.UnitCode01)
+                .IsRequired()
+                .HasMaxLength(8);
+
+            this.Property(t => t.UnitName01)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.Quantity01)
+                .IsRequired();
+
+            this.Property(t => t.UnitCode02)
+                .IsRequired()
+                .HasMaxLength(8);
+
+            this.Property(t => t.UnitName02)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.Quantity02)
+                .IsRequired();
+
+            this.Property(t => t.UnitCode03)
+                .IsRequired()
+                .HasMaxLength(8);
+
+            this.Property(t => t.UnitName03)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.Quantity03)
+                .IsRequired();
+
+            this.Property(t => t.UnitCode04)
+                .IsRequired()
+                .HasMaxLength(8);
+
+            this.Property(t => t.UnitName04)
+               .IsRequired()
+               .HasMaxLength(50);
+
+            this.Property(t => t.IsActive)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
+
+            this.Property(t => t.UpdateTime)
+                .IsRequired();
+
             // Table & Column Mappings
             this.Property(t => t.UnitListCode).HasColumnName(ColumnMap.Value.To("UnitListCode"));
             this.Property(t => t.UniformCode).HasColumnName(ColumnMap.Value.To("UniformCode"));
