@@ -2,6 +2,8 @@ using System.Data.Entity;
 using THOK.RfidWms.DBModel.Ef.Models.Authority.Mapping;
 using THOK.RfidWms.DBModel.Ef.Models.Authority;
 using THOK.RfidWms.DBModel.Ef.Migrations;
+using THOK.RfidWms.DBModel.Ef.Models.Wms;
+using THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping;
 
 namespace THOK.RfidWms.DBModel.Ef
 {
@@ -17,6 +19,8 @@ namespace THOK.RfidWms.DBModel.Ef
 		{
 		}
 
+        #region auth
+                
         public DbSet<City> Cities { get; set; }
         public DbSet<Function> Functions { get; set; }
         public DbSet<LoginLog> LoginLogs { get; set; }
@@ -34,8 +38,21 @@ namespace THOK.RfidWms.DBModel.Ef
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<UserSystem> UserSystems { get; set; }
 
+        #endregion
+
+        #region wms
+
+        //public DbSet<Company> Companies { get; set; }
+        //public DbSet<Department> Departments { get; set; }
+        //public DbSet<Job> Jobs { get; set; }
+        //public DbSet<Employee> Employees { get; set; }
+
+        #endregion
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            #region auth
+            
             modelBuilder.Configurations.Add(new CityMap());
             modelBuilder.Configurations.Add(new FunctionMap());
             modelBuilder.Configurations.Add(new LoginLogMap());
@@ -52,6 +69,17 @@ namespace THOK.RfidWms.DBModel.Ef
             modelBuilder.Configurations.Add(new UserModuleMap());
             modelBuilder.Configurations.Add(new UserRoleMap());
             modelBuilder.Configurations.Add(new UserSystemMap());
+
+            #endregion
+
+            #region wms
+
+            modelBuilder.Configurations.Add(new CompanyMap());
+            modelBuilder.Configurations.Add(new DepartmentMap());
+            modelBuilder.Configurations.Add(new JobMap());
+            modelBuilder.Configurations.Add(new EmployeeMap());
+
+            #endregion
         }
     }
 }
