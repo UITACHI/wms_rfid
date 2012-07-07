@@ -13,6 +13,83 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             // Primary Key
             this.HasKey(t => t.ProductCode);
 
+            // Properties
+            this.Property(t=>t.ProductCode)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            this.Property(t => t.ProductName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.UniformCode)
+              .IsRequired()
+              .HasMaxLength(20);
+
+            this.Property(t => t.UnitListCode)
+               .IsRequired()
+               .HasMaxLength(20);
+
+            this.Property(t => t.UnitCode)
+               .IsRequired()
+               .HasMaxLength(20);
+
+            this.Property(t => t.SupplierCode)
+               .IsRequired()
+               .HasMaxLength(20);
+
+            this.Property(t => t.BrandCode)
+               .IsRequired()
+               .HasMaxLength(20);
+
+            this.Property(t => t.IsFilterTip)
+               .IsRequired()
+               .IsFixedLength()
+               .HasMaxLength(1);
+
+            this.Property(t => t.IsNew)
+               .IsRequired()
+               .IsFixedLength()
+               .HasMaxLength(1);
+
+            this.Property(t => t.IsFamous)
+               .IsRequired()
+               .IsFixedLength()
+               .HasMaxLength(1);
+
+            this.Property(t => t.IsMainProduct)
+               .IsRequired()
+               .IsFixedLength()
+               .HasMaxLength(1);
+
+            this.Property(t => t.IsProvinceMainProduct)
+               .IsRequired()
+               .IsFixedLength()
+               .HasMaxLength(1);
+
+            this.Property(t => t.BelongRegion)
+               .IsRequired()
+               .IsFixedLength()
+               .HasMaxLength(1);
+
+            this.Property(t => t.IsConfiscate)
+               .IsRequired()
+               .IsFixedLength()
+               .HasMaxLength(1);
+
+            this.Property(t => t.IsAbnormity)
+               .IsRequired()
+               .IsFixedLength()
+               .HasMaxLength(1);
+
+            this.Property(t => t.IsActive)
+               .IsRequired()
+               .IsFixedLength()
+               .HasMaxLength(1);
+
+            this.Property(t => t.UpdateTime)
+               .IsRequired();
+
             // Table & Column Mappings
             this.Property(t => t.ProductCode).HasColumnName(ColumnMap.Value.To("ProductCode"));
             this.Property(t => t.ProductName).HasColumnName(ColumnMap.Value.To("ProductName"));
