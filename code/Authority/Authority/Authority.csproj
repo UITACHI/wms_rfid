@@ -90,14 +90,15 @@
     <Compile Include="Controllers\Authority\RoleController.cs" />
     <Compile Include="Controllers\Authority\RolePermissionController.cs" />
     <Compile Include="Controllers\Authority\SystemController.cs" />
+    <Compile Include="Controllers\Authority\SystemEventLogController.cs" />
     <Compile Include="Controllers\Authority\UserController.cs" />
     <Compile Include="Controllers\Authority\UserPermissionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Wms\Inventory management\CargospaceController.cs" />
-    <Compile Include="Controllers\Wms\Inventory management\CigaretteController.cs" />
-    <Compile Include="Controllers\Wms\Inventory management\distributionController.cs" />
-    <Compile Include="Controllers\Wms\Inventory management\ReservoirController.cs" />
-    <Compile Include="Controllers\Wms\Inventory management\StockledgerController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\CargospaceController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\CigaretteController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\distributionController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\ReservoirController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\StockledgerController.cs" />
     <Compile Include="Controllers\Wms\Organization\AreaController.cs" />
     <Compile Include="Controllers\Wms\Organization\CompanyController.cs" />
     <Compile Include="Controllers\Wms\Organization\DepartmentController.cs" />
@@ -627,6 +628,8 @@
     <Content Include="Views\Stockledger\Index.cshtml" />
     <Content Include="Views\Reservoir\Index.cshtml" />
     <Content Include="Views\Reservoir\_SearchPartial.cshtml" />
+    <Content Include="Views\SystemEventLog\Index.cshtml" />
+    <Content Include="Views\SystemEventLog\_SearchPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
