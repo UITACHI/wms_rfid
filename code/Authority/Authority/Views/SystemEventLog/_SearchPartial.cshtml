@@ -1,0 +1,63 @@
+﻿<script type="text/javascript">
+
+    function searchClick() {
+        $('#xt-search').dialog('open').dialog('setTitle', '查询');
+    };
+
+    function select() {
+        var queryParams = $('#details').datagrid('options').queryParams;
+        queryParams.EventLogTime = $('#eventlogtime').val();
+        queryParams.EventType = $('#eventtype').val();
+        queryParams.EventName = $('#eventname').val();
+
+        queryParams.FromPC = $('#frompc').val();
+        queryParams.OperateUser = $('#operateuser').val();
+        queryParams.TargetSystem = $('#targetsystem').val();
+        $('#details').datagrid('options').queryParams = queryParams;
+        $('#details').datagrid({
+            pageNumber: 1,
+            pageSize: 10
+        });
+        $("#details").datagrid('reload');
+        $('#xt-search').dialog('close');
+    }
+
+</script>
+
+<div id="xt-search" class="easyui-dialog" modal="true" style="width:300px;height:280px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-search">
+    <div class="easyui-layout" fit="true">
+		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <table width="250">
+              <tr>
+                <td width="65">登录时间</td>
+                <td width="168" align="left"><input id="eventlogtime"></td>
+              </tr>
+              <tr>
+                <td width="75">登录事件类别</td>
+                <td width="168" align="left"><input id="eventtype"></td>
+              </tr>
+               <tr>
+                <td width="75">登录事件名称</td>
+                <td width="168" align="left"><input id="eventname"></td>
+              </tr>
+               <tr>
+                <td width="75">登录的客户端</td>
+                <td width="168" align="left"><input id="frompc"></td>
+              </tr>
+                <tr>
+                <td width="75">登录的用户名</td>
+                <td width="168" align="left"><input id="operateuser"></td>
+              </tr>
+               <tr>
+                <td width="75">登录的系统</td>
+                <td width="168" align="left"><input id="targetsystem"></td>
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons-search">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#xt-search').dialog('close')">取消</a>
+</div>

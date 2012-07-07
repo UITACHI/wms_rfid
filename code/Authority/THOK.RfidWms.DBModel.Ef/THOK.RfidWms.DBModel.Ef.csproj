@@ -57,6 +57,10 @@
     <Compile Include="Migrations\201207051045156_add_org.Designer.cs">
       <DependentUpon>201207051045156_add_org.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207070800582_modify_department_employee.cs" />
+    <Compile Include="Migrations\201207070800582_modify_department_employee.Designer.cs">
+      <DependentUpon>201207070800582_modify_department_employee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Models\Authority\City.cs" />
@@ -98,7 +102,9 @@
     <Compile Include="Models\Authority\UserModule.cs" />
     <Compile Include="Models\Authority\UserRole.cs" />
     <Compile Include="Models\Authority\UserSystem.cs" />
+    <Compile Include="Models\Wms\Brand.cs" />
     <Compile Include="Models\Wms\Company.cs" />
+    <Compile Include="Models\Wms\Mapping\BrandMap.cs" />
     <Compile Include="Models\Wms\Mapping\CompanyMap.cs" />
     <Compile Include="Models\Wms\Department.cs" />
     <Compile Include="Models\Wms\Employee.cs" />
@@ -106,6 +112,14 @@
     <Compile Include="Models\Wms\Mapping\DepartmentMap.cs" />
     <Compile Include="Models\Wms\Mapping\EmployeeMap.cs" />
     <Compile Include="Models\Wms\Mapping\JobMap.cs" />
+    <Compile Include="Models\Wms\Mapping\ProductMap.cs" />
+    <Compile Include="Models\Wms\Mapping\SupplierMap.cs" />
+    <Compile Include="Models\Wms\Mapping\UnitListMap.cs" />
+    <Compile Include="Models\Wms\Mapping\UnitMap.cs" />
+    <Compile Include="Models\Wms\Product.cs" />
+    <Compile Include="Models\Wms\Supplier.cs" />
+    <Compile Include="Models\Wms\Unit.cs" />
+    <Compile Include="Models\Wms\UnitList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EntityRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
@@ -114,7 +128,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="MigrationsCmd.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

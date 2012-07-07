@@ -45,7 +45,7 @@ namespace THOK.WebUtil
 				                                                {'menuid':'22','menuname':'模块信息管理','iconCls':'icon-users','url':'/Module/'},
 				                                                {'menuid':'23','menuname':'角色信息管理','iconCls':'icon-role','url':'/Role/'},
 				                                                {'menuid':'24','menuname':'用户信息管理','iconCls':'icon-set','url':'/User/'},				                                   
-				                                                {'menuid':'28','menuname':'系统登录日志','iconCls':'icon-log','url':'/LoginLog/'}
+				                                                {'menuid':'28','menuname':'系统登录日志','iconCls':'icon-log','url':'/SystemEventLog/'}
 			                                                ]
 	                                                },{'menuid':'3','iconCls':'icon-sys','menuname':'多服务器应用管理',
 		                                                'children':[
@@ -77,26 +77,26 @@ namespace THOK.WebUtil
 			                                                ]
 	                                                },{'menuid':'8','iconCls':'icon-sys','menuname':'入库管理',
 		                                                'children':[
-				                                                {'menuid':'81','menuname':'入库单据类型设置','iconCls':'icon-add','url':'/System/'},
-				                                                {'menuid':'82','menuname':'入库单','iconCls':'icon-users','url':'/Module/'},
-				                                                {'menuid':'83','menuname':'入库单审核','iconCls':'icon-role','url':'/Role/'},
-				                                                {'menuid':'84','menuname':'入库单分配','iconCls':'icon-set','url':'/User/'},				                                   
-				                                                {'menuid':'85','menuname':'入库单分配确认','iconCls':'icon-log','url':'/LoginLog/'}
+				                                                {'menuid':'81','menuname':'入库单据类型设置','iconCls':'icon-add','url':'/StockInBillType/Index'},
+				                                                {'menuid':'82','menuname':'入库单','iconCls':'icon-users','url':'/StockInBill/Index'},
+				                                                {'menuid':'83','menuname':'入库单审核','iconCls':'icon-role','url':'/StockInBillCheck/Index'},
+				                                                {'menuid':'84','menuname':'入库单分配','iconCls':'icon-set','url':'/StockInBillAllot/Index'},
+				                                                {'menuid':'85','menuname':'入库单分配确认','iconCls':'icon-log','url':'/StockInBillAllotConfirm/Index'}
 			                                                ]
 	                                                },{'menuid':'9','iconCls':'icon-sys','menuname':'出库管理',
 		                                                'children':[
-				                                                {'menuid':'91','menuname':'出库单据类型设置','iconCls':'icon-add','url':'/System/'},
-				                                                {'menuid':'92','menuname':'出库单','iconCls':'icon-users','url':'/Module/'},
-				                                                {'menuid':'93','menuname':'出库单审核','iconCls':'icon-role','url':'/Role/'},
-				                                                {'menuid':'94','menuname':'出库单分配','iconCls':'icon-set','url':'/User/'},				                                   
-				                                                {'menuid':'95','menuname':'出库单分配确认','iconCls':'icon-log','url':'/LoginLog/'}
+				                                                {'menuid':'91','menuname':'出库单据类型设置','iconCls':'icon-add','url':'/StockOutBillType/Index'},
+				                                                {'menuid':'92','menuname':'出库单','iconCls':'icon-users','url':'/StockOutBill/Index'},
+				                                                {'menuid':'93','menuname':'出库单审核','iconCls':'icon-role','url':'/StockOutBillCheck/Index'},
+				                                                {'menuid':'94','menuname':'出库单分配','iconCls':'icon-set','url':'/StockOutBillAllot/Index'},
+				                                                {'menuid':'95','menuname':'出库单分配确认','iconCls':'icon-log','url':'/StockOutBillAllotConfirm/Index'}
 			                                                ]
 	                                                },{'menuid':'10','iconCls':'icon-sys','menuname':'移库管理',
 		                                                'children':[
-				                                                {'menuid':'101','menuname':'移库单据类型设置','iconCls':'icon-add','url':'/System/'},
-				                                                {'menuid':'102','menuname':'移库单生成','iconCls':'icon-users','url':'/Module/'},
-				                                                {'menuid':'103','menuname':'移库单','iconCls':'icon-role','url':'/Role/'},
-				                                                {'menuid':'104','menuname':'移库单审核','iconCls':'icon-set','url':'/User/'}
+				                                                {'menuid':'101','menuname':'移库单据类型设置','iconCls':'icon-add','url':'/MovePositionBillType/Index'},
+				                                                {'menuid':'102','menuname':'移库单生成','iconCls':'icon-users','url':'/MovePositionBillGenerate/Index'},
+				                                                {'menuid':'103','menuname':'移库单','iconCls':'icon-role','url':'/MovePositionBill/Index'},
+				                                                {'menuid':'104','menuname':'移库单审核','iconCls':'icon-set','url':'/MovePositionBillCheck/Index'}
 			                                                ]
 	                                                },{'menuid':'11','iconCls':'icon-sys','menuname':'分拣管理',
 		                                                'children':[
@@ -126,17 +126,19 @@ namespace THOK.WebUtil
 			                                                ]
 	                                                },{'menuid':'15','iconCls':'icon-sys','menuname':'库存管理',
 		                                                'children':[
-				                                                {'menuid':'151','menuname':'库存总账','iconCls':'icon-add','url':'/System/'},
-				                                                {'menuid':'152','menuname':'产品库存分布','iconCls':'icon-users','url':'/Module/'},
-				                                                {'menuid':'153','menuname':'货位查询','iconCls':'icon-role','url':'/Role/'}
+				                                                {'menuid':'151','menuname':'库存总账','iconCls':'icon-add','url':'/Stockledger/'},
+				                                                {'menuid':'152','menuname':'产品库存分布','iconCls':'icon-users','url':'/distribution/'},
+				                                                {'menuid':'153','menuname':'货位查询','iconCls':'icon-role','url':'/Cargospace/'},
+				                                                {'menuid':'152','menuname':'库区库存查询','iconCls':'icon-users','url':'/Reservoir/'},
+				                                                {'menuid':'153','menuname':'卷烟库存查询','iconCls':'icon-role','url':'/Cigarette/'}
 			                                                ]
 	                                                },{'menuid':'16','iconCls':'icon-sys','menuname':'综合管理',
 		                                                'children':[
 				                                                {'menuid':'161','menuname':'积压产品清单查询','iconCls':'icon-add','url':'/System/'},
-				                                                {'menuid':'162','menuname':'入库单查询','iconCls':'icon-users','url':'/Module/'},
-				                                                {'menuid':'163','menuname':'出库单查询','iconCls':'icon-role','url':'/Role/'},
+				                                                {'menuid':'162','menuname':'入库单查询','iconCls':'icon-users','url':'/StockIntoSearch/'},
+				                                                {'menuid':'163','menuname':'出库单查询','iconCls':'icon-role','url':'/StockOutSearch/'},
 				                                                {'menuid':'164','menuname':'移库单查询','iconCls':'icon-set','url':'/User/'},	
-				                                                {'menuid':'165','menuname':'盘点单查询','iconCls':'icon-set','url':'/User/'},				                                   
+				                                                {'menuid':'165','menuname':'盘点单查询','iconCls':'icon-set','url':'/StockCheckSearch/'},				                                   
 				                                                {'menuid':'166','menuname':'损益单查询','iconCls':'icon-set','url':'/User/'},				                                                                                                                                                                    			                                   
 				                                                {'menuid':'167','menuname':'分拣单查询','iconCls':'icon-log','url':'/LoginLog/'}
 			                                                ]

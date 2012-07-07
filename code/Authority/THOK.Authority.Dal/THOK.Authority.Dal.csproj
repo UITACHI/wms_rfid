@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityRepository\Authority\SystemEventLogRepository.cs" />
     <Compile Include="EntityRepository\Authority\SystemRepository.cs" />
     <Compile Include="EntityRepository\Authority\ModuleRepository.cs" />
     <Compile Include="EntityRepository\Authority\UserRepository.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Infrastructure\HttpRequestModule.cs" />
     <Compile Include="Infrastructure\RepositoryContext\AuthorityRepositoryContext.cs" />
     <Compile Include="Interfaces\Authority\IAuthorityRepositoryContext.cs" />
+    <Compile Include="Interfaces\Authority\ISystemEventLogRepository.cs" />
     <Compile Include="Interfaces\Authority\ISystemRepository.cs" />
     <Compile Include="Interfaces\Authority\IModuleRepository.cs" />
     <Compile Include="Interfaces\Authority\IUserRepository.cs" />
