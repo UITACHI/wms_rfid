@@ -14,7 +14,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             this.HasKey(t => t.ProductCode);
 
             // Properties
-            this.Property(t=>t.ProductCode)
+            this.Property(t => t.ProductCode)
                 .IsRequired()
                 .HasMaxLength(20);
 
@@ -23,72 +23,123 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
                 .HasMaxLength(50);
 
             this.Property(t => t.UniformCode)
-              .IsRequired()
-              .HasMaxLength(20);
+                .IsRequired()
+                .HasMaxLength(20);
+
+            this.Property(t => t.CustomCode)
+                .HasMaxLength(20);
+
+            this.Property(t => t.ShortCode)
+                .HasMaxLength(10);
 
             this.Property(t => t.UnitListCode)
-               .IsRequired()
-               .HasMaxLength(20);
+                .IsRequired()
+                .HasMaxLength(20);
 
             this.Property(t => t.UnitCode)
-               .IsRequired()
-               .HasMaxLength(20);
+                .IsRequired()
+                .HasMaxLength(20);
 
             this.Property(t => t.SupplierCode)
-               .IsRequired()
-               .HasMaxLength(20);
+                .IsRequired()
+                .HasMaxLength(20);
 
             this.Property(t => t.BrandCode)
-               .IsRequired()
-               .HasMaxLength(20);
+                .IsRequired()
+                .HasMaxLength(20);
+
+            this.Property(t => t.AbcTypeCode)
+                .IsFixedLength()
+                .HasMaxLength(1);
+
+            this.Property(t => t.ProductTypeCode)
+                .IsFixedLength()
+                .HasMaxLength(4);
+
+            this.Property(t => t.PackTypeCode)
+                .IsFixedLength()
+                .HasMaxLength(4);
+
+            this.Property(t => t.PriceLevelCode)
+                .HasMaxLength(4);
+
+            this.Property(t => t.StatisticType)
+                .HasMaxLength(10);
+
+            this.Property(t => t.PieceBarcode)
+                .HasMaxLength(13);
+
+            this.Property(t => t.BarBarcode)
+                .HasMaxLength(13);
+
+            this.Property(t => t.PackageBarcode)
+                .HasMaxLength(13);
+
+            this.Property(t => t.OneProjectBarcode)
+                .HasMaxLength(30);
+
+            this.Property(t => t.BuyPrice)
+                .HasPrecision(9, 2);
+
+            this.Property(t => t.TradePrice)
+                .HasPrecision(9, 2);
+
+            this.Property(t => t.RetailPrice)
+                .HasPrecision(9, 2);
+
+            this.Property(t => t.CostPrice)
+                .HasPrecision(9, 2);
 
             this.Property(t => t.IsFilterTip)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(1);
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
 
             this.Property(t => t.IsNew)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(1);
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
 
             this.Property(t => t.IsFamous)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(1);
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
 
             this.Property(t => t.IsMainProduct)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(1);
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
 
             this.Property(t => t.IsProvinceMainProduct)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(1);
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
 
             this.Property(t => t.BelongRegion)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(1);
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
 
             this.Property(t => t.IsConfiscate)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(1);
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
 
             this.Property(t => t.IsAbnormity)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(1);
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
+
+            this.Property(t => t.Description)
+                .HasMaxLength(100);
 
             this.Property(t => t.IsActive)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(1);
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
 
             this.Property(t => t.UpdateTime)
-               .IsRequired();
+                .IsRequired();
 
             // Table & Column Mappings
             this.Property(t => t.ProductCode).HasColumnName(ColumnMap.Value.To("ProductCode"));

@@ -18,6 +18,9 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
                 .IsRequired()
                 .HasMaxLength(20);
 
+            this.Property(t => t.UniformCode)
+                .HasMaxLength(20);
+
             this.Property(t => t.UnitListName)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -31,7 +34,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
                 .HasMaxLength(50);
 
             this.Property(t => t.Quantity01)
-                .IsRequired();
+                .HasPrecision(9, 2);
 
             this.Property(t => t.UnitCode02)
                 .IsRequired()
@@ -42,7 +45,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
                 .HasMaxLength(50);
 
             this.Property(t => t.Quantity02)
-                .IsRequired();
+                .HasPrecision(9, 2);
 
             this.Property(t => t.UnitCode03)
                 .IsRequired()
@@ -53,7 +56,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
                 .HasMaxLength(50);
 
             this.Property(t => t.Quantity03)
-                .IsRequired();
+                .HasPrecision(9, 2);
 
             this.Property(t => t.UnitCode04)
                 .IsRequired()
