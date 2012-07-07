@@ -57,6 +57,10 @@
     <Compile Include="Migrations\201207051045156_add_org.Designer.cs">
       <DependentUpon>201207051045156_add_org.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207070800582_modify_department_employee.cs" />
+    <Compile Include="Migrations\201207070800582_modify_department_employee.Designer.cs">
+      <DependentUpon>201207070800582_modify_department_employee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Models\Authority\City.cs" />
