@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Authority.Controllers.Wms.Inventory
 {
-    public class distributionController : Controller
+    public class DistributionController : Controller
     {
         //
         // GET: /distribution/
