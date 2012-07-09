@@ -14,13 +14,9 @@
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.SystemName = $('#systemname').val();
         queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.Status = $('#status').combobox('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
-        $('#details').datagrid({
-            pageNumber: 1,
-            pageSize: 10
-        }); 
-        $("#details").datagrid('reload');
+        $("#details").datagrid('load');
         $('#dlg-search').dialog('close'); 
     }
 
