@@ -93,7 +93,9 @@
     <Compile Include="Controllers\Authority\UserController.cs" />
     <Compile Include="Controllers\Authority\UserPermissionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Wms\ComplexSearch\SortOrderSearchController.cs" />
     <Compile Include="Controllers\Wms\ComplexSearch\StockCheckSearchController.cs" />
+    <Compile Include="Controllers\Wms\ComplexSearch\StockDifferSearchController.cs" />
     <Compile Include="Controllers\Wms\ComplexSearch\StockIntoSearchController.cs" />
     <Compile Include="Controllers\Wms\ComplexSearch\StockMoveSearchController.cs" />
     <Compile Include="Controllers\Wms\ComplexSearch\StockOutSearchController.cs" />
@@ -751,6 +753,11 @@
     <Content Include="Views\SystemEventLog\_SearchPartial.cshtml" />
     <Content Include="Views\Reservoir\Index.cshtml" />
     <Content Include="Views\Reservoir\_SearchPartial.cshtml" />
+    <Content Include="Views\StockMoveSearch\_SearchPartial.cshtml" />
+    <Content Include="Views\StockDifferSearch\Index.cshtml" />
+    <Content Include="Views\StockDifferSearch\_SearchPartial.cshtml" />
+    <Content Include="Views\SortOrderSearch\Index.cshtml" />
+    <Content Include="Views\SortOrderSearch\_SearchPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

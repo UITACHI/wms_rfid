@@ -1,9 +1,15 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#makeDate').datebox({
+        $('#makeDate_before').datebox({
             required: false
         });
-        $('#checkDate').datebox({
+        $('#makeDate_later').datebox({
+            required: false
+        });
+        $('#checkDate_before').datebox({
+            required: false
+        });
+        $('#checkDate_later').datebox({
             required: false
         });
     })
@@ -33,11 +39,11 @@
 
 </script>
 
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:350px;padding:2px 2px"
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:350px;height:380px;padding:2px 2px"
 		closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
 		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
-            <table align="left" width="260">
+            <table align="left" width="300">
               <tr>
                 <td width="60">盘点单号:</td>
                 <td><input id="checkBillNo" style="width: 140px"></td>
@@ -47,8 +53,8 @@
                 <td><input id="warehouseName" style="width: 140px"></td>  
               </tr>
               <tr>
-                <td   width="60">制单日期:</td>
-                <td><input id="makeDate" style="width: 140px"></td>
+                <td width="60">制单日期:</td>
+                <td><input id="makeDate_before" style="width: 90px">&nbsp;至&nbsp;<input id="makeDate_later" style="width: 90px"></td>
               </tr>
               <tr>
                 <td width="60">操 作 员:</td>
@@ -64,11 +70,11 @@
               </tr>
               <tr>
                 <td   width="60">审核日期:</td>
-                <td><input id="checkDate" style="width: 140px"></td>
+                <td><input id="checkDate_before" style="width: 90px">&nbsp;至&nbsp;<input id="checkDate_later" style="width: 90px"></td>
               </tr>
               <tr>
                 <td   width="60">№ 备 注:</td>
-                <td><textarea id="remark" style="width: 140px; height: 40px"></textarea></td>
+                <td><textarea id="remark" style="width: 160px; height: 40px"></textarea></td>
               </tr>
             </table>
         </div>
@@ -78,5 +84,8 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
 </div>
+
+
+
 
 
