@@ -1,4 +1,11 @@
 ﻿<script type="text/javascript">
+    $(function () {
+        $('#isActive').combo({
+            editable: false,
+            panelHeight: 45
+        });
+    })
+
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
     };
@@ -7,7 +14,7 @@
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.JobCode = $('#JobCode').val();
         queryParams.JobName = $('#JobName').val();
-        queryParams.IsActive = $('#isActive').val();
+        queryParams.IsActive = $('#isActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,

@@ -14,7 +14,7 @@
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.SystemName = $('#systemname').val();
         queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.Status = $('#status').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
