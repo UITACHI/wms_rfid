@@ -50,17 +50,6 @@ namespace Authority.Controllers.Organization
         [HttpPost]
         public ActionResult Create(Department department)
         {
-            //Department department = new Department();
-            //department.DepartmentCode = collection["DepartmentCode"].ToString();
-            //department.DepartmentName = collection["DepartmentName"].ToString();
-            //department.DepartmentLeaderID = new Guid(collection["DepartmentLeaderID"].ToString());
-            //department.Description = collection["Description"].ToString();
-            //department.CompanyID = new Guid(collection["CompanyID"].ToString());
-            //department.ParentDepartmentID = new Guid(collection["ParentDepartmentID"].ToString());
-            //department.UniformCode = collection["UniformCode"].ToString();
-            //department.IsActive = collection["IsActive"].ToString();
-            //department.UpdateTime = Convert.ToDateTime(collection["UpdateTime"].ToString());
-            
             bool bResult = DepartmentService.Add(department);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
@@ -72,16 +61,6 @@ namespace Authority.Controllers.Organization
 
         public ActionResult Edit(Department department)
         {
-            //Department department = new Department();
-            //department.DepartmentCode = collection["DepartmentCode"].ToString();
-            //department.DepartmentName = collection["DepartmentName"].ToString();
-            //department.DepartmentLeaderID = new Guid(collection["DepartmentLeaderID"].ToString());
-            //department.Description = collection["Description"].ToString();
-            //department.CompanyID = new Guid(collection["CompanyID"].ToString());
-            //department.ParentDepartmentID = new Guid(collection["ParentDepartmentID"].ToString());
-            //department.UniformCode = collection["UniformCode"].ToString();
-            //department.IsActive = collection["IsActive"].ToString();
-            //department.UpdateTime = Convert.ToDateTime(collection["UpdateTime"].ToString());
             bool bResult = DepartmentService.Save(department);
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);

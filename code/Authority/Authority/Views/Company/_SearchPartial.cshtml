@@ -2,7 +2,12 @@
     $(function () {
         $('#IsActive').combo({
             editable: false,
-            panelHeight: 45,
+            panelHeight: 65,
+            panelWidth: 130
+        });
+        $('#CompanyType').combo({
+            editable: false,
+            panelHeight: 65,
             panelWidth: 130
         });
     })
@@ -54,7 +59,7 @@
                         公司类型：
                     </td>
                     <td width="168">
-                        <select id="CompanyType" name="CompanyType" class="easyui-combobox" required="true" style="width: 130px">
+                        <select id="CompanyType" name="CompanyType" class="easyui-combobox" style="width: 130px">
 		                        <option value="1">配送中心</option>
 		                        <option value="2">市公司</option>
                                 <option value="3">县公司</option>

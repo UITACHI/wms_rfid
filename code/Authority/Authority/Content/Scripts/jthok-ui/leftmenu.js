@@ -10,9 +10,12 @@
             if (data) {
                 if (!data.Identity.IsAuthenticated) {
                     clearMenu();
+                    $('#login-bg').addClass("login");
+                    show('#c',350,350);
                     $('#dlg-logon').dialog('open');
                 }
                 else {
+                    hide('#c');
                     initMenu();
                     $('#welcome').html('欢迎：' + data.Identity.Name);
                     init_changecity(data.Identity.Name);
@@ -21,6 +24,8 @@
                 }
             }
             else {
+                $('#login - bg').addClass("login");
+                show('#c', 350, 350);
                 $('#dlg-logon').dialog('open');
             }
         });

@@ -1,7 +1,7 @@
 ﻿<script type="text/javascript">
     var url;
     $(function () {
-        $('#Status').combo({
+        $('#IsActive').combo({
             required: true,
             editable: false,
             panelHeight: 45,
@@ -10,7 +10,7 @@
         $('#CompanyType').combo({
             required: true,
             editable: false,
-            panelHeight: 45,
+            panelHeight: 55,
             panelWidth: 130
         });
         
@@ -24,7 +24,10 @@
         });
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
-        $('#cc').combo({
+        $('#CompanyType').combo({
+            hasDownArrow: true
+        });
+        $('#IsActive').combo({
             hasDownArrow: true
         });
         url = '/Company/Create/';
@@ -95,7 +98,7 @@
                                 <option value="3">县公司</option>
 	                        </select></td>
                             <td>状态:</td>
-                        <td><select id="Status" name="IsActive" class="easyui-combobox" required="true" style="width: 130px">
+                        <td><select id="IsActive" name="IsActive" class="easyui-combobox" required="true" style="width: 130px">
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>
