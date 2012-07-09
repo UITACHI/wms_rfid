@@ -630,6 +630,10 @@
     <Content Include="Views\distribution\_SearchPartial.cshtml" />
     <Content Include="Views\Cigarette\Index.cshtml" />
     <Content Include="Views\Cigarette\_SearchPartial.cshtml" />
+    <Content Include="Views\Factory\_AddPartial.cshtml" />
+    <Content Include="Views\Factory\_DeletePartial.cshtml" />
+    <Content Include="Views\Factory\_EditPartial.cshtml" />
+    <Content Include="Views\Factory\_SearchPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
