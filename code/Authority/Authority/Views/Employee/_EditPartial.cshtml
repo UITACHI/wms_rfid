@@ -2,22 +2,22 @@
 function editClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
-        $('#dlg').dialog('open').dialog('setTitle', '编辑');
-        $('#fm').form('load', row);
+        url = '/Employee/Edit/';
+        $('#dlg').dialog('open').dialog('setTitle', '编辑');       
         $('#fm .easyui-validatebox').validatebox({
             required: true
         });
-        if (row.Status == '启用') {
-            $('#cc').combo('setValue', true).combo('setText', row.Status);
-        } else {
-            $('#cc').combo('setValue', false).combo('setText', row.Status);
-        }
-        $('form input').removeAttr("disabled");
-        $('form textarea').removeAttr("disabled");
-        $('#cc').combo({
+        $('#IsActive').combo({
             hasDownArrow: true
         });
-        url = '/System/Edit/?SystemID=' + row.SystemID;
+        if (row.Status == '可用') {
+            $('#IsActive').combo('setValue', 1).combo('setText', row.Status);
+        } else {
+            $('#IsActive').combo('setValue', 0).combo('setText', row.Status);
+        }
+        $('#fm').form('load', row);
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");        
     } else {
         $.messager.confirm('错误', '没有选择行！');
     }

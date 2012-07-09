@@ -7,13 +7,13 @@
             $('#fm .easyui-validatebox').validatebox({
                 required: false
             });
-            $('#Status').combo({
+            $('#IsActive').combo({
                 hasDownArrow: false
             });
             if (row.IsAdmin == 'ø…”√') {
-                $('#Status').combo('setValue', 1).combo('setText', row.IsActive);
+                $('#IsActive').combo('setValue', 1).combo('setText', row.IsActive);
             } else {
-                $('#Status').combo('setValue', 0).combo('setText', row.IsActive);
+                $('#IsActive').combo('setValue', 0).combo('setText', row.IsActive);
             }
             $('#fm').form('clear');
             $('#fm').form('load', row);

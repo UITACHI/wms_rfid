@@ -1,13 +1,21 @@
 <script type="text/javascript">
     var url;
     $(function () {
-        $('#cc').combo({
+        $('#Status').combo({
             required: true,
             editable: false,
-            panelHeight: 45
+            panelHeight: 85,
+            panelWidth: 130
         });
+        $('#IsActive').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 130
+        });
+
         $('#depar-add').combogrid({
-            width: 120,
+            width: 130,
             panelWidth: 340,
             url: '/Department/Details/?page=1&rows=10',
             idField: 'ID',
@@ -24,7 +32,7 @@
         });
 
         $('#job-add').combogrid({
-            width: 120,
+            width: 130,
             panelWidth: 340,
             url: '/Job/Details/?page=1&rows=10',
             idField: 'ID',
@@ -102,7 +110,7 @@
                       </tr>
                       <tr>
                         <td align="right">状态：</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width: 80px">
+                        <td><select id="Status" name="Status" class="easyui-combobox" style="width: 130px">
 		                        <option value="3701">在职</option>
 		                        <option value="3702">离职</option>
                                 <option value="3703">退休</option>
@@ -114,7 +122,7 @@
 	                        </select>
 	                    </td>
                         <td align="right">是否可用：</td>
-                        <td><select id="Active" name="IsActive" class="easyui-combobox" style="width: 80px">
+                        <td><select id="IsActive" name="IsActive" class="easyui-combobox" style="width: 130px">
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>
