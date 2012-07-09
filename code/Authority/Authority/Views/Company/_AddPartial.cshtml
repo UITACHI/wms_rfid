@@ -1,7 +1,7 @@
 ﻿<script type="text/javascript">
     var url;
     $(function () {
-        $('#IsActive').combo({
+        $('#isActive_com').combo({
             required: true,
             editable: false,
             panelHeight: 45,
@@ -13,7 +13,22 @@
             panelHeight: 55,
             panelWidth: 130
         });
-        
+        $('#company-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/Company/Details/?page=1&rows=10',
+            idField: 'ID',
+            textField: 'CompanyName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'ID', title: '公司ID', hidden: true, width: 30 },
+					{ field: 'CompanyCode', title: '公司编码', align: 'left', width: 40 },
+					{ field: 'CompanyName', title: '公司名称', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+				]]
+        });
     })
 
     function addClick() {
@@ -27,7 +42,7 @@
         $('#CompanyType').combo({
             hasDownArrow: true
         });
-        $('#IsActive').combo({
+        $('#isActive_com').combo({
             hasDownArrow: true
         });
         url = '/Company/Create/';
@@ -59,11 +74,11 @@
         });
     }
 </script>
-    <div id="dlg" class="easyui-dialog" modal="true" style="width:560px;height:330px;padding:2px 2px"   closed="true" buttons="#dlg-buttons">
+    <div id="dlg" class="easyui-dialog" modal="true" style="width:520px;height:330px;padding:2px 2px"   closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="companyfm" method="post">
-                    <table width="520">
+                    <table width="480">
                       <tr>
                         <td width="60">公司编码:</td>
                         <td width="168"><input name="CompanyCode" class="easyui-validatebox" required="true"/>
@@ -73,9 +88,9 @@
                       </tr>
                         <tr>
                         <td width="60">上级名称:</td>
-                        <td width="168"><input name="ParentCompanyID" type="text" ></td>
+                        <td width="168"><input name="ParentCompanyID" type="text" id="company-add"/></td>
                         <td width="60">国家编码：</td>
-                        <td width="168"><input name="UniformCode" class="easyui-validatebox" required="true"/></td>
+                        <td width="168"><input name="UniformCode" /></td>
                       </tr>
                       <tr>
                         <td width="60">仓库面积:</td>
@@ -98,7 +113,7 @@
                                 <option value="3">县公司</option>
 	                        </select></td>
                             <td>状态:</td>
-                        <td><select id="IsActive" name="IsActive" class="easyui-combobox" required="true" style="width: 130px">
+                        <td><select id="isActive_com" name="IsActive" class="easyui-combobox" required="true" style="width: 130px">
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>

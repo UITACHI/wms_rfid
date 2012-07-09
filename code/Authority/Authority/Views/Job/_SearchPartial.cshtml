@@ -1,14 +1,13 @@
 ﻿<script type="text/javascript">
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
-
     };
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.JobCode = $('#JobCode').val();
         queryParams.JobName = $('#JobName').val();
-        queryParams.IsActive = $('#IsActive').val();
+        queryParams.IsActive = $('#isActive').val();
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -27,17 +26,18 @@
             <table width="300">
                       <tr>
                         <td width="60">岗位编码:</td>
-                        <td width="168"><input id="JobCode" class="easyui-validatebox" required="true"/>
+                        <td width="168"><input id="JobCode" type="text"/>
                         <input name="ID"  style="display:none" /></td>
                         
                       </tr>
                         <tr>
                         <td width="60">岗位名称：</td>
-                        <td width="168"><input id="JobName" class="easyui-validatebox" required="true"/></td>
+                        <td width="168"><input id="JobName" type="text"/></td>
                       </tr>                      
                       <tr>
                       <td width="60">是否可用：</td>
-                        <td><select id="IsActive" class="easyui-combobox" required="true" style="width: 80px">
+                        <td><select id="isActive" class="easyui-combobox" required="true" style="width: 80px">
+                                <option value="">请选择</option>
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>

@@ -3,21 +3,21 @@ function editClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
         url = '/Employee/Edit/';
+        $('#fm').form('load', row);
         $('#dlg').dialog('open').dialog('setTitle', '编辑');       
         $('#fm .easyui-validatebox').validatebox({
             required: true
-        });
-        $('#IsActive').combo({
+        });        
+        if (row.IsActive == '可用') {
+            $('#isActive_emp').combo('setValue', 1).combo('setText', row.IsActive);
+        } else {
+            $('#isActive_emp').combo('setValue', 0).combo('setText', row.IsActive);
+        }
+        $('#isActive_emp').combo({
             hasDownArrow: true
         });
-        if (row.Status == '可用') {
-            $('#IsActive').combo('setValue', 1).combo('setText', row.Status);
-        } else {
-            $('#IsActive').combo('setValue', 0).combo('setText', row.Status);
-        }
-        $('#fm').form('load', row);
         $('form input').removeAttr("disabled");
-        $('form textarea').removeAttr("disabled");        
+        $('form textarea').removeAttr("disabled");
     } else {
         $.messager.confirm('错误', '没有选择行！');
     }

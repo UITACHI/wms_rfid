@@ -5,7 +5,7 @@
 </script>
  
 <div region="center" split="true" border="false">    
-    <table class="easyui-datagrid" url="/Department/Details/" border="false"
+    <table class="easyui-datagrid" url="/Employee/Details/" border="false" id="details" singleSelect="true"
         fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
@@ -13,15 +13,15 @@
                 <th field="EmployeeCode" width="80">员工编码</th>
                 <th field="EmployeeName" width="80">员工姓名</th>
                 <th field="Description" width="80">描述</th>
-                <th field="DepartmentID" hidden="true" width="80" align="right">部门ID</th>
-                <th field="DepartmentName" width="80" align="right">部门名称</th>
+                <th field="DepartmentID" hidden="true" width="80">部门ID</th>
+                <th field="DepartmentName" width="80" >部门名称</th>
                 <th field="JobID" hidden="true" width="80">岗位ID</th>
                 <th field="JobName" width="80">岗位名称</th>
                 <th field="Sex" width="100">性别</th>
-                <th field="Tel" width="80" align="right">电话</th>
-                <th field="Status" width="80" align="right">状态</th>
-                <th field="IsActive" width="80" align="right">是否可用</th>
-                <th field="UpdateTime" width="80" align="right">更新时间</th>
+                <th field="Tel" width="80" >电话</th>
+                <th field="Status" width="80" >状态</th>
+                <th field="IsActive" width="80" >是否可用</th>
+                <th field="UpdateTime" width="80" >更新时间</th>
             </tr>
         </thead>
     </table>
