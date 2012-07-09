@@ -1,0 +1,91 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#makeDate_before').datebox({
+            required: false
+        });
+        $('#makeDate_later').datebox({
+            required: false
+        });
+        $('#checkDate_before').datebox({
+            required: false
+        });
+        $('#checkDate_later').datebox({
+            required: false
+        });
+    })
+
+    function searchClick() {
+        $('#dlg-search').dialog('open').dialog('setTitle', '盘点单查询');
+    };
+
+    function select() {
+        var queryParams = $('#masters').datagrid('options').queryParams;
+        queryParams.CheckBillNo = $('#checkBillNo').val();
+        queryParams.WarehouseName = $('#warehouseName').val();
+        queryParams.MakeDate = $('#makeDate').val();
+        queryParams.OperatePerson = $('#operatePerson').val();
+        queryParams.OperateStatus = $('#operateStatus').val();
+        queryParams.CheckPerson = $('#checkPerson').val();
+        queryParams.CheckDate = $('#checkDate').val();
+        queryParams.Remark = $('#remark').val();
+        $('#masters').datagrid('options').queryParams = queryParams;
+        $('#masters').datagrid({
+            pageNumber: 1,
+            pageSize: 10
+        });
+        $("#masters").datagrid('reload');
+        $('#dlg-search').dialog('close');
+    }
+
+</script>
+
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:350px;height:380px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-search">
+    <div class="easyui-layout" fit="true">
+		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <table align="left" width="300">
+              <tr>
+                <td width="60">盘点单号:</td>
+                <td><input id="checkBillNo" style="width: 140px"></td>
+              </tr>
+              <tr>
+                <td width="60">仓库名称:</td>
+                <td><input id="warehouseName" style="width: 140px"></td>  
+              </tr>
+              <tr>
+                <td width="60">制单日期:</td>
+                <td><input id="makeDate_before" style="width: 90px">&nbsp;至&nbsp;<input id="makeDate_later" style="width: 90px"></td>
+              </tr>
+              <tr>
+                <td width="60">操 作 员:</td>
+                <td><input id="operatePerson" style="width: 140px"></td>
+              </tr>
+              <tr>
+                <td   width="60">处理状态:</td>
+                <td><input id="operateStatus" style="width: 140px"></td>
+              </tr>
+              <tr>
+                <td   width="60">审 核 人:</td>
+                <td><input id="checkPerson" style="width: 140px"></td>                
+              </tr>
+              <tr>
+                <td   width="60">审核日期:</td>
+                <td><input id="checkDate_before" style="width: 90px">&nbsp;至&nbsp;<input id="checkDate_later" style="width: 90px"></td>
+              </tr>
+              <tr>
+                <td   width="60">№ 备 注:</td>
+                <td><textarea id="remark" style="width: 160px; height: 40px"></textarea></td>
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons-search">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
+</div>
+
+
+
+
+

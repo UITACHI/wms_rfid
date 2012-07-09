@@ -1,58 +1,91 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#status').combo({
+        $('#isActive').combo({
             editable: false,
-            panelHeight: 45
+            panelHeight: 65,
+            panelWidth: 130
+        });
+        $('#companyType').combo({
+            editable: false,
+            panelHeight: 65,
+            panelWidth: 130
         });
     })
 
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+        $("input[type=text]").attr("value", "");
     };
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.RoleName = $('#rolename').val();
-        queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.CompanyCode = $('#CompanyCode').val();
+        queryParams.CompanyName = $('#CompanyName').val();
+        queryParams.CompanyType = $('#companyType').combo('getValue');
+        queryParams.Status = $('#isActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
             pageSize: 10
-        }); 
+        });
         $("#details").datagrid('reload');
-        $('#dlg-search').dialog('close'); 
+        $('#dlg-search').dialog('close');
     }
 
 </script>
-
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:210px;padding:2px 2px"
-		closed="true" buttons="#dlg-buttons-search">
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width: 300px; height: 210px;
+    padding: 2px 2px" closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
-		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+        <div region="center" border="false" style="padding: 10px 10px; background: #fff;
+            border: 1px solid #ccc;">
             <table width="250">
-              <tr>
-                <td width="60">公司名称:</td>
-                <td width="168" align="left"><input id="rolename"></td>
-              </tr>
-              <tr>
-                <td>描述：</td>
-                <td align="left"><textarea id="description" style="width: 180px; height: 50px"></textarea></td>
-              </tr>
-              <tr>
-                <td>状态：</td>
-                <td align="left">      
-		            <select id="status" name="status" required="true" class="easyui-combobox" style="width: 50px">
-		                <option value="true">启用</option>
-		                <option value="false">禁用</option>
-	                </select>
-	            </td>
-              </tr>
+                <tr>
+                    <td width="60">
+                        公司编码:
+                    </td>
+                    <td width="168">
+                        <input id="CompanyCode" type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="60">
+                        公司名称：
+                    </td>
+                    <td width="168">
+                        <input id="CompanyName" type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="60">
+                        公司类型：
+                    </td>
+                    <td width="168">
+                        <select id="companyType" name="CompanyType" class="easyui-combobox" style="width: 130px">
+                                <option value="">请选择</option>
+		                        <option value="1">配送中心</option>
+		                        <option value="2">市公司</option>
+                                <option value="3">县公司</option>
+	                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        状态:
+                    </td>
+                    <td>
+                        <select id="isActive" name="IsActive" class="easyui-combobox" style="width: 130px">
+                            <option value="">请选择</option>
+                            <option value="1">可用</option>
+                            <option value="0">不可用</option>
+                        </select>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
 </div>
 <div id="dlg-buttons-search">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
-	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="select()">查询</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">
+        取消</a>
 </div>

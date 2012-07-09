@@ -55,6 +55,10 @@
     <Compile Include="Interfaces\Authority\IModuleService.cs" />
     <Compile Include="Interfaces\Authority\IServerService.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\Wms\ICompanyService.cs" />
+    <Compile Include="Interfaces\Wms\IDepartmentService.cs" />
+    <Compile Include="Interfaces\Wms\IEmployeeService.cs" />
+    <Compile Include="Interfaces\Wms\IJobService.cs" />
     <Compile Include="Models\Authority\Fun.cs" />
     <Compile Include="Models\Authority\Menu.cs" />
     <Compile Include="Models\Authority\Tree.cs" />
@@ -78,14 +82,15 @@
     </Compile>
     <Compile Include="Service\Authority\ServerService.cs" />
     <Compile Include="Service\ServiceBase.cs" />
+    <Compile Include="Service\Wms\CompanyService.cs" />
+    <Compile Include="Service\Wms\DepartmentService.cs" />
+    <Compile Include="Service\Wms\EmployeeService.cs" />
+    <Compile Include="Service\Wms\JobService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram\ClassDiagramService.cd" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\Wms\" />
-    <Folder Include="Service\Wms\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\THOK.Authority.Common\THOK.Common.csproj">
       <Project>{2F9C4207-F8A0-4E55-A2CB-3514ADC0A437}</Project>

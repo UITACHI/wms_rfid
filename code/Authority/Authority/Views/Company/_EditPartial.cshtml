@@ -2,22 +2,23 @@
     function editClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
+            url = '/Company/Edit/';
             $('#dlg').dialog('open').dialog('setTitle', '编辑');
-            $('#fm').form('load', row);
-            $('#fm .easyui-validatebox').validatebox({
+            $('#companyfm').form('load', row);
+            $('#companyfm .easyui-validatebox').validatebox({
                 required: true
-            });
-            if (row.Status == '启用') {
-                $('#cc').combo('setValue', true).combo('setText', row.Status);
+            });      
+            if (row.IsActive == '可用') {
+                $('#isActive_com').combo('setValue', 1).combo('setText', row.IsActive);
             } else {
-                $('#cc').combo('setValue', false).combo('setText', row.Status);
+                $('#isActive_com').combo('setValue', 0).combo('setText', row.IsActive);
             }
-            $('form input').removeAttr("disabled");
-            $('form textarea').removeAttr("disabled");
-            $('#cc').combo({
+            $('#isActive_com').combo({
                 hasDownArrow: true
             });
-            url = '/Role/Edit/?RoleID=' + row.RoleID;
+            $('form input').removeAttr("disabled");
+            $('form textarea').removeAttr("disabled");          
+            
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }

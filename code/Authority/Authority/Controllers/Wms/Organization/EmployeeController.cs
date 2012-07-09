@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Practices.Unity;
+using THOK.Authority.Bll.Interfaces.Wms;
+using THOK.WebUtil;
+using THOK.RfidWms.DBModel.Ef.Models.Wms;
 
 namespace Authority.Controllers.Organization
 {
     public class EmployeeController : Controller
     {
+        [Dependency]
+        public IEmployeeService EmployeeService { get; set; }
+
         //
         // GET: /Employee/
 
@@ -24,89 +31,53 @@ namespace Authority.Controllers.Organization
         }
 
         //
-        // GET: /Employee/Details/5
+        // GET: /Department/Details/
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int page, int rows, FormCollection collection)
         {
-            return View();
+            string EmployeeCode = collection["EmployeeCode"] ?? "";
+            string EmployeeName = collection["EmployeeName"] ?? "";
+            string DepartmentID = collection["DepartmentID"] ?? "";
+            string JobID = collection["JobID"] ?? "";
+            string Status = collection["Status"] ?? "";
+            string IsActive = collection["IsActive"] ?? "";
+            var systems = EmployeeService.GetDetails(page, rows, EmployeeCode, EmployeeName, DepartmentID, JobID, Status, IsActive);
+            return Json(systems, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
-        // GET: /Employee/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        } 
 
         //
-        // POST: /Employee/Create
+        // POST: /Department/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Employee employee)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        
-        //
-        // GET: /Employee/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
+            bool bResult = EmployeeService.Add(employee);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+
         //
-        // POST: /Employee/Edit/5
+        // POST: /Department/Edit/5
+
+        public ActionResult Edit(Employee employee)
+        {
+            bool bResult = EmployeeService.Save(employee);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+
+        //
+        // POST: /Department/Delete/
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Delete(string demployeeId)
         {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Employee/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Employee/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            bool bResult = EmployeeService.Delete(demployeeId);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }
 }

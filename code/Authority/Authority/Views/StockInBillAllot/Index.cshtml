@@ -1,0 +1,26 @@
+﻿<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
+ 
+<div region="center" split="true" border="false">    
+    <table id="details" class="easyui-datagrid"
+        url="/City/Details/" border="false" singleSelect="true"
+        fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
+        <thead>
+            <tr>
+                <th field="CityID" width="80" hidden="true">产品代码</th>
+                <th field="CityName" width="100">产品名称</th>
+                <th field="Description" width="80">产品简称</th>
+                <th field="IsActive" width="80">条形码</th>
+                <th field="A" width="80">助记码</th>
+                <th field="B" width="80">单位名称</th>
+                <th field="C" width="80">件单位</th>
+                <th field="D" width="80">条单位</th>
+                <th field="E" width="80">货位最高存储数量</th>
+                <th field="F" width="80">备注</th>
+            </tr>
+        </thead>
+    </table>
+</div>
