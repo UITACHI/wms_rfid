@@ -134,7 +134,7 @@ namespace THOK.WebUtil
 			                                                ]
 	                                                },{'menuid':'16','iconCls':'icon-sys','menuname':'综合管理',
 		                                                'children':[
-				                                                {'menuid':'161','menuname':'积压产品清单查询','iconCls':'icon-add','url':'/System/'},
+				                                                {'menuid':'161','menuname':'积压产品清单查询','iconCls':'icon-add','url':'/OverStockProductSearch/'},
 				                                                {'menuid':'162','menuname':'入库单查询','iconCls':'icon-users','url':'/StockIntoSearch/'},
 				                                                {'menuid':'163','menuname':'出库单查询','iconCls':'icon-role','url':'/StockOutSearch/'},
 				                                                {'menuid':'164','menuname':'移库单查询','iconCls':'icon-set','url':'/StockMoveSearch/'},	

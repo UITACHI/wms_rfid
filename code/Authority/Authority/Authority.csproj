@@ -93,6 +93,7 @@
     <Compile Include="Controllers\Authority\UserController.cs" />
     <Compile Include="Controllers\Authority\UserPermissionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Wms\ComplexSearch\OverStockProductSearchController.cs" />
     <Compile Include="Controllers\Wms\ComplexSearch\SortOrderSearchController.cs" />
     <Compile Include="Controllers\Wms\ComplexSearch\StockCheckSearchController.cs" />
     <Compile Include="Controllers\Wms\ComplexSearch\StockDifferSearchController.cs" />
@@ -750,6 +751,8 @@
     <Content Include="Views\StockDifferSearch\_SearchPartial.cshtml" />
     <Content Include="Views\SortOrderSearch\Index.cshtml" />
     <Content Include="Views\SortOrderSearch\_SearchPartial.cshtml" />
+    <Content Include="Views\OverStockProductSearch\Index.cshtml" />
+    <Content Include="Views\OverStockProductSearch\_SearchPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
