@@ -759,6 +759,19 @@
     <Content Include="Views\StockDifferSearch\_SearchPartial.cshtml" />
     <Content Include="Views\SortOrderSearch\Index.cshtml" />
     <Content Include="Views\SortOrderSearch\_SearchPartial.cshtml" />
+    <Content Include="Views\MovePositionBillType\_AddPartial.cshtml" />
+    <Content Include="Views\StockInBillType\_AddPartial.cshtml" />
+    <Content Include="Views\StockOutBillType\_AddPartial.cshtml" />
+    <Content Include="Views\MovePositionBillType\_SearchPartial.cshtml" />
+    <Content Include="Views\StockInBillType\_SearchPartial.cshtml" />
+    <Content Include="Views\StockOutBillType\_SearchPartial.cshtml" />
+    <Content Include="Views\MovePositionBillType\_EditPartial.cshtml" />
+    <Content Include="Views\MovePositionBillType\_DeletePartial.cshtml" />
+    <Content Include="Views\StockInBillType\_DeletePartial.cshtml" />
+    <Content Include="Views\StockOutBillType\_DeletePartial.cshtml" />
+    <Content Include="Views\StockInBillType\_EditPartial.cshtml" />
+    <Content Include="Views\StockOutBillType\_EditPartial.cshtml" />
+    <Content Include="Views\Product\_AddPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
