@@ -25,10 +25,10 @@ namespace THOK.Authority.Bll.Service.Wms
         public object GetDetails(int page, int rows, string JobCode, string JobName, string IsActive)
         {
             IQueryable<Job> jobQuery = JobRepository.GetQueryable();
-            var job = jobQuery.Where(j => j.JobCode.Contains(JobCode) && j.JobName.Contains(JobName)).OrderBy(j => j.JobCode).Select(j => new { j.ID, j.JobCode, j.JobName, j.Description, IsActive = j.IsActive == "1" ? "可用" : "不可用", j.UpdateTime });
+            var job = jobQuery.Where(j => j.JobCode.Contains(JobCode) && j.JobName.Contains(JobName)).OrderBy(j => j.JobCode).AsEnumerable().Select(j => new { j.ID, j.JobCode, j.JobName, j.Description, IsActive = j.IsActive == "1" ? "可用" : "不可用", UpdateTime = j.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             if (!IsActive.Equals(""))
             {
-                job = jobQuery.Where(j => j.JobCode.Contains(JobCode) && j.JobName.Contains(JobName) && j.IsActive.Contains(IsActive)).OrderBy(j => j.JobCode).Select(j => new { j.ID, j.JobCode, j.JobName, j.Description, IsActive = j.IsActive == "1" ? "可用" : "不可用", j.UpdateTime });
+                job = jobQuery.Where(j => j.JobCode.Contains(JobCode) && j.JobName.Contains(JobName) && j.IsActive.Contains(IsActive)).OrderBy(j => j.JobCode).AsEnumerable().Select(j => new { j.ID, j.JobCode, j.JobName, j.Description, IsActive = j.IsActive == "1" ? "可用" : "不可用", UpdateTime = j.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             }
             int total = job.Count();
             job = job.Skip((page - 1) * rows).Take(rows);
