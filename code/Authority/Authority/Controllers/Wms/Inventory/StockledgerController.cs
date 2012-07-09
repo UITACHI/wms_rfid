@@ -18,6 +18,5 @@ namespace Authority.Controllers.Wms.Inventory
             ViewBag.hasHelp = true;
             return View();
         }
-
     }
 }
