@@ -1,0 +1,74 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#status').combo({
+            editable: false,
+            panelHeight: 45
+        });
+    })
+
+    function searchClick() {
+        $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+    };
+
+    function select() {
+        var queryParams = $('#details').datagrid('options').queryParams;
+        queryParams.SystemName = $('#systemname').val();
+        queryParams.Description = $('#description').val();
+        queryParams.Status = $('#status').val();
+        $('#details').datagrid('options').queryParams = queryParams;
+        $('#details').datagrid({
+            pageNumber: 1,
+            pageSize: 10
+        });
+        $("#details").datagrid('reload');
+        $('#dlg-search').dialog('close');
+    }
+
+</script>
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width: 300px; height: 240px;
+    padding: 2px 2px" closed="true" buttons="#dlg-buttons-search">
+    <div class="easyui-layout" fit="true">
+        <div region="center" border="false" style="padding: 10px 10px; background: #fff;
+            border: 1px solid #ccc;">
+            <table width="250">
+                <tr>
+                    <td width="60">
+                        损益单号:
+                    </td>
+                    <td width="168">
+                        <input name="sunyidanhao" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="80">
+                        来源盘点单号:
+                    </td>
+                    <td width="168">
+                        <input name="pandianhao" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="60">
+                        制单日期:
+                    </td>
+                    <td width="168">
+                        <input name="zhidianriqi" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        操作员:
+                    </td>
+                    <td>
+                        <input name="caozuoyuan" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons-search">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="select()">查询</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">
+        取消</a>
+</div>

@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Practices.Unity;
+using THOK.Authority.Bll.Interfaces.Wms;
+using THOK.WebUtil;
+using THOK.RfidWms.DBModel.Ef.Models.Wms;
 
 namespace Authority.Controllers.Organization
 {
     public class CompanyController : Controller
     {
+        [Dependency]
+        public ICompanyService CompanyService { get; set; }
         //
         // GET: /Company/
 
@@ -24,89 +30,48 @@ namespace Authority.Controllers.Organization
         }
 
         //
-        // GET: /Company/Details/5
+        // GET: /Company/Details/
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int page, int rows, FormCollection collection)
         {
-            return View();
+            string CompanyCode = collection["CompanyCode"] ?? "";
+            string CompanyName = collection["CompanyName"] ?? "";
+            string CompanyType = collection["CompanyType"] ?? "";
+            string Status = collection["Status"] ?? "";
+            var systems = CompanyService.GetDetails(page, rows, CompanyCode, CompanyName, CompanyType, Status);
+            return Json(systems, "text", JsonRequestBehavior.AllowGet);
         }
-
-        //
-        // GET: /Company/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        } 
 
         //
         // POST: /Company/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Company company)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            bool bResult = CompanyService.Add(company);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
         
         //
-        // GET: /Company/Edit/5
- 
-        public ActionResult Edit(int id)
+        // GET: /Company/Edit/
+
+        public ActionResult Edit(Company company)
         {
-            return View();
+            bool bResult = CompanyService.Save(company);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
-        // POST: /Company/Edit/5
+        // POST: /Company/Delete/
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Delete(string companyID)
         {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Company/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Company/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            bool bResult = CompanyService.Delete(companyID);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }
 }

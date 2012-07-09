@@ -34,7 +34,9 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             this.Property(t => t.ID).HasColumnName(ColumnMap.Value.To("DepartmentID"));
             this.Property(t => t.DepartmentCode).HasColumnName(ColumnMap.Value.To("DepartmentCode"));
             this.Property(t => t.DepartmentName).HasColumnName(ColumnMap.Value.To("DepartmentName"));
-            this.Property(t => t.DepartmentLeaderID).HasColumnName(ColumnMap.Value.To("DepartmentLeaderID"));
+            this.Property(t => t.DepartmentLeaderID)
+                .HasColumnName(ColumnMap.Value.To("DepartmentLeaderID"))
+                .IsOptional();
             this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
             this.Property(t => t.CompanyID).HasColumnName(ColumnMap.Value.To("CompanyID"));
             this.Property(t => t.ParentDepartmentID).HasColumnName(ColumnMap.Value.To("ParentDepartmentID"));
@@ -43,7 +45,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
             // Relationships
-            this.HasRequired(t => t.DepartmentLeader)
+            this.HasOptional(t => t.DepartmentLeader)
                 .WithMany(t => t.LeadDepartments)
                 .HasForeignKey(d => d.DepartmentLeaderID)
                 .WillCascadeOnDelete(false);

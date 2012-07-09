@@ -16,7 +16,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
         public Guid ID { get; set; }
         public string DepartmentCode { get; set; }
         public string DepartmentName { get; set; }
-        public Guid DepartmentLeaderID { get; set; }
+        public Guid? DepartmentLeaderID { get; set; }
         public string Description { get; set; }
         public Guid CompanyID { get; set; }
         public Guid ParentDepartmentID { get; set; }

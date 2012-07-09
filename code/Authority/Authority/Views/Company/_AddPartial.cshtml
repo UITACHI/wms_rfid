@@ -1,17 +1,25 @@
 ﻿<script type="text/javascript">
     var url;
     $(function () {
-        $('#cc').combo({
+        $('#Status').combo({
             required: true,
             editable: false,
-            panelHeight: 45
+            panelHeight: 45,
+            panelWidth: 130
         });
+        $('#CompanyType').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 130
+        });
+        
     })
 
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
-        $('#fm').form('clear');
-        $('#fm .easyui-validatebox').validatebox({
+        $('#companyfm').form('clear');
+        $('#companyfm .easyui-validatebox').validatebox({
             required: true
         });
         $('form input').removeAttr("disabled");
@@ -19,11 +27,11 @@
         $('#cc').combo({
             hasDownArrow: true
         });
-        url = '/Role/Create/';
+        url = '/Company/Create/';
     };
 
     function save() {
-        $('#fm').form('submit', {
+        $('#companyfm').form('submit', {
             url: url,
             onSubmit: function () {
                 return $(this).form('validate');
@@ -48,29 +56,54 @@
         });
     }
 </script>
-
-    <div id="dlg" class="easyui-dialog" modal="true" 
-        style="width:300px;height:210px;padding:2px 2px"
-        closed="true" buttons="#dlg-buttons">
+    <div id="dlg" class="easyui-dialog" modal="true" style="width:560px;height:330px;padding:2px 2px"   closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
-	            <form id="fm" method="post" novalidate>
-                    <table width="250">
+	            <form id="companyfm" method="post">
+                    <table width="520">
                       <tr>
-                        <td width="60">公司名称</td>
-                        <td width="168"><input name="RoleName" class="easyui-validatebox" required="true"></td>
+                        <td width="60">公司编码:</td>
+                        <td width="168"><input name="CompanyCode" class="easyui-validatebox" required="true"/>
+                        <input name="ID"  style="display:none" /></td>
+                        <td width="60">公司名称：</td>
+                        <td width="168"><input name="CompanyName" class="easyui-validatebox" required="true"/></td>
+                      </tr>
+                        <tr>
+                        <td width="60">上级名称:</td>
+                        <td width="168"><input name="ParentCompanyID" type="text" ></td>
+                        <td width="60">国家编码：</td>
+                        <td width="168"><input name="UniformCode" class="easyui-validatebox" required="true"/></td>
                       </tr>
                       <tr>
-                        <td>描述:</td>
-                        <td><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
+                        <td width="60">仓库面积:</td>
+                        <td width="168"><input name="WarehouseSpace" class="easyui-validatebox" required="true"/></td>
+                        <td width="60">仓库个数：</td>
+                        <td width="168"><input name="WarehouseCount" class="easyui-validatebox" required="true"/></td>
                       </tr>
                       <tr>
-                        <td>状态:</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width: 50px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
+                        <td width="60">仓库容量:</td>
+                        <td width="168"><input name="WarehouseCapacity" class="easyui-validatebox" required="true"/></td>
+                        <td width="60">分拣线数：</td>
+                        <td width="168"><input name="SortingCount" class="easyui-validatebox" required="true"/></td>
+                      </tr>
+                      <tr>
+                        <td width="60">公司类型：</td>
+                        <td width="168">
+                        <select id="CompanyType" name="CompanyType" class="easyui-combobox" required="true" style="width: 130px">
+		                        <option value="1">配送中心</option>
+		                        <option value="2">市公司</option>
+                                <option value="3">县公司</option>
+	                        </select></td>
+                            <td>状态:</td>
+                        <td><select id="Status" name="IsActive" class="easyui-combobox" required="true" style="width: 130px">
+		                        <option value="1">可用</option>
+		                        <option value="0">不可用</option>
 	                        </select>
 	                    </td>
+                      </tr>
+                      <tr>
+                        <td width="60">描述:</td>
+                        <td width="168" colspan="3" ><textarea name="Description" style="width: 380px; height: 60px"></textarea> </td>
                       </tr>
                     </table>
 	            </form>
