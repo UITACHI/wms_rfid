@@ -60,7 +60,7 @@ namespace THOK.Authority.Bll.Service.Wms
             emp.Tel = employee.Tel;
             emp.Status = employee.Status;
             emp.IsActive = employee.IsActive;
-            emp.UpdateTime = employee.UpdateTime;
+            emp.UpdateTime = DateTime.Now;
 
             EmployeeRepository.Add(emp);
             EmployeeRepository.SaveChanges();
@@ -96,7 +96,7 @@ namespace THOK.Authority.Bll.Service.Wms
             emp.Tel = employee.Tel;
             emp.Status = employee.Status;
             emp.IsActive = employee.IsActive;
-            emp.UpdateTime = employee.UpdateTime;
+            emp.UpdateTime = DateTime.Now;
 
             EmployeeRepository.SaveChanges();
             return true;

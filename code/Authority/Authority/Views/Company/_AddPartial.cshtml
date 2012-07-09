@@ -4,12 +4,14 @@
         $('#Status').combo({
             required: true,
             editable: false,
-            panelHeight: 45
+            panelHeight: 45,
+            panelWidth: 130
         });
         $('#CompanyType').combo({
             required: true,
             editable: false,
-            panelHeight: 45
+            panelHeight: 45,
+            panelWidth: 130
         });
         
     })
@@ -54,7 +56,7 @@
         });
     }
 </script>
-    <div id="dlg" class="easyui-dialog" modal="true" style="width:560px;height:340px;padding:2px 2px"   closed="true" buttons="#dlg-buttons">
+    <div id="dlg" class="easyui-dialog" modal="true" style="width:560px;height:330px;padding:2px 2px"   closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="companyfm" method="post">
@@ -87,13 +89,13 @@
                       <tr>
                         <td width="60">公司类型：</td>
                         <td width="168">
-                        <select id="CompanyType" name="CompanyType" class="easyui-combobox" required="true" style="width: 80px">
+                        <select id="CompanyType" name="CompanyType" class="easyui-combobox" required="true" style="width: 130px">
 		                        <option value="1">配送中心</option>
 		                        <option value="2">市公司</option>
                                 <option value="3">县公司</option>
 	                        </select></td>
                             <td>状态:</td>
-                        <td><select id="Status" name="IsActive" class="easyui-combobox" required="true" style="width: 80px">
+                        <td><select id="Status" name="IsActive" class="easyui-combobox" required="true" style="width: 130px">
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>

@@ -1,10 +1,11 @@
 ﻿<script type="text/javascript">
     var url;
     $(function () {
-        $('#Status').combo({
+        $('#IsActive').combo({
             required: true,
             editable: false,
-            panelHeight: 45
+            panelHeight: 45,
+            panelWidth: 130
         });
     })
 
@@ -16,10 +17,7 @@
         $('#fm').form('clear');
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
-        $('#c1').combo({
-            hasDownArrow: true
-        });
-        $('#c2').combo({
+        $('#IsActive').combo({
             hasDownArrow: true
         });
         url = '/Job/Create/';
@@ -52,7 +50,7 @@
     }
 </script>
 
-<div id="dlg" class="easyui-dialog" modal="true"  style="width:360px;height:280px;padding:2px 2px"  closed="true" buttons="#dlg-buttons">
+<div id="dlg" class="easyui-dialog" modal="true"  style="width:410px;height:280px;padding:2px 2px"  closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
@@ -69,7 +67,7 @@
                       </tr>                      
                       <tr>
                       <td width="60">是否可用：</td>
-                        <td><select id="Status" name="IsActive" class="easyui-combobox" required="true" style="width: 80px">
+                        <td><select id="IsActive" name="IsActive" class="easyui-combobox" required="true" style="width: 130px">
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>
