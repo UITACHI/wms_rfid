@@ -8,7 +8,7 @@ namespace THOK.Authority.Bll.Interfaces.Wms
 {
     public interface IEmployeeService : IService<Employee>
     {
-        object GetDetails(int page, int rows, string EmployeeCode, string EmployeeName, string DepartmentID, string Status, string IsActive);
+        object GetDetails(int page, int rows, string EmployeeCode, string EmployeeName, string DepartmentID, string JobID, string Status, string IsActive);
 
         bool Add(Employee employee);
 

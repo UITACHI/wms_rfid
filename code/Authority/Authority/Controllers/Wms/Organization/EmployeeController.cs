@@ -38,9 +38,10 @@ namespace Authority.Controllers.Organization
             string EmployeeCode = collection["EmployeeCode"] ?? "";
             string EmployeeName = collection["EmployeeName"] ?? "";
             string DepartmentID = collection["DepartmentID"] ?? "";
+            string JobID = collection["JobID"] ?? "";
             string Status = collection["Status"] ?? "";
             string IsActive = collection["IsActive"] ?? "";
-            var systems = EmployeeService.GetDetails(page, rows, EmployeeCode, EmployeeName, DepartmentID, Status, IsActive);
+            var systems = EmployeeService.GetDetails(page, rows, EmployeeCode, EmployeeName, DepartmentID, JobID, Status, IsActive);
             return Json(systems, "text", JsonRequestBehavior.AllowGet);
         }
 

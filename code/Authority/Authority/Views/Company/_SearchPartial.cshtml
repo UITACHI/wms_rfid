@@ -1,11 +1,11 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#IsActive').combo({
+        $('#isActive').combo({
             editable: false,
             panelHeight: 65,
             panelWidth: 130
         });
-        $('#CompanyType').combo({
+        $('#companyType').combo({
             editable: false,
             panelHeight: 65,
             panelWidth: 130
@@ -14,14 +14,15 @@
 
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+        $("input[type=text]").attr("value", "");
     };
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.CompanyCode = $('#CompanyCode').val();
         queryParams.CompanyName = $('#CompanyName').val();
-        queryParams.CompanyType = $('#CompanyType').val();
-        queryParams.Status = $('#IsActive').val();
+        queryParams.CompanyType = $('#companyType').combo('getValue');
+        queryParams.Status = $('#isActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -43,7 +44,7 @@
                         公司编码:
                     </td>
                     <td width="168">
-                        <input id="CompanyCode" class="easyui-validatebox" required="true">
+                        <input id="CompanyCode" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -51,7 +52,7 @@
                         公司名称：
                     </td>
                     <td width="168">
-                        <input id="CompanyName" class="easyui-validatebox" required="true">
+                        <input id="CompanyName" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -59,7 +60,8 @@
                         公司类型：
                     </td>
                     <td width="168">
-                        <select id="CompanyType" name="CompanyType" class="easyui-combobox" style="width: 130px">
+                        <select id="companyType" name="CompanyType" class="easyui-combobox" style="width: 130px">
+                                <option value="">请选择</option>
 		                        <option value="1">配送中心</option>
 		                        <option value="2">市公司</option>
                                 <option value="3">县公司</option>
@@ -71,7 +73,8 @@
                         状态:
                     </td>
                     <td>
-                        <select id="IsActive" name="IsActive" class="easyui-combobox" style="width: 130px">
+                        <select id="isActive" name="IsActive" class="easyui-combobox" style="width: 130px">
+                            <option value="">请选择</option>
                             <option value="1">可用</option>
                             <option value="0">不可用</option>
                         </select>

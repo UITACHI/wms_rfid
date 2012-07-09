@@ -4,19 +4,18 @@ function editClick() {
     if (row) {
         url = '/Job/Edit/';
         $('#dlg').dialog('open').dialog('setTitle', '编辑');
+        $('#fm').form('load', row);
         $('#fm .easyui-validatebox').validatebox({
             required: true
         });
-        $('#IsActive').combo({
-            hasDownArrow: true
-        });   
-        if (row.IsAdmin == '可用') {
-            $('#IsActive').combo('setValue', 1).combo('setText', row.IsAdmin);
+        if (row.IsActive == '可用') {
+            $('#isActive_job').combo('setValue', 1).combo('setText', row.IsActive);
         } else {
-            $('#IsActive').combo('setValue', 0).combo('setText', row.IsAdmin);
+            $('#isActive_job').combo('setValue', 0).combo('setText', row.IsActive);
         }
-        $('#fm').form('clear');
-        $('#fm').form('load', row);
+        $('#isActive_job').combo({
+            hasDownArrow: true
+        });
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
     } else {

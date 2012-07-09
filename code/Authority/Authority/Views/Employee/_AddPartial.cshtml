@@ -7,7 +7,7 @@
             panelHeight: 85,
             panelWidth: 130
         });
-        $('#IsActive').combo({
+        $('#isActive_emp').combo({
             required: true,
             editable: false,
             panelHeight: 45,
@@ -57,7 +57,7 @@
         });
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
-        $('#cc').combo({
+        $('#isActive_emp').combo({
             hasDownArrow: true
         });
         url = '/Employee/Create/';
@@ -90,23 +90,26 @@
     }
 </script>
 
-    <div id="dlg" class="easyui-dialog" modal="true"  style="width:560px;height:320px;padding:2px 2px"
-        closed="true" buttons="#dlg-buttons">
+    <div id="dlg" class="easyui-dialog" modal="true"  style="width:560px;height:320px;padding:2px 2px" closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
                     <table width="520">
                       <tr>
-                        <td width="60" align="right">员工姓名：</td>
-                        <td width="168"><input name="EmployeeCode" class="easyui-validatebox" required="true"/></td>
                         <td width="60" align="right">员工编码：</td>
+                        <td width="168"><input name="EmployeeCode" class="easyui-validatebox" required="true"/><input name="ID" style="display:none"/></td>
+                        <td width="60" align="right">员工姓名：</td>
                         <td width="168"><input name="EmployeeName" class="easyui-validatebox" required="true"/></td>
                       </tr>
                       <tr>
                        <td  align="right">性别：</td>
-                        <td ><input name="Sex" class="easyui-validatebox" /></td>
+                        <td ><select id="sex" name="Sex" class="easyui-combobox" style="width: 130px" class="easyui-validatebox" required="true">
+		                        <option value="女">女</option>
+		                        <option value="男">男</option>
+		                        <option value="保密">保密</option>
+	                        </select></td>
                         <td align="right">电话：</td>
-                        <td ><input name="Tel" class="easyui-validatebox" /></td>
+                        <td ><input name="Tel" class="easyui-numberbox"  type="text" required="true" missingmessage="请输入显示顺序（必须为数字）"/></td>
                       </tr>
                       <tr>
                         <td align="right">状态：</td>
@@ -122,7 +125,7 @@
 	                        </select>
 	                    </td>
                         <td align="right">是否可用：</td>
-                        <td><select id="IsActive" name="IsActive" class="easyui-combobox" style="width: 130px">
+                        <td><select id="isActive_emp" name="IsActive" class="easyui-combobox" style="width: 130px">
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>

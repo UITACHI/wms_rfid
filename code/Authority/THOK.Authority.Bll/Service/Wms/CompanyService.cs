@@ -26,7 +26,7 @@ namespace THOK.Authority.Bll.Service.Wms
         {
             IQueryable<Company> companyQuery = CompanyRepository.GetQueryable();
             var company = companyQuery.Where(c => c.CompanyCode.Contains(CompanyCode) && c.CompanyName.Contains(CompanyName) && c.CompanyType.Contains(CompanyType))
-                .OrderBy(c => c.CompanyCode)
+                .OrderBy(c => c.CompanyCode).AsEnumerable()
                 .Select(c => new
                 {
                     c.ID,
@@ -35,14 +35,14 @@ namespace THOK.Authority.Bll.Service.Wms
                     c.Description,
                     c.CompanyType,
                     c.WarehouseCapacity,c.WarehouseCount,c.WarehouseSpace,c.SortingCount,ParentCompanyName=c.ParentCompany.CompanyName,c.ParentCompanyID,
-                    Status = c.IsActive == "1" ? "可用" : "不可用",
-                    c.UpdateTime
+                    IsActive = c.IsActive == "1" ? "可用" : "不可用",
+                    UpdateTime = c.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
                 });
             if (!IsActive.Equals(""))
             {
                 string bStatus = IsActive == "可用" ? "1" : "0";
                 company = companyQuery.Where(c => c.CompanyCode.Contains(CompanyCode) && c.CompanyName.Contains(CompanyName) && c.CompanyType.Contains(CompanyType) && c.IsActive.Contains(bStatus))
-                .OrderBy(c => c.CompanyCode)
+                .OrderBy(c => c.CompanyCode).AsEnumerable()
                 .Select(c => new
                 {
                     c.ID,
@@ -56,8 +56,8 @@ namespace THOK.Authority.Bll.Service.Wms
                     c.SortingCount,
                     ParentCompanyName = c.ParentCompany.CompanyName,
                     c.ParentCompanyID,
-                    Status = c.IsActive == "1" ? "可用" : "不可用",
-                    c.UpdateTime
+                    IsActive = c.IsActive == "1" ? "可用" : "不可用",
+                    UpdateTime=c.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
                 });
             }
             int total = company.Count();

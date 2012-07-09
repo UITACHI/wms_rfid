@@ -185,6 +185,9 @@
         if (!$('#tabs').tabs('exists', subtitle)) {
             $('#tabs').tabs('add', {
                 title: subtitle,
+                fit: true,
+                width: 'auto',
+                height:'auto',
                 content: '',
                 closable: closable,
                 icon: icon
@@ -283,6 +286,13 @@
                     }
                 })
             }
+        })
+
+        //当前全屏
+        $('#mm-tabFullScreen').click(function (e) {
+            $('#tabs').tabs('getSelected').fullScreen();
+            $('.fullScreen').css({ width: 'auto',height: 'auto' });
+            e.preventDefault();
         })
 
         //关闭当前

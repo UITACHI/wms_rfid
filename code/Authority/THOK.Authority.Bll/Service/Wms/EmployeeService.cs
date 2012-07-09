@@ -27,19 +27,27 @@ namespace THOK.Authority.Bll.Service.Wms
 
         #region IEmployeeService 成员
 
-        public object GetDetails(int page, int rows, string EmployeeCode, string EmployeeName, string DepartmentID, string Status, string IsActive)
+        public object GetDetails(int page, int rows, string EmployeeCode, string EmployeeName, string DepartmentID,string JobID, string Status, string IsActive)
         {
             IQueryable<Employee> employeeQuery = EmployeeRepository.GetQueryable();
             var employee = employeeQuery.Where(e => e.EmployeeCode.Contains(EmployeeCode) && e.EmployeeName.Contains(EmployeeName)
-                             && e.Status.Contains(Status))
-                            .OrderBy(e => e.EmployeeCode).Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, DepartmentID = e.Department.ID, DepartmentName = e.Department.DepartmentName, e.Description, JobID = e.Job.ID, JobName = e.Job.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", e.UpdateTime });
-            if (!DepartmentID.Equals(""))
+                             && e.Status.Contains(Status)&&e.IsActive.Contains(IsActive))
+                             .OrderBy(e => e.EmployeeCode).AsEnumerable().Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, e.DepartmentID, DepartmentName = DepartmentID == null ? string.Empty : e.Department.DepartmentName, e.Description, JobID = e.Job.ID, JobName = e.Job.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            if (!DepartmentID.Equals(string.Empty))
             {
                 Guid departID = new Guid(DepartmentID);
                 employee = employeeQuery.Where(e => e.EmployeeCode.Contains(EmployeeCode) && e.EmployeeName.Contains(EmployeeName)
-                             &&e.DepartmentID==departID && e.Status.Contains(Status))
-                            .OrderBy(e => e.EmployeeCode).Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, DepartmentID = e.Department.ID, DepartmentName = e.Department.DepartmentName, e.Description, JobID = e.Job.ID, JobName = e.Job.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", e.UpdateTime });
+                             && e.DepartmentID == departID && e.Status.Contains(Status) && e.IsActive.Contains(IsActive))
+                            .OrderBy(e => e.EmployeeCode).AsEnumerable().Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, e.DepartmentID, DepartmentName = DepartmentID == null ? string.Empty : e.Department.DepartmentName, e.Description, JobID = e.Job.ID, JobName = e.Job.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             }
+            if (!JobID.Equals(string.Empty))
+            {
+                Guid jobID = new Guid(JobID);
+                employee = employee.Where(e => e.EmployeeCode.Contains(EmployeeCode) && e.EmployeeName.Contains(EmployeeName)
+                             && e.JobID==jobID && e.Status.Contains(Status) && e.IsActive.Contains(IsActive))
+                            .OrderBy(e => e.EmployeeCode).AsEnumerable().Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, e.DepartmentID, DepartmentName = DepartmentID == null ? string.Empty : e.DepartmentName, e.Description, e.JobID, e.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", e.UpdateTime });
+            }
+
             int total = employee.Count();
             employee = employee.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = employee.ToArray() };
@@ -54,7 +62,7 @@ namespace THOK.Authority.Bll.Service.Wms
             emp.EmployeeCode = employee.EmployeeCode;
             emp.EmployeeName = employee.EmployeeName;
             emp.Description = employee.Description;
-            //emp.Department = department;
+            emp.Department = department;
             emp.Job = job;
             emp.Sex = employee.Sex;
             emp.Tel = employee.Tel;

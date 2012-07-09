@@ -3,19 +3,19 @@ function editClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
         url = '/Department/Edit';
+        $('#fm').form('load', row);
         $('#dlg').dialog('open').dialog('setTitle', '编辑');       
         $('#fm .easyui-validatebox').validatebox({
             required: true
         });
-        $('#IsActive').combo({
+        if (row.IsActive == '可用') {
+            $('#isActive_depart').combo('setValue', 1).combo('setText', row.IsActive);
+        } else {
+            $('#isActive_depart').combo('setValue', 0).combo('setText', row.IsActive);
+        }
+        $('#isActive_depart').combo({
             hasDownArrow: true
         });
-        if (row.IsActive == '可用') {
-            $('#IsActive').combo('setValue', true).combo('setText', row.IsActive);
-        } else {
-            $('#IsActive').combo('setValue', false).combo('setText', row.IsActive);
-        }
-        $('#fm').form('load', row);
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");        
     } else {
