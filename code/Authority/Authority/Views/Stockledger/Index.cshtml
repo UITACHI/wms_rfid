@@ -2,7 +2,11 @@
     function formatAction(value, row, index) {
         var e = '<a href="#" onclick="detail()">明细</a> ';
             return e
-    }
+    }
+    function detail() {
+        alert("fgf");
+        $('#mx').dialog('open').dialog('setTitle', '明细');
+    }
 </script>
 
     <div region="center" split="true" border="false">    
@@ -15,9 +19,11 @@
                 <th field="CityName" width="100">产品代码</th>
                 <th field="Description" width="80">产品简称</th>
                 <th field="IsActive" width="80">期出量</th>
-                <th field="detail" width="80" align="center" formatter="formatAction">库存明细</th>
+                <th field="detail" width="80" align="center" formatter="formatAction">库存明细</th>
+
         </thead>
     </table>
   </div>
+   @Html.Partial("_Detail")
 
  

@@ -630,6 +630,7 @@
     <Content Include="Views\Reservoir\_SearchPartial.cshtml" />
     <Content Include="Views\SystemEventLog\Index.cshtml" />
     <Content Include="Views\SystemEventLog\_SearchPartial.cshtml" />
+    <Content Include="Views\Stockledger\_Detail.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
