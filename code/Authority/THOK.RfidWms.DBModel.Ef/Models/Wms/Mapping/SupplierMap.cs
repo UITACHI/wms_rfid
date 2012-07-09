@@ -13,6 +13,32 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             // Primary Key
             this.HasKey(t => t.SupplierCode);
 
+            // Properties
+            this.Property(t => t.SupplierCode)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            this.Property(t => t.UniformCode)
+                .HasMaxLength(20);
+
+            this.Property(t => t.CustomCode)
+                .HasMaxLength(20);
+
+            this.Property(t => t.SupplierName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.ProvinceName)
+                .HasMaxLength(20);
+
+            this.Property(t => t.IsActive)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
+
+            this.Property(t => t.UpdateTime)
+                .IsRequired();
+
             // Table & Column Mappings
             this.Property(t => t.SupplierCode).HasColumnName(ColumnMap.Value.To("SupplierCode"));
             this.Property(t => t.UniformCode).HasColumnName(ColumnMap.Value.To("UniformCode"));
