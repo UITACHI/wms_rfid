@@ -52,14 +52,13 @@
     };
 
     function select() {
-        alert($('#isActive').val());
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.EmployeeCode = $('#EmployeeCode').val();
         queryParams.EmployeeName = $('#EmployeeName').val();
         queryParams.DepartmentID = $('#DepartmentID').val();
         queryParams.JobID = $('#JobID').val();
-        queryParams.Status = $('#Status_Search').val();
-        queryParams.IsActive = $('#isActive').val();
+        queryParams.Status = $('#Status_Search').combo('getValue');
+        queryParams.IsActive = $('#isActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,

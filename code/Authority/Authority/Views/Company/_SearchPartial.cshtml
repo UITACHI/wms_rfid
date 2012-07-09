@@ -19,10 +19,10 @@
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.CompanyCode = $('#CompanyCode').combobox('options');
+        queryParams.CompanyCode = $('#CompanyCode').val();
         queryParams.CompanyName = $('#CompanyName').val();
-        queryParams.CompanyType = $('#companyType').val();
-        queryParams.Status = $('#isActive').val();
+        queryParams.CompanyType = $('#companyType').combo('getValue');
+        queryParams.Status = $('#isActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
