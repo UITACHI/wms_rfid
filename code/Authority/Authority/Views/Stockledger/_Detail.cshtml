@@ -1,9 +1,16 @@
-﻿
-<div id="mx" class="easyui-dialog" modal="true" 
-        style="width:300px;height:210px;padding:2px 2px"
-        closed="true" buttons="#dlg-buttons">
-		
+﻿    <div id="mx" class="easyui-dialog" modal="true" 
+        style="width:800px;height:420px;padding:2px 2px"
+        closed="true">    
+    <table id="details" class="easyui-datagrid"
+        url="/City/Details/" border="false" singleSelect="true"
+        fit="true" fitColumns="true"   pagination="true" rownumbers="true">
+        <thead>
+            <tr>
+                <th field="CityID" width="80">日期</th>
+                <th field="CityName" width="100">产品代码</th>
+                <th field="Description" width="80">产品简称</th>
+                <th field="IsActive" width="80">期出量</th>
 
-
-        dfvvdfvdfvdfvdfvfdvdf
-    </div>
+        </thead>
+    </table>
+  </div>

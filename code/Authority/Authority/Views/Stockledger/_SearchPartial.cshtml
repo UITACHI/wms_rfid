@@ -1,9 +1,16 @@
 ﻿<script type="text/javascript">
     function searchClick() {
         $('#zh-search').dialog('open').dialog('setTitle', '查询');
+
+
     };
 
-
+        $('#xx').combobox({
+            url: '/City/Details/',
+        valueField: 'CityId',
+        textField: 'CityName'
+          });
+
 
 
 
@@ -26,9 +33,9 @@
               <tr style="padding-top:10px;">
                 <td>仓库:</td>
                 <td align="left">      
-		            <select id="isactive" required="true" class="easyui-combobox" style="width: 100px">
-		                <option value="天海">天海</option>
-		                <option value="烟草">烟草</option>
+		            <select id="xx" required="true" class="easyui-combobox"  style="width: 100px">
+@*	                    <option value="天海">天海</option>
+		                <option value="烟草">烟草</option>*@
 	                </select>
 	            </td>
               </tr>
