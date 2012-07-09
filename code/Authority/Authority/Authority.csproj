@@ -153,6 +153,27 @@
     <Compile Include="Security\IFormsAuthenticationService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Authority.dll" />
+    <Content Include="bin\Authority.pdb" />
+    <Content Include="bin\EntityFramework.dll" />
+    <Content Include="bin\EntityFramework.xml" />
+    <Content Include="bin\LitJson.dll" />
+    <Content Include="bin\log4net.dll" />
+    <Content Include="bin\Microsoft.Practices.ServiceLocation.dll" />
+    <Content Include="bin\Microsoft.Practices.Unity.Configuration.dll" />
+    <Content Include="bin\Microsoft.Practices.Unity.dll" />
+    <Content Include="bin\Microsoft.Practices.Unity.Interception.Configuration.dll" />
+    <Content Include="bin\Microsoft.Practices.Unity.Interception.dll" />
+    <Content Include="bin\THOK.Authority.Bll.dll" />
+    <Content Include="bin\THOK.Authority.Bll.pdb" />
+    <Content Include="bin\THOK.Authority.Common.dll" />
+    <Content Include="bin\THOK.Authority.Common.pdb" />
+    <Content Include="bin\THOK.Authority.Dal.dll" />
+    <Content Include="bin\THOK.Authority.Dal.pdb" />
+    <Content Include="bin\THOK.RfidWms.DBModel.Ef.dll" />
+    <Content Include="bin\THOK.RfidWms.DBModel.Ef.pdb" />
+    <Content Include="bin\THOK.WEBUtil.dll" />
+    <Content Include="bin\THOK.WEBUtil.pdb" />
     <Content Include="Content\Images\banner.jpg" />
     <Content Include="Content\Images\login_bg.jpg" />
     <Content Include="Content\Images\noscript.gif" />
@@ -497,6 +518,9 @@
     <Content Include="Content\themes\base\icons\undo.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="obj\Debug\Authority.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\Authority.dll" />
+    <Content Include="obj\Debug\Authority.pdb" />
     <Content Include="Views\Module\_DeletePartial.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -530,6 +554,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
@@ -636,6 +661,10 @@
     <Content Include="Views\Factory\_DeletePartial.cshtml" />
     <Content Include="Views\Factory\_EditPartial.cshtml" />
     <Content Include="Views\Factory\_SearchPartial.cshtml" />
+    <None Include="obj\Debug\build.force" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Debug\ResolveAssemblyReference.cache" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
