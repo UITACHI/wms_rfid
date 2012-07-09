@@ -54,7 +54,7 @@ namespace THOK.Authority.Bll.Service.Wms
             newDepartment.DepartmentCode = department.DepartmentCode;
             newDepartment.DepartmentName = department.DepartmentName;
             newDepartment.ParentDepartment = depart ?? newDepartment;
-            //newDepartment.DepartmentLeader = employee;
+            newDepartment.DepartmentLeader = employee;
             newDepartment.Description = department.Description;
             newDepartment.Company = company;
             newDepartment.UniformCode = department.UniformCode;
