@@ -1,23 +1,23 @@
 ﻿<script type="text/javascript">
     var url;
     $(function () {
-        $('#IsActive').combo({
+        $('#isActive_job').combo({
             required: true,
             editable: false,
             panelHeight: 45,
             panelWidth: 130
         });
-    })
+    });
 
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
+        $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({
             required: true
-        });
-        $('#fm').form('clear');
+        });       
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
-        $('#IsActive').combo({
+        $('#isActive_job').combo({
             hasDownArrow: true
         });
         url = '/Job/Create/';
@@ -50,16 +50,14 @@
     }
 </script>
 
-<div id="dlg" class="easyui-dialog" modal="true"  style="width:410px;height:280px;padding:2px 2px"  closed="true" buttons="#dlg-buttons">
+<div id="dlg" class="easyui-dialog" modal="true"  style="width:360px;height:260px;padding:2px 2px"  closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
-                     <table width="360">
+                     <table width="300">
                       <tr>
                         <td width="60">岗位编码:</td>
-                        <td width="168"><input name="JobCode" class="easyui-validatebox" required="true"/>
-                        <input name="ID"  style="display:none" /></td>
-                        
+                        <td width="168"><input name="JobCode" class="easyui-validatebox" required="true"/><input name="ID"  style="display:none" /></td>
                       </tr>
                         <tr>
                         <td width="60">岗位名称：</td>
@@ -67,7 +65,7 @@
                       </tr>                      
                       <tr>
                       <td width="60">是否可用：</td>
-                        <td><select id="IsActive" name="IsActive" class="easyui-combobox" required="true" style="width: 130px">
+                        <td><select id="isActive_job" name="IsActive" class="easyui-combobox" style="width:130px">
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>

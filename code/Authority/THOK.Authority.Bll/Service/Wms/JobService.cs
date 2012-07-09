@@ -28,8 +28,7 @@ namespace THOK.Authority.Bll.Service.Wms
             var job = jobQuery.Where(j => j.JobCode.Contains(JobCode) && j.JobName.Contains(JobName)).OrderBy(j => j.JobCode).Select(j => new { j.ID, j.JobCode, j.JobName, j.Description, IsActive = j.IsActive == "1" ? "可用" : "不可用", j.UpdateTime });
             if (!IsActive.Equals(""))
             {
-                string bStatus = IsActive == "可用" ? "1" : "0";
-                job = jobQuery.Where(j => j.JobCode.Contains(JobCode) && j.JobName.Contains(JobName) && j.IsActive.Contains(bStatus)).OrderBy(j => j.JobCode).Select(j => new { j.ID, j.JobCode, j.JobName, j.Description, IsActive = j.IsActive == "1" ? "可用" : "不可用", j.UpdateTime });
+                job = jobQuery.Where(j => j.JobCode.Contains(JobCode) && j.JobName.Contains(JobName) && j.IsActive.Contains(IsActive)).OrderBy(j => j.JobCode).Select(j => new { j.ID, j.JobCode, j.JobName, j.Description, IsActive = j.IsActive == "1" ? "可用" : "不可用", j.UpdateTime });
             }
             int total = job.Count();
             job = job.Skip((page - 1) * rows).Take(rows);

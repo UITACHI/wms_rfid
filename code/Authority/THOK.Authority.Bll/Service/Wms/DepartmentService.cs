@@ -31,13 +31,13 @@ namespace THOK.Authority.Bll.Service.Wms
         {
             IQueryable<Department> departQuery = DepartmentRepository.GetQueryable();
             var department = departQuery.Where(d => d.DepartmentCode.Contains(DepartmentCode) && d.DepartmentName.Contains(DepartmentName))
-                .OrderBy(d => d.DepartmentCode).Select(d => new { d.ID, d.DepartmentCode, d.DepartmentName, EmployeeID = d.DepartmentLeader.ID, d.DepartmentLeader.EmployeeName, d.Description, companyID = d.Company.ID, d.Company.CompanyName, ParentDepartmentID = d.DepartmentLeader.ID, ParentDepartmentName = d.ParentDepartment.DepartmentName, d.IsActive, d.UpdateTime });
+                .OrderBy(d => d.DepartmentCode).Select(d => new { d.ID, d.DepartmentCode, d.DepartmentName, d.Description, d.DepartmentLeaderID, EmployeeName = d.DepartmentLeaderID == null ? string.Empty : d.DepartmentLeader.EmployeeName, companyID = d.Company.ID, d.Company.CompanyName, ParentDepartmentID = d.ParentDepartmentID, ParentDepartmentName = d.ParentDepartment.DepartmentName, IsActive = d.IsActive == "1" ? "可用" : "不可用", d.UpdateTime });
             if (!CompanyID.Equals("") || !DepartmentLeaderID.Equals(""))
             {
                 var compId = new Guid(CompanyID);
                 var empId = new Guid(DepartmentLeaderID);
-                department = departQuery.Where(d => d.DepartmentCode.Contains(DepartmentCode) && d.DepartmentName.Contains(DepartmentName)&& d.Company.ID==compId && d.DepartmentLeader.ID==empId)
-                .OrderBy(d => d.DepartmentCode).Select(d => new { d.ID, d.DepartmentCode, d.DepartmentName, EmployeeID = d.DepartmentLeader.ID, d.DepartmentLeader.EmployeeName, d.Description, companyID = d.Company.ID, d.Company.CompanyName, ParentDepartmentID = d.DepartmentLeader.ID, ParentDepartmentName = d.ParentDepartment.DepartmentName, d.IsActive, d.UpdateTime });
+                department = departQuery.Where(d => d.DepartmentCode.Contains(DepartmentCode) && d.DepartmentName.Contains(DepartmentName) && d.Company.ID == compId && d.DepartmentLeader.ID == empId)
+                .OrderBy(d => d.DepartmentCode).Select(d => new { d.ID, d.DepartmentCode, d.DepartmentName, d.Description, d.DepartmentLeaderID, EmployeeName = d.DepartmentLeaderID == null ? string.Empty : d.DepartmentLeader.EmployeeName, companyID = d.Company.ID, d.Company.CompanyName, ParentDepartmentID = d.ParentDepartmentID, ParentDepartmentName = d.ParentDepartment.DepartmentName, IsActive = d.IsActive == "1" ? "可用" : "不可用", d.UpdateTime });
             }
             int total = department.Count();
             department = department.Skip((page - 1) * rows).Take(rows);
@@ -73,7 +73,7 @@ namespace THOK.Authority.Bll.Service.Wms
                 .FirstOrDefault(c => c.ID == deparId);
             if (departemnt != null)
             {
-                //Del(DepartmentRepository, departemnt.Companies);
+                Del(DepartmentRepository, departemnt.Departments);
                 DepartmentRepository.Delete(departemnt);
                 DepartmentRepository.SaveChanges();
             }

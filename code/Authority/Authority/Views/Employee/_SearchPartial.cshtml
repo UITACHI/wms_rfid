@@ -5,7 +5,7 @@
             panelHeight: 65,
             panelWidth: 130
         });
-        $('#IsActive_Search').combo({
+        $('#isActive').combo({
             editable: false,
             panelHeight: 45,
             panelWidth: 130
@@ -48,13 +48,18 @@
 
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+        $("input[type=text]").attr("value", "");
     };
 
     function select() {
+        alert($('#isActive').val());
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.SystemName = $('#systemname').val();
-        queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.EmployeeCode = $('#EmployeeCode').val();
+        queryParams.EmployeeName = $('#EmployeeName').val();
+        queryParams.DepartmentID = $('#DepartmentID').val();
+        queryParams.JobID = $('#JobID').val();
+        queryParams.Status = $('#Status_Search').val();
+        queryParams.IsActive = $('#isActive').val();
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -62,6 +67,8 @@
         });
         $("#details").datagrid('reload');
         $('#dlg-search').dialog('close');
+        $('#Status_Search').combobox('clear');
+        $('#isActive').combobox('clear'); 
     }
 
 </script>
@@ -76,7 +83,7 @@
                         员工编码：
                     </td>
                     <td width="168" align="left">
-                        <input id="EmployeeCode">
+                        <input id="EmployeeCode" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -84,7 +91,7 @@
                         员工名称：
                     </td>
                     <td width="168" align="left">
-                        <input id="EmployeeName">
+                        <input id="EmployeeName" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -92,7 +99,7 @@
                         部门名称：
                     </td>
                     <td width="168" align="left">
-                        <input id="DepartmentID" />
+                        <input id="DepartmentID" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -100,7 +107,7 @@
                         岗位名称：
                     </td>
                     <td width="168" align="left">
-                        <input id="JobID" />
+                        <input id="JobID" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -109,6 +116,7 @@
                     </td>
                     <td>
                         <select id="Status_Search" name="Status" class="easyui-combobox" style="width: 130px">
+                            <option value="">请选择</option>                       
                             <option value="3701">在职</option>
                             <option value="3702">离职</option>
                             <option value="3703">退休</option>
@@ -125,7 +133,8 @@
                         是否可用：
                     </td>
                     <td>
-                        <select id="IsActive_Search" name="IsActive" class="easyui-combobox" style="width: 130px">
+                        <select id="isActive" name="IsActive" class="easyui-combobox" style="width: 130px">
+                            <option value="">请选择</option>
                             <option value="1">可用</option>
                             <option value="0">不可用</option>
                         </select>

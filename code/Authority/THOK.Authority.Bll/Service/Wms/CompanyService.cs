@@ -35,7 +35,7 @@ namespace THOK.Authority.Bll.Service.Wms
                     c.Description,
                     c.CompanyType,
                     c.WarehouseCapacity,c.WarehouseCount,c.WarehouseSpace,c.SortingCount,ParentCompanyName=c.ParentCompany.CompanyName,c.ParentCompanyID,
-                    Status = c.IsActive == "1" ? "可用" : "不可用",
+                    IsActive = c.IsActive == "1" ? "可用" : "不可用",
                     c.UpdateTime
                 });
             if (!IsActive.Equals(""))
@@ -56,7 +56,7 @@ namespace THOK.Authority.Bll.Service.Wms
                     c.SortingCount,
                     ParentCompanyName = c.ParentCompany.CompanyName,
                     c.ParentCompanyID,
-                    Status = c.IsActive == "1" ? "可用" : "不可用",
+                    IsActive = c.IsActive == "1" ? "可用" : "不可用",
                     c.UpdateTime
                 });
             }

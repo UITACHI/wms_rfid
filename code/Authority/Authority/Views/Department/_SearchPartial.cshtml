@@ -1,6 +1,6 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#IsActive').combo({
+        $('#isActive').combo({
             editable: false,
             panelHeight: 45,
             panelWidth: 130
@@ -48,9 +48,10 @@
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.SystemName = $('#DepartmentCode').val();
-        queryParams.Description = $('#DepartmentName').val();
-        queryParams.Status = $('#status').val();
+        queryParams.DepartmentCode = $('#DepartmentCode').val();
+        queryParams.DepartmentName = $('#DepartmentName').val();
+        queryParams.DepartmentLeaderID = $('#employee-search').val();
+        queryParams.companyID = $('#company-search').val();
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
