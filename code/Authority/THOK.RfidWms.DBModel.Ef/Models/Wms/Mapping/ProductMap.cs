@@ -177,6 +177,25 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
             // Relationships
+            this.HasRequired(t => t.Brand)
+                .WithMany(t => t.Products)
+                .HasForeignKey(d => d.BrandCode)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.Supplier)
+                .WithMany(t => t.Products)
+                .HasForeignKey(d => d.SupplierCode)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.Unit)
+                .WithMany(t => t.Products)
+                .HasForeignKey(d => d.UnitCode)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.UnitList)
+                .WithMany(t => t.Products)
+                .HasForeignKey(d => d.UnitListCode)
+                .WillCascadeOnDelete(false);
         }
     }
 }
