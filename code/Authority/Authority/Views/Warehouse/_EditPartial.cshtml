@@ -1,0 +1,37 @@
+﻿<script type="text/javascript">
+function editClick(){
+    var row = $('#details').treegrid('getSelected');
+    if (row) {
+        $('#dlg').dialog('open').dialog('setTitle', '编辑');
+        var divid;
+        var row = $('#details').treegrid('getSelected');
+        if (row.ShowOrder == "0") {
+            divid = "ware";
+        } else if (row.ShowOrder == "1") {
+            divid = "area";
+        } else if (row.ShowOrder == "2") {
+            divid = "shelf";
+        } else if (row.ShowOrder == "3") {
+            divid = "cell";
+        }       
+        EditShowDiv(divid, row);
+        $('form input').removeAttr("disabled");
+        url = '/Module/Edit/?ModuleID=' + row.ModuleID;
+    } else {
+        $.messager.confirm('错误', '没有选择行！');
+    }
+};
+
+function EditShowDiv(divId,row) {
+    $('#' + divId + ' .easyui-validatebox').validatebox({
+        required: true
+    });
+    $('#' + divId + 'fm').form('load', row);
+    $('#ware').css({ display: "none" });
+    $('#area').css({ display: "none" });
+    $('#shelf').css({ display: "none" });
+    $('#cell').css({ display: "none" });
+    $('#' + divId).css({ display: "block" });
+}
+</script>
+   
