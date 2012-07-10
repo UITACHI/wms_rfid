@@ -16,6 +16,7 @@
 
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '入库单查询');
+        $("input[type=text]").attr("value", "");
     };
 
     function select() {
@@ -46,31 +47,31 @@
             <table align="left" width="300">
               <tr>
                 <td width="60">入库单号:</td>
-                <td><input id="intoBillNo" style="width: 140px"></td>
+                <td><input id="intoBillNo" type="text" style="width: 140px"></td>
               </tr>
               <tr>
                 <td width="60">仓库名称:</td>
-                <td><input id="warehouseName" style="width: 140px"></td>  
+                <td><input id="warehouseName" type="text" style="width: 140px"></td>  
               </tr>
               <tr>
                 <td width="60">制单日期:</td>
-                <td><input id="makeDate_before" style="width: 90px">&nbsp;至&nbsp;<input id="makeDate_later" style="width: 90px"></td>
+                <td><input id="makeDate_before" type="text" style="width: 90px">&nbsp;至&nbsp;<input id="makeDate_later" style="width: 90px"></td>
               </tr>
               <tr>
                 <td width="60">操 作 员:</td>
-                <td><input id="operatePerson" style="width: 140px"></td>
+                <td><input id="operatePerson" type="text" style="width: 140px"></td>
               </tr>
               <tr>
                 <td   width="60">处理状态:</td>
-                <td><input id="operateStatus" style="width: 140px"></td>
+                <td><input id="operateStatus" type="text" style="width: 140px"></td>
               </tr>
               <tr>
                 <td   width="60">审 核 人:</td>
-                <td><input id="checkPerson" style="width: 140px"></td>                
+                <td><input id="checkPerson" type="text" style="width: 140px"></td>                
               </tr>
               <tr>
                 <td   width="60">审核日期:</td>
-                <td><input id="checkDate_before" style="width: 90px">&nbsp;至&nbsp;<input id="checkDate_later" style="width: 90px"></td>
+                <td><input id="checkDate_before" type="text" style="width: 90px">&nbsp;至&nbsp;<input id="checkDate_later" style="width: 90px"></td>
               </tr>
               <tr>
                 <td   width="60">№ 备 注:</td>
