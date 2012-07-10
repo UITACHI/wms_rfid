@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Authority.Controllers.ProductInfo
+namespace Authority.Controllers.Wms.ProductInfo
 {
-    public class UnitsController : Controller
+    public class BrandController : Controller
     {
         //
-        // GET: /Units/
+        // GET: /Brand/
 
         public ActionResult Index()
         {
@@ -17,6 +17,8 @@ namespace Authority.Controllers.ProductInfo
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.hasPrint = true;
+            ViewBag.hasHelp = true;
             return View();
         }
 

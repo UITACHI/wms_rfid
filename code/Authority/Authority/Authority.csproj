@@ -115,10 +115,11 @@
     <Compile Include="Controllers\Wms\Organization\DepartmentController.cs" />
     <Compile Include="Controllers\Wms\Organization\EmployeeController.cs" />
     <Compile Include="Controllers\Wms\Organization\JobController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\BrandController.cs" />
     <Compile Include="Controllers\Wms\ProductInfo\FactoryController.cs" />
-    <Compile Include="Controllers\Wms\ProductInfo\ProductCategoryController.cs" />
     <Compile Include="Controllers\Wms\ProductInfo\ProductController.cs" />
-    <Compile Include="Controllers\Wms\ProductInfo\UnitsController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\UnitListController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\UnitController.cs" />
     <Compile Include="Controllers\Authority\ServerAdmin\CityController.cs" />
     <Compile Include="Controllers\Authority\ServerAdmin\ServerController.cs" />
     <Compile Include="Controllers\Wms\ProfitLossInfo\ProfitLossBillVerifyController.cs" />
@@ -718,8 +719,7 @@
     <Content Include="Views\Role\_RoleUserPartial.cshtml" />
     <Content Include="Views\Factory\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\Units\Index.cshtml" />
-    <Content Include="Views\ProductCategory\Index.cshtml" />
+    <Content Include="Views\Unit\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
     <Content Include="Views\Warehouse\_AddWarehousePartial.cshtml" />
     <Content Include="Views\SortingLine\Index.cshtml" />

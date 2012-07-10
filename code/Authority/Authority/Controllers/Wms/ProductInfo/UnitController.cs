@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace Authority.Controllers.ProductInfo
 {
-    public class ProductCategoryController : Controller
+    public class UnitController : Controller
     {
         //
-        // GET: /ProductCategory/
+        // GET: /Units/
 
         public ActionResult Index()
         {
