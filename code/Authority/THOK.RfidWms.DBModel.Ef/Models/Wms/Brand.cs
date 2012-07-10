@@ -8,8 +8,8 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
     public class Brand
     {
         public Brand()
-        { 
-
+        {
+            this.Products = new List<Product>();
         }
         public string BrandCode { get; set; }
         public string UniformCode { get; set; }
@@ -18,5 +18,8 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
         public string SupplierCode { get; set; }
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
+
+        public virtual Supplier Supplier { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

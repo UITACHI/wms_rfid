@@ -8,8 +8,8 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
     public class UnitList
     {
         public UnitList()
-        { 
-
+        {
+            this.Products = new List<Product>();
         }
         public string UnitListCode { get; set; }
         public string UniformCode { get; set; }
@@ -27,5 +27,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
         public string UnitName04 { get; set; }
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
+
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

@@ -79,12 +79,12 @@ namespace THOK.RfidWms.DBModel.Ef
             modelBuilder.Configurations.Add(new JobMap());
             modelBuilder.Configurations.Add(new EmployeeMap());
 
-            //modelBuilder.Configurations.Add(new ProductMap());
-            //modelBuilder.Configurations.Add(new SupplierMap());
-            //modelBuilder.Configurations.Add(new UnitMap());
-            //modelBuilder.Configurations.Add(new UnitListMap());
+            modelBuilder.Configurations.Add(new ProductMap());
+            modelBuilder.Configurations.Add(new SupplierMap());
+            modelBuilder.Configurations.Add(new UnitMap());
+            modelBuilder.Configurations.Add(new UnitListMap());
 
-            //modelBuilder.Configurations.Add(new BrandMap());
+            modelBuilder.Configurations.Add(new BrandMap());
 
             #endregion
         }
