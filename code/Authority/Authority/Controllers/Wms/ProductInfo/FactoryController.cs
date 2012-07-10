@@ -50,5 +50,26 @@ namespace Authority.Controllers.ProductInfo
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        //
+        // POST: /Factory/Edit/
+
+        public ActionResult Edit(Supplier supplier)
+        {
+            bool bResult = SupplierService.Save(supplier);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /Factory/Delete/
+
+        [HttpPost]
+        public ActionResult Delete(string supplierCode)
+        {
+            bool bResult = SupplierService.Delete(supplierCode);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

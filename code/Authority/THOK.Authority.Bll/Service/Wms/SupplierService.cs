@@ -53,7 +53,16 @@ namespace THOK.Authority.Bll.Service.Wms
 
         public bool Delete(string SupplierCode)
         {
-            throw new NotImplementedException();
+            var supplier = SupplierRepository.GetQueryable()
+                .FirstOrDefault(s => s.SupplierCode == SupplierCode);
+            if (SupplierCode != null)
+            {
+                SupplierRepository.Delete(supplier);
+                SupplierRepository.SaveChanges();
+            }
+            else
+                return false;
+            return true;
         }
 
         public bool Save(Supplier supplier)
