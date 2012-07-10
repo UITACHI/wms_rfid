@@ -1,6 +1,6 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#IsActive').combo({
+        $('#isActive').combo({
             editable: false,
             panelHeight:65,
             panelWidth:130
@@ -16,7 +16,7 @@
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.SupplierCode = $('#SupplierCode').val();
         queryParams.SupplierName = $('#SupplierName').val();
-        queryParams.IsActive = $('#cc').combobox('getValue');
+        queryParams.IsActive = $('#isActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -44,8 +44,8 @@
                       </tr>
                       <tr>
                         <td>状态:</td>
-                        <td><select id="IsActive"class="easyui-combobox" style="width: 130px">
-                                <option value="1">可用</option>
+                        <td><select id="isActive"class="easyui-combobox" style="width: 130px">
+                                <option value="0">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>
 	                    </td>

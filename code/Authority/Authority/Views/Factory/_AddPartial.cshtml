@@ -4,7 +4,8 @@
         $('#cc').combo({
             required: true,
             editable: false,
-            panelHeight: 45
+            panelHeight: 45,
+            panelWidth:100
         });
     })
 
@@ -78,9 +79,9 @@
                       </tr>
                       <tr>
                         <td>状态:</td>
-                        <td><select id="cc" name="IsActive" class="easyui-combobox" style="width: 50px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
+                        <td><select id="cc" name="IsActive" class="easyui-combobox" style="width: 100px">
+		                        <option value="1">可用</option>
+		                        <option value="0">不可用</option>
 	                        </select>
 	                    </td>
                       </tr>

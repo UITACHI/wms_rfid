@@ -40,5 +40,15 @@ namespace Authority.Controllers.ProductInfo
             return Json(supplier, "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /Factory/Create/
+
+        [HttpPost]
+        public ActionResult Create(Supplier supplier)
+        {
+            bool bResult = SupplierService.Add(supplier);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -37,7 +37,18 @@ namespace THOK.Authority.Bll.Service.Wms
 
         public new bool Add(Supplier supplier)
         {
-            throw new NotImplementedException();
+            var su = new Supplier();
+            su.SupplierCode = supplier.SupplierCode;
+            su.UniformCode = supplier.UniformCode;
+            su.CustomCode = supplier.CustomCode;
+            su.SupplierName = supplier.SupplierName;
+            su.ProvinceName = supplier.ProvinceName;
+            su.IsActive = supplier.IsActive;
+            su.UpdateTime = DateTime.Now;
+
+            SupplierRepository.Add(su);
+            SupplierRepository.SaveChanges();
+            return true;
         }
 
         public bool Delete(string SupplierCode)
