@@ -8,16 +8,16 @@
                 required: true
             });
             if (row.IsActive == '启用') {
-                $('#IsActive').combo('setValue', true).combo('setText', row.IsActive);
+                $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
             } else {
-                $('#IsActive').combo('setValue', false).combo('setText', row.IsActive);
+                $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
             }
             $('form input').removeAttr("disabled");
             $('form textarea').removeAttr("disabled");
-            $('#IsActive').combo({
+            $('#cc').combo({
                 hasDownArrow: true
             });
-            url = '/Factory/Edit/?SupplierCode=' + row.SupplierCode;
+            url = '/Factory/Edit/';
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }

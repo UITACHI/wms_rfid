@@ -67,7 +67,16 @@ namespace THOK.Authority.Bll.Service.Wms
 
         public bool Save(Supplier supplier)
         {
-            throw new NotImplementedException();
+            var su = SupplierRepository.GetQueryable().FirstOrDefault(s=>s.SupplierCode==supplier.SupplierCode);
+            su.UniformCode = supplier.UniformCode;
+            su.CustomCode = supplier.CustomCode;
+            su.SupplierName = supplier.SupplierName;
+            su.ProvinceName = supplier.ProvinceName;
+            su.IsActive = supplier.IsActive;
+            su.UpdateTime = DateTime.Now;
+
+            SupplierRepository.SaveChanges();
+            return true;
         }
 
         #endregion
