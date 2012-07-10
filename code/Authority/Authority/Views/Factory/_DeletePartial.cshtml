@@ -14,9 +14,9 @@
             });
             $('#fm').form('load', row);
             if (row.Status == '启用') {
-                $('#cc').combo('setValue', true).combo('setText', row.Status);
+                $('#cc').combo('setValue', true).combo('setText', row.IsActive);
             } else {
-                $('#cc').combo('setValue', false).combo('setText', row.Status);
+                $('#cc').combo('setValue', false).combo('setText', row.IsActive);
             }
             url = '/Factory/Delete/?SupplierCode=' + row.SupplierCode;
         } else {
