@@ -13,7 +13,13 @@
             panelHeight: 45,
             panelWidth: 130
         });
-
+        $('#sex').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 130
+        });
+        
         $('#depar-add').combogrid({
             width: 130,
             panelWidth: 340,
@@ -109,7 +115,7 @@
 		                        <option value="保密">保密</option>
 	                        </select></td>
                         <td align="right">电话：</td>
-                        <td ><input name="Tel" class="easyui-numberbox"  type="text" required="true" missingmessage="请输入显示顺序（必须为数字）"/></td>
+                        <td ><input name="Tel" class="easyui-numberbox"  type="text" required="true" missingmessage="请输入电话号码（必须为数字）"/></td>
                       </tr>
                       <tr>
                         <td align="right">状态：</td>

@@ -29,21 +29,29 @@
                 return $(this).form('validate');
             },
             success: function (result) {
-                var result = eval('(' + result + ')');
-                if (result.success) {
-                    $.messager.show({
-                        title: '成功',
-                        msg: result.msg
-                    });
-                    $('#dlg').dialog('close'); 
-                    $('#details').datagrid('reload'); 
-                } else {
+                try {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.show({
+                            title: '成功',
+                            msg: result.msg
+                        });
+                        $('#dlg').dialog('close');
+                        $('#details').datagrid('reload');
+                    } else {
+                        $.messager.show({
+                            title: '错误',
+                            msg: result.msg
+                        });
+                        $('#details').datagrid('reload');
+                    }
+                }
+                catch (e) {
                     $.messager.show({
                         title: '错误',
-                        msg: result.msg
+                        msg: result
                     });
-                    $('#details').datagrid('reload');
-                }
+                } 
             }
         });
     }
