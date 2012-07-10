@@ -37,8 +37,8 @@ namespace Authority.Controllers.Organization
             string CompanyCode = collection["CompanyCode"] ?? "";
             string CompanyName = collection["CompanyName"] ?? "";
             string CompanyType = collection["CompanyType"] ?? "";
-            string Status = collection["IsActive"] ?? "";
-            var systems = CompanyService.GetDetails(page, rows, CompanyCode, CompanyName, CompanyType, Status);
+            string IsActive = collection["IsActive"] ?? "";
+            var systems = CompanyService.GetDetails(page, rows, CompanyCode, CompanyName, CompanyType, IsActive);
             return Json(systems, "text", JsonRequestBehavior.AllowGet);
         }
 
