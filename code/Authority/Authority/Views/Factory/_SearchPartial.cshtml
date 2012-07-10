@@ -1,23 +1,22 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#status').combo({
+        $('#IsActive').combo({
             editable: false,
-            panelHeight: 45
+            panelHeight:65,
+            panelWidth:130
         });
     })
 
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询厂商信息');
+        $("input[type=text]").attr("value", "");
     };
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.SupplierCode = $('#supplierCode').val();
-        queryParams.UniformCode = $('#uniformCode').val();
-        queryParams.CustomCode = $('#customCode').val();
-        queryParams.SupplierName = $('#supplierName').val();
-        queryParams.ProvinceName = $('#provinceName').val();
-        queryParams.IsActive = $('#isActive').val();
+        queryParams.SupplierCode = $('#SupplierCode').val();
+        queryParams.SupplierName = $('#SupplierName').val();
+        queryParams.IsActive = $('#cc').combobox('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -30,36 +29,24 @@
 </script>
 
     <div id="dlg-search" class="easyui-dialog" modal="true" 
-        style="width:300px;height:250px;padding:2px 2px"
+        style="width:300px;height:200px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >
                     <table width="250">
                       <tr>
                         <td width="60">厂商编码</td>
-                        <td width="168"><input name="supplierCode"></td>
-                      </tr>
-                      <tr>
-                        <td width="60">统一编码</td>
-                        <td width="168"><input name="uniformCode"></td>
-                      </tr>
-                      <tr>
-                        <td width="60">自定义编码</td>
-                        <td width="168"><input name="customCode"></td>
+                        <td width="168"><input id="SupplierCode" type="text"></td>
                       </tr>
                       <tr>
                         <td width="60">厂商名称</td>
-                        <td width="168"><input name="supplierName"></td>
-                      </tr>
-                      <tr>
-                        <td width="60">省份名称</td>
-                        <td width="168"><input name="provinceName"></td>
+                        <td width="168"><input id="SupplierName" type="text"></td>
                       </tr>
                       <tr>
                         <td>状态:</td>
-                        <td><select id="cc" name="isActive" class="easyui-combobox" style="width: 50px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
+                        <td><select id="IsActive"class="easyui-combobox" style="width: 130px">
+                                <option value="1">可用</option>
+		                        <option value="0">不可用</option>
 	                        </select>
 	                    </td>
                       </tr>

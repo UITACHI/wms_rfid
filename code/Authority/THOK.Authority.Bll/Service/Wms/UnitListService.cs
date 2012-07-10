@@ -9,7 +9,7 @@ using THOK.Authority.Dal.Interfaces.Wms;
 
 namespace THOK.Authority.Bll.Service.Wms
 {
-    public class UnitListService:ServiceBase<UnitList>,IUnitService
+    public class UnitListService:ServiceBase<UnitList>,IUnitListService
     {
         [Dependency]
         public IUnitListRepository UnitListRepository { get; set; }
@@ -19,6 +19,5 @@ namespace THOK.Authority.Bll.Service.Wms
         {
             get { return this.GetType(); }
         }
-
     }
 }
