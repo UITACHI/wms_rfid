@@ -46,5 +46,10 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
 
+        public virtual Brand Brand { get; set; }
+        public virtual Supplier Supplier { get; set; }
+        public virtual Unit Unit { get; set; }
+        public virtual UnitList UnitList { get; set; }
+
     }
 }

@@ -50,6 +50,10 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
             // Relationships
+            this.HasRequired(t => t.Supplier)
+                .WithMany(t => t.Brands)
+                .HasForeignKey(d => d.SupplierCode)
+                .WillCascadeOnDelete(false);
         }
     }
 }
