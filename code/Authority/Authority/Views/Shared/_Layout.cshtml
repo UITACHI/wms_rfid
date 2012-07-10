@@ -11,6 +11,13 @@
 
     <script type="text/javascript">
         $(function () {
+            $("#msgbox").ajaxError(function () {
+                $(this).text("Triggered ajaxError handler.");
+                $.messager.show({
+                    title: '错误',
+                    msg: "dffdsf"
+                });
+            });
             $('a.easyui-linkbutton[fun="true"]').linkbutton({
                 disabled: true,
                 iconCls:'icon-none'
@@ -35,5 +42,6 @@
 <body style="padding: 0px; margin: 0px; width: 100%; height: 100%;" class="easyui-layout"> 
     @Html.Partial("_ToolPartial")
     @RenderBody()
+    <div id="msgbox"></div>
 </body>
 </html>
