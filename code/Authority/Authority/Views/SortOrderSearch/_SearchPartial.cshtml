@@ -7,6 +7,7 @@
 
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '分拣单查询');
+        $("input[type=text]").attr("value", "");
     };
 
     function select() {
@@ -36,31 +37,31 @@
             <table align="left" width="260">
               <tr>
                 <td width="60">订单单号:</td>
-                <td><input id="sortOrderNo" style="width: 140px"></td>
+                <td><input id="sortOrderNo"   type="text" style="width: 140px"></td>
               </tr>
               <tr>
                 <td width="60">订单日期:</td>
-                <td><input id="sortOrderDate" style="width: 140px"></td>  
+                <td><input id="sortOrderDate"   type="text" style="width: 140px"></td>  
               </tr>
               <tr>
                 <td width="60">订单类型:</td>
-                <td><input id="sortOrderType" style="width: 140px"></td>
+                <td><input id="sortOrderType"   type="text" style="width: 140px"></td>
               </tr>
               <tr>
                 <td width="60">客户编号:</td>
-                <td><input id="customerCode" style="width: 140px"></td>
+                <td><input id="customerCode"   type="text" style="width: 140px"></td>
               </tr>
               <tr>
                 <td width="60">客户名称:</td>
-                <td><input id="customerName" style="width: 140px"></td>                
+                <td><input id="customerName"   type="text" style="width: 140px"></td>                
               </tr>
               <tr>
                 <td width="60">总 数 量:</td>
-                <td><input id="totalQuantity" style="width: 140px"></td>                
+                <td><input id="totalQuantity"   type="text" style="width: 140px"></td>                
               </tr>
               <tr>
                 <td width="60">送货路线:</td>
-                <td><input id="deliverRoute" style="width: 140px"></td>
+                <td><input id="deliverRoute"   type="text" style="width: 140px"></td>
               </tr>
             </table>
         </div>

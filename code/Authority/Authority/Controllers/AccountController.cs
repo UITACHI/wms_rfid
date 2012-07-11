@@ -42,10 +42,10 @@ namespace Authority.Controllers
         public ActionResult LogOn(string logOnKey)
         {
             //todo
-            string userName = "a";
+            string userName = "Admin";
             string password = "a";
-            string cityId = "15660ef5-11f5-46f1-a000-6ed7c2bea78c";
-            string systemId = "35995225-9FC6-4373-97CB-D1191A0C8764";
+            string cityId = "F8344F88-08AD-4F9A-8F45-EAD8BB471105";
+            string systemId = "ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8";
 
             bool bResult = UserService.ValidateUser(userName, password)
                 && UserService.ValidateUserPermission(userName, cityId, systemId);
