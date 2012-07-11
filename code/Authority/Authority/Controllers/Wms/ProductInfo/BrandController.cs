@@ -36,8 +36,19 @@ namespace Authority.Controllers.Wms.ProductInfo
             string BrandCode = collection["BrandCode"] ?? "";
             string BrandName = collection["BrandName"] ?? "";
             string IsActive = collection["IsActive"] ?? "";
-            var supplier = BrandService.GetDetails(page, rows, BrandCode, BrandName, IsActive);
-            return Json(supplier, "text", JsonRequestBehavior.AllowGet);
+            var brand = BrandService.GetDetails(page, rows, BrandCode, BrandName, IsActive);
+            return Json(brand, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /Brand/Create/
+
+        [HttpPost]
+        public ActionResult Create(Brand brand)
+        {
+            bool bResult = BrandService.Add(brand);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
     }
