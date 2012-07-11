@@ -335,7 +335,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "仓库信息管理",
-                        ShowOrder = 1,
+                        ShowOrder = 2,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
@@ -367,7 +367,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "卷烟信息管理",
-                        ShowOrder = 1,
+                        ShowOrder = 3,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
@@ -447,7 +447,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "入库管理",
-                        ShowOrder = 1,
+                        ShowOrder = 4,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
@@ -527,7 +527,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "出库管理",
-                        ShowOrder = 1,
+                        ShowOrder = 5,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
@@ -607,7 +607,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("F8344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "移库管理",
-                        ShowOrder = 1,
+                        ShowOrder = 6,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
@@ -687,7 +687,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "盘点管理",
-                        ShowOrder = 1,
+                        ShowOrder = 7,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
@@ -767,7 +767,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("FB344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "损益管理",
-                        ShowOrder = 1,
+                        ShowOrder = 8,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
@@ -823,7 +823,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "库存管理",
-                        ShowOrder = 1,
+                        ShowOrder = 9,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
@@ -916,7 +916,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("FD344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "分拣管理",
-                        ShowOrder = 1,
+                        ShowOrder = 10,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
@@ -996,7 +996,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     {
                         ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101"),
                         ModuleName = "综合查询",
-                        ShowOrder = 1,
+                        ShowOrder = 11,
                         ModuleURL = "",
                         IndicateImage = "",
                         DeskTopImage = "",
