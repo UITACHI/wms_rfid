@@ -1,5 +1,5 @@
 ﻿<script type="text/javascript">
-    $(function () {
+    function SearchLoad() {
         $('#Status_Search').combo({
             editable: false,
             panelHeight: 65,
@@ -10,7 +10,7 @@
             panelHeight: 45,
             panelWidth: 130
         });
-        
+
         $('#DepartmentID').combogrid({
             width: 130,
             panelWidth: 340,
@@ -44,9 +44,10 @@
 					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
 				]]
         });
-    })
+    }
 
     function searchClick() {
+        SearchLoad();
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
         $("input[type=text]").attr("value", "");
     };

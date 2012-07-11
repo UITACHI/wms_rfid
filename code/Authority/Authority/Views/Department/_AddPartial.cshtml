@@ -1,6 +1,6 @@
 <script type="text/javascript">
     var url;
-    $(function () {
+    function AddLoad() { 
         $('#isActive_depart').combo({
             required: true,
             editable: false,
@@ -58,9 +58,10 @@
 					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
 				]]
         });
-    })
+    }
 
     function addClick() {
+        AddLoad();
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({

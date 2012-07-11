@@ -1,12 +1,10 @@
 ﻿<script type="text/javascript">
-    $(function () {
+
+    function searchClick() {
         $('#isActive').combo({
             editable: false,
             panelHeight: 45
         });
-    })
-
-    function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
     };
 
