@@ -8,6 +8,10 @@ using Microsoft.Practices.Unity;
 using System.Linq;
 using THOK.Authority.Dal.Interfaces;
 using System.Data.Objects.DataClasses;
+using System.Security.Cryptography;
+using System.IO;
+using THOK.Authority.Common;
+using THOK.Authority.Bll.Models.Authority;
 
 namespace THOK.Authority.Bll.Service.Authority
 {
@@ -21,6 +25,10 @@ namespace THOK.Authority.Bll.Service.Authority
         public IUserRoleRepository UserRoleRepository { get; set; }
         [Dependency]
         public IUserSystemRepository UserSystemRepository { get; set; }
+        [Dependency]
+        public ICityRepository CityRepository { get; set; }
+        [Dependency]
+        public IServerRepository ServerRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -99,6 +107,9 @@ namespace THOK.Authority.Bll.Service.Authority
             var adduser = new User();
             adduser.UserID = Guid.NewGuid();
             adduser.UserName = userName;
+            adduser.ChineseName = "";
+            adduser.LoginPC = "";
+            adduser.Memo = "";
             adduser.Pwd = EncryptPassword(password);
             adduser.IsLock = false;
             adduser.IsAdmin = false;
@@ -117,28 +128,25 @@ namespace THOK.Authority.Bll.Service.Authority
             return true;
         }
 
-        public string GetLogOnUrl(System.Security.Principal.IPrincipal iPrincipal, string cityId, string systemId, string serverId)
+        public string GetLogOnUrl(string userName, string password, string cityId, string systemId, string serverId)
         {
             string url = "";
             string logOnKey = "";
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            if (cityId != null && cityId != string.Empty)
-            {
-                url = GetUrlFromCity(new Guid(cityId));
-            }
 
-            if (serverId != null && serverId != string.Empty)
+            url = GetUrlFromCity(new Guid(cityId));
+            if (!string.IsNullOrEmpty(serverId))
             {
-                url = GetUrlFromServer(new Guid(cityId));
-            }
-
-            if (systemId != null && serverId != string.Empty)
-            {
-
-            }
-            var key = new { User = iPrincipal, CityID = cityId, ServerID = serverId, SystemID = systemId };
-            logOnKey = serializer.Serialize(key);
-            url += "/Account/LogOn/?LogOnKey=" + logOnKey;
+                url = GetUrlFromServer(new Guid(serverId)); 
+            }                       
+            var key = new UserLoginInfo()
+                    {
+                        CityID = cityId,
+                        SystemID = systemId,
+                        UserName = userName,
+                        Password = password
+                    };
+            logOnKey = Des.EncryptDES((new JavaScriptSerializer()).Serialize(key),"12345678");
+            url += @"/Account/LogOn/?LogOnKey=" + Uri.EscapeDataString(logOnKey);
             return url;
         }
 
@@ -165,15 +173,19 @@ namespace THOK.Authority.Bll.Service.Authority
             return System.Text.Encoding.ASCII.GetString(data);
         }
 
-        private string GetUrlFromServer(Guid guid)
+        private string GetUrlFromCity(Guid gCityID)
         {
-            throw new NotImplementedException();
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.City> queryCity = CityRepository.GetQueryable();
+            var city = queryCity.Single(c => c.CityID == gCityID);
+            return city.Servers.OrderBy(s => s.ServerID).First().Url;                
         }
 
-        private string GetUrlFromCity(Guid guid)
+        private string GetUrlFromServer(Guid gServerID)
         {
-            throw new NotImplementedException();
-        }
+            IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.Server> query = ServerRepository.GetQueryable();
+            var system = query.Single(s => s.ServerID == gServerID);
+            return system.Url;
+        }        
 
         public object GetUserRole(string userID)
         {
@@ -237,9 +249,6 @@ namespace THOK.Authority.Bll.Service.Authority
             }
             return true;
         }
-
-
-
     }
 }
 

@@ -4,6 +4,9 @@ using THOK.WebUtil;
 using Microsoft.Practices.Unity;
 using THOK.Authority.Bll.Interfaces.Authority;
 using THOK.Security;
+using THOK.Authority.Common;
+using System.Web.Script.Serialization;
+using THOK.Authority.Bll.Models.Authority;
 
 namespace Authority.Controllers
 {
@@ -35,18 +38,17 @@ namespace Authority.Controllers
             {
                 msg = "登录失败:用户名或密码错误！";
             }
-            string url = bResult ? UserService.GetLogOnUrl(User, cityId, systemId, serverId) : "";            
+            string url = bResult ? UserService.GetLogOnUrl(userName,password,cityId, systemId, serverId) : "";            
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, url),"text");
         }
 
         public ActionResult LogOn(string logOnKey)
         {
-            //todo
-            string userName = "Admin";
-            string password = "a";
-            string cityId = "F8344F88-08AD-4F9A-8F45-EAD8BB471105";
-            string systemId = "ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8";
-
+            UserLoginInfo userLoginInfo = (new JavaScriptSerializer()).Deserialize<UserLoginInfo>(Des.DecryptDES(logOnKey, "12345678"));
+            string userName = userLoginInfo.UserName;
+            string password = userLoginInfo.Password;
+            string cityId = userLoginInfo.CityID;
+            string systemId = userLoginInfo.SystemID;
             bool bResult = UserService.ValidateUser(userName, password)
                 && UserService.ValidateUserPermission(userName, cityId, systemId);
             if (bResult)
@@ -96,7 +98,7 @@ namespace Authority.Controllers
             this.AddCookie("s", systemId ?? "NULL");
             this.AddCookie("ss", serverId ?? "NULL");
 
-            string url = bResult ? UserService.GetLogOnUrl(this.User, cityId, systemId, serverId) : "";
+            string url = bResult ? UserService.GetLogOnUrl(userName,null, cityId, systemId, serverId) : "";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, url),"text", JsonRequestBehavior.AllowGet);
         }
     }
