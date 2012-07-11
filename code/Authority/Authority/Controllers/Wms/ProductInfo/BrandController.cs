@@ -51,5 +51,15 @@ namespace Authority.Controllers.Wms.ProductInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /Brand/Delete/
+
+        [HttpPost]
+        public ActionResult Delete(string BrandCode)
+        {
+            bool bResult = BrandService.Delete(BrandCode);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

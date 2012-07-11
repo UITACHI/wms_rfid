@@ -53,7 +53,16 @@ namespace THOK.Authority.Bll.Service.Wms
 
         public bool Delete(string BrandCode)
         {
-            throw new NotImplementedException();
+            var brand = BrandRepository.GetQueryable()
+                .FirstOrDefault(b => b.BrandCode == BrandCode);
+            if (BrandCode != null)
+            {
+                BrandRepository.Delete(brand);
+                BrandRepository.SaveChanges();
+            }
+            else
+                return false;
+            return true;
         }
 
         public bool Save(Brand brand)
