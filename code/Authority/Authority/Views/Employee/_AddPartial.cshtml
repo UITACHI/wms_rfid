@@ -1,7 +1,8 @@
 <script type="text/javascript">
     var url;
-    $(function () {
-        $('#Status').combo({
+
+    function AddLoad() { 
+       $('#Status').combo({
             required: true,
             editable: false,
             panelHeight: 85,
@@ -53,9 +54,10 @@
 					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
 				]]
         });
-    });
+    }
 
     function addClick() {
+        AddLoad();
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({

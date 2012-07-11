@@ -2,9 +2,10 @@
 function editClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
+        AddLoad();
         url = '/Employee/Edit/';
         $('#fm').form('load', row);
-        $('#dlg').dialog('open').dialog('setTitle', '±à¼­');       
+        $('#dlg').dialog('open').dialog('setTitle', '±à¼­');
         $('#fm .easyui-validatebox').validatebox({
             required: true
         });        

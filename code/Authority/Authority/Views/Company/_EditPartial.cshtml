@@ -2,6 +2,7 @@
     function editClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
+            AddLoad();
             url = '/Company/Edit/';
             $('#dlg').dialog('open').dialog('setTitle', '±à¼­');
             $('#companyfm').form('load', row);
