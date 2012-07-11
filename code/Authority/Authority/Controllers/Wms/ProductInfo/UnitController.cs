@@ -49,5 +49,15 @@ namespace Authority.Controllers.ProductInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /Unit/Delete/
+
+        [HttpPost]
+        public ActionResult Delete(string unitCode)
+        {
+            bool bResult = UnitService.Delete(unitCode);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

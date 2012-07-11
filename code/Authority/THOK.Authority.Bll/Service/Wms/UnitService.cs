@@ -50,7 +50,16 @@ namespace THOK.Authority.Bll.Service.Wms
 
         public bool Delete(string UnitCode)
         {
-            throw new NotImplementedException();
+            var unit = UnitRepository.GetQueryable()
+                .FirstOrDefault(b => b.UnitCode == UnitCode);
+            if (UnitCode != null)
+            {
+                UnitRepository.Delete(unit);
+                UnitRepository.SaveChanges();
+            }
+            else
+                return false;
+            return true;
         }
 
         public bool Save(Unit unit)
