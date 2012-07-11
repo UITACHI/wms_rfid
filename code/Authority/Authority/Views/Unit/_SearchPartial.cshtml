@@ -8,14 +8,14 @@
     })
 
     function searchClick() {
-        $('#dlg-search').dialog('open').dialog('setTitle', '查询品牌信息');
+        $('#dlg-search').dialog('open').dialog('setTitle', '查询单位信息');
         $("input[type=text]").attr("value", "");
     };
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.BrandCode = $('#BrandCode').val();
-        queryParams.BrandName = $('#BrandName').val();
+        queryParams.SupplierCode = $('#SupplierCode').val();
+        queryParams.SupplierName = $('#SupplierName').val();
         queryParams.IsActive = $('#isActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
@@ -35,12 +35,12 @@
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >
                     <table width="250">
                       <tr>
-                        <td width="60">品牌编码</td>
-                        <td width="168"><input id="BrandCode" type="text"></td>
+                        <td width="60">单位编码</td>
+                        <td width="168"><input id="UnitCode" type="text"></td>
                       </tr>
                       <tr>
-                        <td width="60">品牌名称</td>
-                        <td width="168"><input id="BrandName" type="text"></td>
+                        <td width="60">单位名称</td>
+                        <td width="168"><input id="UnitName" type="text"></td>
                       </tr>
                       <tr>
                         <td>状态:</td>
