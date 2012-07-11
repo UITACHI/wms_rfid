@@ -666,6 +666,11 @@
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="obj\Debug\ResolveAssemblyReference.cache" />
+    <Content Include="Views\Brand\Index.cshtml" />
+    <Content Include="Views\Brand\_AddPartial.cshtml" />
+    <Content Include="Views\Brand\_DeletePartial.cshtml" />
+    <Content Include="Views\Brand\_EditPartial.cshtml" />
+    <Content Include="Views\Brand\_SearchPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
@@ -811,6 +816,7 @@
     <Content Include="Views\OverStockProductSearch\Index.cshtml" />
     <Content Include="Views\OverStockProductSearch\_SearchPartial.cshtml" />
     <Content Include="Views\Stockledger\_Detail.cshtml" />
+    <Content Include="Views\UnitList\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
