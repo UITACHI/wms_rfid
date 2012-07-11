@@ -15,7 +15,7 @@ namespace Authority.Controllers.ProductInfo
         [Dependency]
         public ISupplierService SupplierService { get; set; }
         //
-        // GET: /Factory/
+        // GET: /Supplier/
 
         public ActionResult Index()
         {
@@ -29,7 +29,7 @@ namespace Authority.Controllers.ProductInfo
         }
 
         //
-        // GET: /Factory/Details/
+        // GET: /Supplier/Details/
 
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
@@ -41,7 +41,7 @@ namespace Authority.Controllers.ProductInfo
         }
 
         //
-        // POST: /Factory/Create/
+        // POST: /Supplier/Create/
 
         [HttpPost]
         public ActionResult Create(Supplier supplier)
@@ -52,7 +52,7 @@ namespace Authority.Controllers.ProductInfo
         }
 
         //
-        // POST: /Factory/Edit/
+        // POST: /Supplier/Edit/
 
         public ActionResult Edit(Supplier supplier)
         {
@@ -62,7 +62,7 @@ namespace Authority.Controllers.ProductInfo
         }
 
         //
-        // POST: /Factory/Delete/
+        // POST: /Supplier/Delete/
 
         [HttpPost]
         public ActionResult Delete(string supplierCode)
