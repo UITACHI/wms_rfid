@@ -116,7 +116,7 @@
     <Compile Include="Controllers\Wms\Organization\EmployeeController.cs" />
     <Compile Include="Controllers\Wms\Organization\JobController.cs" />
     <Compile Include="Controllers\Wms\ProductInfo\BrandController.cs" />
-    <Compile Include="Controllers\Wms\ProductInfo\FactoryController.cs" />
+    <Compile Include="Controllers\Wms\ProductInfo\SupplierController.cs" />
     <Compile Include="Controllers\Wms\ProductInfo\ProductController.cs" />
     <Compile Include="Controllers\Wms\ProductInfo\UnitListController.cs" />
     <Compile Include="Controllers\Wms\ProductInfo\UnitController.cs" />
@@ -658,10 +658,10 @@
     <Content Include="Views\distribution\_SearchPartial.cshtml" />
     <Content Include="Views\Cigarette\Index.cshtml" />
     <Content Include="Views\Cigarette\_SearchPartial.cshtml" />
-    <Content Include="Views\Factory\_AddPartial.cshtml" />
-    <Content Include="Views\Factory\_DeletePartial.cshtml" />
-    <Content Include="Views\Factory\_EditPartial.cshtml" />
-    <Content Include="Views\Factory\_SearchPartial.cshtml" />
+    <Content Include="Views\Supplier\_AddPartial.cshtml" />
+    <Content Include="Views\Supplier\_DeletePartial.cshtml" />
+    <Content Include="Views\Supplier\_EditPartial.cshtml" />
+    <Content Include="Views\Supplier\_SearchPartial.cshtml" />
     <None Include="obj\Debug\build.force" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
@@ -722,7 +722,7 @@
     <Content Include="Views\Module\_FunctionAdd.cshtml" />
     <Content Include="Views\User\_UserRolePartial.cshtml" />
     <Content Include="Views\Role\_RoleUserPartial.cshtml" />
-    <Content Include="Views\Factory\Index.cshtml" />
+    <Content Include="Views\Supplier\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Unit\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
