@@ -52,6 +52,16 @@ namespace Authority.Controllers.Wms.ProductInfo
         }
 
         //
+        // POST: /Brand/Edit/
+
+        public ActionResult Edit(Brand brand)
+        {
+            bool bResult = BrandService.Save(brand);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
         // POST: /Brand/Delete/
 
         [HttpPost]

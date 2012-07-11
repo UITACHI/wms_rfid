@@ -67,7 +67,16 @@ namespace THOK.Authority.Bll.Service.Wms
 
         public bool Save(Brand brand)
         {
-            throw new NotImplementedException();
+            var br = BrandRepository.GetQueryable().FirstOrDefault(b => b.BrandCode == brand.BrandCode);
+            br.UniformCode = brand.UniformCode;
+            br.CustomCode = brand.CustomCode;
+            br.BrandName = brand.BrandName;
+            br.SupplierCode = brand.SupplierCode;
+            br.IsActive = brand.IsActive;
+            br.UpdateTime = DateTime.Now;
+
+            BrandRepository.SaveChanges();
+            return true;
         }
 
         #endregion
