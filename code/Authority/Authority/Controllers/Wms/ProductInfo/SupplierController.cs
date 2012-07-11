@@ -10,7 +10,7 @@ using THOK.WebUtil;
 
 namespace Authority.Controllers.ProductInfo
 {
-    public class FactoryController : Controller
+    public class SupplierController : Controller
     {
         [Dependency]
         public ISupplierService SupplierService { get; set; }
