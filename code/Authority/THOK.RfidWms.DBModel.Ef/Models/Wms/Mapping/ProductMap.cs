@@ -146,7 +146,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             this.Property(t => t.ProductName).HasColumnName(ColumnMap.Value.To("ProductName"));
             this.Property(t => t.UniformCode).HasColumnName(ColumnMap.Value.To("UniformCode"));
             this.Property(t => t.CustomCode).HasColumnName(ColumnMap.Value.To("CustomCode"));
-            this.Property(t => t.ShortCode).HasColumnName(ColumnMap.Value.To("ShortCode)"));
+            this.Property(t => t.ShortCode).HasColumnName(ColumnMap.Value.To("ShortCode"));
             this.Property(t => t.UnitListCode).HasColumnName(ColumnMap.Value.To("UnitListCode"));
             this.Property(t => t.UnitCode).HasColumnName(ColumnMap.Value.To("UnitCode"));
             this.Property(t => t.SupplierCode).HasColumnName(ColumnMap.Value.To("SupplierCode"));
