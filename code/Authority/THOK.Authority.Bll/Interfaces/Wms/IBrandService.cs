@@ -8,5 +8,12 @@ namespace THOK.Authority.Bll.Interfaces.Wms
 {
     public interface IBrandService:IService<Brand>
     {
+        object GetDetails(int page, int rows, string BrandCode, string BrandName, string IsActive);
+
+        bool Add(Brand brand);
+
+        bool Delete(string BrandCode);
+
+        bool Save(Brand brand);
     }
 }
