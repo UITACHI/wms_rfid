@@ -225,18 +225,23 @@ namespace THOK.Authority.Bll.Service.Authority
             HashSet<Menu> moduleMenuSet = new HashSet<Menu>();
             foreach (var userModule in userModules)
             {
-                var roles = from ur in user.UserRoles
-                            select ur.Role;
+                var roles = user.UserRoles.Select(ur => ur.Role);
                 foreach (var role in roles)
                 {
                     InitRoleSystem(role, city, system);
                 }
-                var roleModules = queryRoleModule.Where(rm => rm.RoleSystem.System.SystemID == userSystem.System.SystemID
-                    && rm.Module.ModuleID == userModule.Module.ModuleID)
-                    .Select(rm => rm);
 
                 if (userModule.IsActive ||
-                    roleModules.Any(rm => roles.Any(rl => rl.RoleID == rm.RoleSystem.Role.RoleID)))
+                    userModule.Module.RoleModules.Any(rm => roles.Any(r => r.RoleID == rm.RoleSystem.Role.RoleID
+                        && rm.IsActive)) ||
+                    userModule.Module.Modules
+                        .Any(m => m.UserModules.Any(um => um.UserSystem.User.UserID == userModule.UserSystem.User.UserID 
+                            && (um.IsActive || um.UserFunctions.Any(uf=>uf.IsActive)))) ||
+                    userModule.Module.Modules
+                        .Any(m => m.RoleModules.Any(rm => roles.Any(r=>r.RoleID == rm.RoleSystem.Role.RoleID 
+                            && (rm.IsActive || rm.RoleFunctions.Any(rf=>rf.IsActive) )))) ||
+                    user.UserName == "Admin"
+                    )
                 {
                     var module = userModule.Module;
                     Menu moduleMenu = new Menu();
@@ -284,14 +289,13 @@ namespace THOK.Authority.Bll.Service.Authority
             HashSet<Fun> moduleFunctionSet = new HashSet<Fun>();
             foreach (var userFunction in userFunctions)
             {
-                var roles = from ur in user.UserRoles
-                            select ur.Role;
-                bool bResult = roles.Any(rl => rl.RoleSystems.Any(rs => rs.IsActive
-                    && rs.RoleModules.Any(rm => rm.IsActive
-                        && rm.Module.ModuleID == module.ModuleID
-                        && rm.RoleFunctions.Any(rf => rf.IsActive
-                            && rf.Function.FunctionID == userFunction.Function.FunctionID))));
-
+                var roles = user.UserRoles.Select(ur=>ur.Role);
+                bool bResult = userFunction.Function.RoleFunctions.Any(
+                        rf=> roles.Any(
+                            r=>r.RoleID == rf.RoleModule.RoleSystem.Role.RoleID 
+                               && rf.IsActive
+                         )
+                    );
                 moduleFunctionSet.Add(new Fun()
                     {
                         funid = userFunction.Function.FunctionID.ToString(),
@@ -318,13 +322,18 @@ namespace THOK.Authority.Bll.Service.Authority
                 var childModule = userModule.Module;
                 if (childModule != module)
                 {
-                    var roles = from ur in userSystem.User.UserRoles
-                                select ur.Role;
-                    var roleModules = queryRoleModule.Where(rm => rm.RoleSystem.System.SystemID == userSystem.System.SystemID
-                        && rm.Module.ModuleID == userModule.Module.ModuleID)
-                        .Select(rm => rm);
+                    var roles = userSystem.User.UserRoles.Select(ur=> ur.Role);
                     if (userModule.IsActive ||
-                        roleModules.Any(rm => roles.Any(rl => rl.RoleID == rm.RoleSystem.Role.RoleID)))
+                        userModule.Module.RoleModules.Any(rm => roles.Any(r => r.RoleID == rm.RoleSystem.Role.RoleID
+                            && rm.IsActive)) ||
+                        userModule.Module.Modules
+                            .Any(m => m.UserModules.Any(um => um.UserSystem.User.UserID == userModule.UserSystem.User.UserID
+                                && (um.IsActive || um.UserFunctions.Any(uf => uf.IsActive)))) ||
+                        userModule.Module.Modules
+                            .Any(m => m.RoleModules.Any(rm => roles.Any(r => r.RoleID == rm.RoleSystem.Role.RoleID
+                                && (rm.IsActive || rm.RoleFunctions.Any(rf => rf.IsActive))))) ||
+                        userModule.UserSystem.User.UserName == "Admin"
+                        )
                     {
                         Menu childMenu = new Menu();
                         childMenu.ModuleID = childModule.ModuleID.ToString();
@@ -452,7 +461,7 @@ namespace THOK.Authority.Bll.Service.Authority
                     User = user,
                     City = city,
                     System = system,
-                    IsActive = false
+                    IsActive = user.UserName == "Admin"
                 };
                 UserSystemRepository.Add(us);
                 UserSystemRepository.SaveChanges();
@@ -475,7 +484,7 @@ namespace THOK.Authority.Bll.Service.Authority
                         UserModuleID = Guid.NewGuid(),
                         UserSystem = userSystem,
                         Module = module,
-                        IsActive = false
+                        IsActive = userSystem.User.UserName == "Admin"
                     };
                     UserModuleRepository.Add(um);
                     UserModuleRepository.SaveChanges();
@@ -498,7 +507,7 @@ namespace THOK.Authority.Bll.Service.Authority
                         UserFunctionID = Guid.NewGuid(),
                         UserModule = userModule,
                         Function = function,
-                        IsActive = false
+                        IsActive = userModule.UserSystem.User.UserName == "Admin"
                     };
                     UserFunctionRepository.Add(uf);
                     UserFunctionRepository.SaveChanges();

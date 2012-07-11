@@ -29,8 +29,8 @@ namespace Authority.Controllers
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             var jmenus = serializer.Deserialize<Menu[]>(JsonHelper.getJsonMenu());
 
-            //var menus = ModuleService.GetUserMenus(User.Identity.Name,this.GetCookieValue("cityid"),this.GetCookieValue("systemid"));          
-            return Json(jmenus,"text",JsonRequestBehavior.AllowGet);
+            var menus = ModuleService.GetUserMenus(User.Identity.Name,this.GetCookieValue("cityid"),this.GetCookieValue("systemid"));          
+            return Json(menus,"text",JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]

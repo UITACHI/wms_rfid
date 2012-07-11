@@ -1,0 +1,164 @@
+﻿<script type="text/javascript">
+    function treeClick() {
+        var treeRow = $('#warehouseTree').tree('getSelected');
+        $('#lblTree').text(treeRow.text);        
+    }
+</script>
+<style type="text/css">
+    html, body
+    {
+        font: 100% 微软雅黑, 宋体, 新宋体;
+        margin: 0; /* 最好将 body 元素的边距和填充设置为 0 以覆盖不同的浏览器默认值 */
+        padding: 0;
+        text-align: center; /* 在 IE 5* 浏览器中，这会将容器居中。文本随后将在 #container 选择器中设置为默认左对齐 */
+        height: 100%; /*这里将高度设置为100%是这个布局实现自适应高度的关键，只有这里设置了高度，下面div的高度设置才起作用*/
+    }
+    #layout
+    {
+        width: 100%;
+        height: 100%;
+        margin: 0px auto;
+    }
+    #header
+    {
+        height: 6%;
+    }
+    #container
+    {
+        height: 94%;
+    }
+    #container #sidebar
+    {
+        height: 100%;
+        width: 28%;
+        float: left;
+        overflow: scroll;
+        margin: 0px 0px 0px 0xp;
+    }
+    #container #main
+    {
+        height: 100%;
+        width: 72%;
+        float: left;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    .clearfloat
+    {
+        /* 此类应当放在 div 或 break 元素上，而且该元素应当是完全包含浮动的容器关闭之前的最后一个元素 */
+        clear: both;
+        height: 0;
+        font-size: 1px;
+        line-height: 0px;
+    }
+</style>
+<div id="layout">   
+    <div id="container">
+        <div id="sidebar">
+            <ul id="warehouseTree" style="text-align: left; height:350px;" class="easyui-tree" checkbox="true" 
+                onclick="treeClick()" url='/Module/GetUserSystemDetails?userID=2ee1d3d4-1ff2-4740-b777-7fbe2abe31f6&cityID=ef3751ec-0249-4214-8a3f-7bb71cf00a9c&systemID=123f219d-7a38-4938-99fd-4b5eacbb6c14'>
+            </ul>
+        </div>
+        <div id="main">
+            <div id="top" style="text-align: left; font-size: 12px; font-weight: lighter; font-family: 宋体">
+                当前选中的节点：<label id="lblTree"></label></div>
+            <div id="waredlg"style="margin: 10px 0px 0px 30px;">
+                <form id="warefm" action="/Module/Create/" method="post">
+                <fieldset style="width: 520px; height: 260px">
+                    <legend>&nbsp;仓库</legend>
+                    <table>
+                        <tr>
+                            <td>
+                                仓库编码:
+                            </td>
+                            <td>
+                                <input name="txtWhCode" type="text" id="txtWhCode" class="easyui-validatebox" required="true"
+                                    style="width: 140px;" />
+                            </td>
+                            <td>
+                                仓库名称:
+                            </td>
+                            <td>
+                                <input name="txtWhName" type="text" id="txtWhName" class="easyui-validatebox" required="true"
+                                    style="width: 140px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                仓库简称:
+                            </td>
+                            <td>
+                                <input name="txtShortName" type="text" id="txtShortName" style="width: 140px;" />
+                            </td>
+                            <td class="tdTitle">
+                                仓库类型:
+                            </td>
+                            <td>
+                                <select name="ddlType" id="ddlType" disabled="disabled">
+                                    <option selected="selected" value="0">主库区</option>
+                                    <option value="1">暂存区</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                仓库面积:
+                            </td>
+                            <td>
+                                <input name="txtArea" type="text" value="0.00" id="txtArea" class="TextBoxRight"
+                                    style="width: 140px;" /><span style="font-size: 13pt; font-family: 宋体">㎡</span>
+                            </td>
+                            <td class="tdTitle">
+                                仓库容量:
+                            </td>
+                            <td>
+                                <input name="txtCapacity" type="text" value="0" id="txtCapacity" class="TextBoxRight"
+                                    style="width: 140px;" /><span style="font-size: 9pt">件</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdTitle">
+                                默认单位:
+                            </td>
+                            <td>
+                                <input name="txtDEFAULTUNIT" type="text" value="002" id="txtDEFAULTUNIT" class="myinput"
+                                    style="width: 48px;" />
+                                <input name="txtUNITNAME" type="text" id="txtUNITNAME" class="myinput" style="width: 52px;" />
+                                <input id="Button2" class="ButtonBrowse" type="button" value="..." />
+                            </td>
+                            <td class="tdTitle">
+                                是否启用:
+                            </td>
+                            <td>
+                                <select name="ddlActive" id="ddlActive">
+                                    <option selected="selected" value="1">启用</option>
+                                    <option value="0">未启用</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdTitle">
+                                备注:
+                            </td>
+                            <td colspan="3">
+                                <textarea name="txtMemo" style="width: 400px; height: 50px" id="txtMemo" class="MultilineTextbox"
+                                    style="width: 376px;"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 35px; text-align: center;" colspan="4">
+                                &nbsp;&nbsp;
+                                <input type="submit" name="btnSave" value="保存" id="btnSave" class="button" />&nbsp;
+                                &nbsp;&nbsp;
+                                <input type="submit" name="btnDelete" value="删除" id="btnDelete" class="button" />
+                            &nbsp; &nbsp;
+                        </tr>
+                    </table>
+                </fieldset>
+                </form>
+            </div>
+        </div>
+        <br class="clearfloat" />
+    </div>
+</div>

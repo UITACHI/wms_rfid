@@ -1,0 +1,20 @@
+<script type="text/javascript">
+    function deleteClick() {
+        var row = $('#details').treegrid('getSelected');
+        if (row) {
+            $('#dlg').dialog('open').dialog('setTitle', '删除');
+            $('#fm .easyui-validatebox').validatebox({
+                required: false
+            });
+            $('#cg').combogrid({
+                hasDownArrow: false
+            });
+            $('form input').attr("disabled", "disabled");
+            $('#fm').form('load', row);
+            $('#cg').combogrid('setValue', row.SystemID).combo('setText', row.SystemName);
+            url = '/Module/Delete/?ModuleID=' + row.ModuleID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>
