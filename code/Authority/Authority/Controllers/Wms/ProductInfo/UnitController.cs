@@ -38,5 +38,16 @@ namespace Authority.Controllers.ProductInfo
             return Json(unit, "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /Unit/Create/
+
+        [HttpPost]
+        public ActionResult Create(Unit unit)
+        {
+            bool bResult = UnitService.Add(unit);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

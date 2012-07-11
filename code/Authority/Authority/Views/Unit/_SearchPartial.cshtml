@@ -14,8 +14,8 @@
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.SupplierCode = $('#SupplierCode').val();
-        queryParams.SupplierName = $('#SupplierName').val();
+        queryParams.UnitCode = $('#UnitCode').val();
+        queryParams.UnitName = $('#UnitName').val();
         queryParams.IsActive = $('#isActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({

@@ -36,7 +36,16 @@ namespace THOK.Authority.Bll.Service.Wms
 
         public new bool Add(Unit unit)
         {
-            throw new NotImplementedException();
+            var un = new Unit();
+            un.UnitCode = unit.UnitCode;
+            un.UnitName = unit.UnitName;
+            un.COUNT = unit.COUNT;
+            un.IsActive = unit.IsActive;
+            un.UpdateTime = DateTime.Now;
+
+            UnitRepository.Add(un);
+            UnitRepository.SaveChanges();
+            return true;
         }
 
         public bool Delete(string UnitCode)
