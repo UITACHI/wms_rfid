@@ -4,6 +4,7 @@
         $('#ff').combogrid({
             width: 129,
             panelWidth: 450,
+            required: true,
             url: '/System/Details/?page=1&rows=1',
             idField: 'systemId',
             textField: 'SystemName',
@@ -20,6 +21,7 @@
         $('#fw').combogrid({
             width: 129,
             panelWidth: 450,
+            required: true,
             url: '/System/Details/?page=1&rows=1',
             idField: 'systemId',
             textField: 'SystemName',
@@ -36,6 +38,7 @@
         $('#fx').combogrid({
             width: 129,
             panelWidth: 450,
+            required: true,
             url: '/System/Details/?page=1&rows=1',
             idField: 'systemId',
             textField: 'SystemName',
@@ -52,6 +55,7 @@
         $('#fs').combogrid({
             width: 129,
             panelWidth: 450,
+            required: true,
             url: '/System/Details/?page=1&rows=1',
             idField: 'systemId',
             textField: 'SystemName',
@@ -117,35 +121,35 @@
 	            <form id="fm" method="post" novalidate>
                     <table >
                       <tr>
-                        <td>商品编码</td>
+                        <td>商品</td>
                         <td style="padding-right:30px;"><input name="RoleName" class="easyui-validatebox" required="true"></td>
                         <td>助记码</td>
                         <td style="padding-right:30px;"><input name="RoleName"></td>
-                        <td>计量单位系列编码</td>
+                        <td>计量单位系列</td>
                         <td><input id="ff"  ></td>
                       </tr>
                       <tr>
                         <td>商品名称</td>
                         <td><input name="RoleName class="easyui-validatebox" required="true"></td>
                         <td>购入价</td>
-                        <td><input name="RoleName"></td>
-                        <td>缺省计量单位编码</td>
+                        <td><input  class="easyui-numberbox" min="0" max="9" precision="2"/></td>
+                        <td>缺省计量单位</td>
                         <td><input id="fw"  ></td>
                       </tr>
                       <tr>
                         <td>统一编码</td>
                         <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
                         <td>批发价</td>
-                        <td><input name="RoleName"></td>
-                        <td>商品品牌编码</td>
+                        <td><input  class="easyui-numberbox" min="0" max="9" precision="2"/></td>
+                        <td>商品品牌</td>
                         <td><input id="fs" ></td>
                       </tr>
                       <tr>
-                        <td>自定义编码</td>
+                        <td>自定义</td>
                         <td><input name="RoleName"></td>
                         <td>零售价</td>
-                        <td><input name="RoleName"></td>
-                        <td>ABC类型编码</td>
+                        <td><input  class="easyui-numberbox" min="0" max="9" precision="2"/></td>
+                        <td>ABC类型</td>
                         <td><select  class="easyui-combobox"  editable="false"  panelHeight="70" style="width: 129px;" required="true">
 		                        <option value="A">A</option>
 		                        <option value="B">B</option>
@@ -154,11 +158,11 @@
                         </td>
                       </tr>
                       <tr>
-                        <td>厂商编码</td>
+                        <td>厂商</td>
                         <td><input id="fx"></td>
                         <td>成本价</td>
-                        <td><input name="RoleName"></td>
-                        <td>商品类型编码</td>
+                        <td><input  class="easyui-numberbox" min="0" max="9" precision="2"/></td>
+                        <td>商品类型</td>
                         <td>
                           <select   class="easyui-combobox"  editable="false"  panelHeight="120" style="width: 129px;" required="true">
 		                       <option value="A">烤烟型</option>
@@ -204,7 +208,7 @@
 		                        <option value="B">否</option>
 	                        </select>
                         </td>
-                        <td>商品价类编码</td>
+                        <td>商品价类</td>
                         <td>
                            <select id="cc"  class="easyui-combobox"  editable="false"  panelHeight="120" style="width: 129px;" required="true">
 		                       <option value="A">一类</option>
@@ -280,7 +284,7 @@
 	                        </select>
                         </td>
                         <td>更新时间</td>
-                        <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
+                        <td ><input style="width:129px;" class="easyui-datebox" /></td>
                       </tr>
                         <td>描述:</td>
                         <td><textarea name="Description" style="height: 50px;width:127px;"></textarea></td>
