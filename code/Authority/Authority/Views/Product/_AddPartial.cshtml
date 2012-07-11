@@ -4,7 +4,7 @@
         $('#cc').combo({
             required: true,
             editable: false,
-            panelHeight: 45
+            panelHeight: 70
         });
     })
 
@@ -50,57 +50,178 @@
 </script>
 
     <div id="dlg" class="easyui-dialog" modal="true" 
-        style="width:800px;height:500px;padding:2px 2px"
+        style="width:710px;height:420px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
                     <table >
                       <tr>
-                        <td>产品代码</td>
-                        <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
-                        <td>产品名称</td>
-                        <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
-                        <td>产品简称</td>
-                        <td><input name="RoleName"></td>
-                      </tr>
-                      <tr>
-                        <td>类别编码</td>
-                        <td><input name="RoleName"></td>
-                      </tr>
-                      <tr>
-                        <td>类别名称</td>
-                        <td><input name="RoleName"></td>
-                        <td>供应商编码</td>
-                        <td><input name="RoleName"></td>
-                      </tr>
-                      <tr>
-                        <td>供应商名称</td>
-                        <td><input name="RoleName"></td>
-                        <td>条形码</td>
-                        <td><input name="RoleName"></td>
-                      </tr>
-                      <tr>
+                        <td>商品编码</td>
+                        <td style="padding-right:30px;"><input name="RoleName" class="easyui-validatebox" required="true"></td>
                         <td>助记码</td>
+                        <td style="padding-right:30px;"><input name="RoleName"></td>
+                        <td>计量单位系列编码</td>
+                        <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td>商品名称</td>
+                        <td><input name="RoleName class="easyui-validatebox" required="true""></td>
+                        <td>购入价</td>
                         <td><input name="RoleName"></td>
-                        <td>单位编码</td>
+                        <td>缺省计量单位编码</td>
+                        <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td>统一编码</td>
+                        <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
+                        <td>批发价</td>
+                        <td><input name="RoleName"></td>
+                        <td>商品品牌编码</td>
+                        <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                      <tr>
+                        <td>自定义编码</td>
+                        <td><input name="RoleName"></td>
+                        <td>零售价</td>
+                        <td><input name="RoleName"></td>
+                        <td>ABC类型编码</td>
+                        <td><select id="cc"  class="easyui-combobox" style="width: 127px">
+		                        <option value="A">A</option>
+		                        <option value="B">B</option>
+                                <option value="C">C</option>
+	                        </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>厂商编码</td>
+                        <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
+                        <td>成本价</td>
+                        <td><input name="RoleName"></td>
+                        <td>商品类型编码</td>
+                        <td>
+                          <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">烤烟型</option>
+		                        <option value="B">混合型</option>
+                                <option value="C">外香型</option>
+                                <option value="A">雪茄型</option>
+		                        <option value="B">雪茄烟</option>
+	                        </select>
+                        
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>条形码_件</td>
+                        <td><input name="RoleName"></td>
+                        <td>滤嘴</td>
+                        <td>
+                             <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">是</option>
+		                        <option value="B">否</option>
+	                        </select>
+                        </td>
+                        <td>包装类型编码</td>
+                        <td>
+                          <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">条盒硬盒</option>
+		                        <option value="B">条盒软盒</option>
+                                <option value="C">条包硬盒</option>
+                                <option value="A">条包软盒</option>
+		                        <option value="B">铁筒</option>
+                                <option value="C">铁盒</option>
+                                <option value="A">塑盒</option>
+		                        <option value="B">其他</option>
+	                        </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>条形码_条</td>
+                        <td><input name="RoleName"></td>
+                        <td>新品</td>
+                        <td>
+                                           <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">是</option>
+		                        <option value="B">否</option>
+	                        </select>
+                        </td>
+                        <td>商品价类编码</td>
+                        <td>
+		                       <option value="A">一类</option>
+		                        <option value="B">二类</option>
+                                <option value="C">三类</option>
+                                <option value="A">四类</option>
+		                        <option value="B">五类</option>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>条形码_包</td>
+                        <td><input name="RoleName"></td>
+                        <td>名优烟</td>
+                        <td>
+                               <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">是</option>
+		                        <option value="B">否</option>
+	                        </select>
+                        </td>
+                        <td>商品统计类型</td>
                         <td><input name="RoleName"></td>
                       </tr>
                       <tr>
-                        <td>单位名称</td>
-                        <td><input name="RoleName"></td>
-                        <td>件单位</td>
+                        <td>重点品牌</td>
+                        <td>
+                              <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">是</option>
+		                        <option value="B">否</option>
+	                        </select>
+                        
+                        </td>
+                        <td>罚没烟</td>
+                        <td>
+                             <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">是</option>
+		                        <option value="B">不是</option>
+	                        </select>
+                        </td>
+                        <td>条形码_一号工程</td>
                         <td><input name="RoleName"></td>
                       </tr>
                       <tr>
-                        <td>条单位</td>
-                        <td><input name="RoleName"></td>
-                        <td>储位存量上限</td>
-                        <td><input name="RoleName"></td>
+                        <td>省重点品牌</td>
+                        <td>
+                           <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">是</option>
+		                        <option value="B">否</option>
+	                        </select>
+                        </td>
+                        <td>异形烟</td>
+                        <td>
+                        <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">是</option>
+		                        <option value="B">否</option>
+	                        </select>
+                       </td>
+                        <td>产地所属区域</td>
+                        <td>
+                                <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">省内烟</option>
+		                        <option value="B">省外烟</option>
+                                <option value="B">进口烟</option>
+	                        </select>
+                        </td>
                       </tr>
                       <tr>
-                        <td>备注:</td>
-                        <td><textarea name="Description" style="width: 100px; height: 50px"></textarea></td>
+                      <td>是否可用</td>
+                        <td>
+                        <select id="cc"  class="easyui-combobox" style="width: 127px">
+		                       <option value="A">可用</option>
+		                        <option value="B">不可用</option>
+	                        </select>
+                        </td>
+                        <td>更新时间</td>
+                        <td><input name="RoleName" class="easyui-validatebox" required="true"></td>
+                      </tr>
+                        <td>描述:</td>
+                        <td><textarea name="Description" style="height: 50px;width:127px;"></textarea></td>
                       </tr>
                     </table>
 	            </form>
