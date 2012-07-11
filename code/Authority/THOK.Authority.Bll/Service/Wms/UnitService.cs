@@ -64,7 +64,15 @@ namespace THOK.Authority.Bll.Service.Wms
 
         public bool Save(Unit unit)
         {
-            throw new NotImplementedException();
+            var un = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == unit.UnitCode);
+            un.UnitCode = unit.UnitCode;
+            un.UnitName = unit.UnitName;
+            un.COUNT = unit.COUNT;
+            un.IsActive = unit.IsActive;
+            un.UpdateTime = DateTime.Now;
+
+            UnitRepository.SaveChanges();
+            return true;
         }
 
         #endregion
