@@ -18,9 +18,9 @@
                     hide('#c');
                     initMenu();
                     $('#welcome').html('欢迎：' + data.Identity.Name);
-                    init_changecity(data.Identity.Name);
-                    init_changesystem(data.Identity.Name);
-                    init_changeserver(data.Identity.Name);
+                    //init_changecity(data.Identity.Name);
+                    //init_changesystem(data.Identity.Name);
+                    //init_changeserver(data.Identity.Name);
                 }
             }
             else {

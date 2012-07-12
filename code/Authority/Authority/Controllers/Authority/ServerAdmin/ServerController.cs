@@ -64,5 +64,14 @@ namespace Authority.Controllers.ServerAdmin
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        // GET: /Server/GetDetailsServer/
+        public ActionResult GetDetailsServer()
+        {
+            string cityID = this.GetCookieValue("cityid");
+            string serverID = this.GetCookieValue("serverid");
+            var server = ServerService.GetDetails(cityID, serverID);
+            return Json(server, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

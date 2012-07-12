@@ -1,16 +1,20 @@
 ﻿<script type="text/javascript">
-    $(function () {
+  $(function () {
         $('#changeCity').click(function () {
             $('#cg-changecity').combogrid('setValue', '').combo('setText', '');
             $('#dlg-changecity').dialog('open').dialog('setTitle', '切换地市');
         });
     })
 
-    function init_changecity(username) {
+    function changeCityClick() {
+        init_changecity();
+    }
+
+    function init_changecity() {
         $('#cg-changecity').combogrid({
             width: 180,
             panelWidth: 450,
-            url: '/City/Details/?page=1&rows=1000&username=' + username,
+            url: '/City/GetDetailsCity/',
             idField: 'CityID',
             textField: 'CityName',
             mode: 'local',

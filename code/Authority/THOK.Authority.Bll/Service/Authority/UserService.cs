@@ -132,8 +132,10 @@ namespace THOK.Authority.Bll.Service.Authority
         {
             string url = "";
             string logOnKey = "";
-
-            url = GetUrlFromCity(new Guid(cityId));
+            if (string.IsNullOrEmpty(serverId))
+            {
+                url = GetUrlFromCity(new Guid(cityId), out serverId);
+            }
 
             if (string.IsNullOrEmpty(password))
             {
@@ -145,13 +147,14 @@ namespace THOK.Authority.Bll.Service.Authority
             if (!string.IsNullOrEmpty(serverId))
             {
                 url = GetUrlFromServer(new Guid(serverId)); 
-            }                       
+            }
             var key = new UserLoginInfo()
                     {
                         CityID = cityId,
                         SystemID = systemId,
                         UserName = userName,
-                        Password = password
+                        Password = password,
+                        ServerID = serverId
                     };
             logOnKey = Des.EncryptDES((new JavaScriptSerializer()).Serialize(key),"12345678");
             url += @"/Account/LogOn/?LogOnKey=" + Uri.EscapeDataString(logOnKey);
@@ -181,11 +184,13 @@ namespace THOK.Authority.Bll.Service.Authority
             return System.Text.Encoding.ASCII.GetString(data);
         }
 
-        private string GetUrlFromCity(Guid gCityID)
+        private string GetUrlFromCity(Guid gCityID,out string serverId)
         {
             IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.City> queryCity = CityRepository.GetQueryable();
             var city = queryCity.Single(c => c.CityID == gCityID);
-            return city.Servers.OrderBy(s => s.ServerID).First().Url;                
+            var server = city.Servers.OrderBy(s=>s.ServerID).First();
+            serverId = server.ServerID.ToString();
+            return server.Url;                
         }
 
         private string GetUrlFromServer(Guid gServerID)

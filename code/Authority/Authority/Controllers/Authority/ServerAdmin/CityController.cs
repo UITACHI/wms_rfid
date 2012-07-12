@@ -31,6 +31,7 @@ namespace Authority.Controllers.ServerAdmin
             string cityName = collection["CityName"] ?? "";
             string description = collection["Description"] ?? "";
             string isActive = collection["IsActive"] ?? "";
+            string username = collection["username"] ?? "";
             var users = CityService.GetDetails(page, rows, cityName, description,isActive);
             return Json(users, "text", JsonRequestBehavior.AllowGet);
         }
@@ -61,5 +62,16 @@ namespace Authority.Controllers.ServerAdmin
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        // GET: /City/GetDetailsCity/
+        public ActionResult GetDetailsCity()
+        {
+            string cityId = this.GetCookieValue("cityid");
+            string userName = this.User.Identity.Name;
+            string systemId = this.GetCookieValue("systemid");
+            var users = CityService.GetDetails(userName, cityId, systemId);
+            return Json(users, "text", JsonRequestBehavior.AllowGet);
+        }
+        
     }
 }

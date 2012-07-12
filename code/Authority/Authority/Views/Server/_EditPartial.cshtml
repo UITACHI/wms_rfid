@@ -18,7 +18,7 @@
             } else {
                 $('#cc').combo('setValue', false).combo('setText', row.IsActive);
             }
-            url = '/Server/Edit/?ServerID=' + row.ServerID;
+            url = '/Server/Edit/?ServerID=' + row.ServerID;            
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }

@@ -10,6 +10,10 @@ namespace THOK.Authority.Bll.Interfaces.Authority
 
         bool Delete(string serverID);
 
-        bool Save(string serverID, string serverName, string description, string url, bool isActive,string cityID);  
+        bool Save(string serverID, string serverName, string description, string url, bool isActive,string cityID);
+
+        object GetServerById(string serverID);
+
+        object GetDetails(string cityID,string serverID);
     }
 }

@@ -2,23 +2,8 @@
     var userID;
     var cityID;
     var systemID;
-    function permissionadminClick() {
-        $('#userRoleSystem').tree({ url: '' });
-        $('#userRoleSystem').tree('reload');
-        $('#cgCity').combogrid('clear');
-        $('#cgSystem').combogrid('clear');
-        $('#cgCity').combogrid('grid').datagrid('reload');
-        $('#cgSystem').combogrid('grid').datagrid('reload');
-        var row = $('#details').datagrid('getSelected');
-        if (row) {
-            $('#dlg-permissionadmin').dialog('open').dialog('setTitle', '用户权限编辑：' + row.UserName);
-            userID = row.UserID;
-        } else {
-            $.messager.confirm('系统提示', '没有选择行！');
-        }
-    };
 
-    $(function () {
+    function addLoad() {
         $('#cgCity ').combogrid({
             width: 120,
             panelWidth: 450,
@@ -35,9 +20,7 @@
 					{ field: 'IsActive', title: '状态', align: 'left', width: 30 }
 				]]
         });
-    });
 
-    $(function () {
         $('#cgSystem').combogrid({
             width: 120,
             panelWidth: 450,
@@ -54,7 +37,22 @@
 					{ field: 'Status', title: '状态', align: 'left', width: 30 }
 				]]
         });
-    });
+    }
+
+    function permissionadminClick() {
+        $('#userRoleSystem').tree({ url: '' });
+        $('#userRoleSystem').tree('reload');
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            addLoad();
+            $('#cgCity').combogrid('clear');
+            $('#cgSystem').combogrid('clear');
+            $('#dlg-permissionadmin').dialog('open').dialog('setTitle', '用户权限编辑：' + row.UserName);
+            userID = row.UserID;
+        } else {
+            $.messager.confirm('系统提示', '没有选择行！');
+        }
+    };
 
     function query() {
         var cID = $('#cgCity').combogrid('getValue');

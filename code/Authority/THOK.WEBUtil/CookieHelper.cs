@@ -33,7 +33,13 @@ namespace THOK.WebUtil
 
         public static string GetCookieValue(this Controller c, string key)
         {
-            return c.HttpContext.Request.Cookies[key].Value;
+            string strValue = string.Empty;
+            var cookie = c.HttpContext.Request.Cookies[key];
+            if (cookie != null)
+            {
+                strValue = cookie.Value;
+            }
+            return strValue;
         }
     }
 }

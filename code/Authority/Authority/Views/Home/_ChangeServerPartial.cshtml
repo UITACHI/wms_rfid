@@ -6,11 +6,15 @@
         });
     })
 
-    function init_changeserver(username) {
+    function changeServerClick() {
+        init_changeserver();
+    }
+
+    function init_changeserver() {
         $('#cg-changeserver').combogrid({
             width: 180,
             panelWidth: 450,
-            url: '/Server/Details/?page=1&rows=1000&username=' + username,
+            url: '/Server/GetDetailsServer/',
             idField: 'ServerID',
             textField: 'ServerName',
             mode: 'local',
@@ -46,7 +50,6 @@
             }
         });
     }
-
 </script>
 
 <div id="dlg-changeserver" class="easyui-dialog" modal="true" style="width:290px;height:140px;padding:2px 2px"

@@ -49,6 +49,7 @@ namespace Authority.Controllers
             string password = userLoginInfo.Password;
             string cityId = userLoginInfo.CityID;
             string systemId = userLoginInfo.SystemID;
+            string serverId = userLoginInfo.ServerID;
             bool bResult = UserService.ValidateUser(userName, password)
                 && UserService.ValidateUserPermission(userName, cityId, systemId);
             if (bResult)
@@ -56,6 +57,7 @@ namespace Authority.Controllers
                 FormsService.SignIn(userName, false);
                 this.AddCookie("cityid", cityId);
                 this.AddCookie("systemid", systemId);
+                this.AddCookie("serverid", serverId);
             }
             return new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Home" } });
         }

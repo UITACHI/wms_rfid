@@ -6,11 +6,15 @@
         });
     })
 
-    function init_changesystem(username) {
+    function changeSystemClick() {
+        init_changesystem();
+    }
+
+    function init_changesystem() {
         $('#cg-changesystem').combogrid({
             width: 180,
             panelWidth: 450,
-            url: '/System/Details/?page=1&rows=1000&username=' + username,
+            url: '/System/GetDetailsSystem/',
             idField: 'SystemID',
             textField: 'SystemName',
             mode: 'local',
