@@ -1,5 +1,5 @@
 Enable-Migrations 启用数据迁移版本控制
 Add-Migration
-Update-Database 
+Update-Database
 Update-Database -TargetMigration
 Get-Migrations

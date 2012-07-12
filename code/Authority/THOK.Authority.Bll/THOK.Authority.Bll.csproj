@@ -67,6 +67,7 @@
     <Compile Include="Models\Authority\Fun.cs" />
     <Compile Include="Models\Authority\Menu.cs" />
     <Compile Include="Models\Authority\Tree.cs" />
+    <Compile Include="Models\Authority\UserLoginInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Authority\CityService.cs">
       <SubType>Code</SubType>

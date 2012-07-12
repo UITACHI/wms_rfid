@@ -14,10 +14,11 @@
             }
             $('form input').removeAttr("disabled");
             $('form textarea').removeAttr("disabled");
+            $('#supplierCode').attr("readonly", true);
             $('#cc').combo({
                 hasDownArrow: true
             });
-            url = '/Factory/Edit/';
+            url = '/Supplier/Edit/';
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }

@@ -67,7 +67,7 @@ namespace THOK.WebUtil
                                                     },{'menuid':'7','iconCls':'icon-sys','menuname':'产品信息管理',
 		                                                'children':[
 				                                                {'menuid':'71','menuname':'产品信息管理','iconCls':'icon-nav','url':'/Product/Index'},
-				                                                {'menuid':'72','menuname':'厂商信息管理','iconCls':'icon-nav','url':'/Factory/Index'},
+				                                                {'menuid':'72','menuname':'厂商信息管理','iconCls':'icon-nav','url':'/Supplier/Index'},
                                                                 {'menuid':'73','menuname':'产品品牌管理','iconCls':'icon-nav','url':'/Brand/'},
                                                                 {'menuid':'73','menuname':'计量单位管理','iconCls':'icon-nav','url':'/Unit/'},
                                                                 {'menuid':'73','menuname':'单位系列管理','iconCls':'icon-nav','url':'/UnitList/'}

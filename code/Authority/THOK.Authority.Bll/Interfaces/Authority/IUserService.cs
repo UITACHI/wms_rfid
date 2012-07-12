@@ -18,7 +18,7 @@ namespace THOK.Authority.Bll.Interfaces.Authority
 
         bool ValidateUserPermission(string userName, string cityId, string systemId);
 
-        string GetLogOnUrl(System.Security.Principal.IPrincipal User, string cityId, string systemId, string serverId);
+        string GetLogOnUrl(string userName, string password, string cityId, string systemId, string serverId);
 
         string FindUsersForFunction(string strFunctionID);
 
