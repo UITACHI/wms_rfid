@@ -10,7 +10,7 @@
         $('#cg-changesystem').combogrid({
             width: 180,
             panelWidth: 450,
-            url: '/System/Details/?page=1&rows=1&username=' + username,
+            url: '/System/Details/?page=1&rows=1000&username=' + username,
             idField: 'SystemID',
             textField: 'SystemName',
             mode: 'local',
@@ -27,6 +27,7 @@
 
     function changeToSystem() {
         $('#fm-changesystem').form('submit', {
+            url: '/Account/ChangeServer/?FunID=EEB02601-9BF6-412F-A63E-92857BF38638',
             onSubmit: function () {
                 return $(this).form('validate');
             },
@@ -38,21 +39,20 @@
                         msg: result.msg
                     });
                     $('#dlg-changesystem').dialog('close');
-                    location.href = result.href;
+                    location.href = result.data;
                 } else {
                     $.messager.confirm('系统提示', result.msg);
                 }
             }
         });          
     }
-
 </script>
 
 <div id="dlg-changesystem" class="easyui-dialog" modal="true" style="width:290px;height:140px;padding:2px 2px"
 		closed="true" buttons="#dlg-buttons-changesystem">
     <div class="easyui-layout" fit="true">
         <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
-            <form id="fm-changesystem" action="/Account/ChangeServer/" method="post"> 
+            <form id="fm-changesystem" method="post"> 
                 <table width="250">
                   <tr>
 				        <td>系统</td>

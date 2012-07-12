@@ -5,6 +5,7 @@ using THOK.WebUtil;
 using Microsoft.Practices.Unity;
 using THOK.Authority.Bll.Interfaces.Authority;
 using THOK.Authority.Bll.Models.Authority;
+using System;
 
 namespace Authority.Controllers
 {
@@ -12,9 +13,23 @@ namespace Authority.Controllers
     {
         [Dependency]
         public IModuleService ModuleService { get; set; }
+        [Dependency]
+        public ICityService CityService { get; set; }
+        [Dependency]
+        public IServerService ServerService { get; set; }
+        [Dependency]
+        public ISystemService SystemService { get; set; }
 
         public ActionResult Index()
         {
+            //string cityId = this.GetCookieValue("cityid");
+            //string serverId = this.GetCookieValue("serverId");
+            //string systemId = this.GetCookieValue("systemId");
+
+            //ViewBag.CityName = CityService.GetSingle(c => c.CityID == new Guid(cityId)).CityName;
+            //ViewBag.ServerName = ServerService.GetSingle(s => s.ServerID == new Guid(serverId)).ServerName;
+            //ViewBag.SystemName = SystemService.GetSingle(s => s.SystemID == new Guid(systemId)).SystemName;
+
             return View();
         }
 
