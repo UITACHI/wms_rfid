@@ -671,6 +671,8 @@
     <Content Include="Views\Brand\_DeletePartial.cshtml" />
     <Content Include="Views\Brand\_EditPartial.cshtml" />
     <Content Include="Views\Brand\_SearchPartial.cshtml" />
+    <Content Include="Views\Brand\_SupplierPartial.cshtml" />
+    <Content Include="Views\Brand\_SupplierSearchPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
