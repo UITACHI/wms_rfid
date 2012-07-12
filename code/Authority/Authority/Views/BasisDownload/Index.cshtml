@@ -1,0 +1,31 @@
+﻿<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
+<div region="center" split="true"  border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
+    <table id="details" class="easyui-datagrid" url="/Company/Details/" border="false" singleSelect="true"
+        fit="true" toolbar="#tool"  pagination="true" rownumbers="true" >
+        <thead>
+            <tr>
+                <th field="ID" hidden="true" width="80" >公司ID</th>
+                <th field="CompanyCode" width="75" >公司编码</th>
+                <th field="CompanyName" width="180">公司名称</th>
+                <th field="CompanyType" width="80">公司类型</th>
+                <th field="ParentCompanyID" hidden="true" width="60">上级ID</th>
+                <th field="ParentCompanyName" width="180" >上级名称</th>
+                <th field="UniformCode" width="65" hidden="true">统一编码</th>
+                <th field="Description" width="65" hidden="true">描述</th> 
+                <th field="WarehouseSpace" width="75" >仓库面积</th>
+                <th field="WarehouseCount" width="75">仓库个数</th>
+                <th field="WarehouseCapacity" width="75">仓库容量</th>
+                <th field="SortingCount" width="75">分拣线数</th>
+                <th field="IsActive" width="75" >状态</th>
+                <th field="UpdateTime" width="125">更新时间</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+ 
+
+
