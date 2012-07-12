@@ -11,7 +11,7 @@
                 if (!data.Identity.IsAuthenticated) {
                     clearMenu();
                     $('#login-bg').addClass("login");
-                    show('#c',350,350);
+                    show('#c', 350, 350);
                     $('#dlg-logon').dialog('open');
                 }
                 else {
@@ -38,8 +38,6 @@
             menus_root = data[0];
             initMainMenu(menus_root);
             initLeftMenu(menus_root);
-            tabEven();
-            tabMenuEven();
         });
         tabEven();
         tabMenuEven();
@@ -187,7 +185,7 @@
                 title: subtitle,
                 fit: true,
                 width: 'auto',
-                height:'auto',
+                height: 'auto',
                 content: '',
                 closable: closable,
                 icon: icon
@@ -206,8 +204,9 @@
     }
 
     function tabEven() {
+        $(".tabs-inner").off('dblclick contextmenu');
         /*双击关闭TAB选项卡*/
-        $(".tabs-inner").dblclick(function () {
+        $(".tabs-inner").bind('dblclick', function () {
             var subtitle = $(this).children(".tabs-closable").text();
             $('#tabs').tabs('close', subtitle);
         })
@@ -257,7 +256,7 @@
                 left: e.pageX,
                 top: e.pageY
             });
-
+            $('#mm').css({'z-index': 2147483647});
             return false;
         });
     }
@@ -290,10 +289,12 @@
 
         //当前全屏
         $('#mm-tabFullScreen').click(function (e) {
-            $('#tabs').tabs('getSelected').fullScreen();
-            $('.fullScreen').css({ width: 'auto',height: 'auto' });
             e.preventDefault();
-        })
+            $('#tabs').tabs('resize').fullScreen({ callback: function () {
+                $('#tabs').tabs('resize');
+            }
+            });
+        });
 
         //关闭当前
         $('#mm-tabclose').click(function () {

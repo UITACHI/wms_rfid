@@ -101,6 +101,9 @@
     <Compile Include="Controllers\Wms\ComplexSearch\StockIntoSearchController.cs" />
     <Compile Include="Controllers\Wms\ComplexSearch\StockMoveSearchController.cs" />
     <Compile Include="Controllers\Wms\ComplexSearch\StockOutSearchController.cs" />
+    <Compile Include="Controllers\Wms\InterfaceInfo\BasisDownloadController.cs" />
+    <Compile Include="Controllers\Wms\InterfaceInfo\BasisUploadController.cs" />
+    <Compile Include="Controllers\Wms\InterfaceInfo\SortingRealTimeController.cs" />
     <Compile Include="Controllers\Wms\Inventory\CargospaceController.cs" />
     <Compile Include="Controllers\Wms\Inventory\CigaretteController.cs" />
     <Compile Include="Controllers\Wms\Inventory\distributionController.cs" />
@@ -671,8 +674,8 @@
     <Content Include="Views\Brand\_DeletePartial.cshtml" />
     <Content Include="Views\Brand\_EditPartial.cshtml" />
     <Content Include="Views\Brand\_SearchPartial.cshtml" />
-    <Content Include="Views\Brand\_SupplierPartial.cshtml" />
-    <Content Include="Views\Brand\_SupplierSearchPartial.cshtml" />
+    <Content Include="Views\BasisDownload\Index.cshtml" />
+    <Content Include="Views\BasisUpload\Index.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
@@ -827,6 +830,7 @@
     <Content Include="Views\UnitList\_DeletePartial.cshtml" />
     <Content Include="Views\UnitList\_EditPartial.cshtml" />
     <Content Include="Views\UnitList\_SearchPartial.cshtml" />
+    <Content Include="Views\SortingRealTime\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

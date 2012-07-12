@@ -1,15 +1,16 @@
 ﻿<script type="text/javascript">
     var url;
-    $(function () {
+    function AddLoad() {
         $('#isActive_job').combo({
             required: true,
             editable: false,
             panelHeight: 45,
             panelWidth: 130
         });
-    });
+    }
 
     function addClick() {
+        AddLoad();
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({

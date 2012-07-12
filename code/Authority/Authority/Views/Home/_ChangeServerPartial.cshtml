@@ -10,15 +10,15 @@
         $('#cg-changeserver').combogrid({
             width: 180,
             panelWidth: 450,
-            url: '/System/Details/?page=1&rows=1&username=' + username,
-            idField: 'SystemID',
-            textField: 'SystemName',
+            url: '/Server/Details/?page=1&rows=1000&username=' + username,
+            idField: 'ServerID',
+            textField: 'ServerName',
             mode: 'local',
             editable: false,
             fitColumns: true,
             columns: [[
-					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
-					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'ServerID', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'ServerName', title: '系统名称', align: 'left', width: 40 },
 					{ field: 'Description', title: '描述', align: 'left', width: 30 },
 					{ field: 'Status', title: '状态', align: 'left', width: 30 }
 				]]
@@ -27,6 +27,7 @@
 
     function changeToServer() {
         $('#fm-changeserver').form('submit', {
+            url: '/Account/ChangeServer/?FunID=EEB02601-9BF6-412F-A63E-92857BF38638',
             onSubmit: function () {
                 return $(this).form('validate');
             },
@@ -38,7 +39,7 @@
                         msg: result.msg
                     });
                     $('#dlg-changeserver').dialog('close');
-                    location.href = result.href;
+                    location.href = result.data;
                 } else {
                     $.messager.confirm('系统提示', result.msg);
                 }
@@ -52,12 +53,12 @@
 		closed="true" buttons="#dlg-buttons-changeserver">
     <div class="easyui-layout" fit="true">
         <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >  
-            <form id="fm-changeserver" action="/Home/ChangeServer/" method="post"> 
+            <form id="fm-changeserver" method="post"> 
                 <table width="250">
                   <tr>
 				        <td>服务器</td>
 				        <td colspan="3"align="left">
-                        <input name="SystemId" type="text" id="cg-changeserver" />                               
+                        <input name="ServerId" type="text" id="cg-changeserver" />                               
                         </td>
                   </tr>
                 </table>

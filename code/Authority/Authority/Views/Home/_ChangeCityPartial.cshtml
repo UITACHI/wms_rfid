@@ -6,19 +6,19 @@
         });
     })
 
-    function init_changecity(useraame) {
+    function init_changecity(username) {
         $('#cg-changecity').combogrid({
             width: 180,
             panelWidth: 450,
-            url: '/System/Details/?page=1&rows=1&usernaem=' + useraame,
-            idField: 'SystemID',
-            textField: 'SystemName',
+            url: '/City/Details/?page=1&rows=1000&username=' + username,
+            idField: 'CityID',
+            textField: 'CityName',
             mode: 'local',
             editable: false,
             fitColumns: true,
             columns: [[
-					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
-					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'CityID', title: '地市ID', hidden: true, width: 30 },
+					{ field: 'CityName', title: '地市名称', align: 'left', width: 40 },
 					{ field: 'Description', title: '描述', align: 'left', width: 30 },
 					{ field: 'Status', title: '状态', align: 'left', width: 30 }
 				]]
@@ -59,7 +59,7 @@
                   <tr>
 				        <td>地市</td>
 				        <td colspan="3"align="left">
-                        <input name="SystemId" type="text" id="cg-changecity" />                               
+                        <input name="CityID" type="text" id="cg-changecity" />                               
                         </td>
                   </tr>
                 </table>

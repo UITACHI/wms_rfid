@@ -1,5 +1,6 @@
 ﻿<script type="text/javascript">
-    $(function () {
+
+    function searchClick() {
         $('#isActive').combo({
             editable: false,
             panelHeight: 65,
@@ -10,9 +11,7 @@
             panelHeight: 65,
             panelWidth: 130
         });
-    })
 
-    function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
         $("input[type=text]").attr("value", "");
     };
