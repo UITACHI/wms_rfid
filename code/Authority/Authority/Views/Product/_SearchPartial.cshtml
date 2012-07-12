@@ -1,0 +1,65 @@
+﻿<script type="text/javascript">
+
+    function searchClick() {
+        $('#dlg-search').dialog('open').dialog('setTitle', '查询品牌信息');
+        $("input[type=text]").attr("value", "");
+    };
+    
+    </script>
+
+        <div id="dlg-search" class="easyui-dialog" modal="true" 
+        style="width:450px;height:250px;padding:2px 2px"
+        closed="true" buttons="#dlg-search-buttons">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
+                    <table >
+                      <tr>
+                        <td>商品编码</td>
+                        <td style="padding-right:30px;"><input name="ProductCode" class="easyui-validatebox"></td>
+                        <td>自定义编码</td>
+                        <td><input name="CustomCode"></td>
+                      </tr>
+                      <tr>
+                        <td>商品名称</td>
+                        <td><input name="ProductName" class="easyui-validatebox"></td>
+                        <td>商品品牌</td>
+                        <td><input id="fs"  name ="BrandCode"></td>
+                      </tr>
+                      <tr>
+                        <td>统一编码</td>
+                        <td><input name="UniformCode" class="easyui-validatebox" required="true"></td>
+                        <td>ABC类型</td>
+                        <td><select  class="easyui-combobox"  editable="false" name="AbcTypeCode"  panelHeight="70" style="width: 129px;">
+		                        <option value="1">A</option>
+		                        <option value="2">B</option>
+                                <option value="3">C</option>
+	                        </select>
+                        </td>
+
+                      </tr>
+                      <tr>
+                        <td>助记码</td>
+                        <td><input name="ShortCode"></td>
+                        <td>商品价类</td>
+                        <td>
+                           <select  class="easyui-combobox"  editable="false"  name="PriceLevelCode" panelHeight="120" style="width: 129px;" required="true">
+		                       <option value="01">一类</option>
+		                        <option value="02">二类</option>
+                                <option value="03">三类</option>
+                                <option value="04">四类</option>
+		                        <option value="04">五类</option>
+                                </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>厂商</td>
+                        <td><input id="fx" name="SupplierCode"></td>
+                      </tr>                    
+                    </table>
+            </div>
+        </div>
+    </div>
+<div id="dlg-search-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
+</div>

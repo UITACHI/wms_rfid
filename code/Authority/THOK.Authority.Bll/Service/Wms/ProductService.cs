@@ -140,6 +140,63 @@ namespace THOK.Authority.Bll.Service.Wms
             ProductRepository.SaveChanges();
             return true;
         }
+        public bool Delete(string ProductCode)
+        {
+            var brand = ProductRepository.GetQueryable()
+                .FirstOrDefault(b => b.BrandCode == ProductCode);
+            if (ProductCode != null)
+            {
+                ProductRepository.Delete(brand);
+                ProductRepository.SaveChanges();
+            }
+            else
+                return false;
+            return true;
+        }
+        public bool Save(Product product)
+        {
+            var prod = ProductRepository.GetQueryable().FirstOrDefault(b => b.ProductCode == product.ProductCode);
+            prod.AbcTypeCode = product.AbcTypeCode;
+            prod.BarBarcode = product.BarBarcode;
+            prod.BelongRegion = product.BelongRegion;
+            //prod.BrandCode = product.BrandCode;
+            prod.BrandCode = "21332";
+            prod.BuyPrice = product.BuyPrice;
+            prod.CostPrice = product.CostPrice;
+            prod.CustomCode = product.CustomCode;
+            prod.Description = product.Description;
+            prod.IsAbnormity = product.IsAbnormity;
+            prod.IsActive = product.IsActive;
+            prod.IsConfiscate = product.IsConfiscate;
+            prod.IsFamous = product.IsFamous;
+            prod.IsFilterTip = product.IsFilterTip;
+            prod.IsMainProduct = product.IsMainProduct;
+            prod.IsNew = product.IsNew;
+            prod.IsProvinceMainProduct = product.IsProvinceMainProduct;
+            prod.OneProjectBarcode = product.OneProjectBarcode;
+            prod.PackageBarcode = product.PackageBarcode;
+            prod.PackTypeCode = product.PackTypeCode;
+            prod.PieceBarcode = product.PieceBarcode;
+            prod.PriceLevelCode = product.PriceLevelCode;
+            prod.ProductCode = product.ProductCode;
+            prod.ProductName = product.ProductName;
+            prod.ProductTypeCode = product.ProductTypeCode;
+            prod.RetailPrice = product.RetailPrice;
+            prod.ShortCode = product.ShortCode;
+            prod.StatisticType = product.StatisticType;
+            //prod.SupplierCode = product.SupplierCode;
+            prod.SupplierCode = "11111";
+            prod.TradePrice = product.TradePrice;
+            prod.UniformCode = product.UniformCode;
+            //prod.UnitCode = product.UnitCode;
+            //prod.UnitListCode = product.UnitListCode;
+            prod.UnitCode = "3324324";
+            prod.UnitListCode = "3232";
+            prod.UpdateTime = DateTime.Now;
+
+            ProductRepository.SaveChanges();
+            return true;
+        }
         #endregion
     }
 }

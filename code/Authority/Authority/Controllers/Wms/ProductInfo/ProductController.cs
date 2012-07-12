@@ -38,6 +38,17 @@ namespace Authority.Controllers.ProductInfo
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult Delete(string ProductCode)
+        {
+            bool bResult = ProductService.Delete(ProductCode);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Edit(Product product)
+        {
+            bool bResult = ProductService.Save(product);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

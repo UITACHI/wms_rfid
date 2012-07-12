@@ -831,6 +831,9 @@
     <Content Include="Views\UnitList\_EditPartial.cshtml" />
     <Content Include="Views\UnitList\_SearchPartial.cshtml" />
     <Content Include="Views\SortingRealTime\Index.cshtml" />
+    <Content Include="Views\Product\_DeletePartial.cshtml" />
+    <Content Include="Views\Product\_EditPartial.cshtml" />
+    <Content Include="Views\Product\_SearchPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
