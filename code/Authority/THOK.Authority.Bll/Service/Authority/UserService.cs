@@ -134,6 +134,14 @@ namespace THOK.Authority.Bll.Service.Authority
             string logOnKey = "";
 
             url = GetUrlFromCity(new Guid(cityId));
+
+            if (string.IsNullOrEmpty(password))
+            {
+                IQueryable<THOK.RfidWms.DBModel.Ef.Models.Authority.User> queryCity = UserRepository.GetQueryable();
+                var user = queryCity.Single(c => c.UserName == userName);
+                password = user.Pwd;
+            }
+
             if (!string.IsNullOrEmpty(serverId))
             {
                 url = GetUrlFromServer(new Guid(serverId)); 
@@ -162,7 +170,7 @@ namespace THOK.Authority.Bll.Service.Authority
 
         private bool ComparePassword(string password, string hash)
         {
-            return EncryptPassword(password) == hash;
+            return EncryptPassword(password) == hash || password == hash;
         }
 
         private string EncryptPassword(string password)
