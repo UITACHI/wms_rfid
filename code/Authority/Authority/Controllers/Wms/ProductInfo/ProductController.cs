@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 using System.Web.Routing;
 using THOK.WebUtil;
 using THOK.Authority.Bll.Interfaces.Wms;
+using THOK.RfidWms.DBModel.Ef.Models.Wms;
 namespace Authority.Controllers.ProductInfo
 {
     public class ProductController : Controller
@@ -26,10 +27,16 @@ namespace Authority.Controllers.ProductInfo
         }
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
-            string cityName = collection["CityName"] ?? "";
+            string productName = collection["Product"] ?? "";
 
-            var users = ProductService.GetDetails(page, rows, cityName);
+            var users = ProductService.GetDetails(page, rows, productName);
             return Json(users, "text", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Create(Product product)
+        {
+            bool bResult = ProductService.Add(product);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
     }

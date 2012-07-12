@@ -22,10 +22,10 @@ namespace THOK.Authority.Bll.Service.Wms
 
         #region IProductService 增，删，改，查等方法
 
-        public object GetDetails(int page, int rows, string CompanyCode)
+        public object GetDetails(int page, int rows, string productCode)
         {
             IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
-            var product = ProductQuery.Where(c => c.ProductName.Contains(CompanyCode))
+            var product = ProductQuery.Where(c => c.ProductName.Contains(productCode))
                 .OrderBy(c => c.ProductCode).AsEnumerable()
                 .Select(c => new
                 {
@@ -61,7 +61,7 @@ namespace THOK.Authority.Bll.Service.Wms
                     c.UniformCode,
                     c.UnitCode,
                     c.UnitListCode,
-                    c.UpdateTime
+                    UpdateTime = c.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
                     //ParentCompanyName = c.ParentCompany.CompanyName,
                     //c.ParentCompanyID,
                     //IsActive = c.IsActive == "1" ? "可用" : "不可用",
@@ -92,6 +92,53 @@ namespace THOK.Authority.Bll.Service.Wms
             int total = product.Count();
             product = product.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = product.ToArray() };
+        }
+        public bool Add(Product product)
+        {
+            var prod = new Product();
+            prod.AbcTypeCode = product.AbcTypeCode;
+            prod.BarBarcode = product.BarBarcode;
+            prod.BelongRegion = product.BelongRegion;
+            //prod.BrandCode = product.BrandCode;
+            prod.BrandCode = "21332";
+            prod.BuyPrice = product.BuyPrice;
+            prod.CostPrice = product.CostPrice;
+            prod.CustomCode = product.CustomCode;
+            prod.Description = product.Description;
+            prod.IsAbnormity = product.IsAbnormity;
+            prod.IsActive = product.IsActive;
+            prod.IsConfiscate = product.IsConfiscate;
+            prod.IsFamous = product.IsFamous;
+            prod.IsFilterTip = product.IsFilterTip;
+            prod.IsMainProduct = product.IsMainProduct;
+            prod.IsNew = product.IsNew;
+            prod.IsProvinceMainProduct = product.IsProvinceMainProduct;
+            prod.OneProjectBarcode = product.OneProjectBarcode;
+            prod.PackageBarcode = product.PackageBarcode;
+            prod.PackTypeCode = product.PackTypeCode;
+            prod.PieceBarcode = product.PieceBarcode;
+            prod.PriceLevelCode = product.PriceLevelCode;
+            prod.ProductCode = product.ProductCode;
+            prod.ProductName = product.ProductName;
+            prod.ProductTypeCode = product.ProductTypeCode;
+            prod.RetailPrice = product.RetailPrice;
+            prod.ShortCode = product.ShortCode;
+            prod.StatisticType = product.StatisticType;
+            //prod.SupplierCode = product.SupplierCode;
+            prod.SupplierCode = "11111";
+            prod.TradePrice = product.TradePrice;
+            prod.UniformCode = product.UniformCode;
+            //prod.UnitCode = product.UnitCode;
+            //prod.UnitListCode = product.UnitListCode;
+            prod.UnitCode = "3324324";
+            prod.UnitListCode = "3232";
+            prod.UpdateTime = DateTime.Now;
+
+
+
+            ProductRepository.Add(prod);
+            ProductRepository.SaveChanges();
+            return true;
         }
         #endregion
     }
