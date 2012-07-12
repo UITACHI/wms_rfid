@@ -1,14 +1,12 @@
 <script type="text/javascript">
     var url;
-    $(function () {
+    function AddLoad() {
         $('#cc').combo({
             required: true,
             editable: false,
             panelHeight: 45
         });
-    })
 
-    $(function () {
         $('#cg').combogrid({
             required: true,
             width: 120,
@@ -26,9 +24,10 @@
 					{ field: 'IsActive', title: '×´Ì¬', align: 'left', width: 30 }
 				]]
         });
-    });
+    }
 
     function addClick() {
+        AddLoad();
         $('#dlg').dialog('open').dialog('setTitle', 'ÐÂÔö');
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({
@@ -37,6 +36,9 @@
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
         $('#cc').combo({
+            hasDownArrow: true
+        });
+        $('#cg').combo({
             hasDownArrow: true
         });
         url = '/Server/Create/';
