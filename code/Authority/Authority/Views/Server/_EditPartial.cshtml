@@ -3,6 +3,7 @@
         var row = $('#details').datagrid('getSelected');
         if (row) {
             $('#dlg').dialog('open').dialog('setTitle', '±à¼­');
+            AddLoad();
             $('#fm .easyui-validatebox').validatebox({
                 required: true
             });
