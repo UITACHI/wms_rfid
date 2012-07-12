@@ -676,6 +676,12 @@
     <Content Include="Views\Brand\_SearchPartial.cshtml" />
     <Content Include="Views\BasisDownload\Index.cshtml" />
     <Content Include="Views\BasisUpload\Index.cshtml" />
+    <Content Include="Views\Brand\_SupplierPartial.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Brand\_SupplierSearchPartial.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />

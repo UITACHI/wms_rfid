@@ -11,6 +11,8 @@
 
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增品牌信息');
+        $('#brandCode').attr("readonly", false);
+        $('#supplierCode').attr("readonly", true);
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({
             required: true
