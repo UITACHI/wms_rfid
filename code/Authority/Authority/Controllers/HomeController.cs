@@ -39,9 +39,7 @@ namespace Authority.Controllers
                 this.RemoveCookie(cityId);
                 this.RemoveCookie(serverId);
                 this.RemoveCookie(systemId);
-                //FormsService.SignOut();
-                //return RedirectToAction("Index", "Home");
-                //return new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Home" } });
+                FormsService.SignOut();
             }
             return View();
         }
