@@ -14,7 +14,6 @@ namespace THOK.Authority.Bll.Service.Wms
         [Dependency]
         public IJobRepository JobRepository { get; set; }
 
-
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
