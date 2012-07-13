@@ -11,6 +11,7 @@
 
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增厂商信息');
+        $('#supplierCode').attr("readonly", false);
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({
             required: true
@@ -51,12 +52,12 @@
 </script>
 
     <div id="dlg" class="easyui-dialog" modal="true" 
-        style="width:300px;height:250px;padding:2px 2px"
+        style="width:265px;height:250px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
-                    <table width="250">
+                    <table width="235">
                       <tr>
                         <td width="60">厂商编码</td>
                         <td width="168"><input name="SupplierCode" id="supplierCode" class="easyui-validatebox" required="true"></td>

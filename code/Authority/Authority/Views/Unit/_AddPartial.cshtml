@@ -11,6 +11,7 @@
 
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增单位信息');
+        $('#unitCode').attr("readonly", false);
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({
             required: true
