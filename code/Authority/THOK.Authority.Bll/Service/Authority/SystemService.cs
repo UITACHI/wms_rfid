@@ -22,7 +22,8 @@ namespace THOK.Authority.Bll.Service.Authority
         public IUserSystemRepository UserSystemRepository { get; set; }
         [Dependency]
         public ILoginLogRepository LoginLogRepository { get; set; }
-
+        [Dependency]
+        public IUserRepository UserRepository { get; set; }
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -90,5 +91,23 @@ namespace THOK.Authority.Bll.Service.Authority
             SystemRepository.SaveChanges();
             return true;
         }
+
+        public object GetSystemById(string systemID)
+        {
+            Guid sid = new Guid(systemID);
+            var sysytem = SystemRepository.GetQueryable().FirstOrDefault(s => s.SystemID == sid);
+            return sysytem.SystemName;
+        }
+
+        public object GetDetails(string userName, string systemID, string cityID)
+        {
+            Guid cityid = new Guid(cityID);
+            Guid systemid = new Guid(systemID);
+            var user = UserRepository.GetQueryable().FirstOrDefault(u => u.UserName == userName);
+            var userSystem = UserSystemRepository.GetQueryable().Where(us => us.User_UserID == user.UserID && us.System.SystemID == systemid && us.City_CityID == cityid).Select(us => us.UserSystemID);
+            var usersystems = UserSystemRepository.GetQueryable().Where(us => !userSystem.Any(uid => uid == us.UserSystemID) && us.User_UserID == user.UserID && us.City.CityID == cityid).Select(us => new { us.System.SystemID, us.System.SystemName, us.System.Description, Status = us.City.IsActive ? "启用" : "禁用" });
+            return usersystems.ToArray();
+        }
+
     }
 }

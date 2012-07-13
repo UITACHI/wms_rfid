@@ -61,5 +61,15 @@ namespace Authority.Controllers.Authority
             string msg = bResult ? "删除成功": "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        // GET: /System/GetDetailsSystem/
+        public ActionResult GetDetailsSystem()
+        {
+            string cityId = this.GetCookieValue("cityid");
+            string userName = this.User.Identity.Name;
+            string systemId = this.GetCookieValue("systemid");
+            var systems = SystemService.GetDetails(userName, systemId, cityId);
+            return Json(systems, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

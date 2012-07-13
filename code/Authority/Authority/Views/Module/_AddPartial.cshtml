@@ -1,6 +1,26 @@
 ﻿<script type="text/javascript">
     var url;
+    function AddLoad() {
+        $('#cg').combogrid({
+            width: 120,
+            panelWidth: 450,
+            url: '/System/Details/?page=1&rows=1',
+            idField: 'systemId',
+            textField: 'SystemName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'systemId', title: '系统ID', hidden: true, width: 30 },
+					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'Description', title: '描述', align: 'left', width: 30 },
+					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+				]]
+        });
+    }
+
     function addClick() {
+        AddLoad();
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#fm .easyui-validatebox').validatebox({
             required: true
@@ -47,26 +67,7 @@
             }
         });
     }
-
-    $(function () {
-        $('#cg').combogrid({
-            width: 120,
-            panelWidth: 450,
-            url: '/System/Details/?page=1&rows=1',
-            idField: 'systemId',
-            textField: 'SystemName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-					{ field: 'systemId', title: '系统ID', hidden: true, width: 30 },
-					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
-					{ field: 'Description', title: '描述', align: 'left', width: 30 },
-					{ field: 'Status', title: '状态', align: 'left', width: 30 }
-				]]
-        });
-    });
-</script>
+ </script>
 
 <div id="dlg" class="easyui-dialog" modal="true" 
     style="width:420px;height:230px;padding:2px 2px"

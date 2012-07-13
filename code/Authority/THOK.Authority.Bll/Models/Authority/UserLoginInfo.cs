@@ -11,5 +11,6 @@ namespace THOK.Authority.Bll.Models.Authority
         public string Password { get; set; }
         public string CityID { get; set; }
         public string SystemID { get; set; }
+        public string ServerID { get; set; }
     }
 }

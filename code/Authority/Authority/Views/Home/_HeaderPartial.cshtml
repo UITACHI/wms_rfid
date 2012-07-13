@@ -28,13 +28,13 @@
                     }
                     else
                     {
-                        <span>@ViewBag.CityName</span>
-                        <span>@ViewBag.ServerName</span>
-                        <span>@ViewBag.SystemName</span> 
+                        <span>城市：@ViewBag.CityName</span>
+                        <span>服务器：@ViewBag.ServerName</span>
+                        <span>系统：@ViewBag.SystemName</span> 
                         <span id="welcome"></span><span>|</span>                           
-                        <a href="javascript:void(0)" id='changeCity'>切换地市</a><span>|</span>                                
-                        <a href="javascript:void(0)" id='changeServer'>切换服务器</a><span>|</span>                                
-                        <a href="javascript:void(0)" id='changeSystem'>切换系统</a><span>|</span>                                
+                        <a href="javascript:void(0)" id='changeCity' onclick="changeCityClick()">切换地市</a><span>|</span>                                
+                        <a href="javascript:void(0)" id='changeServer' onclick="changeServerClick()">切换服务器</a><span>|</span>                                
+                        <a href="javascript:void(0)" id='changeSystem' onclick="changeSystemClick()">切换系统</a><span>|</span>                                
                         <a href="javascript:void(0)" id='changeUser'>切换用户</a><span>|</span>            
                         <a href="javascript:void(0)" id='changePassword'>修改密码</a><span>|</span>
                         <a href="javascript:void(0)" id="loginOut">退出</a>

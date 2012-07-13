@@ -11,5 +11,9 @@ namespace THOK.Authority.Bll.Interfaces.Authority
         bool Delete(string cityID);
 
         bool Save(string cityID, string cityName, string description, bool isActive);
+
+        object GetCityByCityID(string cityID);
+
+        object GetDetails(string userID, string cityID, string systemID);
     }
 }

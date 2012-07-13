@@ -22,14 +22,21 @@ namespace Authority.Controllers
 
         public ActionResult Index()
         {
-            //string cityId = this.GetCookieValue("cityid");
-            //string serverId = this.GetCookieValue("serverId");
-            //string systemId = this.GetCookieValue("systemId");
-
-            //ViewBag.CityName = CityService.GetSingle(c => c.CityID == new Guid(cityId)).CityName;
-            //ViewBag.ServerName = ServerService.GetSingle(s => s.ServerID == new Guid(serverId)).ServerName;
-            //ViewBag.SystemName = SystemService.GetSingle(s => s.SystemID == new Guid(systemId)).SystemName;
-
+            string cityId = this.GetCookieValue("cityid");
+            string serverId = this.GetCookieValue("serverid");
+            string systemId = this.GetCookieValue("systemid");
+            if (!cityId.Equals(string.Empty) && !serverId.Equals(string.Empty) && !systemId.Equals(string.Empty))
+            {
+                ViewBag.CityName = CityService.GetCityByCityID(cityId).ToString();
+                ViewBag.ServerName = ServerService.GetServerById(serverId).ToString();
+                ViewBag.SystemName = SystemService.GetSystemById(systemId).ToString();
+            }
+            else
+            {
+                this.RemoveCookie(cityId);
+                this.RemoveCookie(serverId);
+                this.RemoveCookie(systemId);
+            }
             return View();
         }
 
