@@ -6,6 +6,8 @@ using Microsoft.Practices.Unity;
 using THOK.Authority.Bll.Interfaces.Authority;
 using THOK.Authority.Bll.Models.Authority;
 using System;
+using THOK.Security;
+using System.Web.Routing;
 
 namespace Authority.Controllers
 {
@@ -19,7 +21,8 @@ namespace Authority.Controllers
         public IServerService ServerService { get; set; }
         [Dependency]
         public ISystemService SystemService { get; set; }
-
+        [Dependency]
+        public IFormsAuthenticationService FormsService { get; set; }
         public ActionResult Index()
         {
             string cityId = this.GetCookieValue("cityid");
@@ -36,6 +39,9 @@ namespace Authority.Controllers
                 this.RemoveCookie(cityId);
                 this.RemoveCookie(serverId);
                 this.RemoveCookie(systemId);
+                //FormsService.SignOut();
+                //return RedirectToAction("Index", "Home");
+                //return new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Home" } });
             }
             return View();
         }
