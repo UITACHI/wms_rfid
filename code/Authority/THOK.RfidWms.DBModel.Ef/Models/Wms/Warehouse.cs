@@ -23,8 +23,6 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
 
-        public virtual Company company { get; set; }
-
         public virtual ICollection<Area> Areas { get; set; }
         public virtual ICollection<Shelf> Shelfs { get; set; }
         public virtual ICollection<Cell> Cells { get; set; }
