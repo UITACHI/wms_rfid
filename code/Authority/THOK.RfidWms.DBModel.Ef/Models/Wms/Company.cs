@@ -11,6 +11,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
         {
             this.Companies = new List<Company>();
             this.Departments = new List<Department>();
+            this.Warehouses = new List<Warehouse>();
         }
 
         public Guid ID { get; set; }
@@ -31,6 +32,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
 
         public virtual Company ParentCompany { get; set; }
 
+        public virtual ICollection<Warehouse> Warehouses { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
     }

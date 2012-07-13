@@ -8,8 +8,9 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
     public class Product
     {
         public Product()
-        { 
-            
+        {
+            this.Cells = new List<Cell>();
+            this.Storage = new List<Storage>();
         }
 
         public string ProductCode { get; set; }
@@ -51,5 +52,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
         public virtual Unit Unit { get; set; }
         public virtual UnitList UnitList { get; set; }
 
+        public virtual ICollection<Cell> Cells { get; set; }
+        public virtual ICollection<Storage> Storage { get; set; }
     }
 }
