@@ -737,7 +737,6 @@
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Unit\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
-    <Content Include="Views\Warehouse\_AddWarehousePartial.cshtml" />
     <Content Include="Views\SortingLine\Index.cshtml" />
     <Content Include="Views\SortingLowerLimit\Index.cshtml" />
     <Content Include="Views\SortingOrder\Index.cshtml" />
