@@ -9,14 +9,14 @@ using THOK.Authority.Dal.Interfaces.Authority;
 
 namespace THOK.Authority.Dal.EntityRepository.Wms
 {
-    public class BrandRepository : RepositoryBase<Brand>, IBrandRepository
+    public class CellRepository : RepositoryBase<Cell>, ICellRepository
     {
-        public BrandRepository()
+         public CellRepository()
             : this(new AuthorityRepositoryContext())
         {
         }
 
-        public BrandRepository(IAuthorityRepositoryContext repositoryContext)
+         public CellRepository(IAuthorityRepositoryContext repositoryContext)
             : base(repositoryContext)
         {
         }

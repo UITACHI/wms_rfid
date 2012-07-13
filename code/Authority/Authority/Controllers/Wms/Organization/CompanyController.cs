@@ -44,7 +44,6 @@ namespace Authority.Controllers.Organization
 
         //
         // POST: /Company/Create
-
         [HttpPost]
         public ActionResult Create(Company company)
         {

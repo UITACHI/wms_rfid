@@ -14,6 +14,6 @@ namespace THOK.Authority.Bll.Interfaces.Wms
 
        bool Delete(string JobId);
 
-        bool Save(Job job);
+       bool Save(Job job);
     }
 }
