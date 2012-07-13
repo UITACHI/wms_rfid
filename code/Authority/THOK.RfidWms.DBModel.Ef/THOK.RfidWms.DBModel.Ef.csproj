@@ -69,6 +69,10 @@
     <Compile Include="Migrations\201207111214244_modify_product.Designer.cs">
       <DependentUpon>201207111214244_modify_product.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207130921523_add_WarehouseInfo.cs" />
+    <Compile Include="Migrations\201207130921523_add_WarehouseInfo.Designer.cs">
+      <DependentUpon>201207130921523_add_WarehouseInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Models\Authority\City.cs" />
