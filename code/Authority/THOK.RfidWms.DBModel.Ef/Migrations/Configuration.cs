@@ -331,7 +331,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("A85AB2B3-5949-4ebf-A55F-7A46DA21EAD0"),
                     FunctionName = "²éÑ¯",
-                    ControlName = "",
+                    ControlName = "search",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -339,7 +339,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("3E296244-5B4F-46c9-A456-FA88463D612E"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -347,7 +347,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("84FC6FD9-4F81-4300-8946-7D250D98DF71"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -355,7 +355,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("D368026A-68B0-4310-9532-681A62BD9670"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -363,7 +363,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("C355CED1-0780-4a2e-9B81-42CC5F714808"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -371,7 +371,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("65F990D8-9AC8-4718-A768-C85D37346F23"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -379,7 +379,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("4957BC1E-FB21-455f-8CC3-BE1383824FC6"),
                     FunctionName = "²éÑ¯",
-                    ControlName = "",
+                    ControlName = "search",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -387,7 +387,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("8B157B15-2827-424c-8099-806696639B1D"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -395,7 +395,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("03E3D962-8442-4cf3-A634-3E0573A74046"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -403,7 +403,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("C6BF5241-4D85-47a0-BAC6-969F3AF0D8E2"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -411,7 +411,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("2767CA63-5260-45d1-9CCC-4AC05AAC50CB"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -419,7 +419,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("4A453138-1DF0-444d-8869-FB9670E85757"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -427,7 +427,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("DF01E03B-F6E2-4e68-AB0C-256F2F3FC7AE"),
                     FunctionName = "²éÑ¯",
-                    ControlName = "",
+                    ControlName = "search",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -435,7 +435,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("8A457D90-3594-4293-AA5D-5E62A6537343"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -443,7 +443,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("E322D367-75DB-43ce-9B7D-709A9131B484"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -451,7 +451,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("179BE697-F7BF-4b54-8599-42FAF6BC7290"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -459,7 +459,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("B31011DA-AA8D-4ea5-8F7E-979CFD31B605"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -467,7 +467,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("54C285D8-AB98-454e-AC7E-F51E55339863"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -475,7 +475,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("9B19A906-A2D3-4089-AF69-40E752F9C0D7"),
                     FunctionName = "²éÑ¯",
-                    ControlName = "",
+                    ControlName = "search",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -483,7 +483,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("EF2FF820-81B7-410a-A3EE-E0809DD152C0"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -491,7 +491,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("080FFAD5-9C58-4ed5-9F2A-24ABEAE7900E"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -499,7 +499,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("C1E95428-3FEC-484c-845E-A4173B9FA924"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -507,7 +507,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("F9F33A01-76BB-4232-87D2-1DC3B6109AC8"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -515,7 +515,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("20DF1E53-5D2F-4147-8097-88F134E794AE"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 }
@@ -559,7 +559,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("57237A92-3213-4188-8240-BEF7A2C221AD"),
                     FunctionName = "²éÑ¯",
-                    ControlName = "",
+                    ControlName = "search",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -567,7 +567,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("A6CA0BC0-215F-44c3-8AA3-0FFF4C2F0495"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -575,7 +575,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("82EE5370-3E65-49b3-87BB-86B75E671A4D"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -583,7 +583,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("D0FC3809-4204-4130-8948-3B0039E62851"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -591,7 +591,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("39D78BC8-CA6B-41f3-907E-A6BE76D87487"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -599,7 +599,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("5468C301-1B83-4311-98B4-98AA9A5CF3E0"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 }
@@ -690,7 +690,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("89E04DB6-DC74-44ec-A6E5-382752824557"),
                     FunctionName = "²éÑ¯",
-                    ControlName = "",
+                    ControlName = "search",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
                  },
@@ -698,7 +698,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("1374C404-3606-4c8b-BC2E-EB7E2626D4DD"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -706,7 +706,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("561349C3-A2EA-4ee0-BA52-A434D14DA347"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -714,7 +714,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("579D4CA9-6E99-40f0-AD1A-FD9B8916AF8F"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -722,7 +722,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("C3C27660-DE3F-4e77-9C6E-BC37CB2C480A"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -730,7 +730,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("12ACEC75-BEC2-457a-BDCE-0269C9BDED1E"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
@@ -738,7 +738,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                  {
                      FunctionID = new Guid("E3524C69-00BC-4d7d-BD11-73EB62A7D8C1"),
                      FunctionName = "²éÑ¯",
-                     ControlName = "",
+                     ControlName = "search",
                      IndicateImage = "",
                      Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
                  },
@@ -746,7 +746,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("7DD02B78-6936-4aa6-943D-CF77AC587AD6"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -754,7 +754,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("1FC0760E-8E58-4e5d-9876-0F328BBFC447"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -762,7 +762,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("DAF3A8A6-0092-49b2-9723-E97960A14722"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -770,7 +770,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("1BFE2494-27EC-4b68-826C-AA42EBFA39C9"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -778,7 +778,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("B4ACA461-0A8C-4387-BC20-952F931418BD"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
@@ -786,7 +786,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                  {
                      FunctionID = new Guid("7815DB01-45FE-4a64-A043-B011D992CA56"),
                      FunctionName = "²éÑ¯",
-                     ControlName = "",
+                     ControlName = "search",
                      IndicateImage = "",
                      Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
                  },
@@ -794,7 +794,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("727D0507-20E3-49f1-A8C3-1FBE1CA71C9A"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -802,7 +802,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("2B4ED7C0-1645-4620-BFA3-C9F999593A76"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -810,7 +810,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("CC924251-F880-4504-B938-D150A9E162C1"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -818,7 +818,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("AAE6C29E-630D-4297-8830-FA2FC0F25F0D"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -826,7 +826,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("3CD649E5-3B7F-4249-B6A7-C5B8FFB0CDE4"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -834,7 +834,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                  {
                      FunctionID = new Guid("8BB188B4-6280-4854-9340-9A3C14FE4E77"),
                      FunctionName = "²éÑ¯",
-                     ControlName = "",
+                     ControlName = "search",
                      IndicateImage = "",
                      Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
                  },
@@ -842,7 +842,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("C3FF7F83-067B-440f-A627-17932F216796"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -850,7 +850,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("2D691698-BFD1-44fc-BE2A-9FAAF709354F"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -858,7 +858,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("9BC0C657-734F-4904-9511-FF0E5254CE40"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -866,7 +866,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("AB14EE13-BFFA-451b-9522-3552EA98F53D"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -874,7 +874,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("B0CCE73E-E072-4510-8DC4-F21C36BA0DC1"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
@@ -882,7 +882,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                  {
                      FunctionID = new Guid("2406CEAA-5493-438c-A738-148C5966959C"),
                      FunctionName = "²éÑ¯",
-                     ControlName = "",
+                     ControlName = "search",
                      IndicateImage = "",
                      Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
                  },
@@ -890,7 +890,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("4FBC4C07-6E8B-4fe8-A440-757FC67DDD46"),
                     FunctionName = "ÐÂÔö",
-                    ControlName = "",
+                    ControlName = "add",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
                 },
@@ -898,7 +898,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("82DE0F87-6B85-4d39-BF9B-0B370F91328A"),
                     FunctionName = "±à¼­",
-                    ControlName = "",
+                    ControlName = "edit",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
                 },
@@ -906,7 +906,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("CC01F548-84AD-4a57-93FC-3294A9052F56"),
                     FunctionName = "É¾³ý",
-                    ControlName = "",
+                    ControlName = "delete",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
                 },
@@ -914,7 +914,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("8504A60A-8982-4cc4-BB8B-D7AAE118A037"),
                     FunctionName = "´òÓ¡",
-                    ControlName = "",
+                    ControlName = "print",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
                 },
@@ -922,7 +922,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 {
                     FunctionID = new Guid("1C2DFE80-92ED-4c1b-98E9-9F8845430222"),
                     FunctionName = "°ïÖú",
-                    ControlName = "",
+                    ControlName = "help",
                     IndicateImage = "",
                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
                 }
@@ -1006,6 +1006,242 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101")
                     }
+                );
+            context.SaveChanges();
+
+            context.Set<Function>().AddOrUpdate(
+                new Function()
+                {
+                    FunctionID = new Guid("693CC756-51ED-4b20-A26C-7AFD8F4C85E4"),
+                    FunctionName = "²éÑ¯",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("0372CE0F-0DDD-4e32-927D-E3A947575B97"),
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "add",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("0BCDD267-37DC-4cdc-84C8-2C88CE7EF952"),
+                    FunctionName = "±à¼­",
+                    ControlName = "edit",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("BE278AF0-FB5C-4c5d-9592-F0B1A0AD6E46"),
+                    FunctionName = "É¾³ý",
+                    ControlName = "delete",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("28ACD285-B80D-499c-AE74-7F69F9ABA411"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("97C86966-6865-4b54-BB35-73FEA8D09A2C"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("6305942A-32EC-40b9-AAB6-178D048387B3"),
+                    FunctionName = "²éÑ¯",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("FE1E48EF-9086-48df-BD3B-AA3FFCAA4A24"),
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "add",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("51225C33-035C-4214-98F8-F3D8D33C101E"),
+                    FunctionName = "±à¼­",
+                    ControlName = "edit",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("A4BE0DFB-B943-4d86-A0DB-2EECFAB85F96"),
+                    FunctionName = "É¾³ý",
+                    ControlName = "delete",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("87565519-A56F-44e2-856D-24C2868142C0"),
+                    FunctionName = "ÏÂÔØ",
+                    ControlName = "Download",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("7EA785AF-EE61-4b68-9B7C-3E97E325D81C"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("A311C19E-7319-4dfa-A2F0-D79B449F29B7"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("D39FC0E7-F012-40f6-AA03-BD334AE89D64"),
+                    FunctionName = "²éÑ¯",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("FB8495F2-65CB-4629-83BF-ACC7E1D85C3B"),
+                    FunctionName = "ÉóºË",
+                    ControlName = "audit",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("5FA0BB3E-09AC-4e83-8746-91F9F8F3192D"),
+                    FunctionName = "·´Éó",
+                    ControlName = "antitrial",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("D7447E52-DFC6-46da-9BA5-98351B3D83CF"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("5471058C-39B2-4570-B9CA-18830A00A96B"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("2AB49DFF-BED2-4430-A816-AB527F099CEC"),
+                    FunctionName = "²éÑ¯",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("27A1E6FF-104A-4b9f-A079-D25BB36D5BF3"),
+                    FunctionName = "È·ÈÏ",
+                    ControlName = "Confirm",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("96CCDB93-A980-4e4d-B528-B725FB4A82DA"),
+                    FunctionName = "·´È·ÈÏ",
+                    ControlName = "anticonfirm",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("CE3D55B0-9005-4d0f-8A36-C224ECADEA6A"),
+                    FunctionName = "±£´æ",
+                    ControlName = "save",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("CE87246C-CFDA-4efe-B175-371E4D6791C2"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("0B017C30-E25A-410a-8E77-C94594FE9981"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("C23CF35B-BEC6-4cde-AAD7-C0EE160D3224"),
+                    FunctionName = "²éÑ¯",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("7E3D17A3-98A0-4a7c-A759-A6EEFF14983D"),
+                    FunctionName = "È·ÈÏ",
+                    ControlName = "Confirm",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("E42D0DFF-2759-4a41-A7E0-5B9B12CD0BA8"),
+                    FunctionName = "·´È·ÈÏ",
+                    ControlName = "anticonfirm",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("9227749C-B6A7-4f10-86F2-8B50B168894E"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("714B6CD2-0C93-4be3-BCE0-14D494ECD180"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                }
                 );
             context.SaveChanges();
         }
