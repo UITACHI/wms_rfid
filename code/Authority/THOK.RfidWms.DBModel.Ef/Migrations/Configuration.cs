@@ -1948,6 +1948,178 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     }
                 );
             context.SaveChanges();
+
+            context.Set<Function>().AddOrUpdate(
+                 new Function()
+                {
+                    FunctionID = new Guid("E866CD6B-4EC9-4b3d-BBBF-DFC9F7C94CDD"),
+                    FunctionName = "≤È—Ø",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("FD7D5617-7751-4369-80C8-9E392E1309C3"),
+                    FunctionName = "–¬‘ˆ",
+                    ControlName = "add",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("4E01EA45-A6ED-4eea-8300-7A1D5233AEC6"),
+                    FunctionName = "±‡º≠",
+                    ControlName = "edit",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("E5670FB7-D0EE-4935-A62A-3618C55FAF1A"),
+                    FunctionName = "…æ≥˝",
+                    ControlName = "delete",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("571BBE20-44BC-48ef-8ABA-EE8CA7529D9A"),
+                    FunctionName = "¥Ú”°",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("A937EFBA-193C-4005-9E1F-59F3EC81AC66"),
+                    FunctionName = "∞Ô÷˙",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("B981741F-76D6-4da7-A417-873262A5890E"),
+                    FunctionName = "≤È—Ø",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("A98EDD95-4C18-4df5-9A82-87E1E42B26C9"),
+                    FunctionName = "–¬‘ˆ",
+                    ControlName = "add",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("2A0F2708-150D-43fb-8F41-26C94ED653D4"),
+                    FunctionName = "±‡º≠",
+                    ControlName = "edit",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("0042DEF4-07FE-4cd6-870E-A0A9C56652E5"),
+                    FunctionName = "…æ≥˝",
+                    ControlName = "delete",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("36E6597A-64A9-4eb2-9C72-9C24C39F5652"),
+                    FunctionName = "¥Ú”°",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("20EB0C11-A9A3-42ab-860C-3BBCC0DE7935"),
+                    FunctionName = "∞Ô÷˙",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                 new Function()
+                {
+                    FunctionID = new Guid("086FAC58-BD7E-4319-8FD7-33661F0623F5"),
+                    FunctionName = "≤È—Ø",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("8FDF1767-F79C-4b62-A02A-685AAFBA860F"),
+                    FunctionName = "…Û∫À",
+                    ControlName = "audit",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("4BF95B40-1114-4282-B434-BB08A7E2766C"),
+                    FunctionName = "∑¥…Û",
+                    ControlName = "antitrial",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("C2E9A714-83F1-46ab-80C8-DB7C485B2CE7"),
+                    FunctionName = "¥Ú”°",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("0AA790FC-9D5E-4277-A8CA-9F9220B5F89F"),
+                    FunctionName = "∞Ô÷˙",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("F6DBE86D-CB8E-4900-AA8C-3619878A5729"),
+                    FunctionName = "≤È—Ø",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("5D905A4D-94BE-4ded-8634-A1598CC966C5"),
+                    FunctionName = "»∑»œ",
+                    ControlName = "Confirm",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("9CECE256-87DD-4c74-B716-7A4946A31F65"),
+                    FunctionName = "¥Ú”°",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("876F8393-7FB3-4dc1-98BF-3E33F4A5AB41"),
+                    FunctionName = "∞Ô÷˙",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471106")
+                }
+                );
+            context.SaveChanges();
         }
 
         private void CreateProfitLoss(AuthorizeContext context)
