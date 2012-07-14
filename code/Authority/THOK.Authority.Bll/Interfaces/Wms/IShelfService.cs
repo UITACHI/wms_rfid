@@ -8,7 +8,7 @@ namespace THOK.Authority.Bll.Interfaces.Wms
 {
     public interface IShelfService : IService<Shelf>
     {
-        object GetDetails(string shelfCode);
+        object GetDetails(int page, int rows, string shelfCode);
 
         bool Add(Shelf shelf);
 

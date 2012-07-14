@@ -27,9 +27,13 @@ namespace THOK.Authority.Bll.Service.Wms
 
         #region IShelfService 成员
 
-        public object GetDetails(string shelfCode)
+        public object GetDetails(int page, int rows, string shelfCode)
         {
-            throw new NotImplementedException();
+            IQueryable<Shelf> shelfQuery = ShelfRepository.GetQueryable();
+            var shelf = shelfQuery.OrderBy(b => b.ShelfCode).AsEnumerable().Select(b => new { b.ShelfCode, b.ShelfName, b.ShelfType, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            int total = shelf.Count();
+            shelf = shelf.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = shelf.ToArray() };
         }
 
         public new bool Add(Shelf shelf)

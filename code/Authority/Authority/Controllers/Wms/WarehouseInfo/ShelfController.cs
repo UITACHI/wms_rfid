@@ -22,9 +22,17 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return View();
         }
 
+        //查询货架信息表
+        // POST: /Shelf/Details
+        [HttpPost]
+        public ActionResult Details(int page, int rows, string shelfCode)
+        {
+            var shelf = ShelfService.GetDetails(page, rows, shelfCode);
+            return Json(shelf, "text", JsonRequestBehavior.AllowGet);
+        }
 
         //添加货架信息表
-        // POST: /Company/ShelfCreate
+        // POST: /Shelf/ShelfCreate
         [HttpPost]
         public ActionResult ShelfCreate(Shelf shelf)
         {

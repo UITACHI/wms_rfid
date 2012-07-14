@@ -26,9 +26,19 @@ namespace Authority.Controllers.WarehouseInfo
             ViewBag.hasDelete = true;
             return View();
         }
-        
+
+        //查询仓库信息表
+        // POST: /Warehouse/Details
+        [HttpPost]
+        public ActionResult Details(int page, int rows, string warehouseCode)
+        {
+            var warehouse = WarehouseService.GetDetails(page, rows, warehouseCode);
+            return Json(warehouse, "text", JsonRequestBehavior.AllowGet);
+        }
+
+
         //添加仓库信息表
-        // POST: /Company/WareCreate
+        // POST: /Warehouse/WareCreate
         [HttpPost]
         public ActionResult WareCreate(Warehouse warehouse)
         {

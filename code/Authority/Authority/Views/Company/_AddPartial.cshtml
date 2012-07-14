@@ -57,24 +57,7 @@
             editable: false,
             panelHeight: 55,
             panelWidth: 130
-        });
-                
-        $('#company-add').combogrid({
-            width: 130,
-            panelWidth: 340,
-            url: '/Company/Details/?page=1&rows=10',
-            idField: 'ID',
-            textField: 'CompanyName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-					{ field: 'ID', title: '公司ID', hidden: true, width: 30 },
-					{ field: 'CompanyCode', title: '公司编码', align: 'left', width: 40 },
-					{ field: 'CompanyName', title: '公司名称', align: 'left', width: 30 },
-					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
-				]]
-        });
+        });  
     }
 </script>
     <div id="dlg" class="easyui-dialog" modal="true" style="width:520px;height:330px;padding:2px 2px"   closed="true" buttons="#dlg-buttons">
@@ -124,7 +107,8 @@
                       </tr>
                       <tr>
                         <td width="60">描述:</td>
-                        <td width="168" colspan="3" ><textarea name="Description" style="width: 380px; height: 60px"></textarea> </td>
+                        <td width="168" colspan="3" >
+                        <textarea name="Description" style="width: 380px; height: 60px"></textarea> </td>
                       </tr>
                     </table>
 	            </form>

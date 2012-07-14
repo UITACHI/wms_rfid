@@ -24,9 +24,13 @@ namespace THOK.Authority.Bll.Service.Wms
 
         #region IAreaService 成员
 
-        public object GetDetails(string areaCode)
+        public object GetDetails(int page, int rows, string areaCode)
         {
-            throw new NotImplementedException();
+            IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
+            var area = areaQuery.OrderBy(b => b.AreaCode).AsEnumerable().Select(b => new { b.AreaCode, b.AreaName, b.AreaType, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            int total = area.Count();
+            area = area.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = area.ToArray() };
         }
 
         public new bool Add(Area area)

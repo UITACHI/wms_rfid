@@ -22,8 +22,18 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return View();
         }
 
+        //查询库区信息表
+        // POST: /Area/Details
+        [HttpPost]
+        public ActionResult Details(int page, int rows, string areaCode)
+        {
+            var area = AreaService.GetDetails(page, rows, areaCode);
+            return Json(area, "text", JsonRequestBehavior.AllowGet);
+        }
+
+
         //添加库区信息表
-        // POST: /Company/AreaCreate
+        // POST: /Area/AreaCreate
         [HttpPost]
         public ActionResult AreaCreate(Area area)
         {

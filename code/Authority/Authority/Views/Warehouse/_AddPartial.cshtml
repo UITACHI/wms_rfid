@@ -1,5 +1,6 @@
 ﻿<script type="text/javascript">
     var url;
+    var fm;
     $(function () {
         $('#wareIsActive').combo({
             required: true,
@@ -38,6 +39,94 @@
             panelHeight: 65,
             panelWidth: 140
         });
+
+        $('#company-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/Company/Details/?page=1&rows=10',
+            idField: 'ID',
+            textField: 'CompanyName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'ID', title: '公司ID', hidden: true, width: 30 },
+					{ field: 'CompanyCode', title: '公司编码', align: 'left', width: 40 },
+					{ field: 'CompanyName', title: '公司名称', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+				]]
+        });
+
+        $('#warehouse-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/Warehouse/Details/?page=1&rows=10',
+            idField: 'WarehouseCode',
+            textField: 'WarehouseName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
+					{ field: 'WarehouseName', title: '仓库名称', align: 'left', width: 40 },
+                    { field: 'WarehouseType', title: '仓库类型', align: 'left', width: 20 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 20 },
+                    { field: 'UpdateTime', title: '时间', align: 'left', width: 30 }
+				]]
+        });
+
+        $('#area-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/Area/Details/?page=1&rows=10',
+            idField: 'AreaCode',
+            textField: 'AreaName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'AreaCode', title: '库区编码', align: 'left', width: 40 },
+					{ field: 'AreaName', title: '库区名称', align: 'left', width: 40 },
+                    { field: 'AreaType', title: '库区类型', align: 'left', width: 20 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 20 },
+                    { field: 'UpdateTime', title: '时间', align: 'left', width: 30 }
+				]]
+        });
+
+        $('#shelf-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/Shelf/Details/?page=1&rows=10',
+            idField: 'ShelfCode',
+            textField: 'ShelfName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'ShelfCode', title: '货架编码', align: 'left', width: 40 },
+					{ field: 'ShelfName', title: '货架名称', align: 'left', width: 40 },
+                    { field: 'ShelfType', title: '货架类型', align: 'left', width: 20 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 20 },
+                    { field: 'UpdateTime', title: '时间', align: 'left', width: 30 }
+				]]
+        });
+
+        $('#product-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/Product/Details/?page=1&rows=10',
+            idField: 'ProductCode',
+            textField: 'ProductName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'ProductCode', title: '卷烟编码', align: 'left', width: 40 },
+					{ field: 'ProductName', title: '卷烟名称', align: 'left', width: 40 },                  
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 20 },
+                    { field: 'UpdateTime', title: '时间', align: 'left', width: 30 }
+				]]
+        });
     });
 
     function addClick() {
@@ -45,21 +134,54 @@
         $('form input').removeAttr("disabled");
         var divid;
         var row = $('#details').treegrid('getSelected');
-        if (row.ShowOrder == "0") {
-            divid = "ware";
-        } else if (row.ShowOrder == "1") {
-            divid = "area";
-        } else if (row.ShowOrder == "2") {
-            divid = "shelf";
-        } else if (row.ShowOrder == "3") {
-            divid = "cell";
-        }
+
+        //        if (row.isType == "0") {
+//                    divid = "ware";
+//                    fm = divid + "fm";
+//                    url = '/Warehouse/WareCreate/';
+        //        } else if (row.isType == "1") {
+        //            divid = "area";
+        //            fm = divid + "fm";
+        //            url = '/Area/AreaCreate/';
+        //        } else if (row.isType == "2") {
+//                    divid = "shelf";
+//                    fm = divid + "fm";
+//                    url = '/Shelf/ShelfCreate/';
+        //        } else if (row.isType == "3") {
+                    divid = "cell";
+                    fm = divid + "fm";
+                    url = '/Cell/CellCreate/';
+        //        }
         AddShowDiv(divid);
-        url = '/Module/Create/';
+
     };
 
     function save() {
-        alert('保存成功！');
+        alert(url);
+        alert(fm);
+        $('#'+fm).form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').datagrid('reload');
+                }
+            }
+        });
     }
 
     function AddShowDiv(divId) {
@@ -79,73 +201,65 @@
     <div id="ware" class="easyui-layout" fit="true" style="display: none">
         <div region="center" border="false" style="padding: 10px 10px; background: #fff;
             border: 1px solid #ccc;">
-            <form id="warefm" action="/Module/Create/" method="post">
+            <form id="warefm"  method="post">
             <label>
                 当前新增页面：仓库</label>
             <table>
-                <tr>
+                <tr style="height:30px;">
                     <td>
                         仓库编码:
                     </td>
                     <td>
-                        <input name="ModuleID" type="text" id="txtWhCode" class="easyui-validatebox" style="width: 140px;" />
+                        <input name="WarehouseCode" type="text" id="txtWhCode" class="easyui-validatebox" style="width: 140px;" />
                     </td>
                     <td>
                         仓库名称:
                     </td>
                     <td>
-                        <input name="ModuleName" type="text" id="txtWhName" class="easyui-validatebox" style="width: 140px;" />
+                        <input name="WarehouseName" type="text" id="txtWhName" class="easyui-validatebox" style="width: 140px;" />
                     </td>
                 </tr>
-                <tr>
+                <tr style="height:30px;">
                     <td>
                         仓库简称:
                     </td>
                     <td>
-                        <input name="txtShortName" type="text" id="txtShortName" style="width: 140px;" />
+                        <input name="ShortName" type="text" id="txtShortName" style="width: 140px;" />
                     </td>
                     <td class="tdTitle">
                         仓库类型:
                     </td>
                     <td>
-                        <select name="ddlType" id="ddlType" disabled="disabled">
-                            <option selected="selected" value="0">主库区</option>
-                            <option value="1">暂存区</option>
+                        <select name="WarehouseType" id="ddlType" style="width: 140px;">
+                            <option selected="selected" value="0">正常库</option>
+                            <option value="1">损烟库</option>
+                            <option value="2">罚烟库</option>
                         </select>
                     </td>
                 </tr>
-                <tr>
+                <tr style="height:30px;">
                     <td>
                         公司编码:
                     </td>
                     <td>
-                        <input name="txtArea" type="text" value="0.00" id="txtArea" class="TextBoxRight"
-                            style="width: 140px;" /><span style="font-size: 13pt; font-family: 宋体">㎡</span>
+                      <input name="CompanyCode" type="text" id="company-add" style="width: 145px;"/>
                     </td>
-                    <td class="tdTitle">
-                        描述:
-                    </td>
-                    <td>
-                        <input name="txtCapacity" type="text" value="0" id="txtCapacity" class="TextBoxRight"
-                            style="width: 140px;" /><span style="font-size: 9pt">件</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tdTitle">
-                        更新时间:
-                    </td>
-                    <td>
-                        <input name="txtDEFAULTUNIT" type="text" value="002" id="txtDEFAULTUNIT" class="myinput"
-                            style="width: 140px;" />
-                    </td>
-                    <td class="tdTitle">
+                   <td class="tdTitle">
                         是否启用:
                     </td>
                     <td>
-                        <select name="ddlActive" id="wareIsActive" class="easyui-combobox" style="width: 141px">
+                        <select name="IsActive" id="wareIsActive" class="easyui-combobox" style="width: 141px">
                             <option selected="selected" value="1">启用</option>
                             <option value="0">未启用</option>
                         </select>
+                    </td>
+                </tr>
+                <tr style="height:30px;">
+                     <td class="tdTitle">
+                        仓库描述:
+                    </td>
+                    <td colspan="3">
+                        <textarea name="Description" style="width: 340px; height: 80px"></textarea>
                     </td>
                 </tr>               
             </table>
@@ -155,39 +269,23 @@
     <div id="area" class="easyui-layout" fit="true" style="display: none">
         <div region="center" border="false" style="padding: 10px 10px; background: #fff;
             border: 1px solid #ccc;">
-            <form id="areafm" action="/Module/Create/" method="post">
+            <form id="areafm" method="post">
             <label>
                 当前新增页面：库区</label>
             <table>
                 <tr style="height: 30px;">
                     <td class="tdTitle" style="height: 26px">
-                        仓库编码:
+                        库区编码:
                     </td>
                     <td style="height: 26px">
-                        <input name="ModuleID" type="text" id="txtWhCode_area" class="easyui-validatebox"
+                        <input name="AreaCode" type="text" id="txtWhCode_area" class="easyui-validatebox"
                             style="width: 140px;" />
                     </td>
                     <td class="tdTitle" style="height: 26px">
-                        库区类别:
-                    </td>
-                    <td style="height: 26px" colspan="3">
-                        <input name="ModuleName" type="text" id="txtAreaType_area" class="easyui-validatebox"
-                            style="width: 140px;" />
-                    </td>
-                </tr>
-                <tr style="height: 30px;">
-                    <td class="tdTitle">
-                        库区编码:
-                    </td>
-                    <td>
-                        <input name="ModuleName" type="text" id="txtAreaCode_area" class="easyui-validatebox"
-                            style="width: 140px;" />
-                    </td>
-                    <td class="tdTitle">
                         库区名称:
                     </td>
-                    <td>
-                        <input name="ModuleName" type="text" id="txtAreaName" class="easyui-validatebox"
+                    <td style="height: 26px" colspan="3">
+                        <input name="AreaName" type="text" id="txtAreaType_area" class="easyui-validatebox"
                             style="width: 140px;" />
                     </td>
                 </tr>
@@ -196,27 +294,45 @@
                         库区简称:
                     </td>
                     <td>
-                        <input name="txtShortName_area" type="text" id="txtShortName_area" class="easyui-validatebox"
+                        <input name="ShortName" type="text" id="txtAreaCode_area" class="easyui-validatebox"
                             style="width: 140px;" />
                     </td>
                     <td class="tdTitle">
-                        是否启用:
+                        库区类型:
                     </td>
                     <td>
-                        <select name="areaIsActive" id="areaIsActive" class="easyui-combobox" style="width: 140px">
-                            <option selected="selected" value="1">启用</option>
-                            <option value="0">未启用</option>
+                        <select name="AreaType" id="ddlType" style="width: 140px;">
+                            <option selected="selected" value="0">主库区</option>
+                            <option value="1">件烟区</option>
+                            <option value="2">条烟区</option>
                         </select>
                     </td>
                 </tr>
                 <tr style="height: 30px;">
                     <td class="tdTitle">
-                        备注:
+                        仓库名称:
                     </td>
-                    <td colspan="3">
-                        <textarea name="txtMemo_area" rows="1" id="txtMemo_area" style="width: 360px; height: 80px"></textarea>
+                    <td>
+                        <input name="WarehouseCode" type="text" id="warehouse-add1" style="width: 145px;"/>
+                    </td>
+                    <td class="tdTitle">
+                        是否启用:
+                    </td>
+                    <td>
+                        <select name="IsActive" id="areaIsActive" class="easyui-combobox" style="width: 140px">
+                            <option selected="selected" value="1">可用</option>
+                            <option value="0">不可用</option>
+                        </select>
                     </td>
                 </tr>
+                <tr style="height:30px;">
+                     <td class="tdTitle">
+                        仓库描述:
+                    </td>
+                    <td colspan="3">
+                        <textarea name="Description" style="width: 340px; height: 80px"></textarea>
+                    </td>
+                </tr>    
             </table>
             </form>
         </div>
@@ -224,96 +340,77 @@
     <div id="shelf" class="easyui-layout" fit="true" style="display: none">
         <div region="center" border="false" style="padding: 10px 10px; background: #fff;
             border: 1px solid #ccc;">
-            <form id="shelffm" action="/Module/Create/" method="post">
+            <form id="shelffm"  method="post">
             <label>
                 当前新增页面：货架</label>
             <table>
                 <tr>
                     <td align="right" class="tdTitle">
-                        仓库编码:
+                        货架编码:
                     </td>
                     <td align="left">
-                        <input name="ModuleID" type="text" id="txtWhCode_shelf" class="easyui-validatebox"
+                        <input name="ShelfCode" type="text" id="txtWhCode_shelf" class="easyui-validatebox"
                             style="width: 140px;" />
                     </td>
-                    <td align="right" class="tdTitle">
-                        库区编码:
-                    </td>
-                    <td align="left">
-                        <input name="ModuleName" type="text" id="txtAreaCode" class="easyui-validatebox"
-                            style="width: 140px;" />
-                    </td>
-                </tr>
-                <tr>
                     <td align="right" class="tdTitle">
                         货架编码:
                     </td>
                     <td align="left">
-                        <input name="ModuleName" type="text" readonly="readonly" id="txtShelfCode" class="easyui-validatebox"
-                            style="width: 140px;" />
-                    </td>
-                    <td align="right" class="tdTitle">
-                        货架名称:
-                    </td>
-                    <td align="left">
-                        <input name="ModuleName" type="text" value="A" id="txtShelfName" class="easyui-validatebox"
+                        <input name="ShelfName" type="text" id="txtAreaCode" class="easyui-validatebox"
                             style="width: 140px;" />
                     </td>
                 </tr>
                 <tr>
                     <td align="right" class="tdTitle">
-                        图形化X轴:
+                        货架简称:
                     </td>
                     <td align="left">
-                        <input name="txtImgX" type="text" value="0" id="txtImgX" class="TextBoxRight" onblur="IsNumber(this,'图形化X轴')"
+                        <input name="ShortName" type="text" id="txtShelfCode" class="easyui-validatebox"
                             style="width: 140px;" />
                     </td>
                     <td align="right" class="tdTitle">
-                        图形化Y轴:
+                        货架类别:
                     </td>
                     <td align="left">
-                        <input name="txtImgY" type="text" value="0" id="txtImgY" class="TextBoxRight" onblur="IsNumber(this,'图形化Y轴')"
-                            style="width: 140px;" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right" class="tdTitle">
-                        货架行数:
-                    </td>
-                    <td align="left">
-                        <input name="txtCellRows" type="text" value="1" id="txtCellRows" style="width: 140px;" />
-                    </td>
-                    <td align="right" class="tdTitle">
-                        货架列数:
-                    </td>
-                    <td align="left">
-                        <input name="txtCellCols" type="text" value="18" id="txtCellCols" style="width: 140px;" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right" class="tdTitle">
-                        是否启用:
-                    </td>
-                    <td align="left" style="text-align: left">
-                        <select name="ddlActive" id="shelfIsActive" class="easyui-combobox" style="width: 140px">
-                            <option selected="selected" value="1">启用</option>
-                            <option value="0">未启用</option>
+                        <select name="ShelfType" id="ddlType" style="width: 140px;">
+                            <option selected="selected" value="0">二层货架</option>
+                            <option value="1">三层货架</option>
+                            <option value="2">四层货架</option>
                         </select>
                     </td>
+                </tr>
+                <tr>
                     <td align="right" class="tdTitle">
-                        库区类别:
+                        仓库名称:
                     </td>
                     <td align="left">
-                        <input name="txtAreaType" type="text" value="0" id="txtAreaType" style="width: 140px;" />
+                        <input name="WarehouseCode" type="text" id="warehouse-add1" style="width: 145px;"/>
+                           
+                    </td>
+                    <td align="right" class="tdTitle">
+                        库区名称:
+                    </td>
+                    <td align="left">
+                       <input name="AreaCode" type="text" id="area-add1" style="width: 145px;"/>
                     </td>
                 </tr>
                 <tr>
                     <td align="right" class="tdTitle">
-                        备注:
+                        是否可用:
+                    </td>
+                    <td align="left" style="text-align: left" colspan="3">
+                        <select name="IsActive" id="shelfIsActive" class="easyui-combobox" style="width: 140px">
+                            <option selected="selected" value="1">可用</option>
+                            <option value="0">不可用</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" class="tdTitle">
+                        描述:
                     </td>
                     <td colspan="3" style="text-align: left">
-                        <textarea name="txtMemo_shelf" rows="10" cols="20" id="txtMemo_shelf" style="width: 360px;
-                            height: 65px">主库区A区</textarea>
+                        <textarea name="Description" style="width: 340px; height: 80px"></textarea>
                     </td>
                 </tr>
             </table>
@@ -323,102 +420,114 @@
     <div id="cell" class="easyui-layout" fit="true" style="display: none">
         <div region="center" border="false" style="padding: 10px 10px; background: #fff;
             border: 1px solid #ccc;">
-            <form id="cellfm" action="/Module/Create/" method="post">
+            <form id="cellfm"  method="post">
             <label>
                 当前新增页面：货位</label>
             <table>
-                <tr style="height: 25px">
+                <tr style="height: 20px">
                     <td align="right">
                         货位编码:
                     </td>
                     <td align="left">
-                        <input name="ModuleID" type="text" class="easyui-validatebox" id="txtCellCode" />
+                        <input name="CellCode" type="text" class="easyui-validatebox" id="txtCellCode" />
                     </td>
                     <td align="right">
                         货位名称:
                     </td>
                     <td align="left">
-                        <input name="ModuleName" type="text" class="easyui-validatebox" />
+                        <input name="CellName" type="text" class="easyui-validatebox" />
                     </td>
                 </tr>
-                <tr style="height: 25px">
+                <tr style="height: 20px">
                     <td align="right">
-                        货位限量:
+                        货位简称:
                     </td>
                     <td align="left">
-                        <input name="txtMaxQty" type="text" />
+                        <input name="ShortName" type="text" />
                     </td>
                     <td align="right">
                         货层位置:
                     </td>
                     <td align="left">
-                        <select name="ddlLayer" id="isLayer" class="easyui-combobox" style="width: 130px">
+                        <select name="Layer" id="isLayer" class="easyui-combobox" style="width: 130px">
                             <option value="1">一层</option>
                             <option value="2">二层</option>
                             <option value="3">三层</option>
                         </select>
                     </td>
                 </tr>
-                <tr style="height: 25px">
+                 <tr>
+                    <td align="right" class="tdTitle">
+                        仓库名称:
+                    </td>
+                    <td align="left">
+                        <input name="WarehouseCode" type="text" id="warehouse-add" style="width: 145px;"/>
+                           
+                    </td>
+                    <td align="right" class="tdTitle">
+                        库区名称:
+                    </td>
+                    <td align="left">
+                       <input name="AreaCode" type="text" id="area-add" style="width: 145px;"/>
+                    </td>
+                </tr>
+                <tr style="height: 20px">
+                 <td align="right" class="tdTitle">
+                        货架名称:
+                    </td>
+                    <td align="left">
+                       <input name="AreaCode" type="text" id="shelf-add" style="width: 145px;"/>
+                    </td>
                     <td align="right">
                         指定卷烟:
                     </td>
                     <td align="left">
-                        <input name="txtAssignedProductName" type="text" id="txtAssignedProductName" />
-                    </td>
-                    <td align="right" class="tdTitle">
-                        是否启用:
-                    </td>
-                    <td align="left">
-                        <select name="ddlActive" id="cellIsActive" class="easyui-combobox" style="width: 130px">
-                            <option selected="selected" value="1">启用</option>
-                            <option value="0">未启用</option>
-                        </select>
+                        <input name="ProductCode" type="text" id="product-add" />
                     </td>
                 </tr>
-                <tr style="height: 25px">
+                <tr style="height: 20px">
                     <td align="right" class="tdTitle">
-                        货位单位:
+                        预设最大储量:
                     </td>
                     <td align="left">
-                        <input name="txtUnitCode" type="text" id="txtUnitCode" />
+                        <input name="MaxQuantity" type="text" id="txtUnitCode" />
                     </td>
                     <td align="right" class="tdTitle">
-                        虚拟货位:
+                        是否单一货位:
                     </td>
                     <td align="left">
-                        <select name="ddlVirtual" id="isVirtual" class="easyui-combobox" style="width: 130px">
+                        <select name="MaxQuantity" id="isVirtual" class="easyui-combobox" style="width: 130px">
                             <option selected="selected" value="0">不是</option>
                             <option value="1">是</option>
                         </select>
                     </td>
                 </tr>
-                <tr style="height: 25px">
+                <tr style="height: 20px">
                     <td align="right" class="tdTitle">
-                        设备标识:
+                        货位类别:
                     </td>
                     <td align="left">
-                        <input name="txtPalletID" type="text" id="txtPalletID" />
+                        <select name="CellType" id="ddlType" style="width: 140px;">
+                            <option selected="selected" value="0">标准货位</option>
+                            <option value="1">异型货位</option>
+                        </select>
                     </td>
                     <td align="right" class="tdTitle">
-                        电子标签组:
+                        是否可用:
                     </td>
-                    <td align="left">
-                        <input name="txtEGroup" type="text" id="txtEGroup" />
+                    <td align="left" style="text-align: left" colspan="3">
+                        <select name="IsActive" id="shelfIsActive" class="easyui-combobox" style="width: 140px">
+                            <option selected="selected" value="1">可用</option>
+                            <option value="0">不可用</option>
+                        </select>
                     </td>
                 </tr>
-                <tr style="height: 25px">
-                    <td align="right">
-                        电子标签端口:
+                <tr style="height: 20px">
+                  <td align="right" class="tdTitle">
+                        描述:
                     </td>
-                    <td align="left">
-                        <input name="txtECom" type="text" id="txtECom" />
-                    </td>
-                    <td align="right" class="tdTitle">
-                        电子标签地址:
-                    </td>
-                    <td align="left">
-                        <input name="txtEAddress" type="text" id="txtEAddress" />
+                    <td colspan="3" style="text-align: left">
+                        <textarea name="Description" style="width: 340px; height: 50px"></textarea>
                     </td>
                 </tr>
             </table>

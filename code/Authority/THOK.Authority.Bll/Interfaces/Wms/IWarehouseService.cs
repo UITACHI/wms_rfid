@@ -8,7 +8,7 @@ namespace THOK.Authority.Bll.Interfaces.Wms
 {
     public interface IWarehouseService : IService<Warehouse>
     {
-        object GetDetails(string warehouseCode);
+        object GetDetails(int page, int rows, string warehouseCode);
 
         bool Add(Warehouse warehouse);
 

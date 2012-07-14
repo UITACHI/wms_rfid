@@ -23,8 +23,17 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return View();
         }
 
+        //查询货架信息表
+        // POST: /Cell/CellDetails
+        [HttpPost]
+        public ActionResult CellDetails(int page, int rows, string cellCode)
+        {
+            var cell = CellService.GetDetails(page, rows, cellCode);
+            return Json(cell, "text", JsonRequestBehavior.AllowGet);
+        }
+
         //
-        // GET: /Warehouse/Details/
+        // GET: /Cell/Details/
         public ActionResult Details(string shelfCode)
         {
             var wareCell = CellService.GetSearch(shelfCode);
@@ -32,7 +41,7 @@ namespace Authority.Controllers.Wms.WarehouseInfo
         }
 
         //添加货位信息表
-        // POST: /Company/CellCreate
+        // POST: /Cell/CellCreate
         [HttpPost]
         public ActionResult CellCreate(Cell cell)
         {

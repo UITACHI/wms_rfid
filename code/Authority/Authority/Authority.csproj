@@ -113,7 +113,6 @@
     <Compile Include="Controllers\Wms\MovePosition\MovePositionBillController.cs" />
     <Compile Include="Controllers\Wms\MovePosition\MovePositionBillGenerateController.cs" />
     <Compile Include="Controllers\Wms\MovePosition\MovePositionBillTypeController.cs" />
-    <Compile Include="Controllers\Wms\Organization\AreaController.cs" />
     <Compile Include="Controllers\Wms\Organization\CompanyController.cs" />
     <Compile Include="Controllers\Wms\Organization\DepartmentController.cs" />
     <Compile Include="Controllers\Wms\Organization\EmployeeController.cs" />

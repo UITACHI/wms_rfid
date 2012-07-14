@@ -24,7 +24,7 @@ namespace THOK.Authority.Bll.Models.Authority
         public string IsActive { get; set; }
         public string UpdateTime { get; set; }
         public string DefaultProductCode { get; set; }
-
+        public string isType { get; set; }
 
         public AreaCell[] children { get; set; }
     }
