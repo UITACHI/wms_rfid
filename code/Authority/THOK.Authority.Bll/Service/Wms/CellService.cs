@@ -56,7 +56,7 @@ namespace THOK.Authority.Bll.Service.Wms
             cellAdd.ShortName = cell.ShortName;
             cellAdd.CellType = cell.CellType;
             cellAdd.Layer = cell.Layer;
-            cellAdd.Rfid = cell.Rfid;           
+            cellAdd.Rfid = "1";// cell.Rfid;           
             cellAdd.warehouse = warehouse;
             cellAdd.area = area;
             cellAdd.shelf = shelf;
@@ -116,71 +116,49 @@ namespace THOK.Authority.Bll.Service.Wms
         public object GetSearch(string shelfCode)
         {
             var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();
-            HashSet<AreaCell> wareSet = new HashSet<AreaCell>();
+            HashSet<Tree> wareSet = new HashSet<Tree>();
             foreach (var warehouse in warehouses)//仓库
             {
-                AreaCell wareTree = new AreaCell();
-                wareTree.WarehouseCode = warehouse.WarehouseCode;
-                wareTree.WarehouseName = warehouse.WarehouseName;
-                wareTree.ShortName = warehouse.ShortName;
-                wareTree.Type = warehouse.WarehouseType;
-                wareTree.Description = warehouse.Description;
-                wareTree.IsActive = warehouse.IsActive;
-                wareTree.UpdateTime = warehouse.UpdateTime.ToString();
-                wareTree.isType = "0";
+                Tree wareTree = new Tree();
+                wareTree.id = warehouse.WarehouseCode;
+                wareTree.text ="仓库："+ warehouse.WarehouseName;
+                wareTree.state = "open";
+                wareTree.attributes = "ware";
+             
 
                 var areas = AreaRepository.GetQueryable().Where(a => a.warehouse.WarehouseCode == warehouse.WarehouseCode)
                                                         .OrderBy(a => a.AreaCode).Select(a => a);
-                HashSet<AreaCell> areaSet = new HashSet<AreaCell>();
+                HashSet<Tree> areaSet = new HashSet<Tree>();
                 foreach (var area in areas)//库区
                 {
-                    AreaCell areaTree = new AreaCell();
-                    areaTree.WarehouseCode = area.AreaCode;
-                    areaTree.WarehouseName = area.AreaName;
-                    areaTree.AreaCode = area.AreaCode;
-                    areaTree.AreaName = area.AreaName;
-                    areaTree.ShortName = area.ShortName;
-                    areaTree.Type = area.AreaType;
-                    areaTree.Description = area.Description;
-                    areaTree.IsActive = area.IsActive;
-                    areaTree.UpdateTime = area.UpdateTime.ToString();
-                    areaTree.isType = "1";
+                    Tree areaTree = new Tree();
+                    areaTree.id = area.AreaCode;
+                    areaTree.text = "库区：" + area.AreaName;
+                    areaTree.state = "open";                     
+                    areaTree.attributes = "area";
 
                     var shelfs = ShelfRepository.GetQueryable().Where(s => s.area.AreaCode == area.AreaCode)
                                                                .OrderBy(s => s.ShelfCode).Select(s => s);
-                    HashSet<AreaCell> shelfSet = new HashSet<AreaCell>();
+                    HashSet<Tree> shelfSet = new HashSet<Tree>();
                     foreach (var shelf in shelfs)//货架
                     {
-                        AreaCell shelfTree = new AreaCell();
-                        shelfTree.WarehouseCode = shelf.ShelfCode;
-                        shelfTree.WarehouseName = shelf.ShelfName;
-                        shelfTree.ShelfCode = shelf.ShelfCode;
-                        shelfTree.ShelfName = shelf.ShelfName;
-                        shelfTree.ShortName = shelf.ShortName;
-                        shelfTree.Type = shelf.ShelfType;
-                        shelfTree.Description = shelf.Description;
-                        shelfTree.IsActive = shelf.IsActive;
-                        shelfTree.UpdateTime = shelf.UpdateTime.ToString();
-                        shelfTree.isType = "2";
+                        Tree shelfTree = new Tree();
+                        shelfTree.id = shelf.ShelfCode;
+                        shelfTree.text = "货架："+shelf.ShelfName;
+                        shelfTree.state = "closed"; 
+                        shelfTree.attributes = "shelf";                       
 
                         var cells = CellRepository.GetQueryable().Where(c => c.shelf.ShelfCode == shelf.ShelfCode)
                                                                  .OrderBy(c => c.CellCode).Select(c => c);
-                        HashSet<AreaCell> cellSet = new HashSet<AreaCell>();
+                        HashSet<Tree> cellSet = new HashSet<Tree>();
                         foreach (var cell in cells)//货位
                         {
                             var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == cell.DefaultProductCode);
-                            AreaCell cellTree = new AreaCell();
-                            cellTree.WarehouseCode = cell.CellCode;
-                            cellTree.WarehouseName = cell.CellName;
-                            cellTree.CellCode = cell.CellCode;
-                            cellTree.CellName = cell.CellName;
-                            cellTree.ShortName = cell.ShortName;
-                            cellTree.DefaultProductCode =product.ProductName;
-                            cellTree.Type = cell.CellType;
-                            cellTree.Description = cell.Description;
-                            cellTree.IsActive = cell.IsActive;
-                            cellTree.UpdateTime = cell.UpdateTime.ToString();
-                            cellTree.isType = "3";
+                            Tree cellTree = new Tree();
+                            cellTree.id = cell.CellCode;
+                            cellTree.text = "货位：" + cell.CellName;
+                            cellTree.state = "open";
+                            cellTree.attributes = "cell";                          
                             cellSet.Add(cellTree);
                         }
                         shelfTree.children = cellSet.ToArray();
