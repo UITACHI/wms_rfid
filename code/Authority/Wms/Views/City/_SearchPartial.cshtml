@@ -1,0 +1,56 @@
+﻿<script type="text/javascript">
+
+    function searchClick() {
+        $('#isactive').combo({
+            editable: false,
+            panelHeight: 45
+        });
+        $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+    };
+
+    function select() {
+        var queryParams = $('#details').datagrid('options').queryParams;
+        queryParams.CityName = $('#cityname').val();
+        queryParams.Description = $('#description').val();
+        queryParams.IsActive = $('#isactive').combobox('getValue');
+        $('#details').datagrid('options').queryParams = queryParams;
+        $('#details').datagrid({
+            pageNumber: 1,
+            pageSize: 10
+        });
+        $("#details").datagrid('reload');
+        $('#dlg-search').dialog('close');
+    }
+
+</script>
+
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:210px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-search">
+    <div class="easyui-layout" fit="true">
+		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <table width="250">
+              <tr>
+                <td width="60">地市名称</td>
+                <td width="168" align="left"><input id="cityname"></td>
+              </tr>
+              <tr>
+                <td>描述</td>
+                <td align="left"><textarea id="description" style="width: 180px; height: 50px"></textarea></td>
+              </tr>
+              <tr>
+                <td>状态</td>
+                <td align="left">      
+		            <select id="isactive" required="true" class="easyui-combobox" style="width: 50px">
+		                <option value="true">启用</option>
+		                <option value="false">禁用</option>
+	                </select>
+	            </td>
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons-search">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
+</div>

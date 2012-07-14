@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using THOK.Common;
 using THOK.Authority.Bll.Interfaces;
-using THOK.Authority.Dal.Interfaces;
-using System.Data.Objects.DataClasses;
+using THOK.Common;
+using THOK.Common.Ef.Interfaces;
 
 namespace THOK.Authority.Bll.Service
 {

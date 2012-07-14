@@ -1,0 +1,56 @@
+﻿<script type="text/javascript">
+    function BrandQueryClick() {
+        $('#dlg-Brandsearch').dialog('open').dialog('setTitle', '查询品牌信息');
+        $("input[type=text]").attr("value", "");
+    };
+
+    function brandSave() {
+        var brandRow = $('#brandDetail').datagrid('getSelected');
+        if (brandRow) {
+            $('#brandCode').val(brandRow.BrandCode);
+            $('#brandCode2').val(brandRow.BrandCode);
+            $('#brandData').dialog('close');
+        }
+    }
+</script>
+<div id="brandData" class="easyui-dialog" modal="true" style="width: 500px; height: 500px;
+    padding: 2px 2px" closed="true" buttons="#dlgBrand-buttons">
+    <div split="true" border="false" style="width: 480px; height: 425px">
+        <table id="brandDetail" class="easyui-datagrid" border="false" toolbar="#btn-query2"
+            singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true">
+            <thead>
+                <tr>
+                    <th field="BrandCode" width="80" hidden="true">
+                        商品品牌编码
+                    </th>
+                    <th field="UniformCode" width="100">
+                        统一编码
+                    </th>
+                    <th field="CustomCode" width="100">
+                        自定义编码
+                    </th>
+                    <th field="BrandName" width="80">
+                        商品品牌名称
+                    </th>
+                    <th field="SupplierCode" width="80">
+                        厂商编码
+                    </th>
+                    <th field="IsActive" width="80">
+                        是否可用
+                    </th>
+                    <th field="UpdateTime" width="80">
+                        更新时间
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="dlgBrand-buttons">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="brandSave()">确定</a> <a
+        href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#brandData').dialog('close')">
+        取消</a>
+</div>
+<div id="btn-query2">
+ <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="BrandQueryClick()" id="BrandQuery">查询</a> 
+</div>

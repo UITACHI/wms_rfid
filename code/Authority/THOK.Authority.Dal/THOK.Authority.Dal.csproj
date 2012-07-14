@@ -8,7 +8,7 @@
     <ProjectGuid>{A8E32F0A-A9F4-4CDD-8C7A-8304CD034070}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>THOK.Authority.Dal</RootNamespace>
+    <RootNamespace>THOK.Wms.Dal</RootNamespace>
     <AssemblyName>THOK.Authority.Dal</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -53,88 +53,55 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntityRepository\Authority\SystemEventLogRepository.cs" />
-    <Compile Include="EntityRepository\Authority\SystemRepository.cs" />
-    <Compile Include="EntityRepository\Authority\ModuleRepository.cs" />
-    <Compile Include="EntityRepository\Authority\UserRepository.cs" />
-    <Compile Include="EntityRepository\Authority\CityRepository.cs" />
-    <Compile Include="EntityRepository\Authority\RoleRepository.cs" />
-    <Compile Include="EntityRepository\Authority\FunctionRepository.cs" />
-    <Compile Include="EntityRepository\Authority\ServerRepository.cs" />
-    <Compile Include="EntityRepository\Authority\LoginLogRepository.cs" />
-    <Compile Include="EntityRepository\Authority\UserSystemRepository.cs" />
-    <Compile Include="EntityRepository\Authority\UserModuleRepository.cs" />
-    <Compile Include="EntityRepository\Authority\UserFunctionRepository.cs" />
-    <Compile Include="EntityRepository\Authority\RoleModuleRepository.cs" />
-    <Compile Include="EntityRepository\Authority\RoleSystemRepository.cs" />
-    <Compile Include="EntityRepository\Authority\RoleFunctionRepository.cs" />
-    <Compile Include="EntityRepository\Authority\UserRoleRepository.cs" />
-    <Compile Include="EntityRepository\Wms\AreaRepository.cs" />
-    <Compile Include="EntityRepository\Wms\BrandRepository.cs" />
-    <Compile Include="EntityRepository\Wms\CellRepository.cs" />
-    <Compile Include="EntityRepository\Wms\CompanyRepository.cs" />
-    <Compile Include="EntityRepository\Wms\DepartmentRepository.cs" />
-    <Compile Include="EntityRepository\Wms\EmployeeRepository.cs" />
-    <Compile Include="EntityRepository\Wms\JobRepository.cs" />
-    <Compile Include="EntityRepository\Wms\ProductRepository.cs" />
-    <Compile Include="EntityRepository\Wms\ShelfRepository.cs" />
-    <Compile Include="EntityRepository\Wms\StorageRepository.cs" />
-    <Compile Include="EntityRepository\Wms\SupplierRepository.cs" />
-    <Compile Include="EntityRepository\Wms\UnitListRepository.cs" />
-    <Compile Include="EntityRepository\Wms\UnitRepository.cs" />
-    <Compile Include="EntityRepository\Wms\WarehouseRepository.cs" />
-    <Compile Include="Infrastructure\ContextManager.cs" />
-    <Compile Include="Infrastructure\HttpRequestModule.cs" />
-    <Compile Include="Infrastructure\RepositoryContext\AuthorityRepositoryContext.cs" />
-    <Compile Include="Interfaces\Authority\IAuthorityRepositoryContext.cs" />
-    <Compile Include="Interfaces\Authority\ISystemEventLogRepository.cs" />
-    <Compile Include="Interfaces\Authority\ISystemRepository.cs" />
-    <Compile Include="Interfaces\Authority\IModuleRepository.cs" />
-    <Compile Include="Interfaces\Authority\IUserRepository.cs" />
-    <Compile Include="Interfaces\Authority\ICityRepository.cs" />
-    <Compile Include="Interfaces\Authority\IRoleRepository.cs" />
-    <Compile Include="Interfaces\Authority\IFunctionRepository.cs" />
-    <Compile Include="Interfaces\Authority\IServerRepository.cs" />
-    <Compile Include="Interfaces\Authority\ILoginLogRepository.cs" />
-    <Compile Include="Interfaces\Authority\IUserSystemRepository.cs" />
-    <Compile Include="Interfaces\Authority\IUserModuleRepository.cs" />
-    <Compile Include="Interfaces\Authority\IUserFunctionRepository.cs" />
-    <Compile Include="Interfaces\Authority\IRoleModuleRepository.cs" />
-    <Compile Include="Interfaces\Authority\IRoleSystemRepository.cs" />
-    <Compile Include="Interfaces\Authority\IRoleFunctionRepository.cs" />
-    <Compile Include="Interfaces\Authority\IUserRoleRepository.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IRepositoryContext.cs" />
-    <Compile Include="Interfaces\Wms\IAreaRepository.cs" />
-    <Compile Include="Interfaces\Wms\IBrandRepository.cs" />
-    <Compile Include="Interfaces\Wms\ICellRepository.cs" />
-    <Compile Include="Interfaces\Wms\ICompanyRepository.cs" />
-    <Compile Include="Interfaces\Wms\IDepartmentRepository.cs" />
-    <Compile Include="Interfaces\Wms\IEmployeeRepository.cs" />
-    <Compile Include="Interfaces\Wms\IJobRepository.cs" />
-    <Compile Include="Interfaces\Wms\IProductRepository.cs" />
-    <Compile Include="Interfaces\Wms\IShelfRepository.cs" />
-    <Compile Include="Interfaces\Wms\IStorageRepository.cs" />
-    <Compile Include="Interfaces\Wms\ISupplierRepository.cs" />
-    <Compile Include="Interfaces\Wms\IUnitListRepository.cs" />
-    <Compile Include="Interfaces\Wms\IUnitRepository.cs" />
-    <Compile Include="Interfaces\Wms\IWarehouseRepository.cs" />
+    <Compile Include="EntityRepository\SystemEventLogRepository.cs" />
+    <Compile Include="EntityRepository\SystemRepository.cs" />
+    <Compile Include="EntityRepository\ModuleRepository.cs" />
+    <Compile Include="EntityRepository\UserRepository.cs" />
+    <Compile Include="EntityRepository\CityRepository.cs" />
+    <Compile Include="EntityRepository\RoleRepository.cs" />
+    <Compile Include="EntityRepository\FunctionRepository.cs" />
+    <Compile Include="EntityRepository\ServerRepository.cs" />
+    <Compile Include="EntityRepository\LoginLogRepository.cs" />
+    <Compile Include="EntityRepository\UserSystemRepository.cs" />
+    <Compile Include="EntityRepository\UserModuleRepository.cs" />
+    <Compile Include="EntityRepository\UserFunctionRepository.cs" />
+    <Compile Include="EntityRepository\RoleModuleRepository.cs" />
+    <Compile Include="EntityRepository\RoleSystemRepository.cs" />
+    <Compile Include="EntityRepository\RoleFunctionRepository.cs" />
+    <Compile Include="EntityRepository\UserRoleRepository.cs" />
+    <Compile Include="Interfaces\ISystemEventLogRepository.cs" />
+    <Compile Include="Interfaces\ISystemRepository.cs" />
+    <Compile Include="Interfaces\IModuleRepository.cs" />
+    <Compile Include="Interfaces\IUserRepository.cs" />
+    <Compile Include="Interfaces\ICityRepository.cs" />
+    <Compile Include="Interfaces\IRoleRepository.cs" />
+    <Compile Include="Interfaces\IFunctionRepository.cs" />
+    <Compile Include="Interfaces\IServerRepository.cs" />
+    <Compile Include="Interfaces\ILoginLogRepository.cs" />
+    <Compile Include="Interfaces\IUserSystemRepository.cs" />
+    <Compile Include="Interfaces\IUserModuleRepository.cs" />
+    <Compile Include="Interfaces\IUserFunctionRepository.cs" />
+    <Compile Include="Interfaces\IRoleModuleRepository.cs" />
+    <Compile Include="Interfaces\IRoleSystemRepository.cs" />
+    <Compile Include="Interfaces\IRoleFunctionRepository.cs" />
+    <Compile Include="Interfaces\IUserRoleRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EntityRepository\RepositoryBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
-    <None Include="ClassDiagram\ClassDiagram.Dal.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\THOK.Authority.Common\THOK.Common.csproj">
+    <ProjectReference Include="..\THOK.Authority.DbModel\THOK.Authority.DbModel.csproj">
+      <Project>{F7EB9C5D-6082-4DE6-B1C0-740AFF0CFE11}</Project>
+      <Name>THOK.Authority.DbModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THOK.Common.Ef\THOK.Common.Ef.csproj">
+      <Project>{59FB8EB5-F5B8-4423-8550-A7819C855CDE}</Project>
+      <Name>THOK.Common.Ef</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THOK.Common\THOK.Common.csproj">
       <Project>{2F9C4207-F8A0-4E55-A2CB-3514ADC0A437}</Project>
       <Name>THOK.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\THOK.RfidWms.DBModel.Ef\THOK.RfidWms.DBModel.Ef.csproj">
-      <Project>{259E5E16-41D8-420F-A11C-72BEE784B5CB}</Project>
-      <Name>THOK.RfidWms.DBModel.Ef</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

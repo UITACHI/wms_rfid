@@ -8,7 +8,7 @@
     <ProjectGuid>{8375EB8C-20CB-4E3E-BCF4-85E54F61D241}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>THOK.Authority.Bll</RootNamespace>
+    <RootNamespace>THOK.Wms.Bll</RootNamespace>
     <AssemblyName>THOK.Authority.Bll</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -46,85 +46,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\Authority\IFunctionService.cs" />
-    <Compile Include="Interfaces\Authority\ISystemEventLogService.cs" />
-    <Compile Include="Interfaces\Authority\IUserService.cs" />
-    <Compile Include="Interfaces\Authority\IRoleService.cs" />
-    <Compile Include="Interfaces\Authority\ICityService.cs" />
-    <Compile Include="Interfaces\Authority\ISystemService.cs" />
-    <Compile Include="Interfaces\Authority\IModuleService.cs" />
-    <Compile Include="Interfaces\Authority\IServerService.cs" />
+    <Compile Include="Interfaces\IFunctionService.cs" />
+    <Compile Include="Interfaces\ISystemEventLogService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="Interfaces\IRoleService.cs" />
+    <Compile Include="Interfaces\ICityService.cs" />
+    <Compile Include="Interfaces\ISystemService.cs" />
+    <Compile Include="Interfaces\IModuleService.cs" />
+    <Compile Include="Interfaces\IServerService.cs" />
     <Compile Include="Interfaces\IService.cs" />
-    <Compile Include="Interfaces\Wms\IAreaService.cs" />
-    <Compile Include="Interfaces\Wms\IBrandService.cs" />
-    <Compile Include="Interfaces\Wms\ICellService.cs" />
-    <Compile Include="Interfaces\Wms\ICompanyService.cs" />
-    <Compile Include="Interfaces\Wms\IDepartmentService.cs" />
-    <Compile Include="Interfaces\Wms\IEmployeeService.cs" />
-    <Compile Include="Interfaces\Wms\IJobService.cs" />
-    <Compile Include="Interfaces\Wms\IProductService.cs" />
-    <Compile Include="Interfaces\Wms\IShelfService.cs" />
-    <Compile Include="Interfaces\Wms\IStorageService.cs" />
-    <Compile Include="Interfaces\Wms\ISupplierService.cs" />
-    <Compile Include="Interfaces\Wms\IUnitListService.cs" />
-    <Compile Include="Interfaces\Wms\IUnitService.cs" />
-    <Compile Include="Interfaces\Wms\IWarehouseService.cs" />
-    <Compile Include="Models\Authority\AreaCell.cs" />
-    <Compile Include="Models\Authority\Fun.cs" />
-    <Compile Include="Models\Authority\Menu.cs" />
-    <Compile Include="Models\Authority\Tree.cs" />
-    <Compile Include="Models\Authority\UserLoginInfo.cs" />
+    <Compile Include="Models\AreaCell.cs" />
+    <Compile Include="Models\Fun.cs" />
+    <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\Tree.cs" />
+    <Compile Include="Models\UserLoginInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\Authority\CityService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Service\Authority\FunctionService.cs" />
-    <Compile Include="Service\Authority\ModuleService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Service\Authority\RoleService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Service\Authority\SystemEventLogService.cs" />
-    <Compile Include="Service\Authority\SystemService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Service\Authority\UserService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Service\Authority\ServerService.cs" />
+    <Compile Include="Service\CityService.cs" />
+    <Compile Include="Service\FunctionService.cs" />
+    <Compile Include="Service\ModuleService.cs" />
+    <Compile Include="Service\RoleService.cs" />
+    <Compile Include="Service\ServerService.cs" />
     <Compile Include="Service\ServiceBase.cs" />
-    <Compile Include="Service\Wms\AreaService.cs" />
-    <Compile Include="Service\Wms\BrandService.cs" />
-    <Compile Include="Service\Wms\CellService.cs" />
-    <Compile Include="Service\Wms\CompanyService.cs" />
-    <Compile Include="Service\Wms\DepartmentService.cs" />
-    <Compile Include="Service\Wms\EmployeeService.cs" />
-    <Compile Include="Service\Wms\JobService.cs" />
-    <Compile Include="Service\Wms\ProductService.cs" />
-    <Compile Include="Service\Wms\ShelfService.cs" />
-    <Compile Include="Service\Wms\StorageService.cs" />
-    <Compile Include="Service\Wms\SupplierService.cs" />
-    <Compile Include="Service\Wms\UnitListService.cs" />
-    <Compile Include="Service\Wms\UnitService.cs" />
-    <Compile Include="Service\Wms\WarehouseService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram\ClassDiagramService.cd" />
+    <Compile Include="Service\SystemEventLogService.cs" />
+    <Compile Include="Service\SystemService.cs" />
+    <Compile Include="Service\UserService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\THOK.Authority.Common\THOK.Common.csproj">
-      <Project>{2F9C4207-F8A0-4E55-A2CB-3514ADC0A437}</Project>
-      <Name>THOK.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\THOK.Authority.Dal\THOK.Authority.Dal.csproj">
       <Project>{A8E32F0A-A9F4-4CDD-8C7A-8304CD034070}</Project>
       <Name>THOK.Authority.Dal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\THOK.RfidWms.DBModel.Ef\THOK.RfidWms.DBModel.Ef.csproj">
-      <Project>{259E5E16-41D8-420F-A11C-72BEE784B5CB}</Project>
-      <Name>THOK.RfidWms.DBModel.Ef</Name>
+    <ProjectReference Include="..\THOK.Authority.DbModel\THOK.Authority.DbModel.csproj">
+      <Project>{F7EB9C5D-6082-4DE6-B1C0-740AFF0CFE11}</Project>
+      <Name>THOK.Authority.DbModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THOK.Common.Ef\THOK.Common.Ef.csproj">
+      <Project>{59FB8EB5-F5B8-4423-8550-A7819C855CDE}</Project>
+      <Name>THOK.Common.Ef</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THOK.Common\THOK.Common.csproj">
+      <Project>{2F9C4207-F8A0-4E55-A2CB-3514ADC0A437}</Project>
+      <Name>THOK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
