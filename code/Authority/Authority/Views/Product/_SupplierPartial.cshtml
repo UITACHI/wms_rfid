@@ -8,6 +8,7 @@
         var supplierRow = $('#supplierDetail').datagrid('getSelected');
         if (supplierRow) {
             $('#supplierCode').val(supplierRow.SupplierCode);
+            $('#supplierCode2').val(supplierRow.SupplierCode);
             $('#supplierData').dialog('close');
         }
     }
