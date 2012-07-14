@@ -13,7 +13,10 @@ namespace THOK.Authority.Bll.Service.Authority
     {
         [Dependency]
         public ICityRepository CityRepository { get; set; }
-
+        [Dependency]
+        public IUserSystemRepository UserSystemRepository { get; set; }
+        [Dependency]
+        public IUserRepository UserRepository { get; set; }
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -78,6 +81,23 @@ namespace THOK.Authority.Bll.Service.Authority
             city.IsActive = isActive;
             CityRepository.SaveChanges();
             return true;
+        }
+        
+        public object GetCityByCityID(string cityID)
+        {
+            Guid cid=new Guid(cityID);
+            var city = CityRepository.GetQueryable().FirstOrDefault(c => c.CityID == cid);
+            return city.CityName;
+        }
+
+        public object GetDetails(string userName, string cityID, string systemID)
+        {
+            Guid cityid = new Guid(cityID);
+            Guid systemid = new Guid(systemID);
+            var user = UserRepository.GetQueryable().FirstOrDefault(u => u.UserName == userName);            
+            var userSystem = UserSystemRepository.GetQueryable().Where(us => us.User_UserID == user.UserID && us.System_SystemID == systemid && us.City_CityID == cityid).Select(us => us.UserSystemID);
+            var usersystems = UserSystemRepository.GetQueryable().Where(us => !userSystem.Any(uid => uid == us.UserSystemID) && us.User_UserID == user.UserID && us.System_SystemID == systemid).Select(us => new { us.City.CityID, us.City.CityName, us.City.Description, Status = us.City.IsActive ? "启用" : "禁用" });
+            return usersystems.ToArray();
         }
     }
 }

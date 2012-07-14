@@ -27,14 +27,14 @@ namespace THOK.Authority.Bll.Service.Authority
                 && i.Description.Contains(description)
                 && i.Url.Contains(url))
                 .OrderBy(i => i.ServerID)
-                .Select(i => new { i.ServerID, i.ServerName,i.City.CityID,i.City.CityName,i.Description,i.Url,IsActive = i.IsActive ? "启用" : "禁用" });
+                .Select(i => new { i.ServerID, i.ServerName, i.City.CityID, i.City.CityName, i.Description, i.Url, IsActive = i.IsActive ? "启用" : "禁用" });
 
             int total = servers.Count();
             servers = servers.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = servers.ToArray() };
         }
 
-        public bool Add(string serverName, string description, string url, bool isActive,string cityID)
+        public bool Add(string serverName, string description, string url, bool isActive, string cityID)
         {
             Guid gCityID = new Guid(cityID);
             var city = CityRepository.GetQueryable().Single(c => c.CityID == gCityID);
@@ -67,7 +67,7 @@ namespace THOK.Authority.Bll.Service.Authority
             return true;
         }
 
-        public bool Save(string serverID, string serverName, string description, string url, bool isActive,string cityID)
+        public bool Save(string serverID, string serverName, string description, string url, bool isActive, string cityID)
         {
             Guid gServerID = new Guid(serverID);
             Guid gCityID = new Guid(cityID);
@@ -82,5 +82,22 @@ namespace THOK.Authority.Bll.Service.Authority
             ServerRepository.SaveChanges();
             return true;
         }
+
+        public object GetServerById(string serverID)
+        {
+            Guid sid = new Guid(serverID);
+            var server = ServerRepository.GetQueryable().FirstOrDefault(s => s.ServerID == sid);
+            return server.ServerName;
+        }
+
+        public object GetDetails(string cityID,string serverID)
+        {
+            Guid cityid=new Guid(cityID);
+            Guid serverid=new Guid(serverID);
+            var server = ServerRepository.GetQueryable().Where(s => s.City.CityID == cityid && s.ServerID == serverid).Select(s => s.ServerID);
+            var servers = ServerRepository.GetQueryable().Where(s => !server.Any(sv => sv == s.ServerID) && s.City.CityID == cityid).Select(s => new { s.ServerID, s.ServerName, s.Description, Status = s.IsActive ? "启用" : "禁用" });
+            return servers.ToArray();
+        }
+
     }
 }

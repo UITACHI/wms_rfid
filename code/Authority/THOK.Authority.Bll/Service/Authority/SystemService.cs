@@ -21,8 +21,13 @@ namespace THOK.Authority.Bll.Service.Authority
         [Dependency]
         public IUserSystemRepository UserSystemRepository { get; set; }
         [Dependency]
+        public IUserModuleRepository UserModuleRepository { get; set; }
+        [Dependency]
+        public IUserFunctionRepository UserFunctionRepository { get; set; }
+        [Dependency]
         public ILoginLogRepository LoginLogRepository { get; set; }
-
+        [Dependency]
+        public IUserRepository UserRepository { get; set; }
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -90,5 +95,28 @@ namespace THOK.Authority.Bll.Service.Authority
             SystemRepository.SaveChanges();
             return true;
         }
+
+        public object GetSystemById(string systemID)
+        {
+            Guid sid = new Guid(systemID);
+            var sysytem = SystemRepository.GetQueryable().FirstOrDefault(s => s.SystemID == sid);
+            return sysytem.SystemName;
+        }
+
+        public object GetDetails(string userName, string systemID, string cityID)
+        {
+            Guid cityid = new Guid(cityID);
+            Guid systemid = new Guid(systemID);
+            var user = UserRepository.GetQueryable().FirstOrDefault(u => u.UserName == userName);
+            var userSystemId = UserSystemRepository.GetQueryable().Where(us => us.User_UserID == user.UserID 
+                && us.System.SystemID == systemid && us.City_CityID == cityid).Select(us => us.UserSystemID);
+            var userSystems = UserSystemRepository.GetQueryable().Where(us => !userSystemId.Any(uid => uid == us.UserSystemID)
+                && us.User_UserID == user.UserID && us.City.CityID == cityid);
+            var userSystem = userSystems.Where(u => userSystems.Any(us => us.UserModules.Any(um => um.UserFunctions.Any(uf => 
+                uf.UserModule_UserModuleID == um.UserModuleID && uf.IsActive == true) || um.IsActive == true) || us.IsActive == true))
+                .Select(us => new {us.System.SystemID, us.System.SystemName, us.System.Description, Status = us.City.IsActive ? "启用" : "禁用" });
+            return userSystem.ToArray();
+        }
+
     }
 }

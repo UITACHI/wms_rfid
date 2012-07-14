@@ -1,5 +1,5 @@
 ﻿<script type="text/javascript">
-    $(function () {
+    function searchLoad() {
         $('#cg-search').combogrid({
             width: 180,
             panelWidth: 450,
@@ -16,9 +16,10 @@
 					{ field: 'Status', title: '状态', align: 'left', width: 30 }
 				]]
         });
-    })
+    }
 
-    function searchClick(){
+    function searchClick() {
+        searchLoad();
         $('#cg-search').combogrid('setValue', '').combo('setText', '');
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
     };

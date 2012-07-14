@@ -11,6 +11,8 @@
 
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增品牌信息');
+        $('#brandCode').attr("readonly", false);
+        $('#supplierCode').attr("readonly", true);
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({
             required: true
@@ -55,13 +57,6 @@
         $("#supplierDetail").datagrid('reload');
         selectSupplier();
     }
-
-//    function supplierSelect() {
-//        alter(1);
-//       $('#supplierData').dialog('open').dialog('setTitle', '选择厂商信息');
-//       $('#supplierDetail').datagrid({ url: '/Supplier/Details/'});
-//       $("#supplierDetail").datagrid('reload');
-//    }
 </script>
 
     <div id="dlg" class="easyui-dialog" modal="true" 

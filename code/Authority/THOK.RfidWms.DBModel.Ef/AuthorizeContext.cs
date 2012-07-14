@@ -83,8 +83,13 @@ namespace THOK.RfidWms.DBModel.Ef
             modelBuilder.Configurations.Add(new SupplierMap());
             modelBuilder.Configurations.Add(new UnitMap());
             modelBuilder.Configurations.Add(new UnitListMap());
-
             modelBuilder.Configurations.Add(new BrandMap());
+
+            modelBuilder.Configurations.Add(new WarehouseMap());
+            modelBuilder.Configurations.Add(new AreaMap());
+            modelBuilder.Configurations.Add(new ShelfMap());
+            modelBuilder.Configurations.Add(new CellMap());
+            modelBuilder.Configurations.Add(new StorageMap());
 
             #endregion
         }

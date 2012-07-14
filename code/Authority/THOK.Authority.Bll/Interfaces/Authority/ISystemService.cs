@@ -11,5 +11,9 @@ namespace THOK.Authority.Bll.Interfaces.Authority
         bool Delete(string systemId);
 
         bool Save(string systemId, string systemName, string description, bool status);
+
+        object GetSystemById(string systemID);
+
+        object GetDetails(string userName, string systemID, string cityID);
     }
 }
