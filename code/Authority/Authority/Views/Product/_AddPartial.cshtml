@@ -19,60 +19,6 @@
                     { field: 'UpdateTime', title: '更新时间', align: 'left', width: 30 }
 				]]
         });
-        $('#fw').combogrid({
-            width: 129,
-            panelWidth: 450,
-            required: true,
-            url: '/Unit/Details/?page=1&rows=1',
-            idField: 'UnitCode',
-            textField: 'UnitName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-					{ field: 'UnitCode', title: '系统ID', width: 30 },
-					{ field: 'UnitName', title: '系统名称', align: 'left', width: 40 },
-					{ field: 'COUNT', title: '支数', align: 'left', width: 30 },
-					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 },
-                    { field: 'UpdateTime', title: '更新时间', align: 'left', width: 30 }
-				]]
-        });
-        $('#fx').combogrid({
-            width: 129,
-            panelWidth: 450,
-            required: true,
-            url: '/Unit/Details/?page=1&rows=1',
-            idField: 'UnitCode',
-            textField: 'UnitName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-					{ field: 'UnitCode', title: '系统ID', width: 30 },
-					{ field: 'UnitName', title: '系统名称', align: 'left', width: 40 },
-					{ field: 'COUNT', title: '支数', align: 'left', width: 30 },
-					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 },
-                    { field: 'UpdateTime', title: '更新时间', align: 'left', width: 30 }
-				]]
-        });
-        $('#fs').combogrid({
-            width: 129,
-            panelWidth: 450,
-            required: true,
-            url: '/Unit/Details/?page=1&rows=1',
-            idField: 'UnitCode',
-            textField: 'UnitName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-					{ field: 'UnitCode', title: '系统ID', width: 30 },
-					{ field: 'UnitName', title: '系统名称', align: 'left', width: 40 },
-					{ field: 'COUNT', title: '支数', align: 'left', width: 30 },
-					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 },
-                    { field: 'UpdateTime', title: '更新时间', align: 'left', width: 30 }
-				]]
-        });
 
     })
 
@@ -113,10 +59,16 @@
             }
         });
     }
+    function supplierSelect() {
+        $('#supplierData').dialog('open').dialog('setTitle', '选择厂商信息');
+        $('#supplierDetail').datagrid({ url: '/Supplier/Details/' });
+        $("#supplierDetail").datagrid('reload');
+        selectSupplier();
+    }
 </script>
 
     <div id="dlg" class="easyui-dialog" modal="true" 
-        style="width:710px;height:420px;padding:2px 2px"
+        style="width:740px;height:440px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
@@ -136,7 +88,9 @@
                         <td>购入价</td>
                         <td><input  class="easyui-numberbox" name="BuyPrice" min="0" max="999999999" precision="2" required="true"/></td>
                         <td>缺省计量单位</td>
-                        <td><input id="fw" name="UnitCode" ></td>
+                        <td><input name="UnitCode" id="unitCode" required="true">
+                        <a href="#" onclick="unitSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
                       </tr>
                       <tr>
                         <td>统一编码</td>
@@ -144,7 +98,9 @@
                         <td>批发价</td>
                         <td><input  class="easyui-numberbox" name="TradePrice" min="0" max="999999999" precision="2"/></td>
                         <td>商品品牌</td>
-                        <td><input id="fs"  name ="BrandCode"></td>
+                        <td><input name="BrandCode" id="brandCode" required="true">
+                        <a href="#" onclick="brandSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
                       </tr>
                       <tr>
                         <td>自定义编码</td>
@@ -161,7 +117,12 @@
                       </tr>
                       <tr>
                         <td>厂商</td>
-                        <td><input id="fx" name="SupplierCode"></td>
+                        <td><input name="SupplierCode" id="supplierCode" required="true">
+                        <a href="#" onclick="supplierSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
+
+
+
                         <td>成本价</td>
                         <td><input  class="easyui-numberbox" name="CostPrice" min="0" max="999999999" precision="2"/></td>
                         <td>商品类型</td>
@@ -300,4 +261,9 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
-
+@Html.Partial("_SupplierPartial")
+@Html.Partial("_SupplierSearchPartial")
+@Html.Partial("_BrandPartail")
+@Html.Partial("_BrandSearchPartail")
+@Html.Partial("_UnitPartial")
+@Html.Partial("_UnitSearchPartial")
