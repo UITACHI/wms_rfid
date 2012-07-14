@@ -3,3 +3,5 @@ Add-Migration
 Update-Database
 Update-Database -TargetMigration
 Get-Migrations
+
+Install-Package EntityFramework ¨CPre
