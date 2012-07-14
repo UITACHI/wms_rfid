@@ -22,10 +22,12 @@ namespace THOK.Authority.Bll.Service.Wms
 
         #region IProductService 增，删，改，查等方法
 
-        public object GetDetails(int page, int rows, string productCode)
+        public object GetDetails(int page, int rows, string ProductName, string ProductCode, string CustomCode, string BrandCode, string UniformCode, string AbcTypeCode, string ShortCode, string PriceLevelCode, string SupplierCode)
         {
             IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
-            var product = ProductQuery.Where(c => c.ProductName.Contains(productCode))
+            var product = ProductQuery.Where(c => c.ProductName.Contains(ProductName) && c.ProductCode.Contains(ProductCode)
+                && c.CustomCode.Contains(CustomCode) && c.BrandCode.Contains(BrandCode) && c.UniformCode.Contains(UniformCode)
+                && c.AbcTypeCode.Contains(AbcTypeCode) && c.ShortCode.Contains(ShortCode) && c.PriceLevelCode.Contains(PriceLevelCode) && c.SupplierCode.Contains(SupplierCode))
                 .OrderBy(c => c.ProductCode).AsEnumerable()
                 .Select(c => new
                 {
@@ -142,11 +144,11 @@ namespace THOK.Authority.Bll.Service.Wms
         }
         public bool Delete(string ProductCode)
         {
-            var brand = ProductRepository.GetQueryable()
-                .FirstOrDefault(b => b.BrandCode == ProductCode);
+            var product = ProductRepository.GetQueryable()
+                .FirstOrDefault(b => b.ProductCode == ProductCode);
             if (ProductCode != null)
             {
-                ProductRepository.Delete(brand);
+                ProductRepository.Delete(product);
                 ProductRepository.SaveChanges();
             }
             else
@@ -159,8 +161,7 @@ namespace THOK.Authority.Bll.Service.Wms
             prod.AbcTypeCode = product.AbcTypeCode;
             prod.BarBarcode = product.BarBarcode;
             prod.BelongRegion = product.BelongRegion;
-            //prod.BrandCode = product.BrandCode;
-            prod.BrandCode = "21332";
+            prod.BrandCode = product.BrandCode;
             prod.BuyPrice = product.BuyPrice;
             prod.CostPrice = product.CostPrice;
             prod.CustomCode = product.CustomCode;
@@ -184,13 +185,11 @@ namespace THOK.Authority.Bll.Service.Wms
             prod.RetailPrice = product.RetailPrice;
             prod.ShortCode = product.ShortCode;
             prod.StatisticType = product.StatisticType;
-            //prod.SupplierCode = product.SupplierCode;
-            prod.SupplierCode = "11111";
+            prod.SupplierCode = product.SupplierCode;
             prod.TradePrice = product.TradePrice;
             prod.UniformCode = product.UniformCode;
-            //prod.UnitCode = product.UnitCode;
+            prod.UnitCode = product.UnitCode;
             //prod.UnitListCode = product.UnitListCode;
-            prod.UnitCode = "3324324";
             prod.UnitListCode = "3232";
             prod.UpdateTime = DateTime.Now;
 

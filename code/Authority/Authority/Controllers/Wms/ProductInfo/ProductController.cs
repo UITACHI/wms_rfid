@@ -27,9 +27,16 @@ namespace Authority.Controllers.ProductInfo
         }
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
-            string productName = collection["Product"] ?? "";
-
-            var users = ProductService.GetDetails(page, rows, productName);
+            string productName = collection["ProductName"] ?? "";
+            string productCode = collection["ProductCode"] ?? "";
+            string customCode = collection["CustomCode"] ?? "";
+            string brandCode = collection["BrandCode"] ?? "";
+            string uniformCode = collection["UniformCode"] ?? "";
+            string abcTypeCode = collection["AbcTypeCode"] ?? "";
+            string shortCode = collection["ShortCode"] ?? "";
+            string priceLevelCode = collection["PriceLevelCode"] ?? "";
+            string supplierCode = collection["SupplierCode"] ?? "";
+            var users = ProductService.GetDetails(page, rows, productName, productCode, customCode, brandCode, uniformCode, abcTypeCode, shortCode, priceLevelCode, supplierCode);
             return Json(users, "text", JsonRequestBehavior.AllowGet);
         }
         public ActionResult Create(Product product)

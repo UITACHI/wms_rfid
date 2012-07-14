@@ -4,33 +4,53 @@
         $('#dlg-search').dialog('open').dialog('setTitle', '查询品牌信息');
         $("input[type=text]").attr("value", "");
     };
-    
+    function select() {
+        var queryParams = $('#details').datagrid('options').queryParams;
+        queryParams.ProductCode = $('#PC').val();
+        queryParams.CustomCode = $('#CC').val();
+        queryParams.ProductName = $('#PN').val();
+        queryParams.BrandCode = $('#brandCode2').val();
+        queryParams.UniformCode = $('#NC').val();
+        queryParams.AbcTypeCode = $('#ATC').combo('getValue');
+        queryParams.ShortCode = $('#SC').val();
+        queryParams.PriceLevelCode = $('#PLC').combo('getValue');
+        queryParams.SupplierCode = $('#supplierCode2').val();
+        $('#details').datagrid('options').queryParams = queryParams;
+        $('#details').datagrid({
+            pageNumber: 1,
+            pageSize: 10
+        });
+        $("#details").datagrid('reload');
+        $('#dlg-search').dialog('close');
+    }
     </script>
 
         <div id="dlg-search" class="easyui-dialog" modal="true" 
-        style="width:450px;height:250px;padding:2px 2px"
+        style="width:505px;height:250px;padding:2px 2px"
         closed="true" buttons="#dlg-search-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
                     <table >
                       <tr>
                         <td>商品编码</td>
-                        <td style="padding-right:30px;"><input name="ProductCode" class="easyui-validatebox"></td>
+                        <td style="padding-right:30px;"><input name="ProductCode" id="PC"></td>
                         <td>自定义编码</td>
-                        <td><input name="CustomCode"></td>
+                        <td><input name="CustomCode" id="CC"></td>
                       </tr>
                       <tr>
                         <td>商品名称</td>
-                        <td><input name="ProductName" class="easyui-validatebox"></td>
+                        <td><input name="ProductName" id="PN"></td>
                         <td>商品品牌</td>
-                        <td><input id="fs"  name ="BrandCode"></td>
+                      <td><input name="BrandCode" id="brandCode2">
+                        <a href="#" onclick="brandSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
                       </tr>
                       <tr>
                         <td>统一编码</td>
-                        <td><input name="UniformCode" class="easyui-validatebox" required="true"></td>
+                        <td><input name="UniformCode" id="NC" ></td>
                         <td>ABC类型</td>
-                        <td><select  class="easyui-combobox"  editable="false" name="AbcTypeCode"  panelHeight="70" style="width: 129px;">
-		                        <option value="1">A</option>
+                        <td><select  class="easyui-combobox" id="ATC"  editable="false" name="AbcTypeCode"  panelHeight="70" style="width: 129px;">
+		                        <option value=""></option>
+                                <option value="1">A</option>
 		                        <option value="2">B</option>
                                 <option value="3">C</option>
 	                        </select>
@@ -39,11 +59,12 @@
                       </tr>
                       <tr>
                         <td>助记码</td>
-                        <td><input name="ShortCode"></td>
+                        <td><input name="ShortCode" id="SC"></td>
                         <td>商品价类</td>
                         <td>
-                           <select  class="easyui-combobox"  editable="false"  name="PriceLevelCode" panelHeight="120" style="width: 129px;" required="true">
-		                       <option value="01">一类</option>
+                           <select  class="easyui-combobox"  editable="false" id="PLC" name="PriceLevelCode" panelHeight="120" style="width: 129px;">
+		                      <option value=""></option>
+                              <option value="01">一类</option>
 		                        <option value="02">二类</option>
                                 <option value="03">三类</option>
                                 <option value="04">四类</option>
@@ -52,8 +73,8 @@
                         </td>
                       </tr>
                       <tr>
-                        <td>厂商</td>
-                        <td><input name="SupplierCode" id="supplierCode2" required="true">
+                        <td>厂商编码</td>
+                        <td><input name="SupplierCode" id="supplierCode2">
                         <a href="#" onclick="supplierSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
                       </tr>                    
                     </table>
@@ -61,8 +82,6 @@
         </div>
     </div>
 <div id="dlg-search-buttons">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
 </div>
-@Html.Partial("_SupplierPartial")
-@Html.Partial("_SupplierSearchPartial")
