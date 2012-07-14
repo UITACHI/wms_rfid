@@ -8,7 +8,7 @@ namespace THOK.Authority.Bll.Interfaces.Wms
 {
     public interface IProductService:IService<Product>
     {
-        object GetDetails(int page, int rows, string CompanyCode);
+        object GetDetails(int page, int rows, string ProductName, string ProductCode, string CustomCode, string BrandCode, string UniformCode, string AbcTypeCode, string ShortCode, string PriceLevelCode, string SupplierCode);
         bool Add(Product product);
         bool Delete(string ProductCode);
         bool Save(Product product);
