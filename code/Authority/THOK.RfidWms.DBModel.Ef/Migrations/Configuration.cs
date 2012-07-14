@@ -246,6 +246,8 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
             modules.ForEach(m => m.ParentModule_ModuleID = m.ParentModule.ModuleID);
             context.Set<Module>().AddOrUpdate(modules.ToArray());
 
+            CreateServer(context);
+
             CreateOrg(context);
             CreateWarehouse(context);
             CreateProduct(context);
@@ -257,6 +259,102 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
             CreateStock(context);
             CreateSorting(context);
             CreateSearch(context);
+        }
+
+        private void CreateServer(AuthorizeContext context)
+        {
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
+            context.Set<Module>().AddOrUpdate(
+                   new Module()
+                   {
+                       ModuleID = new Guid("F8344F8A-08AD-4FDA-8F45-EAD3BB471101"),
+                       ModuleName = "服务器信息管理",
+                       ShowOrder = 1,
+                       ModuleURL = "",
+                       IndicateImage = "",
+                       DeskTopImage = "",
+                       System = system,
+                       System_SystemID = system.SystemID,
+                       ParentModule_ModuleID = new Guid("F8344F8A-08AD-4FDA-8F45-EAD3BB471101")
+                   },
+                   new Module()
+                   {
+                       ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102"),
+                       ModuleName = "地市信息",
+                       ShowOrder = 1,
+                       ModuleURL =  "/City/",
+                       IndicateImage = "",
+                       DeskTopImage = "",
+                       System = system,
+                       System_SystemID = system.SystemID,
+                       ParentModule_ModuleID = new Guid("F8344F8A-08AD-4FDA-8F45-EAD3BB471101")
+                   },
+                   new Module()
+                   {
+                       ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103"),
+                       ModuleName = "服务器信息",
+                       ShowOrder = 2,
+                       ModuleURL = "/Server/",
+                       IndicateImage = "",
+                       DeskTopImage = "",
+                       System = system,
+                       System_SystemID = system.SystemID,
+                       ParentModule_ModuleID = new Guid("F8344F8A-08AD-4FDA-8F45-EAD3BB471101")
+                   }
+               );
+            context.SaveChanges();
+
+            context.Set<Function>().AddOrUpdate(
+                new Function()
+                 {
+                    FunctionID = new Guid("C2F089D7-90C6-4ae9-A941-C1454CADA3CA"),
+                    FunctionName = "查询",
+                    ControlName = "search",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                 },
+                new Function()
+                {
+                    FunctionID = new Guid("6F34032B-6EC9-45fa-90C8-33FADDE2C4BA"),
+                    FunctionName = "新增",
+                    ControlName = "add",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("51E449C0-96C9-4f63-8453-360B4A38BF32"),
+                    FunctionName = "编辑",
+                    ControlName = "edit",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("EC68F16E-52E3-46bd-9D90-7E7E4A5ED5E1"),
+                    FunctionName = "删除",
+                    ControlName = "delete",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("E355C8D8-E28F-4662-930F-67B61DCE4675"),
+                    FunctionName = "打印",
+                    ControlName = "print",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("63CD539F-2358-48d0-ABBE-6A09E027661A"),
+                    FunctionName = "帮助",
+                    ControlName = "help",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                }
+                );
+            context.SaveChanges();
         }
 
         private void CreateOrg(AuthorizeContext context)
