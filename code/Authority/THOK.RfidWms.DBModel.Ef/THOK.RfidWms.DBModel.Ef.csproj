@@ -115,9 +115,13 @@
     <Compile Include="Models\Authority\UserRole.cs" />
     <Compile Include="Models\Authority\UserSystem.cs" />
     <Compile Include="Models\Wms\Area.cs" />
+    <Compile Include="Models\Wms\BillType.cs" />
     <Compile Include="Models\Wms\Brand.cs" />
     <Compile Include="Models\Wms\Cell.cs" />
     <Compile Include="Models\Wms\Company.cs" />
+    <Compile Include="Models\Wms\InBillAllot.cs" />
+    <Compile Include="Models\Wms\InBillDetail.cs" />
+    <Compile Include="Models\Wms\InBillMaster.cs" />
     <Compile Include="Models\Wms\Mapping\AreaMap.cs" />
     <Compile Include="Models\Wms\Mapping\BrandMap.cs" />
     <Compile Include="Models\Wms\Mapping\CellMap.cs" />
@@ -135,6 +139,9 @@
     <Compile Include="Models\Wms\Mapping\UnitListMap.cs" />
     <Compile Include="Models\Wms\Mapping\UnitMap.cs" />
     <Compile Include="Models\Wms\Mapping\WarehouseMap.cs" />
+    <Compile Include="Models\Wms\OutBillAllot.cs" />
+    <Compile Include="Models\Wms\OutBillDetail.cs" />
+    <Compile Include="Models\Wms\OutBillMaster.cs" />
     <Compile Include="Models\Wms\Product.cs" />
     <Compile Include="Models\Wms\Shelf.cs" />
     <Compile Include="Models\Wms\Storage.cs" />
