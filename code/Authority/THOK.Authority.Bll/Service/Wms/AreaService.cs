@@ -27,7 +27,11 @@ namespace THOK.Authority.Bll.Service.Wms
         public object GetDetails(int page, int rows, string areaCode)
         {
             IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
-            var area = areaQuery.OrderBy(b => b.AreaCode).AsEnumerable().Select(b => new { b.AreaCode, b.AreaName, b.AreaType, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var area = areaQuery.OrderBy(b => b.AreaCode).AsEnumerable().Select(b=> new { b.AreaCode, b.AreaName, b.AreaType,b.ShortName,b.Description,b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            if (areaCode == "")
+            {
+                area = area.Where(a => a.AreaCode == areaCode);
+            }
             int total = area.Count();
             area = area.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = area.ToArray() };

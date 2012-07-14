@@ -125,7 +125,7 @@ namespace THOK.Authority.Bll.Service.Wms
             prod.ShortCode = product.ShortCode;
             prod.StatisticType = product.StatisticType;
             //prod.SupplierCode = product.SupplierCode;
-            prod.SupplierCode = "11111";
+            prod.SupplierCode = "001";
             prod.TradePrice = product.TradePrice;
             prod.UniformCode = product.UniformCode;
             //prod.UnitCode = product.UnitCode;
