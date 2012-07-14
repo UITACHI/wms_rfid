@@ -17,7 +17,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
         }
 
         protected override void Seed(AuthorizeContext context)
-        {           
+        {
             context.Set<Models.Authority.City>().AddOrUpdate(
                 new Models.Authority.City()
                 {
@@ -64,8 +64,8 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
 
             List<Module> modules = new List<Module>();
             System system_1 = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
-            
-            
+
+
             Module module1 = new Module();
             module1.ModuleID = new Guid("F8344F8A-08AD-4FDA-8F45-EAD3BB471101");
             module1.ModuleName = "·þÎñÆ÷ÐÅÏ¢¹ÜÀí";
@@ -245,12 +245,12 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
             modules.ForEach(m => m.System_SystemID = m.System.SystemID);
             modules.ForEach(m => m.ParentModule_ModuleID = m.ParentModule.ModuleID);
             context.Set<Module>().AddOrUpdate(modules.ToArray());
-            
+
             CreateOrg(context);
             CreateWarehouse(context);
             CreateProduct(context);
             CreateStockIn(context);
-            CreateStockOut(context); 
+            CreateStockOut(context);
             CreateStockMove(context);
             CreateStockCheck(context);
             CreateProfitLoss(context);
@@ -330,196 +330,197 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 new Function()
                 {
                     FunctionID = new Guid("A85AB2B3-5949-4ebf-A55F-7A46DA21EAD0"),
-                    FunctionName="²éÑ¯",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "²éÑ¯",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("3E296244-5B4F-46c9-A456-FA88463D612E"),
-                    FunctionName="ÐÂÔö",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("84FC6FD9-4F81-4300-8946-7D250D98DF71"),
-                    FunctionName="±à¼­",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("D368026A-68B0-4310-9532-681A62BD9670"),
-                    FunctionName="É¾³ý",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("C355CED1-0780-4a2e-9B81-42CC5F714808"),
-                    FunctionName="´òÓ¡",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("65F990D8-9AC8-4718-A768-C85D37346F23"),
-                    FunctionName="°ïÖú",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("4957BC1E-FB21-455f-8CC3-BE1383824FC6"),
-                    FunctionName="²éÑ¯",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "²éÑ¯",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("8B157B15-2827-424c-8099-806696639B1D"),
-                    FunctionName="ÐÂÔö",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("03E3D962-8442-4cf3-A634-3E0573A74046"),
-                    FunctionName="±à¼­",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("C6BF5241-4D85-47a0-BAC6-969F3AF0D8E2"),
-                    FunctionName="É¾³ý",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("2767CA63-5260-45d1-9CCC-4AC05AAC50CB"),
-                    FunctionName="´òÓ¡",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("4A453138-1DF0-444d-8869-FB9670E85757"),
-                    FunctionName="°ïÖú",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("DF01E03B-F6E2-4e68-AB0C-256F2F3FC7AE"),
-                    FunctionName="²éÑ¯",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "²éÑ¯",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("8A457D90-3594-4293-AA5D-5E62A6537343"),
-                    FunctionName="ÐÂÔö",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("E322D367-75DB-43ce-9B7D-709A9131B484"),
-                    FunctionName="±à¼­",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("179BE697-F7BF-4b54-8599-42FAF6BC7290"),
-                    FunctionName="É¾³ý",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("B31011DA-AA8D-4ea5-8F7E-979CFD31B605"),
-                    FunctionName="´òÓ¡",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("54C285D8-AB98-454e-AC7E-F51E55339863"),
-                    FunctionName="°ïÖú",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("9B19A906-A2D3-4089-AF69-40E752F9C0D7"),
-                    FunctionName="²éÑ¯",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "²éÑ¯",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("EF2FF820-81B7-410a-A3EE-E0809DD152C0"),
-                    FunctionName="ÐÂÔö",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("080FFAD5-9C58-4ed5-9F2A-24ABEAE7900E"),
-                    FunctionName="±à¼­",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("C1E95428-3FEC-484c-845E-A4173B9FA924"),
-                    FunctionName="É¾³ý",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("F9F33A01-76BB-4232-87D2-1DC3B6109AC8"),
-                    FunctionName="´òÓ¡",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 },
                 new Function()
                 {
                     FunctionID = new Guid("20DF1E53-5D2F-4147-8097-88F134E794AE"),
-                    FunctionName="°ïÖú",
-                    ControlName="",
-                    IndicateImage="",
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 }
                 );
+            context.SaveChanges();
         }
 
         private void CreateWarehouse(AuthorizeContext context)
@@ -552,11 +553,63 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                     }
                 );
             context.SaveChanges();
+
+            context.Set<Function>().AddOrUpdate(
+                new Function()
+                {
+                    FunctionID = new Guid("57237A92-3213-4188-8240-BEF7A2C221AD"),
+                    FunctionName = "²éÑ¯",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("A6CA0BC0-215F-44c3-8AA3-0FFF4C2F0495"),
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("82EE5370-3E65-49b3-87BB-86B75E671A4D"),
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("D0FC3809-4204-4130-8948-3B0039E62851"),
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("39D78BC8-CA6B-41f3-907E-A6BE76D87487"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("5468C301-1B83-4311-98B4-98AA9A5CF3E0"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                }
+                );
+            context.SaveChanges();
         }
 
         private void CreateProduct(AuthorizeContext context)
         {
-            System system= context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -630,6 +683,249 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471101")
                     }
+                );
+            context.SaveChanges();
+            context.Set<Function>().AddOrUpdate(
+                new Function()
+                {
+                    FunctionID = new Guid("89E04DB6-DC74-44ec-A6E5-382752824557"),
+                    FunctionName = "²éÑ¯",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                 },
+                new Function()
+                {
+                    FunctionID = new Guid("1374C404-3606-4c8b-BC2E-EB7E2626D4DD"),
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("561349C3-A2EA-4ee0-BA52-A434D14DA347"),
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("579D4CA9-6E99-40f0-AD1A-FD9B8916AF8F"),
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("C3C27660-DE3F-4e77-9C6E-BC37CB2C480A"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("12ACEC75-BEC2-457a-BDCE-0269C9BDED1E"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                     new Function()
+                 {
+                     FunctionID = new Guid("E3524C69-00BC-4d7d-BD11-73EB62A7D8C1"),
+                     FunctionName = "²éÑ¯",
+                     ControlName = "",
+                     IndicateImage = "",
+                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                 },
+                new Function()
+                {
+                    FunctionID = new Guid("7DD02B78-6936-4aa6-943D-CF77AC587AD6"),
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("1FC0760E-8E58-4e5d-9876-0F328BBFC447"),
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("DAF3A8A6-0092-49b2-9723-E97960A14722"),
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("1BFE2494-27EC-4b68-826C-AA42EBFA39C9"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("B4ACA461-0A8C-4387-BC20-952F931418BD"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                     new Function()
+                 {
+                     FunctionID = new Guid("7815DB01-45FE-4a64-A043-B011D992CA56"),
+                     FunctionName = "²éÑ¯",
+                     ControlName = "",
+                     IndicateImage = "",
+                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                 },
+                new Function()
+                {
+                    FunctionID = new Guid("727D0507-20E3-49f1-A8C3-1FBE1CA71C9A"),
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("2B4ED7C0-1645-4620-BFA3-C9F999593A76"),
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("CC924251-F880-4504-B938-D150A9E162C1"),
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("AAE6C29E-630D-4297-8830-FA2FC0F25F0D"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("3CD649E5-3B7F-4249-B6A7-C5B8FFB0CDE4"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                     new Function()
+                 {
+                     FunctionID = new Guid("8BB188B4-6280-4854-9340-9A3C14FE4E77"),
+                     FunctionName = "²éÑ¯",
+                     ControlName = "",
+                     IndicateImage = "",
+                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                 },
+                new Function()
+                {
+                    FunctionID = new Guid("C3FF7F83-067B-440f-A627-17932F216796"),
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("2D691698-BFD1-44fc-BE2A-9FAAF709354F"),
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("9BC0C657-734F-4904-9511-FF0E5254CE40"),
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("AB14EE13-BFFA-451b-9522-3552EA98F53D"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("B0CCE73E-E072-4510-8DC4-F21C36BA0DC1"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471105")
+                },
+                     new Function()
+                 {
+                     FunctionID = new Guid("2406CEAA-5493-438c-A738-148C5966959C"),
+                     FunctionName = "²éÑ¯",
+                     ControlName = "",
+                     IndicateImage = "",
+                     Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                 },
+                new Function()
+                {
+                    FunctionID = new Guid("4FBC4C07-6E8B-4fe8-A440-757FC67DDD46"),
+                    FunctionName = "ÐÂÔö",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("82DE0F87-6B85-4d39-BF9B-0B370F91328A"),
+                    FunctionName = "±à¼­",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("CC01F548-84AD-4a57-93FC-3294A9052F56"),
+                    FunctionName = "É¾³ý",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("8504A60A-8982-4cc4-BB8B-D7AAE118A037"),
+                    FunctionName = "´òÓ¡",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("1C2DFE80-92ED-4c1b-98E9-9F8845430222"),
+                    FunctionName = "°ïÖú",
+                    ControlName = "",
+                    IndicateImage = "",
+                    Module_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471106")
+                }
                 );
             context.SaveChanges();
         }
