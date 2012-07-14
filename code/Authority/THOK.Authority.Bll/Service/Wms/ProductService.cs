@@ -142,11 +142,11 @@ namespace THOK.Authority.Bll.Service.Wms
         }
         public bool Delete(string ProductCode)
         {
-            var brand = ProductRepository.GetQueryable()
-                .FirstOrDefault(b => b.BrandCode == ProductCode);
+            var product = ProductRepository.GetQueryable()
+                .FirstOrDefault(b => b.ProductCode == ProductCode);
             if (ProductCode != null)
             {
-                ProductRepository.Delete(brand);
+                ProductRepository.Delete(product);
                 ProductRepository.SaveChanges();
             }
             else

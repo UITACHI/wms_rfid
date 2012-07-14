@@ -65,10 +65,22 @@
         $("#supplierDetail").datagrid('reload');
         selectSupplier();
     }
+    function brandSelect() {
+        $('#brandData').dialog('open').dialog('setTitle', '选择品牌信息');
+        $('#brandDetail').datagrid({ url: '/Brand/Details/' });
+        $("#brandDetail").datagrid('reload');
+        selectSupplier();
+    }
+    function unitSelect() {
+        $('#unitData').dialog('open').dialog('setTitle', '选择单位信息');
+        $('#unitDetail').datagrid({ url: '/Unit/Details/' });
+        $("#unitDetail").datagrid('reload');
+        selectSupplier();
+    }
 </script>
 
     <div id="dlg" class="easyui-dialog" modal="true" 
-        style="width:740px;height:440px;padding:2px 2px"
+        style="width:745px;height:440px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
@@ -116,7 +128,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td>厂商</td>
+                        <td>厂商编码</td>
                         <td><input name="SupplierCode" id="supplierCode" required="true">
                         <a href="#" onclick="supplierSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
                         </td>
@@ -247,10 +259,10 @@
 	                        </select>
                         </td>
                         <td>更新时间</td>
-                        <td ><input style="width:129px;"  name="UpdateTime" editable="false" /></td>
+                        <td ><input style="width:127px;"  name="UpdateTime" editable="false" /></td>
                       </tr>
                         <td>描述:</td>
-                        <td colspan="2"><textarea name="Description" style="height: 50px;width:210px;"></textarea></td>
+                        <td colspan="5"><textarea name="Description" style="height: 50px;width:210px;"></textarea></td>
                       </tr>
                     </table>
 	            </form>

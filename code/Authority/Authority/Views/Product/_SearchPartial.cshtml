@@ -8,7 +8,7 @@
     </script>
 
         <div id="dlg-search" class="easyui-dialog" modal="true" 
-        style="width:450px;height:250px;padding:2px 2px"
+        style="width:505px;height:250px;padding:2px 2px"
         closed="true" buttons="#dlg-search-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
@@ -23,7 +23,8 @@
                         <td>商品名称</td>
                         <td><input name="ProductName" class="easyui-validatebox"></td>
                         <td>商品品牌</td>
-                        <td><input id="fs"  name ="BrandCode"></td>
+                      <td><input name="BrandCode" id="brandCode2" required="true">
+                        <a href="#" onclick="brandSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
                       </tr>
                       <tr>
                         <td>统一编码</td>
@@ -52,7 +53,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td>厂商</td>
+                        <td>厂商编码</td>
                         <td><input name="SupplierCode" id="supplierCode2" required="true">
                         <a href="#" onclick="supplierSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
                       </tr>                    
@@ -64,5 +65,3 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
 </div>
-@Html.Partial("_SupplierPartial")
-@Html.Partial("_SupplierSearchPartial")
