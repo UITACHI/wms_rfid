@@ -10,7 +10,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms
         public BillType()
         {
         }
-        public string BillType { get; set; }
+        public string BillTypeCode { get; set; }
         public string BillTypeName { get; set; }
         public string BillClass { get; set; }
         public string Description { get; set; }

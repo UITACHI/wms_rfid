@@ -60,191 +60,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                         Status = true
                     }
                 );
-            context.SaveChanges();
-
-            List<Module> modules = new List<Module>();
-            System system_1 = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
-
-
-            Module module1 = new Module();
-            module1.ModuleID = new Guid("F8344F8A-08AD-4FDA-8F45-EAD3BB471101");
-            module1.ModuleName = "服务器信息管理";
-            module1.ShowOrder = 1;
-            module1.ModuleURL = "";
-            module1.IndicateImage = "";
-            module1.DeskTopImage = "";
-            module1.System = system_1;
-            module1.ParentModule = module1;
-            modules.Add(module1);
-
-            Module module1_1 = new Module();
-            module1_1.ModuleID = new Guid("F8344F88-08AD-4D9A-8F45-EAD3BB471102");
-            module1_1.ModuleName = "地市信息";
-            module1_1.ShowOrder = 1;
-            module1_1.ModuleURL = "/City/";
-            module1_1.IndicateImage = "";
-            module1_1.DeskTopImage = "";
-            module1_1.System = system_1;
-            module1_1.ParentModule = module1;
-            modules.Add(module1_1);
-
-            Module module1_2 = new Module();
-            module1_2.ModuleID = new Guid("F8344F88-08AD-4D9A-8F45-EAD3BB471103");
-            module1_2.ModuleName = "服务器信息";
-            module1_2.ShowOrder = 2;
-            module1_2.ModuleURL = "/Server/";
-            module1_2.IndicateImage = "";
-            module1_2.DeskTopImage = "";
-            module1_2.System = system_1;
-            module1_2.ParentModule = module1;
-            modules.Add(module1_2);
-
-            Module module2 = new Module();
-            module2.ModuleID = new Guid("F8344F88-AAAD-4F9A-8F45-EAD3BB471104");
-            module2.ModuleName = "系统权限管理";
-            module2.ShowOrder = 2;
-            module2.ModuleURL = "";
-            module2.IndicateImage = "";
-            module2.DeskTopImage = "";
-            module2.System = system_1;
-            module2.ParentModule = module2;
-            modules.Add(module2);
-
-            Module module2_1 = new Module();
-            module2_1.ModuleID = new Guid("F8344F88-08AD-4F9A-8F45-EAD3BB471105");
-            module2_1.ModuleName = "系统信息";
-            module2_1.ShowOrder = 1;
-            module2_1.ModuleURL = "/System/";
-            module2_1.IndicateImage = "";
-            module2_1.DeskTopImage = "";
-            module2_1.System = system_1;
-            module2_1.ParentModule = module2;
-            modules.Add(module2_1);
-
-            Module module2_2 = new Module();
-            module2_2.ModuleID = new Guid("F8344F88-08AD-4F9A-8F45-EAD3BB471106");
-            module2_2.ModuleName = "模块信息";
-            module2_2.ShowOrder = 2;
-            module2_2.ModuleURL = "/Module/";
-            module2_2.IndicateImage = "";
-            module2_2.DeskTopImage = "";
-            module2_2.System = system_1;
-            module2_2.ParentModule = module2;
-            modules.Add(module2_2);
-
-            Module module2_3 = new Module();
-            module2_3.ModuleID = new Guid("F8344F88-08AD-4F9A-8F45-EAD3BB471107");
-            module2_3.ModuleName = "角色信息";
-            module2_3.ShowOrder = 3;
-            module2_3.ModuleURL = "/Role/";
-            module2_3.IndicateImage = "";
-            module2_3.DeskTopImage = "";
-            module2_3.System = system_1;
-            module2_3.ParentModule = module2;
-            modules.Add(module2_3);
-
-            Module module2_4 = new Module();
-            module2_4.ModuleID = new Guid("F8344F88-08AD-4F9A-8F45-EAD3BB471108");
-            module2_4.ModuleName = "用户信息";
-            module2_4.ShowOrder = 4;
-            module2_4.ModuleURL = "/User/";
-            module2_4.IndicateImage = "";
-            module2_4.DeskTopImage = "";
-            module2_4.System = system_1;
-            module2_4.ParentModule = module2;
-            modules.Add(module2_4);
-
-            Module module3 = new Module();
-            module3.ModuleID = new Guid("F8344F88-08AD-4F9A-8F45-EAD3BB471109");
-            module3.ModuleName = "系统日志管理";
-            module3.ShowOrder = 3;
-            module3.ModuleURL = "";
-            module3.IndicateImage = "";
-            module3.DeskTopImage = "";
-            module3.System = system_1;
-            module3.ParentModule = module3;
-            modules.Add(module3);
-
-            Module module3_1 = new Module();
-            module3_1.ModuleID = new Guid("F8344F88-AAAD-4F9A-8F45-EAD3BB471110");
-            module3_1.ModuleName = "登录日志";
-            module3_1.ShowOrder = 1;
-            module3_1.ModuleURL = "/SystemEventLog/";
-            module3_1.IndicateImage = "";
-            module3_1.DeskTopImage = "";
-            module3_1.System = system_1;
-            module3_1.ParentModule = module3;
-            modules.Add(module3_1);
-
-            Module module3_2 = new Module();
-            module3_2.ModuleID = new Guid("F8344F88-AAAD-4F9A-8F45-EAD3BB471111");
-            module3_2.ModuleName = "业务日志";
-            module3_2.ShowOrder = 2;
-            module3_2.ModuleURL = "/SystemEventLog/";
-            module3_2.IndicateImage = "";
-            module3_2.DeskTopImage = "";
-            module3_2.System = system_1;
-            module3_2.ParentModule = module3;
-            modules.Add(module3_2);
-
-            Module module3_3 = new Module();
-            module3_3.ModuleID = new Guid("F8344F88-AAAD-4F9A-8F45-EAD3BB471112");
-            module3_3.ModuleName = "错误日志";
-            module3_3.ShowOrder = 3;
-            module3_3.ModuleURL = "/SystemEventLog/";
-            module3_3.IndicateImage = "";
-            module3_3.DeskTopImage = "";
-            module3_3.System = system_1;
-            module3_3.ParentModule = module3;
-            modules.Add(module3_3);
-
-            Module module4 = new Module();
-            module4.ModuleID = new Guid("F8344F88-08AD-4F9A-8F45-EAD3BB471113");
-            module4.ModuleName = "帮助文档管理";
-            module4.ShowOrder = 4;
-            module4.ModuleURL = "";
-            module4.IndicateImage = "";
-            module4.DeskTopImage = "";
-            module4.System = system_1;
-            module4.ParentModule = module4;
-            modules.Add(module4);
-
-            Module module4_1 = new Module();
-            module4_1.ModuleID = new Guid("F8344A88-08AD-4F9A-8F45-EAD3BB471114");
-            module4_1.ModuleName = "帮助目录";
-            module4_1.ShowOrder = 1;
-            module4_1.ModuleURL = "/HelpContents/";
-            module4_1.IndicateImage = "";
-            module4_1.DeskTopImage = "";
-            module4_1.System = system_1;
-            module4_1.ParentModule = module4;
-            modules.Add(module4_1);
-
-            Module module4_2 = new Module();
-            module4_2.ModuleID = new Guid("F8344A88-08AD-4F9A-8F45-EAD3BB471115");
-            module4_2.ModuleName = "帮助维护";
-            module4_2.ShowOrder = 2;
-            module4_2.ModuleURL = "/HelpEdit/";
-            module4_2.IndicateImage = "";
-            module4_2.DeskTopImage = "";
-            module4_2.System = system_1;
-            module4_2.ParentModule = module4;
-            modules.Add(module4_2);
-
-            Module module4_3 = new Module();
-            module4_3.ModuleID = new Guid("F8344A88-08AD-4F9A-8F45-EAD3BB471116");
-            module4_3.ModuleName = "帮助主页";
-            module4_3.ShowOrder = 3;
-            module4_3.ModuleURL = "/Help/";
-            module4_3.IndicateImage = "";
-            module4_3.DeskTopImage = "";
-            module4_3.System = system_1;
-            module4_3.ParentModule = module4;
-            modules.Add(module4_3);
-
-            modules.ForEach(m => m.System_SystemID = m.System.SystemID);
-            modules.ForEach(m => m.ParentModule_ModuleID = m.ParentModule.ModuleID);
-            context.Set<Module>().AddOrUpdate(modules.ToArray());
+            context.SaveChanges();          
 
             CreateServer(context);
             CreateSystemAuthority(context);
@@ -416,7 +232,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                    {
                        ModuleID = new Guid("0C07E22C-B747-453c-9ED6-D02962D00CE5"),
                        ModuleName = "系统权限管理",
-                       ShowOrder = 1,
+                       ShowOrder = 2,
                        ModuleURL = "",
                        IndicateImage = "",
                        DeskTopImage = "",
@@ -720,7 +536,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                    {
                        ModuleID = new Guid("54C11B83-884A-4256-87E8-F3CD62004661"),
                        ModuleName = "系统日志管理",
-                       ShowOrder = 1,
+                       ShowOrder = 3,
                        ModuleURL = "",
                        IndicateImage = "",
                        DeskTopImage = "",
@@ -852,7 +668,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                    {
                        ModuleID = new Guid("9280918A-632F-43a9-B611-D7597C858EA8"),
                        ModuleName = "帮助文档管理",
-                       ShowOrder = 1,
+                       ShowOrder = 4,
                        ModuleURL = "",
                        IndicateImage = "",
                        DeskTopImage = "",
