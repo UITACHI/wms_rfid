@@ -8,34 +8,30 @@ using THOK.Authority.Bll.Interfaces.Wms;
 using THOK.RfidWms.DBModel.Ef.Models.Wms;
 using THOK.WebUtil;
 
-namespace Authority.Controllers.WarehouseInfo
+namespace Authority.Controllers.Wms.WarehouseInfo
 {
-    public class WarehouseController : Controller
+    public class ShelfController : Controller
     {
         [Dependency]
-        public IWarehouseService WarehouseService { get; set; }       
-
+        public IShelfService ShelfService { get; set; }
         //
-        // GET: /Warehouse/
+        // GET: /Shelf/
 
         public ActionResult Index()
         {
-            ViewBag.hasSearch = true;
-            ViewBag.hasAdd = true;
-            ViewBag.hasEdit = true;
-            ViewBag.hasDelete = true;
             return View();
         }
-        
-        //添加仓库信息表
-        // POST: /Company/WareCreate
+
+
+        //添加货架信息表
+        // POST: /Company/ShelfCreate
         [HttpPost]
-        public ActionResult WareCreate(Warehouse warehouse)
+        public ActionResult ShelfCreate(Shelf shelf)
         {
-            bool bResult = WarehouseService.Add(warehouse);
+            bool bResult = ShelfService.Add(shelf);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
-        
+
     }
 }

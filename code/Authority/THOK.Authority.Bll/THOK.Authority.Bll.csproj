@@ -55,15 +55,21 @@
     <Compile Include="Interfaces\Authority\IModuleService.cs" />
     <Compile Include="Interfaces\Authority\IServerService.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\Wms\IAreaService.cs" />
     <Compile Include="Interfaces\Wms\IBrandService.cs" />
+    <Compile Include="Interfaces\Wms\ICellService.cs" />
     <Compile Include="Interfaces\Wms\ICompanyService.cs" />
     <Compile Include="Interfaces\Wms\IDepartmentService.cs" />
     <Compile Include="Interfaces\Wms\IEmployeeService.cs" />
     <Compile Include="Interfaces\Wms\IJobService.cs" />
     <Compile Include="Interfaces\Wms\IProductService.cs" />
+    <Compile Include="Interfaces\Wms\IShelfService.cs" />
+    <Compile Include="Interfaces\Wms\IStorageService.cs" />
     <Compile Include="Interfaces\Wms\ISupplierService.cs" />
     <Compile Include="Interfaces\Wms\IUnitListService.cs" />
     <Compile Include="Interfaces\Wms\IUnitService.cs" />
+    <Compile Include="Interfaces\Wms\IWarehouseService.cs" />
+    <Compile Include="Models\Authority\AreaCell.cs" />
     <Compile Include="Models\Authority\Fun.cs" />
     <Compile Include="Models\Authority\Menu.cs" />
     <Compile Include="Models\Authority\Tree.cs" />
@@ -88,15 +94,20 @@
     </Compile>
     <Compile Include="Service\Authority\ServerService.cs" />
     <Compile Include="Service\ServiceBase.cs" />
+    <Compile Include="Service\Wms\AreaService.cs" />
     <Compile Include="Service\Wms\BrandService.cs" />
+    <Compile Include="Service\Wms\CellService.cs" />
     <Compile Include="Service\Wms\CompanyService.cs" />
     <Compile Include="Service\Wms\DepartmentService.cs" />
     <Compile Include="Service\Wms\EmployeeService.cs" />
     <Compile Include="Service\Wms\JobService.cs" />
     <Compile Include="Service\Wms\ProductService.cs" />
+    <Compile Include="Service\Wms\ShelfService.cs" />
+    <Compile Include="Service\Wms\StorageService.cs" />
     <Compile Include="Service\Wms\SupplierService.cs" />
     <Compile Include="Service\Wms\UnitListService.cs" />
     <Compile Include="Service\Wms\UnitService.cs" />
+    <Compile Include="Service\Wms\WarehouseService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram\ClassDiagramService.cd" />

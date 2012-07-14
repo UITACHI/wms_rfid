@@ -1,18 +1,28 @@
-﻿<div region="center" split="true" border="false" >    
+﻿<div region="center" split="true" border="false" >
+@*<ul id="tt" class="easyui-tree" toolbar="#tool"
+			url="/Module/Details/">
+	</ul>*@
    <table id="details" class="easyui-treegrid" border="false" 
-   			url="/Module/Details/" rownumbers="true" singleSelect="true"
-			idField="ModuleID" treeField="ModuleName" toolbar="#tool" pagination="false" fit="true" >
+   			url="/Warehouse/Details/" rownumbers="true" singleSelect="true"
+			idField="WarehouseCode" treeField="WarehouseName" toolbar="#tool" pagination="false" fit="true" >
 		<thead>
 			<tr>
-                <th field="ModuleID" hidden="true" width="50">模块编码</th>
-				<th field="ModuleName" width="200" align="left" iconCls="icon">模块名称</th>
-				<th field="IndicateImage" width="150">图标</th>                
-                <th field="ModuleURL" width="150">路径</th>
-                <th field="ShowOrder" width="150">显标顺序</th>
-                <th field="SystemID" hidden="true" width="50">系统编码</th>
-				<th field="SystemName" hidden="true" width="200" align="left" iconCls="icon">模块名称</th>
-                <th field="ParentModuleID" hidden="true" width="50">模块编码</th>
-				<th field="ParentModuleName" hidden="true" width="200" align="left" iconCls="icon">模块名称</th>
+                <th field="WarehouseCode" hidden="true" width="50">仓库编码</th>
+				<th field="WarehouseName" width="200" align="left" iconCls="icon">仓库名称</th>
+				<th field="ShortName" width="150">简称</th>
+                <th field="Type" width="150">类型</th>         
+                <th field="Description" width="150">描述</th>
+                <th field="IsActive" width="150">是否可用</th>
+                <th field="DefaultProductCode" width="150">预设卷烟名称</th>
+                <th field="Layer" width="150">货位层号</th>
+                <th field="Rfid" width="150">RFID</th>
+                <th field="UpdateTime" width="150">时间</th>
+                <th field="AreaCode" hidden="true" width="50">库区编码</th>
+				<th field="AreaName" hidden="true" width="200" align="left" iconCls="icon">库区名称</th>
+                <th field="ShelfCode" hidden="true" width="50">货架编码</th>
+				<th field="ShelfName" hidden="true" width="200" align="left" iconCls="icon">货架名称</th>
+                <th field="CellCode" hidden="true" width="50">货位编码</th>
+				<th field="CellName" hidden="true" width="200" align="left" iconCls="icon">货位名称</th>
 			</tr>
 		</thead>
 	</table>

@@ -147,6 +147,10 @@
     <Compile Include="Controllers\Wms\StockOut\StockOutBillCheckController.cs" />
     <Compile Include="Controllers\Wms\StockOut\StockOutBillController.cs" />
     <Compile Include="Controllers\Wms\StockOut\StockOutBillTypeController.cs" />
+    <Compile Include="Controllers\Wms\WarehouseInfo\AreaController.cs" />
+    <Compile Include="Controllers\Wms\WarehouseInfo\CellController.cs" />
+    <Compile Include="Controllers\Wms\WarehouseInfo\ShelfController.cs" />
+    <Compile Include="Controllers\Wms\WarehouseInfo\StorageController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\WarehouseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

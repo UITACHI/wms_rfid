@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using THOK.RfidWms.DBModel.Ef.Models.Wms;
 using THOK.Authority.Dal.Interfaces.Wms;
-using THOK.Authority.Dal.Infrastructure.RepositoryContext;
+using THOK.RfidWms.DBModel.Ef.Models.Wms;
 using THOK.Authority.Dal.Interfaces.Authority;
+using THOK.Authority.Dal.Infrastructure.RepositoryContext;
 
 namespace THOK.Authority.Dal.EntityRepository.Wms
 {
-    public class BrandRepository : RepositoryBase<Brand>, IBrandRepository
+    public class ShelfRepository : RepositoryBase<Shelf>, IShelfRepository
     {
-        public BrandRepository()
+         public ShelfRepository()
             : this(new AuthorityRepositoryContext())
         {
         }
 
-        public BrandRepository(IAuthorityRepositoryContext repositoryContext)
+         public ShelfRepository(IAuthorityRepositoryContext repositoryContext)
             : base(repositoryContext)
         {
         }

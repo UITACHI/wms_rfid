@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using THOK.RfidWms.DBModel.Ef.Models.Wms;
+using THOK.WebUtil;
+using THOK.Authority.Bll.Interfaces.Wms;
+using Microsoft.Practices.Unity;
+
+namespace Authority.Controllers.Wms.WarehouseInfo
+{
+    public class AreaController : Controller
+    {
+        [Dependency]
+        public IAreaService AreaService { get; set; }
+        //
+        // GET: /Area/
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        //添加库区信息表
+        // POST: /Company/AreaCreate
+        [HttpPost]
+        public ActionResult AreaCreate(Area area)
+        {
+            bool bResult = AreaService.Add(area);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+    }
+}
