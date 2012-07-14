@@ -3041,7 +3041,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 },
                 new Function()
                 {
-                    FunctionID = new Guid("FBBECF2C-66EE-447a-A196-4E2919854D85"),
+                    FunctionID = new Guid("C71C71CC-700F-4258-8178-1AF5939FD130"),
                     FunctionName = "≤È—Ø",
                     ControlName = "search",
                     IndicateImage = "",
@@ -3057,7 +3057,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 },
                 new Function()
                 {
-                    FunctionID = new Guid("FBBECF2C-66EE-447a-A196-4E2919854D85"),
+                    FunctionID = new Guid("6C1F7938-3777-4de1-8060-6C620F7B56C9"),
                     FunctionName = "∞Ô÷˙",
                     ControlName = "help",
                     IndicateImage = "",
