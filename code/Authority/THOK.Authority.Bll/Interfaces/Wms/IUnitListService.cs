@@ -8,5 +8,12 @@ namespace THOK.Authority.Bll.Interfaces.Wms
 {
     public interface IUnitListService:IService<UnitList>
     {
+        object GetDetails(int page, int rows, string unitListCode);
+
+        bool Add(UnitList unitList);
+
+        bool Delete(string unitListCode);
+
+        bool Save(UnitList unitList);
     }
 }
