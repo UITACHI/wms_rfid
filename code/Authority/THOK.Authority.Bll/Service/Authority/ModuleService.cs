@@ -299,7 +299,7 @@ namespace THOK.Authority.Bll.Service.Authority
                 moduleFunctionSet.Add(new Fun()
                     {
                         funid = userFunction.Function.FunctionID.ToString(),
-                        funname = userFunction.Function.FunctionName,
+                        funname = userFunction.Function.ControlName,
                         iconCls = userFunction.Function.IndicateImage,
                         isActive = userFunction.IsActive || bResult
                     });

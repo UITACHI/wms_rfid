@@ -46,9 +46,7 @@ namespace THOK.RfidWms.DBModel.Ef.Models.Wms.Mapping
             this.Property(t => t.EmployeeName).HasColumnName(ColumnMap.Value.To("EmployeeName"));
             
             this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
-            this.Property(t => t.DepartmentID)
-                .HasColumnName(ColumnMap.Value.To("DepartmentID"))
-                .IsOptional();
+            this.Property(t => t.DepartmentID).HasColumnName(ColumnMap.Value.To("DepartmentID")).IsOptional();
             this.Property(t => t.JobID).HasColumnName(ColumnMap.Value.To("JobID"));
             this.Property(t => t.Sex).HasColumnName(ColumnMap.Value.To("Sex"));
             this.Property(t => t.Tel).HasColumnName(ColumnMap.Value.To("Tel"));
