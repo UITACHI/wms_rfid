@@ -8,7 +8,7 @@ namespace THOK.Authority.Bll.Interfaces.Wms
 {
     public interface ICellService : IService<Cell>
     {
-        object GetDetails(string cellCode);
+        object GetDetails(int page, int rows, string cellCode);
 
         bool Add(Cell cell);
 

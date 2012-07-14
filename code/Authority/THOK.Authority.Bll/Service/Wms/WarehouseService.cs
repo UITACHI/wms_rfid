@@ -21,9 +21,13 @@ namespace THOK.Authority.Bll.Service.Wms
 
         #region IWarehouseService 成员
 
-        public object GetDetails(string warehouseCode)
+        public object GetDetails(int page, int rows, string warehouseCode)
         {
-            throw new NotImplementedException();
+            IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
+            var warehouse = wareQuery.OrderBy(b => b.WarehouseCode).AsEnumerable().Select(b => new { b.WarehouseCode, b.WarehouseName, b.WarehouseType, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            int total = warehouse.Count();
+            warehouse = warehouse.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = warehouse.ToArray() };
         }
 
         public new bool Add(Warehouse warehouse)
@@ -33,7 +37,7 @@ namespace THOK.Authority.Bll.Service.Wms
             ware.WarehouseName = warehouse.WarehouseName;
             ware.WarehouseType = warehouse.WarehouseType;
             ware.ShortName = warehouse.ShortName;
-            ware.CompanyCode = warehouse.CompanyCode;
+            ware.CompanyCode = "";// warehouse.CompanyCode;
             ware.Description = warehouse.Description;
             ware.IsActive = warehouse.IsActive;
             ware.UpdateTime = DateTime.Now;

@@ -35,9 +35,13 @@ namespace THOK.Authority.Bll.Service.Wms
 
         #region ICellService 成员
 
-        public object GetDetails(string cellCode)
+        public object GetDetails(int page, int rows, string cellCode)
         {
-            throw new NotImplementedException();
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+            var cell = cellQuery.OrderBy(b => b.CellCode).AsEnumerable().Select(b => new { b.CellCode, b.CellName, b.CellType, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            int total = cell.Count();
+            cell = cell.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = cell.ToArray() };
         }
 
         public new bool Add(Cell cell)
@@ -123,6 +127,7 @@ namespace THOK.Authority.Bll.Service.Wms
                 wareTree.Description = warehouse.Description;
                 wareTree.IsActive = warehouse.IsActive;
                 wareTree.UpdateTime = warehouse.UpdateTime.ToString();
+                wareTree.isType = "0";
 
                 var areas = AreaRepository.GetQueryable().Where(a => a.warehouse.WarehouseCode == warehouse.WarehouseCode)
                                                         .OrderBy(a => a.AreaCode).Select(a => a);
@@ -139,6 +144,7 @@ namespace THOK.Authority.Bll.Service.Wms
                     areaTree.Description = area.Description;
                     areaTree.IsActive = area.IsActive;
                     areaTree.UpdateTime = area.UpdateTime.ToString();
+                    areaTree.isType = "1";
 
                     var shelfs = ShelfRepository.GetQueryable().Where(s => s.area.AreaCode == area.AreaCode)
                                                                .OrderBy(s => s.ShelfCode).Select(s => s);
@@ -155,6 +161,7 @@ namespace THOK.Authority.Bll.Service.Wms
                         shelfTree.Description = shelf.Description;
                         shelfTree.IsActive = shelf.IsActive;
                         shelfTree.UpdateTime = shelf.UpdateTime.ToString();
+                        shelfTree.isType = "2";
 
                         var cells = CellRepository.GetQueryable().Where(c => c.shelf.ShelfCode == shelf.ShelfCode)
                                                                  .OrderBy(c => c.CellCode).Select(c => c);
@@ -173,6 +180,7 @@ namespace THOK.Authority.Bll.Service.Wms
                             cellTree.Description = cell.Description;
                             cellTree.IsActive = cell.IsActive;
                             cellTree.UpdateTime = cell.UpdateTime.ToString();
+                            cellTree.isType = "3";
                             cellSet.Add(cellTree);
                         }
                         shelfTree.children = cellSet.ToArray();

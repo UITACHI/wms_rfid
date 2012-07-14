@@ -3,18 +3,18 @@
 			url="/Module/Details/">
 	</ul>*@
    <table id="details" class="easyui-treegrid" border="false" 
-   			url="/Warehouse/Details/" rownumbers="true" singleSelect="true"
+   			url="/Cell/Details/" rownumbers="true" singleSelect="true"
 			idField="WarehouseCode" treeField="WarehouseName" toolbar="#tool" pagination="false" fit="true" >
 		<thead>
 			<tr>
                 <th field="WarehouseCode" hidden="true" width="50">仓库编码</th>
 				<th field="WarehouseName" width="200" align="left" iconCls="icon">仓库名称</th>
 				<th field="ShortName" width="150">简称</th>
-                <th field="Type" width="150">类型</th>         
-                <th field="Description" width="150">描述</th>
-                <th field="IsActive" width="150">是否可用</th>
+                <th field="Type" width="80">类型</th>         
+                <th field="Description" width="80">描述</th>
+                <th field="IsActive" width="80">是否可用</th>
                 <th field="DefaultProductCode" width="150">预设卷烟名称</th>
-                <th field="Layer" width="150">货位层号</th>
+                <th field="Layer" width="80">货位层号</th>
                 <th field="Rfid" width="150">RFID</th>
                 <th field="UpdateTime" width="150">时间</th>
                 <th field="AreaCode" hidden="true" width="50">库区编码</th>
@@ -23,6 +23,7 @@
 				<th field="ShelfName" hidden="true" width="200" align="left" iconCls="icon">货架名称</th>
                 <th field="CellCode" hidden="true" width="50">货位编码</th>
 				<th field="CellName" hidden="true" width="200" align="left" iconCls="icon">货位名称</th>
+                <th field="isType" hidden="true" width="200" align="left" iconCls="icon">判断节点类型</th>
 			</tr>
 		</thead>
 	</table>
