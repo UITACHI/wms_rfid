@@ -2268,7 +2268,7 @@ namespace THOK.RfidWms.DBModel.Ef.Migrations
                 },
                 new Function()
                 {
-                    FunctionID = new Guid("D23B1541-8777-4f0b-B2E2-882DD7EBA88A"),
+                    FunctionID = new Guid("C70881F2-C98B-4b83-BCAD-E151E70E8439"),
                     FunctionName = "°ïÖú",
                     ControlName = "help",
                     IndicateImage = "",
