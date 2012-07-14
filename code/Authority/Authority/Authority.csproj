@@ -735,7 +735,6 @@
     <Content Include="Views\Role\_RoleUserPartial.cshtml" />
     <Content Include="Views\Supplier\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\Unit\Index.cshtml" />
     <Content Include="Views\Warehouse\Index.cshtml" />
     <Content Include="Views\Warehouse\_AddWarehousePartial.cshtml" />
     <Content Include="Views\SortingLine\Index.cshtml" />
@@ -827,7 +826,6 @@
     <Content Include="Views\OverStockProductSearch\Index.cshtml" />
     <Content Include="Views\OverStockProductSearch\_SearchPartial.cshtml" />
     <Content Include="Views\Stockledger\_Detail.cshtml" />
-    <Content Include="Views\UnitList\Index.cshtml" />
     <Content Include="Views\Unit\_DeletePartial.cshtml" />
     <Content Include="Views\Unit\_EditPartial.cshtml" />
     <Content Include="Views\Unit\_AddPartial.cshtml" />
@@ -841,6 +839,8 @@
     <Content Include="Views\Warehouse\_DeletePartial.cshtml" />
     <Content Include="Views\Warehouse\_EditPartial.cshtml" />
     <Content Include="Views\Warehouse\_SearchPartial.cshtml" />
+    <Content Include="Views\Unit\Index.cshtml" />
+    <Content Include="Views\UnitList\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
