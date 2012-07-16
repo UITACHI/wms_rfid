@@ -27,8 +27,8 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string areaCode)
         {
             IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
-            var area = areaQuery.OrderBy(b => b.AreaCode).AsEnumerable().Select(b=> new { b.AreaCode, b.AreaName, b.AreaType,b.ShortName,b.Description,b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
-            if (areaCode == "")
+            var area = areaQuery.OrderBy(b => b.AreaCode).AsEnumerable().Select(b=> new { b.AreaCode, b.AreaName, b.AreaType,b.ShortName,b.Description,b.warehouse.WarehouseCode,b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            if (areaCode != null)
             {
                 area = area.Where(a => a.AreaCode == areaCode);
             }
@@ -73,7 +73,7 @@ namespace THOK.Wms.Bll.Service
         {
             var areaSave = AreaRepository.GetQueryable().FirstOrDefault(a => a.AreaCode == area.AreaCode);
             var warehouse = WarehouseRepository.GetQueryable().FirstOrDefault(w => w.WarehouseCode == area.WarehouseCode);
-            areaSave.AreaCode = area.AreaCode;
+            areaSave.AreaCode = areaSave.AreaCode;
             areaSave.AreaName = area.AreaName;
             areaSave.ShortName = area.ShortName;
             areaSave.AreaType = area.AreaType;
@@ -84,6 +84,13 @@ namespace THOK.Wms.Bll.Service
 
             AreaRepository.SaveChanges();
             return true;
+        }
+
+        public object FindArea(string parameter)
+        {
+            IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
+            var area = areaQuery.Where(a => a.AreaCode == parameter).OrderBy(b => b.AreaCode).AsEnumerable().Select(b => new { b.AreaCode, b.AreaName, b.AreaType, b.ShortName, b.Description, b.warehouse.WarehouseCode, b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            return area.First(a => a.AreaCode == parameter);
         }
 
         #endregion

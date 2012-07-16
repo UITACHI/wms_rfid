@@ -37,7 +37,7 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string cellCode)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
-            var cell = cellQuery.OrderBy(b => b.CellCode).AsEnumerable().Select(b => new { b.CellCode, b.CellName, b.CellType, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var cell = cellQuery.OrderBy(b => b.CellCode).AsEnumerable().Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer, b.IsSingle, b.MaxQuantity, b.Description, b.warehouse.WarehouseName, b.warehouse.WarehouseCode, b.area.AreaCode, b.area.AreaName, b.shelf.ShelfCode, b.shelf.ShelfName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             int total = cell.Count();
             cell = cell.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = cell.ToArray() };
@@ -92,7 +92,7 @@ namespace THOK.Wms.Bll.Service
             var area = AreaRepository.GetQueryable().FirstOrDefault(a => a.AreaCode == cell.AreaCode);
             var shelf = ShelfRepository.GetQueryable().FirstOrDefault(s => s.ShelfCode == cell.ShelfCode);
             var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == cell.DefaultProductCode);
-            cellSave.CellCode = cell.CellCode;
+            //cellSave.CellCode = cellSave.CellCode;
             cellSave.CellName = cell.CellName;
             cellSave.ShortName = cell.ShortName;
             cellSave.CellType = cell.CellType;
@@ -170,6 +170,14 @@ namespace THOK.Wms.Bll.Service
                 wareSet.Add(wareTree);
             }
             return wareSet.ToArray();
+        }
+
+        public object FindCell(string parameter)
+        {
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+            var cell = cellQuery.Where(c=>c.CellCode==parameter).OrderBy(b => b.CellCode).AsEnumerable()
+                                .Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer, b.IsSingle, b.MaxQuantity, b.Description, b.warehouse.WarehouseName, b.warehouse.WarehouseCode, b.area.AreaCode, b.area.AreaName, b.shelf.ShelfCode, b.shelf.ShelfName,DefaultProductCode=b.product.ProductCode,b.product.ProductName,IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            return cell.First(c => c.CellCode == parameter);
         }
 
         #endregion

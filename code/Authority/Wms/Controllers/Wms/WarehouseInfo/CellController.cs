@@ -32,6 +32,16 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return Json(cell, "text", JsonRequestBehavior.AllowGet);
         }
 
+        //查询货架信息表
+        // POST: /Cell/FindCell
+        [HttpPost]
+        public ActionResult FindCell(string parameter)
+        {
+            var cell = CellService.FindCell(parameter);
+            return Json(cell, "text", JsonRequestBehavior.AllowGet);
+        }
+
+
         //
         // GET: /Cell/Details/
         public ActionResult Details(string shelfCode)
@@ -50,5 +60,23 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //编辑货位表
+        // GET: /Cell/Edit/
+        public ActionResult Edit(Cell cell)
+        {
+            bool bResult = CellService.Save(cell);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //删除货位表
+        // POST: /Cell/Delete/
+        [HttpPost]
+        public ActionResult Delete(string cellCode)
+        {
+            bool bResult = CellService.Delete(cellCode);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

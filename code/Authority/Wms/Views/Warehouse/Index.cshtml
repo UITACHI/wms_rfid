@@ -1,11 +1,12 @@
 ﻿<div region="center" split="true" border="false" >
-<div toolbar="#tool" border="false" >
-    <ul id="tt" class="easyui-tree" url="/Cell/Details/"></ul>
- </div>
-  @* <table id="details" class="easyui-treegrid" border="false" 
+@*<div id="p" class="easyui-panel" title="1" iconCls="icon-save" toolbar="#tool">
+
+</div>*@
+   <table id="details" class="easyui-treegrid" border="false" 
    			url="/Cell/Details/" rownumbers="true" singleSelect="true"
 			idField="WarehouseCode" treeField="WarehouseName" toolbar="#tool" pagination="false" fit="true" >
-		<thead>
+            <ul id="tt" class="easyui-tree" url="/Cell/Details/"></ul>
+		<@*thead>
 			<tr>
                 <th field="WarehouseCode" hidden="true" width="50">仓库编码</th>
 				<th field="WarehouseName" width="200" align="left" iconCls="icon">仓库名称</th>
@@ -25,6 +26,6 @@
 				<th field="CellName" hidden="true" width="200" align="left" iconCls="icon">货位名称</th>
                 <th field="isType" hidden="true" width="200" align="left" iconCls="icon">判断节点类型</th>
 			</tr>
-		</thead>
-	</table>*@
+		</thead>*@
+	</table>
 </div>
