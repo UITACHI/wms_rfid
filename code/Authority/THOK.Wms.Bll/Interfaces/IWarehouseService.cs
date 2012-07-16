@@ -15,5 +15,7 @@ namespace THOK.Wms.Bll.Interfaces
         bool Delete(string warehouseCode);
 
         bool Save(Warehouse warehouse);
+
+        Object FindWarehouse(string parameter);
     }
 }

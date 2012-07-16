@@ -54,7 +54,6 @@ namespace Authority.Controllers.Organization
         
         //
         // GET: /Company/Edit/
-
         public ActionResult Edit(Company company)
         {
             bool bResult = CompanyService.Save(company);
@@ -64,7 +63,6 @@ namespace Authority.Controllers.Organization
 
         //
         // POST: /Company/Delete/
-
         [HttpPost]
         public ActionResult Delete(string companyID)
         {

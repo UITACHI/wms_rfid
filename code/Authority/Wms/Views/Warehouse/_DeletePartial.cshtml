@@ -1,46 +1,68 @@
 <script type="text/javascript">
     function deleteClick() {
-        var row = $('#details').treegrid('getSelected');
-        $.post("/User/DeleteUserRole/", { userRoleIdStr: userRoleString }, function (json) {
-            
-        });
+        //var row = $('#details').treegrid('getSelected');
+        var row = $('#tt').tree('getSelected'); 
         if (row) {
             $('#dlg').dialog('open').dialog('setTitle', '删除');
             $('form input').attr("disabled", "disabled");
             var divid;
-            var row = $('#details').treegrid('getSelected');
-            if (row == null) {
+            var laod;
+            if (row.attributes == "ware") {
                 divid = "ware";
-                fm = divid + "fm";
-                url = '/Warehouse/WareCreate/';
-            } else if (row.isType == "0") {
-                divid = "ware";
-                fm = divid + "fm";
-                url = '/Warehouse/WareCreate/';
-            } else if (row.isType == "1") {
+                Load("/Warehouse/FindWarehouse", row.id, divid);
+                url = "/Warehouse/Delete/?warehouseCode=" + row.id;
+            } else if (row.attributes == "area") {
                 divid = "area";
-                fm = divid + "fm";
-                url = '/Area/AreaCreate/';
+                Load("/Area/FindArea", row.id, divid);
                 addClass("wareArea", "");
-            } else if (row.isType == "2") {
+                url = "/Area/Delete/?areaCode=" + row.id;
+            } else if (row.attributes == "shelf") {
                 divid = "shelf";
-                fm = divid + "fm";
-                url = '/Shelf/ShelfCreate/';
-                addClass("wareShelf", "areaShelf")
-            } else if (row.isType == "3") {
+                Load("/Shelf/FindShelf", row.id, divid);
+                addClass("wareShelf", "areaShelf");
+                url = "/Shelf/Delete/?shelfCode=" + row.id;
+            } else if (row.attributes == "cell") {
                 divid = "cell";
-                fm = divid + "fm";
-                url = '/Cell/CellCreate/';
+                Load("/Cell/FindCell", row.id, divid);
                 addClass("wareCell", "areaCell")
+                url = "/Cell/Delete/?cellCode=" + row.id;
             }
-            $('#' + divid + 'fm').form('load', row);
-            AddShowDiv(divid); //显示div
-            addLoad(); //加载数据  
+            fm = divid + "fm";
+            AddShowDiv(divid); //显示页面
+            addLoad(); //加载数据
             $('#' + divId + ' .easyui-validatebox').validatebox({
                 required: false
-            });          
+            });
+           //DeleteSelect();        
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }
     };
+
+    function DeleteSelect() {
+        $('#warehouse-add').combogrid({
+            hasDownArrow: false
+        });
+        $('#area-add').combogrid({
+            hasDownArrow: false
+        });
+        $('#shelf-add').combogrid({
+            hasDownArrow: false
+        });
+        $('#product-add').combogrid({
+            hasDownArrow: false
+        });
+        $('#isLayer').combo({
+            hasDownArrow: false
+        });
+        $('#isVirtual').combo({
+            hasDownArrow: false
+        });
+        $('#isCellType').combo({
+            hasDownArrow: false
+        });
+        $('#cellIsActive').combo({
+            hasDownArrow: false
+        });
+    }
 </script>

@@ -20,6 +20,9 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public IShelfRepository ShelfRepository { get; set; }
 
+        [Dependency]
+        public ICellRepository CellRepository { get; set; }
+
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -30,7 +33,11 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string shelfCode)
         {
             IQueryable<Shelf> shelfQuery = ShelfRepository.GetQueryable();
-            var shelf = shelfQuery.OrderBy(b => b.ShelfCode).AsEnumerable().Select(b => new { b.ShelfCode, b.ShelfName, b.ShelfType, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var shelf = shelfQuery.OrderBy(b => b.ShelfCode).AsEnumerable().Select(b => new { b.ShelfCode, b.ShelfName, b.ShelfType, b.ShortName, b.Description, b.area.AreaCode, b.area.AreaName, b.warehouse.WarehouseCode, b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            if (shelfCode != null)
+            {
+                shelf = shelf.Where(s => s.ShelfCode == shelfCode);
+            }
             int total = shelf.Count();
             shelf = shelf.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = shelf.ToArray() };
@@ -62,6 +69,7 @@ namespace THOK.Wms.Bll.Service
                 .FirstOrDefault(s => s.ShelfCode == shelfCode);
             if (shelf != null)
             {
+                //Del(CellRepository, shelf.Cells);
                 ShelfRepository.Delete(shelf);
                 ShelfRepository.SaveChanges();
             }
@@ -75,7 +83,7 @@ namespace THOK.Wms.Bll.Service
             var shelfSave = ShelfRepository.GetQueryable().FirstOrDefault(s => s.ShelfCode == shelf.ShelfCode);            
             var warehouse = WarehouseRepository.GetQueryable().FirstOrDefault(w => w.WarehouseCode == shelf.WarehouseCode);
             var area = AreaRepository.GetQueryable().FirstOrDefault(a => a.AreaCode == shelf.AreaCode);
-            shelfSave.ShelfCode = shelf.ShelfCode;
+            shelfSave.ShelfCode = shelfSave.ShelfCode;
             shelfSave.ShelfName = shelf.ShelfName;
             shelfSave.ShortName = shelf.ShortName;
             shelfSave.ShelfType = shelf.ShelfType;
@@ -87,6 +95,13 @@ namespace THOK.Wms.Bll.Service
 
             ShelfRepository.SaveChanges();
             return true;
+        }
+       
+        public object FindShelf(string parameter)
+        {
+            IQueryable<Shelf> shelfQuery = ShelfRepository.GetQueryable();
+            var shelf = shelfQuery.Where(s=>s.ShelfCode==parameter).OrderBy(b => b.ShelfCode).AsEnumerable().Select(b => new { b.ShelfCode, b.ShelfName, b.ShelfType, b.ShortName, b.Description, b.area.AreaCode, b.area.AreaName, b.warehouse.WarehouseCode, b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            return shelf.First(s => s.ShelfCode == parameter);
         }
 
         #endregion
