@@ -16,7 +16,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.HasKey(t => t.ID);
 
             // Properties
-            this.Property(t => t.BillNo)
+            this.Property(t => t.ID)
                .IsRequired()
                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity); 
 
