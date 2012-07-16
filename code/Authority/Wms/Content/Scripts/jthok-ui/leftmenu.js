@@ -3,6 +3,12 @@
 (function ($) {
     var menus_root = {};
     $(function () {
+        $("#msgbox").ajaxError(function (event, XMLHttpRequest, ajaxOptions, thrownError) {
+            $.messager.show({
+                title: '错误',
+                msg: thrownError
+            });
+        });
         LogOn();
     });
     function LogOn() {
