@@ -14,17 +14,6 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public IProductRepository ProductRepository { get; set; }
 
-        [Dependency]
-        public IBrandRepository BrandRepository { get; set; }
-
-        [Dependency]
-        public ISupplierRepository SupplierRepository { get; set; }
-
-        [Dependency]
-        public IUnitListRepository UnitListRepository { get; set; }
-
-        [Dependency]
-        public IUnitRepository UnitRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -109,14 +98,11 @@ namespace THOK.Wms.Bll.Service
         public bool Add(Product product)
         {
             var prod = new Product();
-            var brand = BrandRepository.GetQueryable().FirstOrDefault(b => b.BrandCode == product.BrandCode);
-            var supplier = SupplierRepository.GetQueryable().FirstOrDefault(s => s.SupplierCode == product.SupplierCode);
-            var unitlist = UnitListRepository.GetQueryable().FirstOrDefault(ul => ul.UnitListCode == product.UnitListCode);
-            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == product.UnitCode);
             prod.AbcTypeCode = product.AbcTypeCode;
             prod.BarBarcode = product.BarBarcode;
             prod.BelongRegion = product.BelongRegion;
-            prod.Brand = brand;
+            prod.BrandCode = product.BrandCode;
+
             prod.BuyPrice = product.BuyPrice;
             prod.CostPrice = product.CostPrice;
             prod.CustomCode = product.CustomCode;
@@ -140,12 +126,15 @@ namespace THOK.Wms.Bll.Service
             prod.RetailPrice = product.RetailPrice;
             prod.ShortCode = product.ShortCode;
             prod.StatisticType = product.StatisticType;
-            prod.Supplier = supplier;
+            prod.SupplierCode = product.SupplierCode;
             prod.TradePrice = product.TradePrice;
             prod.UniformCode = product.UniformCode;
-            prod.Unit = unit;
-            prod.UnitList = unitlist;
+            prod.UnitCode = product.UnitCode;
+            //prod.UnitListCode = product.UnitListCode;
+            prod.UnitListCode = "3232";
             prod.UpdateTime = DateTime.Now;
+
+
 
             ProductRepository.Add(prod);
             ProductRepository.SaveChanges();

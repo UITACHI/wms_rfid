@@ -9,6 +9,8 @@ namespace THOK.Wms.DbModel
     {
         public BillType()
         {
+            this.InBillMasters=new List<InBillMaster>();
+            this.OutBillMasters = new List<OutBillMaster>();
         }
         public string BillTypeCode { get; set; }
         public string BillTypeName { get; set; }
@@ -16,5 +18,8 @@ namespace THOK.Wms.DbModel
         public string Description { get; set; }
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
+
+        public virtual ICollection<InBillMaster> InBillMasters { get; set; }
+        public virtual ICollection<OutBillMaster> OutBillMasters { get; set; }
     }
 }

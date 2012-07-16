@@ -11,11 +11,10 @@
 
     <script type="text/javascript">
         $(function () {
-            $("#msgbox").ajaxError(function () {
-                $(this).text("Triggered ajaxError handler.");
+            $("#msgbox").ajaxError(function (event, XMLHttpRequest, ajaxOptions, thrownError) {
                 $.messager.show({
                     title: '错误',
-                    msg: "dffdsf"
+                    msg: thrownError
                 });
             });
             $('a.easyui-linkbutton[fun="true"]').linkbutton({

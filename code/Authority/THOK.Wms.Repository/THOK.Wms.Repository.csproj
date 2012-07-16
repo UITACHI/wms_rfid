@@ -73,6 +73,10 @@
     <Compile Include="Migrations\201207130921523_add_WarehouseInfo.Designer.cs">
       <DependentUpon>201207130921523_add_WarehouseInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207160657580_add_In_Out_Bill.cs" />
+    <Compile Include="Migrations\201207160657580_add_In_Out_Bill.Designer.cs">
+      <DependentUpon>201207160657580_add_In_Out_Bill.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

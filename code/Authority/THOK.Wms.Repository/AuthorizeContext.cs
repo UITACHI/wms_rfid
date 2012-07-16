@@ -92,6 +92,14 @@ namespace THOK.Wms.Repository
             modelBuilder.Configurations.Add(new CellMap());
             modelBuilder.Configurations.Add(new StorageMap());
 
+            modelBuilder.Configurations.Add(new BillTypeMap());
+            modelBuilder.Configurations.Add(new InBillMasterMap());
+            modelBuilder.Configurations.Add(new InBillDetailMap());
+            modelBuilder.Configurations.Add(new InBillAllotMap());
+            modelBuilder.Configurations.Add(new OutBillMasterMap());
+            modelBuilder.Configurations.Add(new OutBillDetailMap());
+            modelBuilder.Configurations.Add(new OutBillAllotMap());
+
             #endregion
         }
     }
