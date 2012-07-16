@@ -35,6 +35,7 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasMaxLength(20);
 
             this.Property(t => t.Status)
+                .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(1);
 

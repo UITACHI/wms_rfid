@@ -10,6 +10,7 @@ namespace THOK.Wms.DbModel
         public OutBillMaster()
         {
             this.OutBillDetails = new List<OutBillDetail>();
+            this.OutBillAllots = new List<OutBillAllot>();
         }
         public string BillNo { get; set; }
         public DateTime BillDate { get; set; }
@@ -26,5 +27,6 @@ namespace THOK.Wms.DbModel
         public virtual BillType BillType { get; set; }
 
         public virtual ICollection<OutBillDetail> OutBillDetails { get; set; }
+        public virtual ICollection<OutBillAllot> OutBillAllots { get; set; }
     }
 }

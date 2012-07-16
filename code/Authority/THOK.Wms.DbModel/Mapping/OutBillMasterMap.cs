@@ -35,6 +35,7 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasMaxLength(20);
 
             this.Property(t => t.Status)
+                .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(1);
 
@@ -68,7 +69,7 @@ namespace THOK.Wms.DbModel.Mapping
             // Relationships
             this.HasRequired(t => t.BillType)
                 .WithMany(t => t.OutBillMasters)
-                .HasForeignKey(d => d.BillType)
+                .HasForeignKey(d => d.BillTypeCode)
                 .WillCascadeOnDelete(false);
         }
     }

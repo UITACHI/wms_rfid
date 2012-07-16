@@ -9,7 +9,6 @@ namespace THOK.Wms.DbModel
     {
         public InBillDetail()
         {
-            this.InBillAllots = new List<InBillAllot>();
         }
         public int ID { get; set; }
         public string BillNo { get; set; }
@@ -22,7 +21,5 @@ namespace THOK.Wms.DbModel
         public string Description { get; set; }
 
         public virtual InBillMaster InBillMaster { get; set; }
-
-        public virtual ICollection<InBillAllot> InBillAllots { get; set; }
     }
 }

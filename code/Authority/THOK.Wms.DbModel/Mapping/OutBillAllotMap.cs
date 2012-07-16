@@ -36,6 +36,10 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsRequired()
                 .HasMaxLength(50);
 
+            this.Property(t => t.UnitCode)
+                .IsRequired()
+                .HasMaxLength(20);
+
             this.Property(t => t.AllotQuantity)
                 .IsRequired()
                 .HasPrecision(9, 2);
@@ -68,7 +72,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.Status).HasColumnName(ColumnMap.Value.To("Status"));
 
             // Relationships
-            this.HasRequired(t => t.OutBillDetail)
+            this.HasRequired(t => t.OutBillMaster)
                 .WithMany(t => t.OutBillAllots)
                 .HasForeignKey(d => d.BillNo)
                 .WillCascadeOnDelete(false);
