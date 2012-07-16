@@ -2,15 +2,13 @@
     var url;
     var fm;
     function addClick() {
-        $('#dlg').dialog('open').dialog('setTitle', '新增');        
         var divid;
         var row = $('#tt').tree('getSelected');
         if (row == null) {
             divid = "ware";
             url = '/Warehouse/WareCreate/';
-        } else if (row.attributes == "") {
-            divid = "ware";
-            url = '/Warehouse/WareCreate/';
+        } else if (row.attributes == "cell") {
+           
         } else if (row.attributes == "ware") {
             divid = "area";
             url = '/Area/AreaCreate/';
@@ -78,6 +76,7 @@
         $('.areaCellClass').attr('id', "");
         $('.' + ware + 'Class').attr('id', "warehouse-add");
         $('.' + area + 'Class').attr('id', "area-add");
+        $('#dlg').dialog('open').dialog('setTitle', '新增');
     }
 
     function addLoad() {

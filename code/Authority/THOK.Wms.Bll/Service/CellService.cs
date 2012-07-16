@@ -111,64 +111,71 @@ namespace THOK.Wms.Bll.Service
             CellRepository.SaveChanges();
             return true;
         }
-        
-        public object GetSearch(string shelfCode)
+
+        public object GetSearch(string wareCode, string shelfCode)
         {
             var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();
-            HashSet<Tree> wareSet = new HashSet<Tree>();
-            foreach (var warehouse in warehouses)//仓库
+            if (wareCode != null && wareCode!=string.Empty)
             {
-                Tree wareTree = new Tree();
-                wareTree.id = warehouse.WarehouseCode;
-                wareTree.text ="仓库："+ warehouse.WarehouseName;
-                wareTree.state = "open";
-                wareTree.attributes = "ware";
-             
-
-                var areas = AreaRepository.GetQueryable().Where(a => a.warehouse.WarehouseCode == warehouse.WarehouseCode)
-                                                        .OrderBy(a => a.AreaCode).Select(a => a);
-                HashSet<Tree> areaSet = new HashSet<Tree>();
-                foreach (var area in areas)//库区
-                {
-                    Tree areaTree = new Tree();
-                    areaTree.id = area.AreaCode;
-                    areaTree.text = "库区：" + area.AreaName;
-                    areaTree.state = "open";                     
-                    areaTree.attributes = "area";
-
-                    var shelfs = ShelfRepository.GetQueryable().Where(s => s.area.AreaCode == area.AreaCode)
-                                                               .OrderBy(s => s.ShelfCode).Select(s => s);
-                    HashSet<Tree> shelfSet = new HashSet<Tree>();
-                    foreach (var shelf in shelfs)//货架
-                    {
-                        Tree shelfTree = new Tree();
-                        shelfTree.id = shelf.ShelfCode;
-                        shelfTree.text = "货架："+shelf.ShelfName;
-                        shelfTree.state = "closed"; 
-                        shelfTree.attributes = "shelf";                       
-
-                        var cells = CellRepository.GetQueryable().Where(c => c.shelf.ShelfCode == shelf.ShelfCode)
-                                                                 .OrderBy(c => c.CellCode).Select(c => c);
-                        HashSet<Tree> cellSet = new HashSet<Tree>();
-                        foreach (var cell in cells)//货位
-                        {
-                            var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == cell.DefaultProductCode);
-                            Tree cellTree = new Tree();
-                            cellTree.id = cell.CellCode;
-                            cellTree.text = "货位：" + cell.CellName;
-                            cellTree.state = "open";
-                            cellTree.attributes = "cell";                          
-                            cellSet.Add(cellTree);
-                        }
-                        shelfTree.children = cellSet.ToArray();
-                        shelfSet.Add(shelfTree);
-                    }
-                    areaTree.children = shelfSet.ToArray();
-                    areaSet.Add(areaTree);
-                }
-                wareTree.children = areaSet.ToArray();
-                wareSet.Add(wareTree);
+                warehouses = warehouses.Where(w => w.WarehouseCode == wareCode);
             }
+             HashSet<Tree> wareSet = new HashSet<Tree>();
+             if (shelfCode == null || shelfCode == string.Empty)//判断是否是加载货位
+             {
+                 foreach (var warehouse in warehouses)//仓库
+                 {
+                     Tree wareTree = new Tree();
+                     wareTree.id = warehouse.WarehouseCode;
+                     wareTree.text = "仓库：" + warehouse.WarehouseName;
+                     wareTree.state = "open";
+                     wareTree.attributes = "ware";
+
+
+                     var areas = AreaRepository.GetQueryable().Where(a => a.warehouse.WarehouseCode == warehouse.WarehouseCode)
+                                                             .OrderBy(a => a.AreaCode).Select(a => a);
+                     HashSet<Tree> areaSet = new HashSet<Tree>();
+                     foreach (var area in areas)//库区
+                     {
+                         Tree areaTree = new Tree();
+                         areaTree.id = area.AreaCode;
+                         areaTree.text = "库区：" + area.AreaName;
+                         areaTree.state = "open";
+                         areaTree.attributes = "area";
+
+                         var shelfs = ShelfRepository.GetQueryable().Where(s => s.area.AreaCode == area.AreaCode)
+                                                                    .OrderBy(s => s.ShelfCode).Select(s => s);
+                         HashSet<Tree> shelfSet = new HashSet<Tree>();
+                         foreach (var shelf in shelfs)//货架
+                         {
+                             Tree shelfTree = new Tree();
+                             shelfTree.id = shelf.ShelfCode;
+                             shelfTree.text = "货架：" + shelf.ShelfName;
+                             shelfTree.attributes = "shelf";
+                             shelfTree.state = "closed";                            
+                             shelfSet.Add(shelfTree);
+                         }
+                         areaTree.children = shelfSet.ToArray();
+                         areaSet.Add(areaTree);
+                     }
+                     wareTree.children = areaSet.ToArray();
+                     wareSet.Add(wareTree);
+                 }
+             }
+             else
+             {
+                 var cells = CellRepository.GetQueryable().Where(c => c.shelf.ShelfCode == shelfCode)
+                                                          .OrderBy(c => c.CellCode).Select(c => c);                 
+                 foreach (var cell in cells)//货位
+                 {
+                     var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == cell.DefaultProductCode);
+                     Tree cellTree = new Tree();
+                     cellTree.id = cell.CellCode;
+                     cellTree.text = "货位：" + cell.CellName;
+                     cellTree.state = "open";
+                     cellTree.attributes = "cell";
+                     wareSet.Add(cellTree);
+                 }
+             }
             return wareSet.ToArray();
         }
 
