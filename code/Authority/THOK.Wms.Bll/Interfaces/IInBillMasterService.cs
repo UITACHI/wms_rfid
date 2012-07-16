@@ -6,7 +6,7 @@ using THOK.Wms.DbModel;
 
 namespace THOK.Wms.Bll.Interfaces
 {
-    public interface IInBillMaster:IService<InBillMaster>
+    public interface IInBillMasterService:IService<InBillMaster>
     {
     }
 }
