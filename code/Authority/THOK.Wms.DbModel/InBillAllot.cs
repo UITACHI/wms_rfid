@@ -21,5 +21,7 @@ namespace THOK.Wms.DbModel
         public DateTime StartTime { get; set; }
         public DateTime FinishTime { get; set; }
         public string Status { get; set; }
+
+        public virtual InBillDetail InBillDetail { get; set; }
     }
 }

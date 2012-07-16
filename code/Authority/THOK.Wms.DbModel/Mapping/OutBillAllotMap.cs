@@ -68,6 +68,10 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.Status).HasColumnName(ColumnMap.Value.To("Status"));
 
             // Relationships
+            this.HasRequired(t => t.OutBillDetail)
+                .WithMany(t => t.OutBillAllots)
+                .HasForeignKey(d => d.BillNo)
+                .WillCascadeOnDelete(false);
         }
 
     }
