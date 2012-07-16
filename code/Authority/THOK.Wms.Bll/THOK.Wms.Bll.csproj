@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\IInBillAllotService.cs" />
     <Compile Include="Interfaces\IInBillDetailService.cs" />
-    <Compile Include="Interfaces\IInBillMaster.cs" />
+    <Compile Include="Interfaces\IInBillMasterService.cs" />
     <Compile Include="Interfaces\IOutBillAllotService.cs" />
     <Compile Include="Interfaces\IOutBillDetailService.cs" />
     <Compile Include="Interfaces\IOutBillMasterService.cs" />

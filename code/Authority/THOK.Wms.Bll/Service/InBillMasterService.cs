@@ -9,7 +9,7 @@ using THOK.Wms.Dal.Interfaces;
 
 namespace THOK.Wms.Bll.Service
 {
-    public class InBillMasterService:ServiceBase<InBillMaster>,IInBillMaster
+    public class InBillMasterService:ServiceBase<InBillMaster>,IInBillMasterService
     {
         [Dependency]
         public IInBillMasterRepository InBillMasterRepository { get; set; }
