@@ -19,5 +19,7 @@ namespace THOK.Wms.DbModel
         public decimal AllotQuantity { get; set; }
         public decimal RealQuantity { get; set; }
         public string Description { get; set; }
+
+        public virtual OutBillMaster OutBillMaster { get; set; }
     }
 }
