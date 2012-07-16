@@ -33,9 +33,20 @@ namespace Authority.Controllers.Wms.ProductInfo
 
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
-            string unitListCode = collection["UnitListCode"] ?? "";
-
-            var users = UnitListService.GetDetails(page, rows, unitListCode);
+            UnitList ul = new UnitList();
+            ul.UnitListCode = collection["UnitListCode"] ?? "";
+            ul.UnitListName = collection["UnitListName"] ?? "";
+            ul.UniformCode = collection["UniformCode"] ?? "";
+            ul.UnitCode01 = collection["UnitCode01"] ?? "";
+            ul.UnitName01 = collection["UnitName01"] ?? "";
+            ul.UnitCode02 = collection["UnitCode02"] ?? "";
+            ul.UnitName02 = collection["UnitName02"] ?? "";
+            ul.UnitCode03 = collection["UnitCode03"] ?? "";
+            ul.UnitName03 = collection["UnitName03"] ?? "";
+            ul.UnitCode04 = collection["UnitCode04"] ?? "";
+            ul.UnitName04 = collection["UnitName04"] ?? "";
+            ul.IsActive = collection["IsActive"] ?? "";
+            var users = UnitListService.GetDetails(page, rows, ul);
             return Json(users, "text", JsonRequestBehavior.AllowGet);
         }
 
