@@ -1,0 +1,46 @@
+<script type="text/javascript">
+    function deleteClick() {
+        var row = $('#details').treegrid('getSelected');
+        $.post("/User/DeleteUserRole/", { userRoleIdStr: userRoleString }, function (json) {
+            
+        });
+        if (row) {
+            $('#dlg').dialog('open').dialog('setTitle', '删除');
+            $('form input').attr("disabled", "disabled");
+            var divid;
+            var row = $('#details').treegrid('getSelected');
+            if (row == null) {
+                divid = "ware";
+                fm = divid + "fm";
+                url = '/Warehouse/WareCreate/';
+            } else if (row.isType == "0") {
+                divid = "ware";
+                fm = divid + "fm";
+                url = '/Warehouse/WareCreate/';
+            } else if (row.isType == "1") {
+                divid = "area";
+                fm = divid + "fm";
+                url = '/Area/AreaCreate/';
+                addClass("wareArea", "");
+            } else if (row.isType == "2") {
+                divid = "shelf";
+                fm = divid + "fm";
+                url = '/Shelf/ShelfCreate/';
+                addClass("wareShelf", "areaShelf")
+            } else if (row.isType == "3") {
+                divid = "cell";
+                fm = divid + "fm";
+                url = '/Cell/CellCreate/';
+                addClass("wareCell", "areaCell")
+            }
+            $('#' + divid + 'fm').form('load', row);
+            AddShowDiv(divid); //显示div
+            addLoad(); //加载数据  
+            $('#' + divId + ' .easyui-validatebox').validatebox({
+                required: false
+            });          
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>

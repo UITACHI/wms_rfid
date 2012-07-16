@@ -1,0 +1,281 @@
+﻿<script type="text/javascript">
+    var url;
+    $(function () {
+        $('#ff').combogrid({
+            width: 129,
+            panelWidth: 450,
+            required: true,
+            url: '/Unit/Details/?page=1&rows=1',
+            idField: 'UnitCode',
+            textField: 'UnitName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'UnitCode', title: '系统ID', width: 30 },
+					{ field: 'UnitName', title: '系统名称', align: 'left', width: 40 },
+					{ field: 'COUNT', title: '支数', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 },
+                    { field: 'UpdateTime', title: '更新时间', align: 'left', width: 30 }
+				]]
+        });
+
+    })
+
+    function addClick() {
+        $('#dlg').dialog('open').dialog('setTitle', '新增');
+        $('#Productfm').form('clear');
+        $('#Productfm .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
+
+        url = '/Product/Create/';
+    };
+
+    function save() {
+        $('#Productfm').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').datagrid('reload');
+                }
+            }
+        });
+    }
+    function supplierSelect() {
+        $('#supplierData').dialog('open').dialog('setTitle', '选择厂商信息');
+        $('#supplierDetail').datagrid({ url: '/Supplier/Details/' });
+        $("#supplierDetail").datagrid('reload');
+        selectSupplier();
+    }
+    function brandSelect() {
+        $('#brandData').dialog('open').dialog('setTitle', '选择品牌信息');
+        $('#brandDetail').datagrid({ url: '/Brand/Details/' });
+        $("#brandDetail").datagrid('reload');
+        selectSupplier();
+    }
+    function unitSelect() {
+        $('#unitData').dialog('open').dialog('setTitle', '选择单位信息');
+        $('#unitDetail').datagrid({ url: '/Unit/Details/' });
+        $("#unitDetail").datagrid('reload');
+        selectSupplier();
+    }
+</script>
+
+    <div id="dlg" class="easyui-dialog" modal="true" 
+        style="width:745px;height:440px;padding:2px 2px"
+        closed="true" buttons="#dlg-buttons">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
+	            <form id="Productfm" method="post" novalidate>
+                    <table >
+                      <tr>
+                        <td>商品编码</td>
+                        <td style="padding-right:30px;"><input name="ProductCode" class="easyui-validatebox" required="true"></td>
+                        <td>助记码</td>
+                        <td style="padding-right:30px;"><input name="ShortCode"></td>
+                        <td>计量单位系列</td>
+                        <td><input id="ff" name="UnitListCode" ></td>
+                      </tr>
+                      <tr>
+                        <td>商品名称</td>
+                        <td><input name="ProductName" class="easyui-validatebox" required="true"></td>
+                        <td>购入价</td>
+                        <td><input  class="easyui-numberbox" name="BuyPrice" min="0" max="999999999" precision="2" required="true"/></td>
+                        <td>缺省计量单位</td>
+                        <td><input name="UnitCode" id="unitCode" required="true">
+                        <a href="#" onclick="unitSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>统一编码</td>
+                        <td><input name="UniformCode" class="easyui-validatebox" required="true"></td>
+                        <td>批发价</td>
+                        <td><input  class="easyui-numberbox" name="TradePrice" min="0" max="999999999" precision="2"/></td>
+                        <td>商品品牌</td>
+                        <td><input name="BrandCode" id="brandCode" required="true">
+                        <a href="#" onclick="brandSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>自定义编码</td>
+                        <td><input name="CustomCode"></td>
+                        <td>零售价</td>
+                        <td><input  class="easyui-numberbox" min="0" name="RetailPrice" max="999999999" precision="2"/></td>
+                        <td>ABC类型</td>
+                        <td><select  class="easyui-combobox"  editable="false" name="AbcTypeCode"  panelHeight="70" style="width: 129px;" required="true">
+		                        <option value="1">A</option>
+		                        <option value="2">B</option>
+                                <option value="3">C</option>
+	                        </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>厂商编码</td>
+                        <td><input name="SupplierCode" id="supplierCode" required="true">
+                        <a href="#" onclick="supplierSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
+
+
+
+                        <td>成本价</td>
+                        <td><input  class="easyui-numberbox" name="CostPrice" min="0" max="999999999" precision="2"/></td>
+                        <td>商品类型</td>
+                        <td>
+                          <select   class="easyui-combobox"  editable="false"  name="ProductTypeCode" panelHeight="120" style="width: 129px;" required="true">
+		                       <option value="0501">烤烟型</option>
+		                        <option value="0502">混合型</option>
+                                <option value="0503">外香型</option>
+                                <option value="0504">雪茄型</option>
+		                        <option value="0505">雪茄烟</option>
+	                        </select>
+                        
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>条形码_件</td>
+                        <td><input name="PieceBarcode"></td>
+                        <td>滤嘴</td>
+                        <td>
+                             <select   class="easyui-combobox"  name="IsFilterTip" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+		                       <option value="1">是</option>
+		                        <option value="0">否</option>
+	                        </select>
+                        </td>
+                        <td>包装类型</td>
+                        <td>
+                          <select   class="easyui-combobox"  editable="false"  name="PackTypeCode" panelHeight="170" style="width: 129px;" required="true">
+		                       <option value="0601">条盒硬盒</option>
+		                        <option value="0602">条盒软盒</option>
+                                <option value="0603">条包硬盒</option>
+                                <option value="0604">条包软盒</option>
+		                        <option value="0605">铁筒</option>
+                                <option value="0606">铁盒</option>
+                                <option value="0607">塑盒</option>
+		                        <option value="0608">其他</option>
+	                        </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>条形码_条</td>
+                        <td><input name="BarBarcode"></td>
+                        <td>新品</td>
+                        <td>
+                               <select   class="easyui-combobox"  name="IsNew" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+		                       <option value="1">是</option>
+		                        <option value="0">否</option>
+	                        </select>
+                        </td>
+                        <td>商品价类</td>
+                        <td>
+                           <select  class="easyui-combobox"  editable="false"  name="PriceLevelCode" panelHeight="120" style="width: 129px;" required="true">
+		                       <option value="01">一类</option>
+		                        <option value="02">二类</option>
+                                <option value="03">三类</option>
+                                <option value="04">四类</option>
+		                        <option value="04">五类</option>
+                                </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>条形码_包</td>
+                        <td><input name="PackageBarcode"></td>
+                        <td>名优烟</td>
+                        <td>
+                               <select   class="easyui-combobox"  name="IsFamous" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+		                       <option value="1">是</option>
+		                        <option value="0">否</option>
+	                        </select>
+                        </td>
+                        <td>商品统计类型</td>
+                        <td><input name="StatisticType"></td>
+                      </tr>
+                      <tr>
+                        <td>重点品牌</td>
+                        <td>
+                              <select   class="easyui-combobox" name="IsMainProduct"  editable="false"  panelHeight="70" style="width: 129px;" required="true">
+		                       <option value="1">是</option>
+		                        <option value="0">否</option>
+	                        </select>
+                        
+                        </td>
+                        <td>罚没烟</td>
+                        <td>
+                             <select  class="easyui-combobox"  name="IsConfiscate" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+		                       <option value="1">是</option>
+		                        <option value="0">不是</option>
+	                        </select>
+                        </td>
+                        <td>条形码_一号工程</td>
+                        <td><input name="OneProjectBarcode"></td>
+                      </tr>
+                      <tr>
+                        <td>省重点品牌</td>
+                        <td>
+                           <select  class="easyui-combobox" name="IsProvinceMainProduct" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+		                       <option value="1">是</option>
+		                        <option value="0">否</option>
+	                        </select>
+                        </td>
+                        <td>异形烟</td>
+                        <td>
+                        <select  class="easyui-combobox"  editable="false"  name="IsAbnormity" panelHeight="70" style="width: 129px;" required="true">
+		                       <option value="1">是</option>
+		                        <option value="0">否</option>
+	                        </select>
+                       </td>
+                        <td>产地所属区域</td>
+                        <td>
+                                <select  class="easyui-combobox"  name="BelongRegion" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+		                       <option value="1">省内烟</option>
+		                        <option value="2">省外烟</option>
+                                <option value="3">进口烟</option>
+	                        </select>
+                        </td>
+                      </tr>
+                      <tr>
+                      <td>是否可用</td>
+                        <td>
+                        <select  class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+		                       <option value="1">可用</option>
+		                        <option value="0">不可用</option>
+	                        </select>
+                        </td>
+                        <td>更新时间</td>
+                        <td ><input style="width:129px;" class="easyui-datetimebox" name="UpdateTime" editable="false" /></td>
+                      </tr>
+                        <td>描述:</td>
+                        <td colspan="5"><textarea name="Description" style="height: 50px;width:210px;"></textarea></td>
+                      </tr>
+                    </table>
+	            </form>
+            </div>
+        </div>
+    </div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+@Html.Partial("_SupplierPartial")
+@Html.Partial("_SupplierSearchPartial")
+@Html.Partial("_BrandPartail")
+@Html.Partial("_BrandSearchPartail")
+@Html.Partial("_UnitPartial")
+@Html.Partial("_UnitSearchPartial")

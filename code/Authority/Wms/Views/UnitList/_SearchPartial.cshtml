@@ -1,0 +1,107 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#updateTime').datebox({
+            required: false
+        });
+    })
+
+    function searchClick() {
+        $('#dlg-search').dialog('open').dialog('setTitle', '计量单位系列查询');
+        $("input[type=text]").attr("value", "");
+    };
+
+    function select() {
+        var queryParams = $('#details').datagrid('options').queryParams;
+        queryParams.UnitListCode = $('#unitListCode').val();
+        queryParams.UnitListName = $('#unitListName').val();
+        queryParams.UniformCode = $('#uniformCode').val();
+        queryParams.UnitCode01 = $('#unitCode01').val();
+        queryParams.UnitName01 = $('#unitName01').val();
+        queryParams.Quantity01 = $('#quantity01').val();
+        queryParams.UnitCode02 = $('#unitCode02').val();
+        queryParams.UnitName02 = $('#unitName02').val();
+        queryParams.Quantity02 = $('#quantity02').val();
+        queryParams.UnitCode03 = $('#unitCode03').val();
+        queryParams.UnitName03 = $('#unitName03').val();
+        queryParams.Quantity03 = $('#quantity03').val();
+        queryParams.UnitCode04 = $('#unitCode04').val();
+        queryParams.UnitName04 = $('#unitName04').val();
+        queryParams.Quantity04 = $('#quantity04').val();
+        queryParams.UpdateTime = $('#updateTime').val();
+        queryParams.IsActive = $('#isActive').val();
+        $('#details').datagrid('options').queryParams = queryParams;
+        $('#details').datagrid({
+            pageNumber: 1,
+            pageSize: 10
+        });
+        $("#masters").datagrid('reload');
+        $('#dlg-search').dialog('close');
+    }
+
+</script>
+
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:500px;height:350px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-search">
+    <div class="easyui-layout" fit="true">
+		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <table align="left" width="460">
+              <tr>
+                <td width="100">计量单位系列编码:</td>
+                <td><input id="unitListCode" type="text" style="width: 100px"></td>
+                <td width="100">计量单位编码_01:</td>
+                <td><input id="unitCode01" type="text" style="width: 100px"></td>
+              </tr>
+              <tr>
+                <td width="100">计量单位系列名称:</td>
+                <td><input id="unitListName" type="text" style="width: 100px"></td> 
+                <td width="100">计量单位名称_01:</td>
+                <td><input id="unitName01" type="text" style="width: 100px"></td> 
+              </tr>
+              <tr>
+                <td width="60">统一编码:</td>
+                <td><input id="uniformCode" type="text" style="width: 100px"></td>
+                <td width="100">计量单位编码_02:</td>
+                <td><input id="unitCode02" type="text" style="width: 100px"></td>
+              </tr>
+              <tr>
+                <td width="100">转换比率_01:</td>
+                <td><input id="quantity01" type="text" style="width: 100px"></td>
+                <td width="100">计量单位名称_02:</td>
+                <td><input id="unitName02" type="text" style="width: 100px"></td>
+              </tr>
+              <tr>
+                <td width="100">转换比率_02:</td>
+                <td><input id="quantity02" type="text" style="width: 100px"></td> 
+                <td width="100">计量单位编码_03:</td>
+                <td><input id="unitCode03" type="text" style="width: 100px"></td>
+              </tr>
+              <tr>
+                <td width="100">转换比率_03:</td>
+                <td><input id="quantity03" type="text" style="width: 100px"></td> 
+                <td width="100">计量单位名称_03:</td>
+                <td><input id="unitName03" type="text" style="width: 100px"></td> 
+              </tr>
+              <tr>
+                <td width="60">更新时间:</td>
+                <td><input id="updateTime" type="text" style="width: 90px"></td>
+                <td width="100">计量单位编码_04:</td>
+                <td><input id="unitCode04" type="text" style="width: 100px"></td>
+              </tr>
+              <tr> 
+                <td width="60">是否可用:</td>
+                <td><select id="isActive" name="IsActive" class="easyui-combobox" style="width: 100px">
+                      <option value="">请选择</option>
+                      <option value="1">可用</option>
+                      <option value="0">不可用</option>
+                     </select></td>
+                <td width="100">计量单位名称_04:</td>
+                <td><input id="unitName04" type="text" style="width: 100px"></td> 
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons-search">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
+</div>
