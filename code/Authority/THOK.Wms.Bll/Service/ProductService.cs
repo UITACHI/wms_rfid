@@ -101,8 +101,8 @@ namespace THOK.Wms.Bll.Service
             prod.AbcTypeCode = product.AbcTypeCode;
             prod.BarBarcode = product.BarBarcode;
             prod.BelongRegion = product.BelongRegion;
-            //prod.BrandCode = product.BrandCode;
-            prod.BrandCode = "21332";
+            prod.BrandCode = product.BrandCode;
+
             prod.BuyPrice = product.BuyPrice;
             prod.CostPrice = product.CostPrice;
             prod.CustomCode = product.CustomCode;
@@ -126,13 +126,11 @@ namespace THOK.Wms.Bll.Service
             prod.RetailPrice = product.RetailPrice;
             prod.ShortCode = product.ShortCode;
             prod.StatisticType = product.StatisticType;
-            //prod.SupplierCode = product.SupplierCode;
-            prod.SupplierCode = "001";
+            prod.SupplierCode = product.SupplierCode;
             prod.TradePrice = product.TradePrice;
             prod.UniformCode = product.UniformCode;
-            //prod.UnitCode = product.UnitCode;
+            prod.UnitCode = product.UnitCode;
             //prod.UnitListCode = product.UnitListCode;
-            prod.UnitCode = "3324324";
             prod.UnitListCode = "3232";
             prod.UpdateTime = DateTime.Now;
 

@@ -826,6 +826,17 @@
     <Content Include="Views\Warehouse\_SearchPartial.cshtml" />
     <Content Include="Views\Unit\Index.cshtml" />
     <Content Include="Views\UnitList\Index.cshtml" />
+    <Content Include="Views\Product\_BrandPartail.cshtml" />
+    <Content Include="Views\Product\_BrandSearchPartail.cshtml" />
+    <Content Include="Views\Product\_DeletePartial.cshtml" />
+    <Content Include="Views\Product\_EditPartial.cshtml" />
+    <Content Include="Views\Product\_SearchPartial.cshtml" />
+    <Content Include="Views\Product\_SupplierPartial.cshtml" />
+    <Content Include="Views\Product\_SupplierSearchPartial.cshtml" />
+    <Content Include="Views\Product\_UnitPartial.cshtml" />
+    <Content Include="Views\Product\_UnitSearchPartial.cshtml" />
+    <Content Include="Views\Product\_UnitListPartial.cshtml" />
+    <Content Include="Views\Product\_UnitListSearchPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

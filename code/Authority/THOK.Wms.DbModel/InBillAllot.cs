@@ -15,11 +15,14 @@ namespace THOK.Wms.DbModel
         public string ProductCode { get; set; }
         public string CellCode { get; set; }
         public string StorageCode { get; set; }
+        public string UnitCode { get; set; }
         public decimal AllotQuantity { get; set; }
         public decimal RealQuantity { get; set; }
         public string OperatePersonCode { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime FinishTime { get; set; }
         public string Status { get; set; }
+
+        public virtual InBillMaster InBillMaster { get; set; }
     }
 }
