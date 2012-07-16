@@ -1,0 +1,65 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#isUnitlistActive').combo({
+            editable: false,
+            panelHeight: 65,
+            panelWidth: 130
+        });
+    })
+
+    function UnitlistQueryClick() {
+        $('#dlg-Unitlistsearch').dialog('open').dialog('setTitle', '查询单位系列信息');
+    };
+
+    function selectUnitlist() {
+        var queryUnitlistParams = $('#unitlistDetail').datagrid('options').queryParams;
+        queryUnitlistParams.UnitListCode = $('#UnitlistCode').val();
+        queryUnitlistParams.UnitListName = $('#UnitlistName').val();
+        queryUnitlistParams.IsActive = $('#isUnitlistActive').combo('getValue');
+        $('#unitlistDetail').datagrid('options').queryParams = queryUnitlistParams;
+        $('#unitlistDetail').datagrid({
+            pageNumber: 1,
+            pageSize: 10
+        });
+        $("#unitlistDetail").datagrid('reload');
+        $('#dlg-Unitlistsearch').dialog('close');
+        $('#isUnitlistActive').combo('setValue', null).combo('setText', '');
+        $("#UnitlistCode").val('');
+        $("#UnitlistName").val('');
+    }
+
+</script>
+
+    <div id="dlg-Unitlistsearch" class="easyui-dialog" modal="true" 
+        style="width:300px;height:200px;padding:2px 2px"
+        closed="true" buttons="#dlg-buttons">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >
+                    <table width="250">
+                      <tr>
+                        <td width="60">单位系列编码</td>
+                        <td width="168"><input id="UnitlistCode" type="text"></td>
+                      </tr>
+                      <tr>
+                        <td width="60">单位系列名称</td>
+                        <td width="168"><input id="UnitlistName" type="text"></td>
+                      </tr>
+                      <tr>
+                        <td>状态:</td>
+                        <td><select id="isUnitlistActive"class="easyui-combobox" style="width: 130px">
+                                <option value=""></option>
+                                <option value="1">可用</option>
+		                        <option value="0">不可用</option>
+	                        </select>
+	                    </td>
+                      </tr>
+                    </table>
+            </div>
+        </div>
+    </div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="selectUnitlist()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-Unitlistsearch').dialog('close')">取消</a>
+</div>
+
+

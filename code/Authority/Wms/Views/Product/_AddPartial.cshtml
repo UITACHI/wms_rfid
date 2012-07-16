@@ -1,27 +1,5 @@
 ﻿<script type="text/javascript">
     var url;
-    $(function () {
-        $('#ff').combogrid({
-            width: 129,
-            panelWidth: 450,
-            required: true,
-            url: '/Unit/Details/?page=1&rows=1',
-            idField: 'UnitCode',
-            textField: 'UnitName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-					{ field: 'UnitCode', title: '系统ID', width: 30 },
-					{ field: 'UnitName', title: '系统名称', align: 'left', width: 40 },
-					{ field: 'COUNT', title: '支数', align: 'left', width: 30 },
-					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 },
-                    { field: 'UpdateTime', title: '更新时间', align: 'left', width: 30 }
-				]]
-        });
-
-    })
-
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#Productfm').form('clear');
@@ -77,6 +55,12 @@
         $("#unitDetail").datagrid('reload');
         selectSupplier();
     }
+    function unitlistSelect() {
+        $('#unitlistData').dialog('open').dialog('setTitle', '选择单位信息');
+        $('#unitlistDetail').datagrid({ url: '/UnitList/Details/' });
+        $("#unitlistDetail").datagrid('reload');
+        selectSupplier();
+    }
 </script>
 
     <div id="dlg" class="easyui-dialog" modal="true" 
@@ -92,7 +76,9 @@
                         <td>助记码</td>
                         <td style="padding-right:30px;"><input name="ShortCode"></td>
                         <td>计量单位系列</td>
-                        <td><input id="ff" name="UnitListCode" ></td>
+                        <td><input name="UnitListCode" id="unitlistCode" required="true">
+                        <a href="#" onclick="unitlistSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
                       </tr>
                       <tr>
                         <td>商品名称</td>
@@ -279,3 +265,5 @@
 @Html.Partial("_BrandSearchPartail")
 @Html.Partial("_UnitPartial")
 @Html.Partial("_UnitSearchPartial")
+@Html.Partial("_UnitListPartial")
+@Html.Partial("_UnitListSearchPartial")
