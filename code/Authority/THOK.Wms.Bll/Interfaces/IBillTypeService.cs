@@ -10,7 +10,7 @@ namespace THOK.Wms.Bll.Interfaces
         {
             object GetDetails(int page, int rows, string BillType,string BillTypeName,string BillClass,string IsActive);
 
-            //bool Add(BillType billtype);
+            bool Add(BillType billtype);
 
             //bool Delete(string billtypeCode);
 

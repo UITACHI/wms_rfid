@@ -31,7 +31,20 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = billtype.ToArray() };
         
         }
-    
+        public new bool Add(BillType billtype)
+        {
+            var bi = new BillType();
+            bi.BillTypeCode = billtype.BillTypeCode;
+            bi.BillTypeName = billtype.BillTypeName;
+            bi.BillClass = billtype.BillClass;
+            bi.Description = billtype.Description;
+            bi.IsActive = billtype.IsActive;
+            bi.UpdateTime = DateTime.Now;
+
+            BillTypeRepository.Add(bi);
+            BillTypeRepository.SaveChanges();
+            return true;
+        }
     
     }
 }

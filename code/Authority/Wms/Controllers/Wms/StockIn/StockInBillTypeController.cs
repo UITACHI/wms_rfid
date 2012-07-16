@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Bll.Interfaces;
+using THOK.Wms.DbModel;
+using THOK.WebUtil;
 
 namespace Authority.Controllers.Wms.StockIn
 {
@@ -31,6 +33,12 @@ namespace Authority.Controllers.Wms.StockIn
             string IsActive = collection["IsActive"] ?? "";
             var brand = BillTypeService.GetDetails(page, rows, BillTypeCode, BillTypeName, BillClass, IsActive);
             return Json(brand, "text", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Create(BillType billtype)
+        {
+            bool bResult = BillTypeService.Add(billtype);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
     }
