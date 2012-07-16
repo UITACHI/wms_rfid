@@ -19,7 +19,7 @@
         $('#cc').combo({
             hasDownArrow: true
         });
-        url = '/Role/Create/';
+        url = '/StockInBillType/Create/';
     };
 
     function save() {
@@ -50,27 +50,40 @@
 </script>
 
     <div id="dlg" class="easyui-dialog" modal="true" 
-        style="width:300px;height:210px;padding:2px 2px"
+        style="width:600px;height:410px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
-                    <table width="250">
+                    <table>
                       <tr>
-                        <td width="60">类型名称</td>
-                        <td width="168"><input name="RoleName" class="easyui-validatebox" required="true"></td>
+                        <td width="80">订单类型</td>
+                        <td width="168"><input name="BillTypeCode" class="easyui-validatebox" required="true"></td>
+                        <td width="80">订单类型名称</td>
+                        <td width="168"><input name="BillTypeName" class="easyui-validatebox" required="true"></td>
                       </tr>
                       <tr>
-                        <td>备注:</td>
-                        <td><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
-                      </tr>
-                      <tr>
-                        <td>需要货位:</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width: 50px">
-		                        <option value="true">是</option>
-		                        <option value="false">否</option>
+                             <td>订单类别</td>
+                             <td><select  name="BillClass" editable="false" panelHeight="70" required="true" class="easyui-combobox">  
+                            <option value="0001">入库单</option>  
+                             </select></td>
+                             <td>是否可用</td>
+                         <td>
+                             <select   class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70"  required="true">
+		                       <option value="1">是</option>
+		                        <option value="0">否</option>
 	                        </select>
-	                    </td>
+                        </td>
+                      </tr>
+                     
+                      <tr>
+                       <td>更新时间</td>
+                        <td ><input class="easyui-datetimebox" name="UpdateTime" editable="false" /></td>
+                      </tr>
+                     
+                      <tr>
+                         <td>描述:</td>
+                        <td colspan="3"><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
                       </tr>
                     </table>
 	            </form>
