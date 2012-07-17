@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace THOK.Authority.DbModel
 {
-    public class System
+    public class ManagementSystem
     {
-        public System()
+        public ManagementSystem()
         {
             this.LoginLogs = new List<LoginLog>();
             this.Modules = new List<Module>();

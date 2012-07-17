@@ -18,6 +18,6 @@ namespace THOK.Authority.DbModel
         public virtual City City { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<RoleModule> RoleModules { get; set; }
-        public virtual System System { get; set; }
+        public virtual ManagementSystem System { get; set; }
     }
 }

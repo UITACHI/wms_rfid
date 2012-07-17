@@ -11,7 +11,7 @@ namespace THOK.Authority.DbModel
         public string LogoutTime { get; set; }
         public Guid User_UserID { get; set; }
         public Guid System_SystemID { get; set; }
-        public virtual System System { get; set; }
+        public virtual ManagementSystem System { get; set; }
         public virtual User User { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace THOK.Authority.Bll.Service
         
         public object GetDetails(string systemID)
         {
-            IQueryable<THOK.Authority.DbModel.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.Authority.DbModel.ManagementSystem> querySystem = SystemRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.Module> queryModule = ModuleRepository.GetQueryable();
             var systems = querySystem.AsEnumerable();
             if (systemID != null && systemID != string.Empty)
@@ -94,7 +94,7 @@ namespace THOK.Authority.Bll.Service
 
         public bool Add(string moduleName, int showOrder, string moduleUrl, string indicateImage, string desktopImage, string systemID, string moduleID)
         {
-            IQueryable<THOK.Authority.DbModel.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.Authority.DbModel.ManagementSystem> querySystem = SystemRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.Module> queryModule = ModuleRepository.GetQueryable();
             moduleID = !String.IsNullOrEmpty(moduleID) ? moduleID : "40DD7298-F410-43F2-840A-7C04F09B5CE2";
             var system = querySystem.FirstOrDefault(i => i.SystemID == new Guid(systemID));
@@ -190,7 +190,7 @@ namespace THOK.Authority.Bll.Service
 
             IQueryable<THOK.Authority.DbModel.User> queryUser = UserRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.City> queryCity = CityRepository.GetQueryable();
-            IQueryable<THOK.Authority.DbModel.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.Authority.DbModel.ManagementSystem> querySystem = SystemRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
 
             Guid gSystemID = new Guid(systemID);
@@ -356,7 +356,7 @@ namespace THOK.Authority.Bll.Service
 
         #region 初始化角色权限
 
-        private void InitRoleSystem(Role role, City city, THOK.Authority.DbModel.System system)
+        private void InitRoleSystem(Role role, City city, THOK.Authority.DbModel.ManagementSystem system)
         {
             var roleSystems = role.RoleSystems.Where(rs => rs.City.CityID == city.CityID
                 && rs.System.SystemID == system.SystemID);
@@ -445,7 +445,7 @@ namespace THOK.Authority.Bll.Service
 
         #region 初始化用户权限
 
-        private void InitUserSystem(User user, City city,THOK.Authority.DbModel.System system)
+        private void InitUserSystem(User user, City city,THOK.Authority.DbModel.ManagementSystem system)
         {
             var userSystems = user.UserSystems.Where(us => us.City.CityID == city.CityID
                 && us.System.SystemID == system.SystemID);
@@ -568,7 +568,7 @@ namespace THOK.Authority.Bll.Service
         {
             IQueryable<THOK.Authority.DbModel.Role> queryRole = RoleRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.City> queryCity = CityRepository.GetQueryable();
-            IQueryable<THOK.Authority.DbModel.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.Authority.DbModel.ManagementSystem> querySystem = SystemRepository.GetQueryable();
             var role = queryRole.Single(i => i.RoleID == new Guid(roleID));
             var city = queryCity.Single(i => i.CityID == new Guid(cityID));
             var system = querySystem.Single(i => i.SystemID == new Guid(systemID));
@@ -577,7 +577,7 @@ namespace THOK.Authority.Bll.Service
 
         public object GetRoleSystemDetails(string roleID,string cityID, string systemID)
         {
-            IQueryable<THOK.Authority.DbModel.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.Authority.DbModel.ManagementSystem> querySystem = SystemRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.Module> queryModule = ModuleRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.RoleSystem> queryRoleSystem = RoleSystemRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.RoleModule> queryRoleModule = RoleModuleRepository.GetQueryable();
@@ -708,7 +708,7 @@ namespace THOK.Authority.Bll.Service
         
         public object GetUserSystemDetails(string userID,string cityID,string systemID)
         {
-            IQueryable<THOK.Authority.DbModel.System> querySystem = SystemRepository.GetQueryable();
+            IQueryable<THOK.Authority.DbModel.ManagementSystem> querySystem = SystemRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.Module> queryModule = ModuleRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.UserSystem> queryUserSystem = UserSystemRepository.GetQueryable();
             IQueryable<THOK.Authority.DbModel.UserModule> queryUserModule = UserModuleRepository.GetQueryable();
