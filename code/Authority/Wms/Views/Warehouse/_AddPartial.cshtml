@@ -35,6 +35,7 @@
     }
 
     function save() {
+        alert(url);
         $('#'+fm).form('submit', {
             url: url,
             onSubmit: function () {
@@ -244,7 +245,7 @@
                         仓库简称:
                     </td>
                     <td>
-                        <input name="ShortName" type="text"  style="width: 140px;" />
+                        <input name="ShortName" type="text" class="easyui-validatebox" style="width: 140px;" />
                     </td>
                     <td class="tdTitle">
                         仓库类型:
@@ -400,7 +401,7 @@
                         货架类别:
                     </td>
                     <td align="left">
-                        <select name="ShelfType" id="ddlType" style="width: 140px;">
+                        <select name="ShelfType" id="isShelfType" class="easyui-validatebox" style="width: 140px;">
                             <option selected="selected" value="0">二层货架</option>
                             <option value="1">三层货架</option>
                             <option value="2">四层货架</option>
@@ -501,7 +502,7 @@
                         货位简称:
                     </td>
                     <td align="left">
-                        <input name="ShortName" type="text" style="width: 140px;"/>
+                        <input name="ShortName" type="text"class="easyui-validatebox" ShelfType style="width: 140px;"/>
                     </td>
                     <td align="right" class="tdTitle">
                         RFID:
@@ -521,7 +522,7 @@
                         储位列号:
                     </td>
                     <td colspan="3" style="text-align: left">
-                        <input name="Col" type="text"style="width: 140px;"/>
+                        <input name="Col" type="text" class="easyui-validatebox" style="width: 140px;"/>
                     </td>
                 </tr>
                 <tr>
