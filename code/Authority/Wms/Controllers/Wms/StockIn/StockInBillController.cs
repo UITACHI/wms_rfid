@@ -14,6 +14,8 @@ namespace Authority.Controllers.Wms.StockIn
     {
         [Dependency]
         public IInBillMasterService InBillMasterService { get; set; }
+        [Dependency]
+        public IInBillDetailService InBillDetailService { get; set; }
         //
         // GET: /StockInBill/
 
@@ -27,7 +29,7 @@ namespace Authority.Controllers.Wms.StockIn
         }
 
         //
-        // GET: /Unit/Details/
+        // GET: /InBillMaster/Details/
 
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
@@ -38,6 +40,16 @@ namespace Authority.Controllers.Wms.StockIn
             string IsActive = collection["IsActive"] ?? "";
             var inBillMaster = InBillMasterService.GetDetails(page,rows,BillNo,BillDate,OperatePersonCode,Status,IsActive);
             return Json(inBillMaster, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // GET: /InBillDetail/InBillDetails/
+
+        public ActionResult InBillDetails(int page, int rows, FormCollection collection)
+        {
+            string BillNo = collection["BillNo"] ?? "";
+            var inBillDetail = InBillDetailService.GetDetails(page,rows,BillNo);
+            return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
         }
     }
 }
