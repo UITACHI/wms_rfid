@@ -50,34 +50,34 @@
 </script>
 
     <div id="dlg" class="easyui-dialog" modal="true" 
-        style="width:600px;height:410px;padding:2px 2px"
+        style="width:500px;height:250px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
                     <table>
                       <tr>
-                        <td width="80">订单类型</td>
-                        <td width="168"><input name="BillTypeCode" class="easyui-validatebox" required="true"></td>
-                        <td width="80">订单类型名称</td>
-                        <td width="168"><input name="BillTypeName" class="easyui-validatebox" required="true"></td>
+                        <td>订单类型编码</td>
+                        <td style="padding-right:30px;"><input name="BillTypeCode" id="b" class="easyui-validatebox" required="true"></td>
+                        <td>订单类型名称</td>
+                        <td><input name="BillTypeName" class="easyui-validatebox" required="true"></td>
                       </tr>
                       <tr>
                              <td>订单类别</td>
-                             <td><select  name="BillClass"     panelHeight="70" required="true" class="easyui-combobox">  
+                             <td><select  name="BillClass"   panelHeight="70" required="true" class="easyui-combobox">  
                             <option value="0001"  selected>入库单</option> 
                              </select></td>
                              <td>是否可用</td>
                          <td>
-                             <select   class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70"  required="true">
-		                       <option value="1">是</option>
-		                        <option value="0">否</option>
+                             <select   id="cc" class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70"  required="true">
+		                       <option value="1">可用</option>
+		                        <option value="0">不可用</option>
 	                        </select>
                         </td>
                       </tr>
                      
                       <tr>
-                       <td>更新时间</td>
+                       <td >更新时间</td>
                         <td ><input  class="easyui-datetimebox" name="UpdateTime" editable="false" /></td>
                       </tr>
                      

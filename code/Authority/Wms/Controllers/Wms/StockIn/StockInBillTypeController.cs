@@ -40,6 +40,17 @@ namespace Authority.Controllers.Wms.StockIn
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult Edit(BillType billtype)
+        {
+            bool bResult = BillTypeService.Save(billtype);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Delete(string billtypeCode)
+        {
+            bool bResult = BillTypeService.Delete(billtypeCode);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

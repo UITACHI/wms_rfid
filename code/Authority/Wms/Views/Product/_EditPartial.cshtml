@@ -7,10 +7,15 @@
             $('#Productfm .easyui-validatebox').validatebox({
                 required: true
             });
-            if (row.IsActive == '启用') {
+            if (row.IsActive == '可用') {
                 $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
             } else {
                 $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
+            }
+            if (row.IsAbnormity == '是') {
+                $('#ft').combo('setValue', 1).combo('setText', row.IsAbnormity);
+            } else {
+                $('#ft').combo('setValue', 0).combo('setText', row.IsAbnormity);
             }
             $('form input').removeAttr("disabled");
             $('form textarea').removeAttr("disabled");

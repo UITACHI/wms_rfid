@@ -140,9 +140,9 @@
                         <td><input name="PieceBarcode"></td>
                         <td>滤嘴</td>
                         <td>
-                             <select   class="easyui-combobox"  name="IsFilterTip" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+                             <select   class="easyui-combobox"   name="IsFilterTip" editable="false"  panelHeight="70" style="width: 129px;" required="true">
 		                       <option value="1">是</option>
-		                        <option value="0">否</option>
+		                        <option value="0">不是</option>
 	                        </select>
                         </td>
                         <td>包装类型</td>
@@ -222,7 +222,7 @@
                         </td>
                         <td>异形烟</td>
                         <td>
-                        <select  class="easyui-combobox"  editable="false"  name="IsAbnormity" panelHeight="70" style="width: 129px;" required="true">
+                        <select  class="easyui-combobox" id="ft"  editable="false"  name="IsAbnormity" panelHeight="70" style="width: 129px;" required="true">
 		                       <option value="1">是</option>
 		                        <option value="0">否</option>
 	                        </select>
@@ -239,13 +239,13 @@
                       <tr>
                       <td>是否可用</td>
                         <td>
-                        <select  class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+                        <select  id="cc" class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70" style="width: 129px;" required="true">
 		                       <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>
                         </td>
                         <td>更新时间</td>
-                        <td ><input style="width:129px;" class="easyui-datetimebox" name="UpdateTime" editable="false" /></td>
+                        <td ><input style="width:129px;" class="easyui-datetimebox"  name="UpdateTime" editable="false" /></td>
                       </tr>
                         <td>描述:</td>
                         <td colspan="5"><textarea name="Description" style="height: 50px;width:210px;"></textarea></td>
