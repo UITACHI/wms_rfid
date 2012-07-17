@@ -43,9 +43,9 @@ namespace Authority.Controllers.Wms.WarehouseInfo
 
         //
         // GET: /Cell/Details/
-        public ActionResult Details(string wareCode, string shelfCode)
+        public ActionResult Details(string wareCode)
         {
-            var wareCell = CellService.GetSearch(wareCode, shelfCode);
+            var wareCell = CellService.GetSearch(wareCode);
             return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
         }
 

@@ -1,7 +1,6 @@
 <script type="text/javascript">
     function deleteClick() {
         var row = $('#details').treegrid('getSelected');
-        //var row = $('#tt').tree('getSelected'); 
         if (row) {
             $('#dlg').dialog('open').dialog('setTitle', '删除');
             $('form input').attr("disabled", "disabled");
@@ -9,27 +8,27 @@
             var laod;
             if (row.attributes == "ware") {
                 divid = "ware";
-                Load("/Warehouse/FindWarehouse", row.WarehouseCode, divid);
-                url = "/Warehouse/Delete/?warehouseCode=" + row.WarehouseCode;
+                Load("/Warehouse/FindWarehouse", row.Code, divid);
+                url = "/Warehouse/Delete/?warehouseCode=" + row.Code;
             } else if (row.attributes == "area") {
                 divid = "area";
-                Load("/Area/FindArea", row.WarehouseCode, divid);
+                Load("/Area/FindArea", row.Code, divid);
                 addClass("wareArea", "");
-                url = "/Area/Delete/?areaCode=" + row.WarehouseCode;
+                url = "/Area/Delete/?areaCode=" + row.Code;
             } else if (row.attributes == "shelf") {
                 divid = "shelf";
-                Load("/Shelf/FindShelf", row.WarehouseCode, divid);
+                Load("/Shelf/FindShelf", row.Code, divid);
                 addClass("wareShelf", "areaShelf");
-                url = "/Shelf/Delete/?shelfCode=" + row.WarehouseCode;
+                url = "/Shelf/Delete/?shelfCode=" + row.Code;
             } else if (row.attributes == "cell") {
                 divid = "cell";
-                Load("/Cell/FindCell", row.WarehouseCode, divid);
+                Load("/Cell/FindCell", row.Code, divid);
                 addClass("wareCell", "areaCell")
-                url = "/Cell/Delete/?cellCode=" + row.WarehouseCode;
+                url = "/Cell/Delete/?cellCode=" + row.Code;
             }
             fm = divid + "fm";
             AddShowDiv(divid); //显示页面
-            addLoad(); //加载数据
+            //addLoad(); //加载数据
             $('#' + divId + ' .easyui-validatebox').validatebox({
                 required: false
             });   

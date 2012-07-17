@@ -24,17 +24,17 @@ namespace THOK.Wms.Bll.Service
 
         #region IAreaService 成员
 
-        public object GetDetails(int page, int rows, string areaCode)
+        public object GetDetails(string warehouseCode, string areaCode)
         {
             IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
             var area = areaQuery.OrderBy(b => b.AreaCode).AsEnumerable().Select(b=> new { b.AreaCode, b.AreaName, b.AreaType,b.ShortName,b.AllotInOrder,b.AllotOutOrder,b.Description,b.warehouse.WarehouseCode,b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
-            if (areaCode != null)
-            {
-                area = area.Where(a => a.AreaCode == areaCode);
+            if (warehouseCode != null && warehouseCode != string.Empty){
+                area = area.Where(a => a.WarehouseCode == warehouseCode).OrderBy(a => a.AreaCode).Select(a => a);
             }
-            int total = area.Count();
-            area = area.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = area.ToArray() };
+            if (areaCode != null && areaCode!=string.Empty){
+                area = area.Where(a => a.AreaCode == areaCode).OrderBy(a => a.AreaCode).Select(a => a);
+            }           
+            return area.ToArray();
         }
 
         public new bool Add(Area area)

@@ -192,81 +192,80 @@ namespace THOK.Wms.Bll.Service
             return cell.First(c => c.CellCode == parameter);
         }
 
-        public object GetSearch(string wareCode, string shelfCode)
+        public object GetSearch(string wareCode)
         {
             var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();
             if (wareCode != null && wareCode != string.Empty)
             {
                 warehouses = warehouses.Where(w => w.WarehouseCode == wareCode);
             }
+
             HashSet<WareTree> wareSet = new HashSet<WareTree>();
-            if (shelfCode == null || shelfCode == string.Empty)//判断是否是加载货位
+            foreach (var warehouse in warehouses)//仓库
             {
-                foreach (var warehouse in warehouses)//仓库
+                WareTree wareTree = new WareTree();
+                wareTree.Code = warehouse.WarehouseCode;
+                wareTree.Name = "仓库：" + warehouse.WarehouseName;
+                wareTree.WarehouseCode = warehouse.WarehouseCode;
+                wareTree.WarehouseName = warehouse.WarehouseName;
+                wareTree.Type = warehouse.WarehouseType;
+                wareTree.Description = warehouse.Description;
+                wareTree.IsActive = warehouse.IsActive == "1" ? "可用" : "不可用";
+                wareTree.UpdateTime = warehouse.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss");
+                wareTree.ShortName = warehouse.ShortName;
+                wareTree.attributes = "ware";
+                var areas = AreaRepository.GetQueryable().Where(a => a.warehouse.WarehouseCode == warehouse.WarehouseCode)
+                                                        .OrderBy(a => a.AreaCode).Select(a => a);
+                HashSet<WareTree> areaSet = new HashSet<WareTree>();
+                foreach (var area in areas)//库区
                 {
-                    WareTree wareTree = new WareTree();
-                    wareTree.WarehouseCode = warehouse.WarehouseCode;
-                    wareTree.WarehouseName = "仓库：" + warehouse.WarehouseName;
-                    wareTree.Type = warehouse.WarehouseType;
-                    wareTree.Description = warehouse.Description;
-                    wareTree.IsActive = warehouse.IsActive == "1" ? "可用" : "不可用";
-                    wareTree.UpdateTime = warehouse.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss");
-                    wareTree.ShortName = warehouse.ShortName;
-                    wareTree.attributes = "ware";
-                    var areas = AreaRepository.GetQueryable().Where(a => a.warehouse.WarehouseCode == warehouse.WarehouseCode)
-                                                            .OrderBy(a => a.AreaCode).Select(a => a);
-                    HashSet<WareTree> areaSet = new HashSet<WareTree>();
-                    foreach (var area in areas)//库区
+                    WareTree areaTree = new WareTree();
+                    areaTree.Code = area.AreaCode;
+                    areaTree.Name = "库区：" + area.AreaName;
+                    areaTree.AreaCode = area.AreaCode;
+                    areaTree.AreaName = area.AreaName;
+                    areaTree.WarehouseCode = area.warehouse.WarehouseCode;
+                    areaTree.WarehouseName = area.warehouse.WarehouseName;
+                    areaTree.Type = area.AreaType;
+                    areaTree.Description = area.Description;
+                    areaTree.IsActive = area.IsActive == "1" ? "可用" : "不可用";
+                    areaTree.UpdateTime = area.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss");
+                    areaTree.ShortName = area.ShortName;
+                    areaTree.AllotInOrder = area.AllotInOrder;
+                    areaTree.AllotOutOrder = area.AllotOutOrder;
+                    areaTree.attributes = "area";
+                    var shelfs = ShelfRepository.GetQueryable().Where(s => s.area.AreaCode == area.AreaCode)
+                                                               .OrderBy(s => s.ShelfCode).Select(s => s);
+                    HashSet<WareTree> shelfSet = new HashSet<WareTree>();
+                    foreach (var shelf in shelfs)//货架
                     {
-                        WareTree areaTree = new WareTree();
-                        areaTree.WarehouseCode = area.AreaCode;
-                        areaTree.WarehouseName = "库区：" + area.AreaName;
-                        areaTree.AreaCode = area.AreaCode;
-                        areaTree.AreaName = area.AreaName;
-                        areaTree.Type = area.AreaType;
-                        areaTree.Description = area.Description;
-                        areaTree.IsActive = area.IsActive == "1" ? "可用" : "不可用";
-                        areaTree.UpdateTime = area.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss");
-                        areaTree.ShortName = area.ShortName;
-                        areaTree.AllotInOrder = area.AllotInOrder;
-                        areaTree.AllotOutOrder = area.AllotOutOrder;
-                        areaTree.attributes = "area";
-                        var shelfs = ShelfRepository.GetQueryable().Where(s => s.area.AreaCode == area.AreaCode)
-                                                                   .OrderBy(s => s.ShelfCode).Select(s => s);
-                        HashSet<WareTree> shelfSet = new HashSet<WareTree>();
-                        foreach (var shelf in shelfs)//货架
-                        {
-                            WareTree shelfTree = new WareTree();
-                            shelfTree.WarehouseCode = shelf.ShelfCode;
-                            shelfTree.WarehouseName = "货架：" + shelf.ShelfName;
-                            shelfTree.ShelfCode = shelf.ShelfCode;
-                            shelfTree.ShelfName = shelf.ShelfName;
-                            shelfTree.Type = shelf.ShelfType;
-                            shelfTree.Description = shelf.Description;
-                            shelfTree.IsActive = shelf.IsActive == "1" ? "可用" : "不可用";
-                            shelfTree.UpdateTime = shelf.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss");
-                            shelfTree.ShortName = shelf.ShortName;
-                            shelfTree.attributes = "shelf";
-                            shelfSet.Add(shelfTree);
-                        }
-                        areaTree.children = shelfSet.ToArray();
-                        areaSet.Add(areaTree);
+                        WareTree shelfTree = new WareTree();
+                        shelfTree.Code = shelf.ShelfCode;
+                        shelfTree.Name = "货架：" + shelf.ShelfName;
+                        shelfTree.ShelfCode = shelf.ShelfCode;
+                        shelfTree.ShelfName = shelf.ShelfName;
+
+                        shelfTree.WarehouseCode = shelf.warehouse.WarehouseCode;
+                        shelfTree.WarehouseName = shelf.warehouse.WarehouseName;
+                        shelfTree.AreaCode = shelf.area.AreaCode;
+                        shelfTree.AreaName = shelf.area.AreaName;
+
+                        shelfTree.Type = shelf.ShelfType;
+                        shelfTree.Description = shelf.Description;
+                        shelfTree.IsActive = shelf.IsActive == "1" ? "可用" : "不可用";
+                        shelfTree.UpdateTime = shelf.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss");
+                        shelfTree.ShortName = shelf.ShortName;
+                        shelfTree.attributes = "shelf";
+                        shelfSet.Add(shelfTree);
                     }
-                    wareTree.children = areaSet.ToArray();
-                    wareSet.Add(wareTree);
+                    areaTree.children = shelfSet.ToArray();
+                    areaSet.Add(areaTree);
                 }
-            }
-            else
-            {
-               
+                wareTree.children = areaSet.ToArray();
+                wareSet.Add(wareTree);
             }
             return wareSet.ToArray();
         }
-
-        #endregion
-
-        #region ICellService 成员
-
 
         public object GetCell(string shelfCode)
         {
@@ -277,10 +276,21 @@ namespace THOK.Wms.Bll.Service
             {
                 var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == cell.DefaultProductCode);
                 WareTree cellTree = new WareTree();
-                cellTree.WarehouseCode = cell.CellCode;
-                cellTree.WarehouseName = "货位：" + cell.CellName;
+
+                cellTree.Code = cell.CellCode;
+                cellTree.Name = "货位：" + cell.CellName;
                 cellTree.CellCode = cell.CellCode;
                 cellTree.CellName = cell.CellName;
+
+                cellTree.WarehouseCode = cell.warehouse.WarehouseCode;
+                cellTree.WarehouseName = cell.warehouse.WarehouseName;
+
+                cellTree.AreaCode = cell.area.AreaCode;
+                cellTree.AreaName = cell.area.AreaName;
+
+                cellTree.ShelfCode = cell.shelf.ShelfCode;
+                cellTree.ShelfName = cell.shelf.ShelfName;
+
                 cellTree.Type = cell.CellType;
                 cellTree.Description = cell.Description;
                 cellTree.IsActive = cell.IsActive == "1" ? "可用" : "不可用";

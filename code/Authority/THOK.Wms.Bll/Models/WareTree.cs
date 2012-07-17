@@ -7,6 +7,8 @@ namespace THOK.Wms.Bll.Models
 {
     public class WareTree
     {
+        public string Code { get; set; }
+        public string Name { get; set; }
         public string WarehouseCode { get; set; }
         public string WarehouseName { get; set; }
         public string AreaCode { get; set; }

@@ -31,21 +31,23 @@
 <div region="center" split="true" border="false" >
     <table id="details" class="easyui-treegrid" border="false" 
    			url="/Cell/Details/" rownumbers="true" singleSelect="true"
-    		idField="WarehouseCode" treeField="WarehouseName" toolbar="#tool" pagination="false" fit="true">
+    		idField="Code" treeField="Name" toolbar="#tool" pagination="false" fit="true">
 		<thead>
 			<tr>
-                <th field="WarehouseCode" hidden="true" width="50">编码</th>
-				<th field="WarehouseName" width="200" align="left" iconCls="icon">名称</th>
+                <th field="Code" hidden="true" width="50">编码</th>
+				<th field="Name" width="200" align="left" iconCls="icon">名称</th>
 				<th field="ShortName" width="120">简称</th>
                 <th field="Type" width="65">类型</th>         
-                <th field="Description" width="65">描述</th>
+                <th field="Description" width="100">描述</th>
                 <th field="IsActive" width="65">是否可用</th>
-                <th field="ProductName" width="120">预设卷烟名称</th>
+                <th field="ProductName" width="150">预设卷烟名称</th>
                 <th field="Layer" width="80">货位层号</th>
                 <th field="MaxQuantity" width="65">货位最大量</th>
-                <th field="UpdateTime" width="150">时间</th>
-                <th field="AllotInOrder" width="150">入库顺序</th>
-                <th field="AllotOutOrder" width="150">出库顺序</th>
+                <th field="UpdateTime" width="140">时间</th>
+                <th field="AllotInOrder" width="65">入库顺序</th>
+                <th field="AllotOutOrder" width="65">出库顺序</th>
+                <th field="WarehouseCode" hidden="true" width="50">仓库编码</th>
+				<th field="WarehouseName" hidden="true" width="200" align="left" iconCls="icon">仓库名称</th>
                 <th field="AreaCode" hidden="true" width="50">库区编码</th>
 				<th field="AreaName" hidden="true" width="200" align="left" iconCls="icon">库区名称</th>
                 <th field="ShelfCode" hidden="true" width="50">货架编码</th>

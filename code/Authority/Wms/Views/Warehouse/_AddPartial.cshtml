@@ -29,7 +29,7 @@
         AddShowDiv(divid); //显示div
         $('#' + divid).form('clear');
         $('#' + divid + 'ID').attr("readonly", false);
-        addLoad(); //加载数据
+        addLoad(row); //加载数据
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
     }
@@ -81,7 +81,8 @@
         $('.' + area + 'Class').attr('id', "area-add");        
     }
 
-    function addLoad() {
+    function addLoad(row) {
+
         $('#wareIsActive').combo({
             required: true,
             editable: false,
@@ -116,7 +117,7 @@
         $('#isVirtual').combo({
             required: true,
             editable: false,
-            panelHeight: 65,
+            panelHeight: 45,
             panelWidth: 140
         });
         $('#isCellType').combo({
@@ -126,7 +127,6 @@
             panelWidth: 140
         });
         
-
         $('#company-add').combogrid({
             width: 140,
             panelWidth: 340,
@@ -147,7 +147,7 @@
         $('#warehouse-add').combogrid({
             width: 140,
             panelWidth: 340,
-            url: '/Warehouse/Details/?page=1&rows=10',
+            url: '/Warehouse/Details/?page=1&rows=10&warehouseCode=' + row.WarehouseCode,
             idField: 'WarehouseCode',
             textField: 'WarehouseName',
             mode: 'local',
@@ -165,7 +165,7 @@
         $('#area-add').combogrid({
             width: 140,
             panelWidth: 340,
-            url: '/Area/Details/?page=1&rows=10',
+            url: '/Area/Details/?warehouseCode=' + row.WarehouseCode + '&areaCode=' + row.AreaCode,
             idField: 'AreaCode',
             textField: 'AreaName',
             mode: 'local',
@@ -183,7 +183,7 @@
         $('#shelf-add').combogrid({
             width: 140,
             panelWidth: 340,
-            url: '/Shelf/Details/?page=1&rows=10',
+            url: '/Shelf/Details/?warehouseCode=' + row.WarehouseCode + '&areaCode=' + row.AreaCode + '&shelfCode=' + row.ShelfCode,
             idField: 'ShelfCode',
             textField: 'ShelfName',
             mode: 'local',
@@ -214,10 +214,6 @@
                     { field: 'UpdateTime', title: '时间', align: 'left', width: 30 }
 				]]
         });
-    }
-
-    function ceshi() {
-        alert(1);
     }
 </script>
 <div id="dlg" class="easyui-dialog" modal="true" style="width: 500px; height: 360px;
@@ -273,8 +269,8 @@
                     </td>
                     <td>
                         <select name="IsActive" id="wareIsActive" class="easyui-combobox" style="width: 141px">
-                            <option selected="selected" value="1">启用</option>
-                            <option value="0">未启用</option>
+                            <option selected="selected" value="1">可用</option>
+                            <option value="0">不可用</option>
                         </select>
                     </td>
                 </tr>
@@ -515,15 +511,11 @@
                     </td>
                  </tr>
                 <tr style="height: 20px">
-                   <td align="right">
-                        货层位置:
+                   <td align="right" class="tdTitle">
+                        预设最大储量:
                     </td>
                     <td align="left">
-                        <select name="Layer" id="isLayer" class="easyui-combobox" style="width: 140px">
-                            <option value="1">一层</option>
-                            <option value="2">二层</option>
-                            <option value="3">三层</option>
-                        </select>
+                        <input name="MaxQuantity" type="text" id="txtUnitCode" class="easyui-numberbox" missingmessage="请输入最大值（必须为数字）"style="width: 140px;"/>
                     </td>
                      <td align="right" class="tdTitle">
                         储位列号:
@@ -577,19 +569,23 @@
                     </td>
                 </tr>
                 <tr style="height: 20px">
-                    <td align="right" class="tdTitle">
-                        预设最大储量:
+                    <td align="right">
+                        货层位置:
                     </td>
                     <td align="left">
-                        <input name="MaxQuantity" type="text" id="txtUnitCode" class="easyui-numberbox" missingmessage="请输入最大值（必须为数字）"style="width: 140px;"/>
-                    </td>
+                        <select name="Layer" id="isLayer" class="easyui-combobox" style="width: 140px">
+                            <option value="1">一层</option>
+                            <option value="2">二层</option>
+                            <option value="3">三层</option>
+                        </select>
+                    </td>                    
                     <td align="right" class="tdTitle">
                         是否单一货位:
                     </td>
                     <td align="left">
                         <select name="IsSingle" id="isVirtual" class="easyui-combobox" style="width: 140px">
-                            <option selected="selected" value="0">不是</option>
                             <option value="1">是</option>
+                            <option value="0">否</option>
                         </select>
                     </td>
                 </tr>
