@@ -2,7 +2,7 @@
 
 namespace THOK.Authority.Bll.Interfaces
 {
-    public interface ISystemService : IService<THOK.Authority.DbModel.ManagementSystem>
+    public interface ISystemService : IService<THOK.Authority.DbModel.System>
     {
         object GetDetails(int page, int rows, string systemName, string description, string status);
 

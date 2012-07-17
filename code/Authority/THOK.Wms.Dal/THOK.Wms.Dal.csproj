@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityRepository\AreaRepository.cs" />
+    <Compile Include="EntityRepository\BillTypeRepository.cs" />
     <Compile Include="EntityRepository\BrandRepository.cs" />
     <Compile Include="EntityRepository\CellRepository.cs" />
     <Compile Include="EntityRepository\CompanyRepository.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="EntityRepository\UnitRepository.cs" />
     <Compile Include="EntityRepository\WarehouseRepository.cs" />
     <Compile Include="Interfaces\IAreaRepository.cs" />
+    <Compile Include="Interfaces\IBillTypeRepository.cs" />
     <Compile Include="Interfaces\IBrandRepository.cs" />
     <Compile Include="Interfaces\ICellRepository.cs" />
     <Compile Include="Interfaces\ICompanyRepository.cs" />

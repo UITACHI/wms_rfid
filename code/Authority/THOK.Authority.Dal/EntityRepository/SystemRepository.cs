@@ -3,7 +3,7 @@ using THOK.Common.Ef.EntityRepository;
 
 namespace THOK.Authority.Dal.EntityRepository
 {
-    public class SystemRepository : RepositoryBase<THOK.Authority.DbModel.ManagementSystem>, ISystemRepository
+    public class SystemRepository : RepositoryBase<THOK.Authority.DbModel.System>, ISystemRepository
     {
     }
 }

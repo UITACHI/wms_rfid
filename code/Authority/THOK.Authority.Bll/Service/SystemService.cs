@@ -6,7 +6,7 @@ using THOK.Authority.Dal.Interfaces;
 
 namespace THOK.Authority.Bll.Service
 {
-    public class SystemService : ServiceBase<THOK.Authority.DbModel.ManagementSystem>, ISystemService
+    public class SystemService : ServiceBase<THOK.Authority.DbModel.System>, ISystemService
     {
         [Dependency]
         public ISystemRepository SystemRepository { get; set; }
@@ -31,7 +31,7 @@ namespace THOK.Authority.Bll.Service
 
         public object GetDetails(int page, int rows, string systemName, string description, string status)
         {
-            IQueryable<THOK.Authority.DbModel.ManagementSystem> query = SystemRepository.GetQueryable();
+            IQueryable<THOK.Authority.DbModel.System> query = SystemRepository.GetQueryable();
             var systems = query.Where(i => i.SystemName.Contains(systemName) && i.Description.Contains(description))
                 .OrderBy(i => i.SystemID)
                 .Select(i => new { i.SystemID, i.SystemName, i.Description, Status = i.Status ? "启用" : "禁用" });
@@ -49,7 +49,7 @@ namespace THOK.Authority.Bll.Service
 
         public bool Add(string systemName, string description, bool status)
         {
-            var system = new THOK.Authority.DbModel.ManagementSystem()
+            var system = new THOK.Authority.DbModel.System()
             {
                 SystemID = Guid.NewGuid(),
                 SystemName = systemName,

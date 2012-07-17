@@ -26,6 +26,6 @@ namespace THOK.Authority.DbModel
         public virtual Module ParentModule { get; set; }
         public virtual ICollection<RoleModule> RoleModules { get; set; }
         public virtual ICollection<UserModule> UserModules { get; set; }
-        public virtual ManagementSystem System { get; set; }
+        public virtual System System { get; set; }
     }
 }

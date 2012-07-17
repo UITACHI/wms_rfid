@@ -44,15 +44,15 @@ namespace THOK.Wms.Repository.Migrations
             );
             context.SaveChanges();
 
-            context.Set<ManagementSystem>().AddOrUpdate(
-                    new ManagementSystem()
+            context.Set<System>().AddOrUpdate(
+                    new System()
                     {
                         SystemID = new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"),
                         SystemName = "权限管理系统",
                         Description = "权限管理系统",
                         Status = true
                     },
-                    new ManagementSystem()
+                    new System()
                     {
                         SystemID = new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"),
                         SystemName = "烟草商业企业RFID综合管理系统",
@@ -82,7 +82,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateServer(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
             context.Set<Module>().AddOrUpdate(
                    new Module()
                    {
@@ -226,7 +226,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateSystemAuthority(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
             context.Set<Module>().AddOrUpdate(
                    new Module()
                    {
@@ -530,7 +530,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateSystemLog(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
             context.Set<Module>().AddOrUpdate(
                    new Module()
                    {
@@ -662,7 +662,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateHelpContents(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("E8344F88-08AD-4F9A-8F45-EAD8BB471104"));
             context.Set<Module>().AddOrUpdate(
                    new Module()
                    {
@@ -866,7 +866,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateOrg(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                    new Module()
                    {
@@ -1130,7 +1130,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateWarehouse(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -1214,7 +1214,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateProduct(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -1537,7 +1537,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateStockIn(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -1853,7 +1853,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateStockOut(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -2169,7 +2169,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateStockMove(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -2477,7 +2477,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateStockCheck(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -2729,7 +2729,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateProfitLoss(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -2925,7 +2925,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateStock(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -3174,7 +3174,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateSorting(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
@@ -3506,7 +3506,7 @@ namespace THOK.Wms.Repository.Migrations
 
         private void CreateSearch(AuthorizeContext context)
         {
-            ManagementSystem system = context.Set<ManagementSystem>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
+            System system = context.Set<System>().SingleOrDefault(s => s.SystemID == new Guid("ED0E6EF0-9DEB-4CDE-8DCF-702D5B666AA8"));
             context.Set<Module>().AddOrUpdate(
                     new Module()
                     {
