@@ -182,8 +182,8 @@ namespace THOK.Wms.Bll.Service
         public object FindCell(string parameter)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
-            var cell = cellQuery.Where(c=>c.CellCode==parameter).OrderBy(b => b.CellCode).AsEnumerable()
-                                .Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer, b.IsSingle, b.MaxQuantity, b.Description, b.warehouse.WarehouseName, b.warehouse.WarehouseCode, b.area.AreaCode, b.area.AreaName, b.shelf.ShelfCode, b.shelf.ShelfName,DefaultProductCode=b.product.ProductCode,b.product.ProductName,IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var cell = cellQuery.Where(c => c.CellCode == parameter).OrderBy(b => b.CellCode).AsEnumerable()
+                .Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer, b.IsSingle, b.MaxQuantity, b.Description, b.warehouse.WarehouseName, b.warehouse.WarehouseCode, b.area.AreaCode, b.area.AreaName, b.shelf.ShelfCode, b.shelf.ShelfName, DefaultProductCode = b.product == null ? string.Empty : b.product.ProductCode, ProductName = b.product == null ? string.Empty : b.product.ProductName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             return cell.First(c => c.CellCode == parameter);
         }
 
