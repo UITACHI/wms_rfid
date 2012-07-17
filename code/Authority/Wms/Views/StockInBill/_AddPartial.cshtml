@@ -1,0 +1,127 @@
+﻿<script type="text/javascript">
+    var url;
+    $(function () {
+        $('#cc').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 100
+        });
+    })
+
+    function addClick() {
+        $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
+        $('#unitCode').attr("readonly", false);
+        $('#fm').form('clear');
+        $('#fm .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
+        $('#cc').combo({
+            hasDownArrow: true
+        });
+        url = '/Unit/Create/';
+    };
+
+    function save() {
+        $('#fm').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').datagrid('reload');
+                }
+            }
+        });
+    }
+</script>
+    <div id="dlg" class="easyui-dialog" modal="true" 
+        style="width:700px;height:453px;padding:0px 0px"
+        closed="true" buttons="#dlg-buttons">
+<div region="center" split="true"  border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8" fit="true">    
+<table style=" padding:2px 2px 0px 5px" >
+  <tr>
+    <td align="right" valign="middle">入库单号</td>
+    <td align="left"><label>
+      <input type="text" name="bill、" id="bill、" />
+    </label></td>
+    <td align="right" valign="middle">制单日期</td>
+    <td align="left"><input type="text" name="bill、4" id="bill、4" /></td>
+    <td align="right" valign="middle">单据类型</td>
+    <td align="left"><input type="text" name="bill、7" id="bill、7" /></td>
+    <td align="left"><label>
+      <input type="submit" name="button" id="button" value="提交" />
+    </label></td>
+  </tr>
+  <tr>
+    <td align="right" valign="middle">操作员</td>
+    <td align="left"><input type="text" name="bill、2" id="bill、2" /></td>
+    <td align="right" valign="middle">审核人</td>
+    <td align="left"><input type="text" name="bill、5" id="bill、5" /></td>
+    <td align="right" valign="middle">入库仓库</td>
+    <td align="left"><input type="text" name="bill、8" id="bill、8" /></td>
+    <td align="left"><label>
+      <input type="submit" name="button2" id="button2" value="提交" />
+    </label></td>
+  </tr>
+  <tr>
+    <td align="right" valign="middle">处理状态</td>
+    <td align="left"><input type="text" name="bill、3" id="bill、3" /></td>
+    <td align="right" valign="middle">审核日期</td>
+    <td align="left"><input type="text" name="bill、6" id="bill、6" /></td>
+    <td align="right" valign="middle">总金额</td>
+    <td align="left"><input type="text" name="bill、9" id="bill、9" /></td>
+    <td align="left"></td>
+  </tr>
+  <tr>
+    <td align="right" valign="middle">备注</td>
+    <td align="left"><textarea name="textarea" id="textarea" cols="20" rows="2"></textarea></td>
+    <td colspan="2"><label></label></td>
+    <td align="right" valign="middle">总数量</td>
+    <td align="left"><input type="text" name="bill、10" id="bill、10" /></td>
+    <td align="left"></td>
+  </tr>
+</table>
+</div>
+<div region="south" split="true" border="false" style="height: 280px;">
+    <table class="easyui-datagrid" border="false" id="details" toolbar="#dlg-detailButtons"
+        fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
+        <thead>
+            <tr>
+                <th field="itemid" hidden="true" width="80" >序号</th>
+                <th field="productid" width="100">产品代码</th>
+                <th field="listprice" width="80" align="right">产品名称</th>
+                <th field="unitcost" width="80" align="right">单位编码</th>
+                <th field="A" width="80" align="right">单位名称</th>
+                <th field="B" width="80" align="right">数量</th>
+                <th field="C" width="80" align="right">实际入库量</th>
+                <th field="D" width="80" align="right">单价</th>
+                <th field="E" width="80" align="right">备注</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+</div>
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+<div id="dlg-detailButtons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="save()">添加明细</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dlg').dialog('close')">删除明细</a>
+</div>
