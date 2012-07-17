@@ -45,9 +45,8 @@ namespace Authority.Controllers.Wms.StockIn
         //
         // GET: /InBillDetail/InBillDetails/
 
-        public ActionResult InBillDetails(int page, int rows, FormCollection collection)
+        public ActionResult InBillDetails(int page, int rows, string BillNo)
         {
-            string BillNo = collection["BillNo"] ?? "";
             var inBillDetail = InBillDetailService.GetDetails(page,rows,BillNo);
             return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
         }

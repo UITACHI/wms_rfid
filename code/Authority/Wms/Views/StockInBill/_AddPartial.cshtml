@@ -57,35 +57,35 @@
 <table style=" padding:2px 2px 0px 5px" >
   <tr>
     <td align="right" valign="middle">入库单号</td>
-    <td align="left"><label>
-      <input type="text" name="bill、" id="bill、" />
-    </label></td>
+    <td align="left">
+      <input type="text" name="BillNo"/>
+    </td>
     <td align="right" valign="middle">制单日期</td>
-    <td align="left"><input type="text" name="bill、4" id="bill、4" /></td>
+    <td align="left"><input type="text" name="BillDate"/></td>
     <td align="right" valign="middle">单据类型</td>
-    <td align="left"><input type="text" name="bill、7" id="bill、7" /></td>
-    <td align="left"><label>
+    <td align="left"><input type="text" name="BillTypeCode"/></td>
+    <td align="left">
       <input type="submit" name="button" id="button" value="提交" />
-    </label></td>
+  </td>
   </tr>
   <tr>
     <td align="right" valign="middle">操作员</td>
-    <td align="left"><input type="text" name="bill、2" id="bill、2" /></td>
+    <td align="left"><input type="text" name="OperatePersonCode"/></td>
     <td align="right" valign="middle">审核人</td>
-    <td align="left"><input type="text" name="bill、5" id="bill、5" /></td>
+    <td align="left"><input type="text" name="VerifyPersonCode"/></td>
     <td align="right" valign="middle">入库仓库</td>
-    <td align="left"><input type="text" name="bill、8" id="bill、8" /></td>
+    <td align="left"><input type="text" name="WarehouseCode"/></td>
     <td align="left"><label>
       <input type="submit" name="button2" id="button2" value="提交" />
     </label></td>
   </tr>
   <tr>
     <td align="right" valign="middle">处理状态</td>
-    <td align="left"><input type="text" name="bill、3" id="bill、3" /></td>
+    <td align="left"><input type="text" name="bill、3"/></td>
     <td align="right" valign="middle">审核日期</td>
-    <td align="left"><input type="text" name="bill、6" id="bill、6" /></td>
+    <td align="left"><input type="text" name="bill、6"/></td>
     <td align="right" valign="middle">总金额</td>
-    <td align="left"><input type="text" name="bill、9" id="bill、9" /></td>
+    <td align="left"><input type="text" name="bill、9"/></td>
     <td align="left"></td>
   </tr>
   <tr>
@@ -93,7 +93,7 @@
     <td align="left"><textarea name="textarea" id="textarea" cols="20" rows="2"></textarea></td>
     <td colspan="2"><label></label></td>
     <td align="right" valign="middle">总数量</td>
-    <td align="left"><input type="text" name="bill、10" id="bill、10" /></td>
+    <td align="left"><input type="text" name="bill、10"/></td>
     <td align="left"></td>
   </tr>
 </table>
@@ -103,15 +103,14 @@
         fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
         <thead>
             <tr>
-                <th field="itemid" hidden="true" width="80" >序号</th>
-                <th field="productid" width="100">产品代码</th>
-                <th field="listprice" width="80" align="right">产品名称</th>
-                <th field="unitcost" width="80" align="right">单位编码</th>
-                <th field="A" width="80" align="right">单位名称</th>
-                <th field="B" width="80" align="right">数量</th>
-                <th field="C" width="80" align="right">实际入库量</th>
-                <th field="D" width="80" align="right">单价</th>
-                <th field="E" width="80" align="right">备注</th>
+                <th field="ProductCode" width="100">产品代码</th>
+                <th field="ProductName" width="80" align="right">产品名称</th>
+                <th field="UnitCode" width="80" align="right">单位编码</th>
+                <th field="UnitName" width="80" align="right">单位名称</th>
+                <th field="BillQuantity" width="80" align="right">数量</th>
+                <th field="RealQuantity" width="80" align="right">实际入库量</th>
+                <th field="Price" width="80" align="right">单价</th>
+                <th field="Description" width="80" align="right">备注</th>
             </tr>
         </thead>
     </table>

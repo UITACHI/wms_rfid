@@ -1,6 +1,15 @@
 ﻿<script type="text/javascript">
     $(function () {
-
+        $('#details').datagrid({
+            onClickRow: function () {
+                var row = $('#details').datagrid('getSelected');
+                if (row) {
+                    $('#inBillDetails').datagrid({ url: '/StockInBill/InBillDetails/?BillNo='+row.BillNo });
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+                }
+            }
+        })
     });
 </script>
 <div region="center" split="true"  border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
@@ -19,7 +28,7 @@
     </table>
 </div>
 <div region="south" split="true" border="false" style="height: 250px; border-top-style: solid; border-top-width: 1px; border-top-color: 99BBE8;">
-    <table class="easyui-datagrid" border="false" singleSelect="true" id="details" url="/StockInBill/InBillDetails/"
+    <table class="easyui-datagrid" border="false" singleSelect="true" id="inBillDetails" url="/StockInBill/InBillDetails/"
         fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
         <thead>
             <tr>
