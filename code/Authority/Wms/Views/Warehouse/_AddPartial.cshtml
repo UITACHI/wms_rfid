@@ -3,12 +3,13 @@
     var fm;
     function addClick() {
         var divid;
-        var row = $('#details').treegrid('getSelected');
-        $('#dlg').dialog('open').dialog('setTitle', '新增');
+        var addName;
+        var row = $('#details').treegrid('getSelected');        
         if (row == null) {
             divid = "ware";
             url = '/Warehouse/WareCreate/';
             addClass("", "");
+            addName = "仓库";
         } else if (row.attributes == "cell") {
             $('#dlg').dialog('close');
             alert("货位下不能增加！");
@@ -16,16 +17,20 @@
             divid = "area";
             url = '/Area/AreaCreate/';
             addClass("wareArea", "");
+            addName = "库区";
         } else if (row.attributes == "area") {
             divid = "shelf";
             url = '/Shelf/ShelfCreate/';
             addClass("wareShelf", "areaShelf");
+            addName = "货架";
         } else if (row.attributes == "shelf") {
             divid = "cell";
             url = '/Cell/CellCreate/';
             addClass("wareCell", "areaCell");
+            addName = "货位";
         }
         fm = divid + "fm";
+        $('#dlg').dialog('open').dialog('setTitle', '新增: ' + addName);
         AddShowDiv(divid); //显示div
         $('#' + divid).form('clear');
         $('#' + divid + 'ID').attr("readonly", false);
@@ -220,8 +225,7 @@
 <div id="dlg" class="easyui-dialog" modal="true" style="width: 500px; height: 360px;
     padding: 1px 1px" closed="true" buttons="#dlg-buttons">
     <div id="ware" class="easyui-layout" fit="true" style="display: none">
-        <div region="center" border="false" style="padding: 10px 10px; background: #fff;
-            border: 1px solid #ccc;">
+        <div region="center" border="false" style="padding: 10px 10px; background: #fff;  border: 1px solid #ccc;">
             <form id="warefm"  method="post">
             <label>
                 当前新增页面：仓库</label>
@@ -251,7 +255,7 @@
                         仓库类型:
                     </td>
                     <td>
-                        <select name="WarehouseType" id="ddlType" style="width: 140px;">
+                        <select name="WarehouseType" id="isWarehouseType" style="width: 140px;">
                             <option selected="selected" value="0">正常库</option>
                             <option value="1">损烟库</option>
                             <option value="2">罚烟库</option>
