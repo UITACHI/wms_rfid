@@ -6,14 +6,16 @@
  
 <div region="center" split="true" border="false">    
     <table class="easyui-datagrid" id="details"
-        url="/Role/Details/" border="false" singleSelect="true"
+        url="/StockInBillType/Details/" border="false" singleSelect="true"
         fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="RoleID" hidden="true" width="80">类型编码</th>
-                <th field="RoleName" width="100">类型名称</th>
-                <th field="Description" width="80" align="left">需要货位</th>
-                <th field="Status" width="80" align="left">备注</th>
+                <th field="BillTypeCode" width="60">订单类型</th>
+                <th field="BillTypeName" width="90">订单类型名称</th>
+                <th field="BillClass" width="80" align="left">订单类别</th>
+                <th field="Description" width="120" align="left">描述</th>
+                <th field="IsActive" width="80">是否可用</th>
+                <th field="UpdateTime" width="100">更新时间</th>
             </tr>
         </thead>
     </table>
