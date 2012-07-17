@@ -1,33 +1,34 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#cg-search').combogrid({
-            width: 180,
-            panelWidth: 450,
-            url: '/System/Details/?page=1&rows=10',
-            idField: 'SystemID',
-            textField: 'SystemName',
+        $('#ware-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/Warehouse/Details/?page=1&rows=10',
+            idField: 'WarehouseCode',
+            textField: 'WarehouseName',
             mode: 'local',
             editable: false,
             fitColumns: true,
             columns: [[
-					{ field: 'SystemID', title: '系统ID', hidden: true, width: 30 },
-					{ field: 'SystemName', title: '系统名称', align: 'left', width: 40 },
-					{ field: 'Description', title: '描述', align: 'left', width: 30 },
-					{ field: 'Status', title: '状态', align: 'left', width: 30 }
+					{ field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
+					{ field: 'WarehouseName', title: '仓库名称', align: 'left', width: 40 },
+                    { field: 'WarehouseType', title: '仓库类型', align: 'left', width: 20 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 20 },
+                    { field: 'UpdateTime', title: '时间', align: 'left', width: 30 }
 				]]
         });
     })
 
     function searchClick(){
-        $('#cg-search').combogrid('setValue', '').combo('setText', '');
+        $('#ware-add').combogrid('setValue', '').combo('setText', '');
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
     };
 
     function select() {
-        $("#details").treegrid({
-            url: '/Module/Details/' + $('#cg-search').combogrid('getValue')
+        $("#tt").tree({
+            url: '/Cell/Details/?wareCode=' + $('#ware-add').combogrid('getValue')
         });
-        $("#details").treegrid('reload');
+        $("#tt").tree('reload');
         $('#dlg-search').dialog('close'); 
     }
 
@@ -39,9 +40,9 @@
         <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
             <table width="250">
               <tr>
-				    <td>所属系统</td>
+				    <td>选择仓库:</td>
 				    <td colspan="3"align="left">
-                    <input name="SystemId" type="text" id="cg-search" />                               
+                    <input name="WarehouseCode" type="text" id="ware-add" />                               
                     </td>
               </tr>
             </table>

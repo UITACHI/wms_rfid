@@ -15,5 +15,7 @@ namespace THOK.Wms.Bll.Interfaces
         bool Delete(string shelfCode);
 
         bool Save(Shelf shelf);
+
+        object FindShelf(string parameter);
     }
 }
