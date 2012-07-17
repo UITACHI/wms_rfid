@@ -545,6 +545,7 @@
     <Content Include="Content\themes\base\icons\search.png" />
     <Content Include="Content\themes\base\icons\tip.png" />
     <Content Include="Content\themes\base\icons\undo.png" />
+    <Content Include="Content\themes\base\images\bg.gif" />
     <Content Include="Content\themes\base\images\old_check.jpg" />
     <Content Include="Content\themes\base\images\old_checktype.jpg" />
     <Content Include="Content\themes\base\images\old_class.jpg" />
