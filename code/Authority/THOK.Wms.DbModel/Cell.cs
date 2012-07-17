@@ -16,6 +16,9 @@ namespace THOK.Wms.DbModel
         public string ShortName { get; set; }
         public string CellType { get; set; }
         public int Layer { get; set; }
+        public int Col { get; set; }
+        public int ImgX { get; set; }
+        public int ImgY { get; set; }
         public string Rfid { get; set; }
         public string WarehouseCode { get; set; }
         public string AreaCode { get; set; }

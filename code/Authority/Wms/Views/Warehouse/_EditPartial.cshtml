@@ -1,26 +1,25 @@
 ﻿<script type="text/javascript">  
 function editClick(){
-    var row = $('#tt').tree('getSelected'); 
+    var row = $('#details').treegrid('getSelected'); 
     if (row) {
-        $('#dlg').dialog('open').dialog('setTitle', '编辑');
         var divid;       
         if (row.attributes == "ware") {
             divid = "ware";
-            Load("/Warehouse/FindWarehouse", row.id, divid);
+            Load("/Warehouse/FindWarehouse", row.WarehouseCode, divid);
             url = "/Warehouse/Edit/";
         } else if (row.attributes == "area") {
-            divid = "area";            
-            Load("/Area/FindArea", row.id, divid);
+            divid = "area";
+            Load("/Area/FindArea", row.WarehouseCode, divid);
             addClass("wareArea", "");
             url = "/Area/Edit/";
         } else if (row.attributes == "shelf") {
             divid = "shelf";
-            Load("/Shelf/FindShelf", row.id, divid);
+            Load("/Shelf/FindShelf", row.WarehouseCode, divid);
             addClass("wareShelf", "areaShelf");
             url = "/Shelf/Edit/";
         } else if (row.attributes == "cell") {
             divid = "cell";
-            Load("/Cell/FindCell", row.id, divid);
+            Load("/Cell/FindCell", row.WarehouseCode, divid);
             addClass("wareCell", "areaCell")
             url = "/Cell/Edit/";
         }
@@ -29,6 +28,7 @@ function editClick(){
         AddShowDiv(divid); //显示页面
         addLoad(); //加载数据
         $('form input').removeAttr("disabled");
+        $('#dlg').dialog('open').dialog('setTitle', '编辑');
     } else {
         $.messager.confirm('错误', '没有选择行！');
     }
@@ -36,6 +36,7 @@ function editClick(){
 
 function Load(address, id, divid) {
     var laod;
+    $('#' + divid).form('clear');
     $.post(address, { parameter: id }, function (json) {
         if (json) {
             laod = eval('(' + json + ')');

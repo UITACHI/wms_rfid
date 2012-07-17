@@ -1,7 +1,7 @@
 <script type="text/javascript">
     function deleteClick() {
-        //var row = $('#details').treegrid('getSelected');
-        var row = $('#tt').tree('getSelected'); 
+        var row = $('#details').treegrid('getSelected');
+        //var row = $('#tt').tree('getSelected'); 
         if (row) {
             $('#dlg').dialog('open').dialog('setTitle', '删除');
             $('form input').attr("disabled", "disabled");
@@ -9,31 +9,30 @@
             var laod;
             if (row.attributes == "ware") {
                 divid = "ware";
-                Load("/Warehouse/FindWarehouse", row.id, divid);
-                url = "/Warehouse/Delete/?warehouseCode=" + row.id;
+                Load("/Warehouse/FindWarehouse", row.WarehouseCode, divid);
+                url = "/Warehouse/Delete/?warehouseCode=" + row.WarehouseCode;
             } else if (row.attributes == "area") {
                 divid = "area";
-                Load("/Area/FindArea", row.id, divid);
+                Load("/Area/FindArea", row.WarehouseCode, divid);
                 addClass("wareArea", "");
-                url = "/Area/Delete/?areaCode=" + row.id;
+                url = "/Area/Delete/?areaCode=" + row.WarehouseCode;
             } else if (row.attributes == "shelf") {
                 divid = "shelf";
-                Load("/Shelf/FindShelf", row.id, divid);
+                Load("/Shelf/FindShelf", row.WarehouseCode, divid);
                 addClass("wareShelf", "areaShelf");
-                url = "/Shelf/Delete/?shelfCode=" + row.id;
+                url = "/Shelf/Delete/?shelfCode=" + row.WarehouseCode;
             } else if (row.attributes == "cell") {
                 divid = "cell";
-                Load("/Cell/FindCell", row.id, divid);
+                Load("/Cell/FindCell", row.WarehouseCode, divid);
                 addClass("wareCell", "areaCell")
-                url = "/Cell/Delete/?cellCode=" + row.id;
+                url = "/Cell/Delete/?cellCode=" + row.WarehouseCode;
             }
             fm = divid + "fm";
             AddShowDiv(divid); //显示页面
             addLoad(); //加载数据
             $('#' + divId + ' .easyui-validatebox').validatebox({
                 required: false
-            });
-           //DeleteSelect();        
+            });   
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }

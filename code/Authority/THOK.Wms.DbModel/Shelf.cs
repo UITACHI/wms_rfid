@@ -16,6 +16,10 @@ namespace THOK.Wms.DbModel
        public string ShelfName { get; set; }
        public string ShortName { get; set; }
        public string ShelfType { get; set; }
+       public int CellRows { get; set; }
+       public int CellCols { get; set; }
+       public int ImgX { get; set; }
+       public int ImgY { get; set; }
        public string WarehouseCode { get; set; }
        public string AreaCode { get; set; }
        public string Description { get; set; }

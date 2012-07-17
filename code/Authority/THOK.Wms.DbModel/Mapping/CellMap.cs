@@ -35,6 +35,9 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.Layer)
                 .IsRequired();
 
+            this.Property(t => t.Col)
+                .IsRequired();
+
             this.Property(t => t.Rfid)
                 .HasMaxLength(100);
 
@@ -78,6 +81,9 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.ShortName).HasColumnName(ColumnMap.Value.To("ShortName"));
             this.Property(t => t.CellType).HasColumnName(ColumnMap.Value.To("CellType"));
             this.Property(t => t.Layer).HasColumnName(ColumnMap.Value.To("Layer"));
+            this.Property(t => t.Col).HasColumnName(ColumnMap.Value.To("Col"));
+            this.Property(t => t.ImgX).HasColumnName(ColumnMap.Value.To("ImgX"));
+            this.Property(t => t.ImgY).HasColumnName(ColumnMap.Value.To("ImgY"));
             this.Property(t => t.Rfid).HasColumnName(ColumnMap.Value.To("Rfid"));
             this.Property(t => t.WarehouseCode).HasColumnName(ColumnMap.Value.To("WarehouseCode"));
             this.Property(t => t.AreaCode).HasColumnName(ColumnMap.Value.To("AreaCode"));

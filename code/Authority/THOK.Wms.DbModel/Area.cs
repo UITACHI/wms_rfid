@@ -17,6 +17,8 @@ namespace THOK.Wms.DbModel
        public string AreaName { get; set; }
        public string ShortName { get; set; }
        public string AreaType { get; set; }
+       public int AllotInOrder { get; set; }
+       public int AllotOutOrder { get; set; }
        public string WarehouseCode { get; set; }
        public string Description { get; set; }
        public string IsActive { get; set; }

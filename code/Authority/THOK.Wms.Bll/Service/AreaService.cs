@@ -27,7 +27,7 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string areaCode)
         {
             IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
-            var area = areaQuery.OrderBy(b => b.AreaCode).AsEnumerable().Select(b=> new { b.AreaCode, b.AreaName, b.AreaType,b.ShortName,b.Description,b.warehouse.WarehouseCode,b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var area = areaQuery.OrderBy(b => b.AreaCode).AsEnumerable().Select(b=> new { b.AreaCode, b.AreaName, b.AreaType,b.ShortName,b.AllotInOrder,b.AllotOutOrder,b.Description,b.warehouse.WarehouseCode,b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             if (areaCode != null)
             {
                 area = area.Where(a => a.AreaCode == areaCode);
@@ -45,6 +45,8 @@ namespace THOK.Wms.Bll.Service
             areaAdd.AreaName = area.AreaName;
             areaAdd.ShortName = area.ShortName;
             areaAdd.AreaType = area.AreaType;
+            areaAdd.AllotInOrder = area.AllotInOrder;
+            areaAdd.AllotOutOrder = area.AllotOutOrder;
             areaAdd.warehouse = warehouse;
             areaAdd.Description = area.Description;
             areaAdd.IsActive = area.IsActive;
@@ -77,6 +79,8 @@ namespace THOK.Wms.Bll.Service
             areaSave.AreaName = area.AreaName;
             areaSave.ShortName = area.ShortName;
             areaSave.AreaType = area.AreaType;
+            areaSave.AllotInOrder = area.AllotInOrder;
+            areaSave.AllotOutOrder = area.AllotOutOrder;
             areaSave.warehouse = warehouse;
             areaSave.Description = area.Description;
             areaSave.IsActive = area.IsActive;
@@ -89,7 +93,7 @@ namespace THOK.Wms.Bll.Service
         public object FindArea(string parameter)
         {
             IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
-            var area = areaQuery.Where(a => a.AreaCode == parameter).OrderBy(b => b.AreaCode).AsEnumerable().Select(b => new { b.AreaCode, b.AreaName, b.AreaType, b.ShortName, b.Description, b.warehouse.WarehouseCode, b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var area = areaQuery.Where(a => a.AreaCode == parameter).OrderBy(b => b.AreaCode).AsEnumerable().Select(b => new { b.AreaCode, b.AreaName, b.AreaType, b.ShortName,b.AllotInOrder,b.AllotOutOrder, b.Description, b.warehouse.WarehouseCode, b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             return area.First(a => a.AreaCode == parameter);
         }
 
