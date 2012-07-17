@@ -9,7 +9,7 @@
     })
 
     function addClick() {
-        $('#dlg').dialog('open').dialog('setTitle', '新增');
+        $('#dlg').dialog('open').dialog('setTitle', '新增入库单类型');
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({
             required: true
@@ -19,7 +19,7 @@
         $('#cc').combo({
             hasDownArrow: true
         });
-        url = '/System/Create/';
+        url = '/CheckBillType/Create/';
     };
 
     function save() {
@@ -35,8 +35,8 @@
                         title: '成功',
                         msg: result.msg
                     });
-                    $('#dlg').dialog('close'); 
-                    $('#details').datagrid('reload'); 
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
                 } else {
                     $.messager.show({
                         title: '错误',
@@ -49,31 +49,41 @@
     }
 </script>
 
-    <div id="dlg" class="easyui-dialog" modal="true" style="width:300px;height:240px;padding:2px 2px"
+    <div id="dlg" class="easyui-dialog" modal="true" 
+        style="width:500px;height:250px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
 	            <form id="fm" method="post" novalidate>
-                    <table width="250">
+                    <table>
                       <tr>
-                        <td width="60">类型编码:</td>
-                        <td width="168"><input name="SystemName" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                       <tr>
-                        <td width="60">类型名称:</td>
-                        <td width="168"><input name="SystemName" class="easyui-validatebox" required="true"/></td>
+                        <td>订单类型编码</td>
+                        <td style="padding-right:30px;"><input name="BillTypeCode" id="b" class="easyui-validatebox" required="true"></td>
+                        <td>订单类型名称</td>
+                        <td><input name="BillTypeName" class="easyui-validatebox" required="true"></td>
                       </tr>
                       <tr>
-                        <td>是否启用:</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width: 80px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
+                             <td>订单类别</td>
+                             <td><select  name="BillClass" style="width: 129px"   panelHeight="70" required="true" class="easyui-combobox">  
+                            <option value="0004"  selected>盘点单</option> 
+                             </select></td>
+                             <td>是否可用</td>
+                         <td>
+                             <select  style="width: 129px" id="cc" class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70"  required="true">
+		                       <option value="1">可用</option>
+		                        <option value="0">不可用</option>
 	                        </select>
-	                    </td>
+                        </td>
                       </tr>
-                       <tr>
-                        <td>备注:</td>
-                        <td><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
+                     
+                      <tr>
+                       <td >更新时间</td>
+                        <td ><input style="width: 129px" class="easyui-datetimebox" name="UpdateTime" editable="false" /></td>
+                      </tr>
+                     
+                      <tr>
+                         <td>描述:</td>
+                        <td colspan="3"><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
                       </tr>
                     </table>
 	            </form>
@@ -84,3 +94,4 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
+

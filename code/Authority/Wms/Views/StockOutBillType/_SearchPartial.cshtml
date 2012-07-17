@@ -1,8 +1,8 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#status').combo({
+        $('#IsActive').combo({
             editable: false,
-            panelHeight: 45
+            panelHeight: 65
         });
     })
 
@@ -12,9 +12,9 @@
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.RoleName = $('#rolename').val();
-        queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.BillTypeCode = $('#BillTypeCode').val();
+        queryParams.BillTypeName = $('#BillTypeName').val();
+        queryParams.IsActive = $('#IsActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -32,19 +32,20 @@
 		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
             <table width="250">
               <tr>
-                <td width="60">类型名称</td>
-                <td width="168" align="left"><input id="rolename"></td>
+                <td width="80">订单类型编码</td>
+                <td width="168" align="left"><input id="BillTypeCode"></td> 
               </tr>
               <tr>
-                <td>备注</td>
-                <td align="left"><textarea id="description" style="width: 180px; height: 50px"></textarea></td>
+                <td width="80">订单类型名称</td>
+                <td width="168" align="left"><input id="BillTypeName"></td>
               </tr>
               <tr>
-                <td>需要货位:</td>
+                <td>是否可用:</td>
                 <td align="left">      
-		            <select id="status" name="status" required="true" class="easyui-combobox" style="width: 50px">
-		                <option value="true">是</option>
-		                <option value="false">否</option>
+		            <select  id="IsActive" required="true" class="easyui-combobox" style="width: 100px">
+                        <option value=""></option>
+		                <option value="1">可用</option>
+		                <option value="0">不可用</option>
 	                </select>
 	            </td>
               </tr>

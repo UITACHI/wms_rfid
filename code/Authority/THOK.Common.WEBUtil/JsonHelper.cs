@@ -94,10 +94,10 @@ namespace THOK.WebUtil
 			                                                ]
 	                                                },{'menuid':'10','iconCls':'icon-sys','menuname':'移库管理',
 		                                                'children':[
-				                                                {'menuid':'101','menuname':'移库单据类型设置','iconCls':'icon-add','url':'/MovePositionBillType/Index'},
-				                                                {'menuid':'102','menuname':'移库单生成','iconCls':'icon-users','url':'/MovePositionBillGenerate/Index'},
-				                                                {'menuid':'103','menuname':'移库单','iconCls':'icon-role','url':'/MovePositionBill/Index'},
-				                                                {'menuid':'104','menuname':'移库单审核','iconCls':'icon-set','url':'/MovePositionBillCheck/Index'}
+				                                                {'menuid':'101','menuname':'移库单据类型设置','iconCls':'icon-add','url':'/StockMoveBillType/Index'},
+				                                                {'menuid':'102','menuname':'移库单生成','iconCls':'icon-users','url':'/StockMoveBillGenerate/Index'},
+				                                                {'menuid':'103','menuname':'移库单','iconCls':'icon-role','url':'/StockMoveBill/Index'},
+				                                                {'menuid':'104','menuname':'移库单审核','iconCls':'icon-set','url':'/StockMoveBillCheck/Index'}
 			                                                ]
 	                                                },{'menuid':'11','iconCls':'icon-sys','menuname':'分拣管理',
 		                                                'children':[
