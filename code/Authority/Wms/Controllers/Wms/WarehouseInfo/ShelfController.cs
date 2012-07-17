@@ -31,6 +31,15 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return Json(shelf, "text", JsonRequestBehavior.AllowGet);
         }
 
+        //查询货架信息表
+        // POST: /Shelf/FindShelf
+        [HttpPost]
+        public ActionResult FindShelf(string parameter)
+        {
+            var shelf = ShelfService.FindShelf(parameter);
+            return Json(shelf, "text", JsonRequestBehavior.AllowGet);
+        }
+
         //添加货架信息表
         // POST: /Shelf/ShelfCreate
         [HttpPost]
@@ -41,5 +50,23 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //编辑货架表
+        // GET: /Shelf/Edit/
+        public ActionResult Edit(Shelf shelf)
+        {
+            bool bResult = ShelfService.Save(shelf);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //删除货架表
+        // POST: /Shelf/Delete/
+        [HttpPost]
+        public ActionResult Delete(string shelfCode)
+        {
+            bool bResult = ShelfService.Delete(shelfCode);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

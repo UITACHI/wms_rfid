@@ -15,5 +15,7 @@ namespace THOK.Wms.Bll.Interfaces
         bool Delete(string areaCode);
 
         bool Save(Area area);
+
+        object FindArea(string parameter);
     }
 }

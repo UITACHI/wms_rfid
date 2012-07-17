@@ -15,5 +15,6 @@ namespace THOK.Wms.Bll.Interfaces
         bool Delete(string BrandCode);
 
         bool Save(Brand brand);
+        
     }
 }

@@ -1,1 +1,25 @@
-﻿
+﻿<script type="text/javascript">
+    function editClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            url = '/UnitList/Edit/';
+            $('#dlg-add').dialog('open').dialog('setTitle', '编辑单位系列信息');
+            $('#fm-add').form('load', row);
+            $('#fm-add .easyui-validatebox').validatebox({
+                required: true
+            });
+            if (row.IsActive == '可用') {
+                $('#IsActive').combo('setValue', 1).combo('setText', row.IsActive);
+            } else {
+                $('#IsActive').combo('setValue', 0).combo('setText', row.IsActive);
+            }
+            $('form input').removeAttr("disabled");
+            $('#unitListCode').attr("readonly", true);
+            $('#IsActive').combo({
+                hasDownArrow: true
+            });
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+</script>

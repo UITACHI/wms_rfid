@@ -21,11 +21,24 @@ namespace THOK.Wms.Bll.Service
 
         #region IUnitListService 成员
 
-        public object GetDetails(int page, int rows, string unitListCode)
+        public object GetDetails(int page, int rows, UnitList uls)
         {
             
             IQueryable<UnitList> unitListQuery = UnitListRepository.GetQueryable();
-            var unitList = unitListQuery.Where(ul => ul.UnitListCode.Contains(unitListCode)).AsEnumerable().Select(ul => new 
+            var unitList = unitListQuery.Where(ul =>
+                ul.UnitListCode.Contains(uls.UnitListCode)
+                && ul.UnitListName.Contains(uls.UnitListName)
+                && ul.UniformCode.Contains(uls.UniformCode)
+                && ul.UnitCode01.Contains(uls.UnitCode01)
+                && ul.UnitName01.Contains(uls.UnitName01)
+               && ul.UnitCode02.Contains(uls.UnitCode02)
+                && ul.UnitName02.Contains(uls.UnitName02)
+                && ul.UnitCode03.Contains(uls.UnitCode03)
+                && ul.UnitName03.Contains(uls.UnitName03)
+                && ul.UnitCode04.Contains(uls.UnitCode04)
+                && ul.UnitName04.Contains(uls.UnitName04)
+                && ul.IsActive.Contains(uls.IsActive)
+                ).AsEnumerable().Select(ul => new 
             { 
                 ul.UnitListCode,
                 ul.UniformCode,
