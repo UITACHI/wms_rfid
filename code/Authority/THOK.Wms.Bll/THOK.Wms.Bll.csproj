@@ -67,6 +67,7 @@
     <Compile Include="Interfaces\IUnitService.cs" />
     <Compile Include="Interfaces\IWarehouseService.cs" />
     <Compile Include="Models\Tree.cs" />
+    <Compile Include="Models\WareTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BillTypeService.cs" />
     <Compile Include="Service\InBillAllotService.cs" />

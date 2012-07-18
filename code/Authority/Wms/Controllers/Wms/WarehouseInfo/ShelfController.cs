@@ -25,9 +25,9 @@ namespace Authority.Controllers.Wms.WarehouseInfo
         //查询货架信息表
         // POST: /Shelf/Details
         [HttpPost]
-        public ActionResult Details(int page, int rows, string shelfCode)
+        public ActionResult Details(string warehouseCode, string areaCode, string shelfCode)
         {
-            var shelf = ShelfService.GetDetails(page, rows, shelfCode);
+            var shelf = ShelfService.GetDetails(warehouseCode, areaCode, shelfCode);
             return Json(shelf, "text", JsonRequestBehavior.AllowGet);
         }
 

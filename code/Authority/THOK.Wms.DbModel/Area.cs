@@ -17,12 +17,14 @@ namespace THOK.Wms.DbModel
        public string AreaName { get; set; }
        public string ShortName { get; set; }
        public string AreaType { get; set; }
+       public int AllotInOrder { get; set; }
+       public int AllotOutOrder { get; set; }
        public string WarehouseCode { get; set; }
        public string Description { get; set; }
        public string IsActive { get; set; }
        public DateTime UpdateTime { get; set; }
 
-       public virtual Warehouse warehouse { get; set; }
+       public virtual Warehouse Warehouse { get; set; }
 
        public virtual ICollection<Shelf> Shelfs { get; set; }
        public virtual ICollection<Cell> Cells { get; set; }

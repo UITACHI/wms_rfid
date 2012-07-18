@@ -18,15 +18,15 @@
         $('#realDiv').css({ display: "block" });
     }
 </script>
-<div id="addCheck" class="easyui-dialog" modal="true" style="width: 100%; height: 100%;  padding: 1px 1px" closed="true" fit="true">
-    <div id="11111" toolbar="#toolbar" fit="true" style="text-align: left; border: 1px solid #ccc;">
+<div id="addCheck" class="easyui-dialog" modal="true" style="width: 800px; height: 460px;  padding: 1px 1px" closed="true" >
+    <div id="11111" toolbar="#toolbar"  style="text-align: left; border: 1px solid #ccc;">
         <div id="toolbar" class="datagrid-toolbar" style="width: auto; height: auto; background-color: #FFFFFF;">
             <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="cellCheck" onclick="cellCheckClick()">货位盘点</a> 
             <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="productCheck" onclick="productCheckClick()">产品盘点</a>
             <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="realCheck" onclick="realCheckClick()">异动盘点</a>
         </div>
     </div>
-    <div id="cellDiv">
+@*    <div id="cellDiv">
         @Html.Partial("_CellCheckPartial")
     </div>
     <div id="produceDiv" style="display: none">
@@ -34,5 +34,5 @@
     </div>
     <div id="realDiv" style="display: none">
         @Html.Partial("_RealTimeCheckPartial")
-    </div>
+    </div>*@
 </div>

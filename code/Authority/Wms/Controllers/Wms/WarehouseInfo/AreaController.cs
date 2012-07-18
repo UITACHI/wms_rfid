@@ -25,9 +25,9 @@ namespace Authority.Controllers.Wms.WarehouseInfo
         //查询库区信息表
         // POST: /Area/Details
         [HttpPost]
-        public ActionResult Details(int page, int rows, string areaCode)
+        public ActionResult Details(string warehouseCode, string areaCode)
         {
-            var area = AreaService.GetDetails(page, rows, areaCode);
+            var area = AreaService.GetDetails(warehouseCode, areaCode);
             return Json(area, "text", JsonRequestBehavior.AllowGet);
         }
 

@@ -77,6 +77,14 @@
     <Compile Include="Migrations\201207160657580_add_In_Out_Bill.Designer.cs">
       <DependentUpon>201207160657580_add_In_Out_Bill.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207170615379_editWareField.cs" />
+    <Compile Include="Migrations\201207170615379_editWareField.Designer.cs">
+      <DependentUpon>201207170615379_editWareField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207180853335_addTable.cs" />
+    <Compile Include="Migrations\201207180853335_addTable.Designer.cs">
+      <DependentUpon>201207180853335_addTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

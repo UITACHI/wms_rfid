@@ -8,7 +8,7 @@ namespace THOK.Wms.Bll.Interfaces
 {
     public interface IAreaService : IService<Area>
     {
-        object GetDetails(int page, int rows,string areaCode);
+        object GetDetails(string warehouseCode, string areaCode);
 
         bool Add(Area area);
 

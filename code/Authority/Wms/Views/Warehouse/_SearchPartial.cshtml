@@ -1,5 +1,5 @@
 ﻿<script type="text/javascript">
-    $(function () {
+    function searchLoad() {
         $('#ware-add').combogrid({
             width: 130,
             panelWidth: 340,
@@ -17,18 +17,19 @@
                     { field: 'UpdateTime', title: '时间', align: 'left', width: 30 }
 				]]
         });
-    })
+    }
 
-    function searchClick(){
+    function searchClick() {
+        searchLoad();
         $('#ware-add').combogrid('setValue', '').combo('setText', '');
-        $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+        $('#dlg-search').dialog('open').dialog('setTitle', '查询');        
     };
 
     function select() {
-        $("#tt").tree({
+        $("#details").treegrid({
             url: '/Cell/Details/?wareCode=' + $('#ware-add').combogrid('getValue')
         });
-        $("#tt").tree('reload');
+        $("#details").treegrid('reload');
         $('#dlg-search').dialog('close'); 
     }
 
