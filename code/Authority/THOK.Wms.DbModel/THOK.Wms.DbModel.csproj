@@ -50,6 +50,9 @@
     <Compile Include="Brand.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Company.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="DeliverDist.cs" />
+    <Compile Include="DeliverLine.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="InBillAllot.cs" />
@@ -61,6 +64,9 @@
     <Compile Include="Mapping\BrandMap.cs" />
     <Compile Include="Mapping\CellMap.cs" />
     <Compile Include="Mapping\CompanyMap.cs" />
+    <Compile Include="Mapping\CustomerMap.cs" />
+    <Compile Include="Mapping\DeliverDistMap.cs" />
+    <Compile Include="Mapping\DeliverLineMap.cs" />
     <Compile Include="Mapping\DepartmentMap.cs" />
     <Compile Include="Mapping\EmployeeMap.cs" />
     <Compile Include="Mapping\InBillAllotMap.cs" />
