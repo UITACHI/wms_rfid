@@ -875,7 +875,7 @@ namespace THOK.Wms.Repository.Migrations
                        ShowOrder = 1,
                        ModuleURL = "",
                        IndicateImage = "icon-Menu_Organization",
-                       DeskTopImage = "",
+                       DeskTopImage = "image-Menu_Organization",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -887,7 +887,7 @@ namespace THOK.Wms.Repository.Migrations
                        ShowOrder = 1,
                        ModuleURL = "/Company/",
                        IndicateImage = "icon-son_Company",
-                       DeskTopImage = "",
+                       DeskTopImage = "image-son_Company",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -899,7 +899,7 @@ namespace THOK.Wms.Repository.Migrations
                        ShowOrder = 2,
                        ModuleURL = "/Department/",
                        IndicateImage = "icon-son_Department",
-                       DeskTopImage = "",
+                       DeskTopImage = "image-son_Department",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -911,7 +911,7 @@ namespace THOK.Wms.Repository.Migrations
                        ShowOrder = 3,
                        ModuleURL = "/Job/",
                        IndicateImage = "icon-son_Job",
-                       DeskTopImage = "",
+                       DeskTopImage = "image-son_Job",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -923,7 +923,7 @@ namespace THOK.Wms.Repository.Migrations
                        ShowOrder = 4,
                        ModuleURL = "/Employee/",
                        IndicateImage = "icon-son_Employee",
-                       DeskTopImage = "",
+                       DeskTopImage = "image-son_Employee",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1139,7 +1139,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_Warehouse",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-Menu_Warehouse",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1151,7 +1151,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/Warehouse/",
                         IndicateImage = "icon-son_Warehouse",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Warehouse",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1223,7 +1223,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_Cigarette",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-Menu_Cigarette",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1235,7 +1235,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/Product/",
                         IndicateImage = "icon-son_CigaretteInfo",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_CigaretteInfo",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1247,7 +1247,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "/Supplier/",
                         IndicateImage = "icon-son_CigaretteSupplier",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_CigaretteSupplier",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1259,7 +1259,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "/Brand/",
                         IndicateImage = "icon-son_CigaretteBrand",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_CigaretteBrand",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1271,7 +1271,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 4,
                         ModuleURL = "/UnitList/",
                         IndicateImage = "icon-son_CigaretteUnitList",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_CigaretteUnitList",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1283,7 +1283,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 5,
                         ModuleURL = "/Unit/",
                         IndicateImage = "icon-son_CigaretteUnit",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_CigaretteUnit",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("C8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1546,7 +1546,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 4,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_StockInto",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-Menu_StockInto",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1558,7 +1558,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/StockInBillType/",
                         IndicateImage = "icon-son_Bill_Type",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Type",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1570,7 +1570,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "/StockInBill/",
                         IndicateImage = "icon-son_StockIntoBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockIntoBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1582,7 +1582,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "/StockInBillCheck/",
                         IndicateImage = "icon-son_Bill_Check",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Check",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1594,7 +1594,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 4,
                         ModuleURL = "/StockInBillAllot/",
                         IndicateImage = "icon-son_StockIntoBillAllot",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockIntoBillAllot",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1606,7 +1606,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 5,
                         ModuleURL = "/StockInBillAllotConfirm/",
                         IndicateImage = "icon-son_StockIntoBillWork",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockIntoBillWork",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1862,7 +1862,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 5,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_StockOut",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-Menu_StockOut",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1874,7 +1874,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/StockOutBillType/",
                         IndicateImage = "icon-son_Bill_Type",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Type",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1886,7 +1886,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "/StockOutBill/",
                         IndicateImage = "icon-son_StockOutBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockOutBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1898,7 +1898,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "/StockOutBillCheck/",
                         IndicateImage = "icon-son_Bill_Check",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Check",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1910,7 +1910,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 4,
                         ModuleURL = "/StockOutBillAllot/",
                         IndicateImage = "icon-son_StockOutBillAllot",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockOutBillAllot",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -1922,7 +1922,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 5,
                         ModuleURL = "/StockOutBillAllotConfirm/",
                         IndicateImage = "icon-son_StockOutBillWork",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockOutBillWork",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2178,7 +2178,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 6,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_StockMove",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("F8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2190,7 +2190,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/StockMoveBillType/",
                         IndicateImage = "icon-son_Bill_Type",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Type",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("F8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2202,7 +2202,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "/StockMoveBill/",
                         IndicateImage = "icon-son_MoveBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_MoveBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("F8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2214,7 +2214,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "/StockMoveBillCheck/",
                         IndicateImage = "icon-son_Bill_Check",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Check",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("F8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2226,7 +2226,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 4,
                         ModuleURL = "/StockMoveBillAllot/",
                         IndicateImage = "icon-son_MoveBillAllot",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_MoveBillAllot",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("F8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2238,7 +2238,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 5,
                         ModuleURL = "/StockMoveBillAllotConfirm/",
                         IndicateImage = "icon-son_MoveBillWork",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_MoveBillWork",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("F8344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2486,7 +2486,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 7,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_CheckBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-Menu_CheckBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2498,7 +2498,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/CheckBillType/",
                         IndicateImage = "icon-son_Bill_Type",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Type",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2510,7 +2510,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "/CheckBillGenerate/",
                         IndicateImage = "icon-son_CheckBillMake",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_CheckBillMake",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2522,7 +2522,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "/CheckBill/",
                         IndicateImage = "icon-son_CheckBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_CheckBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2534,7 +2534,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 4,
                         ModuleURL = "/CheckBillVerify/",
                         IndicateImage = "icon-son_Bill_Check",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Check",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2546,7 +2546,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 5,
                         ModuleURL = "/CheckBillConfirm/",
                         IndicateImage = "icon-son_CheckBillWork",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_CheckBillWork",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2738,7 +2738,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 8,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_StockDiffer",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-Menu_StockDiffer",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FB344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2750,7 +2750,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/ProfitLossBillType/",
                         IndicateImage = "icon-son_Bill_Type",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Type",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FB344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2762,7 +2762,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "/ProfitLossBill/",
                         IndicateImage = "icon-son_DifferBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_DifferBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FB344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2774,7 +2774,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "/ProfitLossBillVerify/",
                         IndicateImage = "icon-son_Bill_Check",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_Bill_Check",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FB344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2934,7 +2934,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 9,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_WarehouseM",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-Menu_WarehouseM",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2946,7 +2946,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/DailyBalance/",
                         IndicateImage = "icon-son_StockDayBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockDayBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2958,7 +2958,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "/CurrentStock/",
                         IndicateImage = "icon-son_StockNow",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockNow",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2970,7 +2970,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "/StockDistribution/",
                         IndicateImage = "icon-son_StockPlace",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockPlace",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2982,7 +2982,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 4,
                         ModuleURL = "/Cargospace/",
                         IndicateImage = "icon-son_StockArea",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockArea",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -2994,7 +2994,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 5,
                         ModuleURL = "/StockLedger/",
                         IndicateImage = "icon-son_StockOldAll",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockOldAll",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3007,7 +3007,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 6,
                         ModuleURL = "/HistoricalDetail/",
                         IndicateImage = "icon-son_StockOlddetails",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockOlddetails",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3183,7 +3183,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 10,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_Sort",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-Menu_Sort",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FD344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3195,7 +3195,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/SortingLine/",
                         IndicateImage = "icon-son_SortInfo",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_SortInfo",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FD344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3207,7 +3207,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "/SortingLowerLimit/",
                         IndicateImage = "icon-son_StockAreaDownline",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockAreaDownline",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FD344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3219,7 +3219,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "/SortingOrder/",
                         IndicateImage = "icon-son_SortOrder",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_SortOrder",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FD344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3231,7 +3231,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 4,
                         ModuleURL = "/SortingAllot/",
                         IndicateImage = "icon-son_SortOrderc",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_SortOrderc",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FD344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3243,7 +3243,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 5,
                         ModuleURL = "/SortingOrderOptimize/",
                         IndicateImage = "icon-son_SortWork",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_SortWork",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FD344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3515,7 +3515,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 11,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_Research",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-Menu_Research",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3527,7 +3527,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 1,
                         ModuleURL = "/StockInSearch/",
                         IndicateImage = "icon-son_StockIntoBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockIntoBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3539,7 +3539,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 2,
                         ModuleURL = "/StockOutSearch/",
                         IndicateImage = "icon-son_StockOutBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_StockOutBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3551,7 +3551,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 3,
                         ModuleURL = "/StockMoveSearch/",
                         IndicateImage = "icon-son_MoveBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_MoveBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3563,7 +3563,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 4,
                         ModuleURL = "/StockCheckSearch/",
                         IndicateImage = "icon-son_CheckBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_CheckBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3575,7 +3575,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 5,
                         ModuleURL = "/ProfitLossSearch/",
                         IndicateImage = "icon-son_DifferBill",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_DifferBill",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")
@@ -3587,7 +3587,7 @@ namespace THOK.Wms.Repository.Migrations
                         ShowOrder = 6,
                         ModuleURL = "/SortOrderSearch/",
                         IndicateImage = "icon-son_SortOrder",
-                        DeskTopImage = "",
+                        DeskTopImage = "image-son_SortOrder",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")
