@@ -3,6 +3,7 @@
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#Productfm').form('clear');
+        $('#p').attr("readonly", false);
         $('#Productfm .easyui-validatebox').validatebox({
             required: true
         });
@@ -72,7 +73,7 @@
                     <table >
                       <tr>
                         <td>商品编码</td>
-                        <td style="padding-right:30px;"><input name="ProductCode" class="easyui-validatebox" required="true"></td>
+                        <td style="padding-right:30px;"><input name="ProductCode" id="p" class="easyui-validatebox" required="true"></td>
                         <td>助记码</td>
                         <td style="padding-right:30px;"><input name="ShortCode"></td>
                         <td>计量单位系列</td>
@@ -245,7 +246,7 @@
 	                        </select>
                         </td>
                         <td>更新时间</td>
-                        <td ><input style="width:129px;" class="easyui-datetimebox"  name="UpdateTime" editable="false" /></td>
+                        <td ><input style="width:129px;"    readonly="true" class="easyui-datetimebox"  name="UpdateTime" editable="false" /></td>
                       </tr>
                         <td>描述:</td>
                         <td colspan="5"><textarea name="Description" style="height: 50px;width:210px;"></textarea></td>
