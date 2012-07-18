@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Bll.Interfaces;
 using THOK.Wms.DbModel;
 using THOK.WebUtil;
-namespace Authority.Controllers.Wms.StockOut
+
+namespace Authority.Controllers.Wms.StockMove
 {
-    public class StockOutBillTypeController : Controller
+    public class StockMoveBillTypeController : Controller
     {
         //
-        // GET: /StockInBillType/
+        // GET: /MovePositionBillType/
+
         [Dependency]
         public IBillTypeService BillTypeService { get; set; }
         //
@@ -28,7 +27,7 @@ namespace Authority.Controllers.Wms.StockOut
         {
             string BillTypeCode = collection["BillTypeCode"] ?? "";
             string BillTypeName = collection["BillTypeName"] ?? "";
-            string BillClass = "0002";
+            string BillClass = "0003";
             string IsActive = collection["IsActive"] ?? "";
             var brand = BillTypeService.GetDetails(page, rows, BillTypeCode, BillTypeName, BillClass, IsActive);
             return Json(brand, "text", JsonRequestBehavior.AllowGet);

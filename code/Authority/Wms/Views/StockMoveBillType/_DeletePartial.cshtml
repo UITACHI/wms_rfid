@@ -1,8 +1,8 @@
-<script type="text/javascript">
+ï»¿<script type="text/javascript">
     function deleteClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
-            $('#dlg').dialog('open').dialog('setTitle', 'É¾³ı');
+            $('#dlg').dialog('open').dialog('setTitle', 'åˆ é™¤');
             $('#fm .easyui-validatebox').validatebox({
                 required: false
             });
@@ -12,9 +12,9 @@
                 hasDownArrow: false
             });
             $('#fm').form('load', row);
-            url = '/CheckBillType/Delete/?billtypeCode=' + row.BillTypeCode;
+            url = '/StockMoveBillType/Delete/?billtypeCode=' + row.BillTypeCode;
         } else {
-            $.messager.confirm('´íÎó', 'Ã»ÓĞÑ¡ÔñĞĞ£¡');
+            $.messager.confirm('é”™è¯¯', 'æ²¡æœ‰é€‰æ‹©è¡Œï¼');
         }
     };
 </script>

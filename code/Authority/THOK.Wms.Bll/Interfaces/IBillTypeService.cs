@@ -12,9 +12,9 @@ namespace THOK.Wms.Bll.Interfaces
 
             bool Add(BillType billtype);
 
-            //bool Delete(string billtypeCode);
+            bool Delete(string billtypeCode);
 
-            //bool Save(BillType billtype);
+            bool Save(BillType billtype);
         }
    
 }

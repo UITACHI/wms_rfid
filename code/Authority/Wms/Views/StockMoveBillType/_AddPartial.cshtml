@@ -1,4 +1,4 @@
-<script type="text/javascript">
+ï»¿<script type="text/javascript">
     var url;
     $(function () {
         $('#cc').combo({
@@ -9,7 +9,7 @@
     })
 
     function addClick() {
-        $('#dlg').dialog('open').dialog('setTitle', 'ĞÂÔöÈë¿âµ¥ÀàĞÍ');
+        $('#dlg').dialog('open').dialog('setTitle', 'æ–°å¢å…¥åº“å•ç±»å‹');
         $('#fm').form('clear');
         $('#fm .easyui-validatebox').validatebox({
             required: true
@@ -20,7 +20,7 @@
         $('#cc').combo({
             hasDownArrow: true
         });
-        url = '/ProfitLossBillType/Create/';
+        url = '/StockMoveBillType/Create/';
     };
 
     function save() {
@@ -33,14 +33,14 @@
                 var result = eval('(' + result + ')');
                 if (result.success) {
                     $.messager.show({
-                        title: '³É¹¦',
+                        title: 'æˆåŠŸ',
                         msg: result.msg
                     });
                     $('#dlg').dialog('close');
                     $('#details').datagrid('reload');
                 } else {
                     $.messager.show({
-                        title: '´íÎó',
+                        title: 'é”™è¯¯',
                         msg: result.msg
                     });
                     $('#details').datagrid('reload');
@@ -58,32 +58,32 @@
 	            <form id="fm" method="post" novalidate>
                     <table>
                       <tr>
-                        <td>¶©µ¥ÀàĞÍ±àÂë</td>
+                        <td>è®¢å•ç±»å‹ç¼–ç </td>
                         <td style="padding-right:30px;"><input name="BillTypeCode" id="b" class="easyui-validatebox" required="true"></td>
-                        <td>¶©µ¥ÀàĞÍÃû³Æ</td>
+                        <td>è®¢å•ç±»å‹åç§°</td>
                         <td><input name="BillTypeName" class="easyui-validatebox" required="true"></td>
                       </tr>
                       <tr>
-                             <td>¶©µ¥Àà±ğ</td>
+                             <td>è®¢å•ç±»åˆ«</td>
                              <td><select  name="BillClass" style="width: 129px"   panelHeight="70" required="true" class="easyui-combobox">  
-                            <option value="0005"  selected>ËğÒæµ¥</option> 
+                            <option value="0003"  selected>ç§»åº“å•</option> 
                              </select></td>
-                             <td>ÊÇ·ñ¿ÉÓÃ</td>
+                             <td>æ˜¯å¦å¯ç”¨</td>
                          <td>
                              <select  style="width: 129px" id="cc" class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70"  required="true">
-		                       <option value="1">¿ÉÓÃ</option>
-		                        <option value="0">²»¿ÉÓÃ</option>
+		                       <option value="1">å¯ç”¨</option>
+		                        <option value="0">ä¸å¯ç”¨</option>
 	                        </select>
                         </td>
                       </tr>
                      
                       <tr>
-                       <td >¸üĞÂÊ±¼ä</td>
+                       <td >æ›´æ–°æ—¶é—´</td>
                         <td ><input style="width: 129px" class="easyui-datetimebox" name="UpdateTime" editable="false" /></td>
                       </tr>
                      
                       <tr>
-                         <td>ÃèÊö:</td>
+                         <td>æè¿°:</td>
                         <td colspan="3"><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
                       </tr>
                     </table>
@@ -92,7 +92,7 @@
         </div>
     </div>
 <div id="dlg-buttons">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">È·¶¨</a>
-	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">È¡Ïû</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">ç¡®å®š</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">å–æ¶ˆ</a>
 </div>
 

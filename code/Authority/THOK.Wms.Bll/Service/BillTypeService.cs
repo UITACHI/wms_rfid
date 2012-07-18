@@ -24,7 +24,7 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string BillTypeCode, string BillTypeName, string BillClass, string IsActive)
         {
             IQueryable<BillType> billtypeQuery = BillTypeRepository.GetQueryable();
-            var billtype = billtypeQuery.Where(b => b.BillClass == BillClass || b.BillTypeCode.Contains(BillTypeCode) && b.BillTypeName.Contains(BillTypeName) && b.IsActive.Contains(IsActive)).OrderBy(b => b.BillTypeCode).AsEnumerable().Select(b => new { b.BillTypeCode, b.BillTypeName, b.BillClass, b.Description,IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var billtype = billtypeQuery.Where(b => b.BillClass == BillClass && b.BillTypeCode.Contains(BillTypeCode) && b.BillTypeName.Contains(BillTypeName) && b.IsActive.Contains(IsActive)).OrderBy(b => b.BillTypeCode).AsEnumerable().Select(b => new { b.BillTypeCode, b.BillTypeName, b.BillClass, b.Description,IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
 
             int total = billtype.Count();
             billtype = billtype.Skip((page - 1) * rows).Take(rows);
@@ -45,6 +45,31 @@ namespace THOK.Wms.Bll.Service
             BillTypeRepository.SaveChanges();
             return true;
         }
-    
+        public bool Save(BillType billtype)
+        {
+            var br = BillTypeRepository.GetQueryable().FirstOrDefault(b => b.BillTypeCode == billtype.BillTypeCode);
+            br.BillTypeCode = billtype.BillTypeCode;
+            br.BillTypeName = billtype.BillTypeName;
+            br.BillClass = billtype.BillClass;
+            br.Description = billtype.Description;
+            br.IsActive = billtype.IsActive;
+            br.UpdateTime = DateTime.Now;
+
+            BillTypeRepository.SaveChanges();
+            return true;
+        }
+        public bool Delete(string billtypeCode)
+        {
+            var billtype = BillTypeRepository.GetQueryable()
+                .FirstOrDefault(b => b.BillTypeCode == billtypeCode);
+            if (billtypeCode != null)
+            {
+                BillTypeRepository.Delete(billtype);
+                BillTypeRepository.SaveChanges();
+            }
+            else
+                return false;
+            return true;
+        }
     }
 }

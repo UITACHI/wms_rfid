@@ -11,6 +11,7 @@ namespace THOK.Wms.DbModel
         {
             this.Companies = new List<Company>();
             this.Departments = new List<Department>();
+            this.Customers = new List<Customer>();
         }
 
         public Guid ID { get; set; }
@@ -33,5 +34,6 @@ namespace THOK.Wms.DbModel
 
         public virtual ICollection<Company> Companies { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
+        public virtual ICollection<Customer> Customers { get; set; }
     }
 }

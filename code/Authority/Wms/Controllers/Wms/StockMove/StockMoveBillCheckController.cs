@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Authority.Controllers.Wms.MovePosition
+namespace Authority.Controllers.Wms.StockMove
 {
-    public class MovePositionBillGenerateController : Controller
+    public class StockMoveBillCheckController : Controller
     {
         //
-        // GET: /MovePositionBillGenerate/
+        // GET: /MovePositionBillCheck/
 
         public ActionResult Index()
         {
