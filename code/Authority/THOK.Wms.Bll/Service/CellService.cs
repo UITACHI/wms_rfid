@@ -37,7 +37,7 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string cellCode)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
-            var cell = cellQuery.OrderBy(b => b.CellCode).AsEnumerable().Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer,b.Col,b.ImgX,b.ImgY, b.IsSingle, b.MaxQuantity, b.Description, b.warehouse.WarehouseName, b.warehouse.WarehouseCode, b.area.AreaCode, b.area.AreaName, b.shelf.ShelfCode, b.shelf.ShelfName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var cell = cellQuery.OrderBy(b => b.CellCode).AsEnumerable().Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer,b.Col,b.ImgX,b.ImgY, b.IsSingle, b.MaxQuantity, b.Description, b.Warehouse.WarehouseName, b.Warehouse.WarehouseCode, b.Area.AreaCode, b.Area.AreaName, b.Shelf.ShelfCode, b.Shelf.ShelfName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             int total = cell.Count();
             cell = cell.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = cell.ToArray() };
@@ -59,10 +59,10 @@ namespace THOK.Wms.Bll.Service
             cellAdd.ImgX = cell.ImgX;
             cellAdd.ImgY = cell.ImgY;
             cellAdd.Rfid = cell.Rfid;           
-            cellAdd.warehouse = warehouse;
-            cellAdd.area = area;
-            cellAdd.shelf = shelf;
-            cellAdd.product = product;
+            cellAdd.Warehouse = warehouse;
+            cellAdd.Area = area;
+            cellAdd.Shelf = shelf;
+            cellAdd.Product = product;
             cellAdd.MaxQuantity = cell.MaxQuantity;
             cellAdd.IsSingle = cell.IsSingle;
             cellAdd.Description = cell.Description;
@@ -104,10 +104,10 @@ namespace THOK.Wms.Bll.Service
             cellSave.ImgX = cell.ImgX;
             cellSave.ImgY = cell.ImgY;
             cellSave.Rfid = cell.Rfid;
-            cellSave.warehouse = warehouse;
-            cellSave.area = area;
-            cellSave.shelf = shelf;
-            cellSave.product = product;
+            cellSave.Warehouse = warehouse;
+            cellSave.Area = area;
+            cellSave.Shelf = shelf;
+            cellSave.Product = product;
             cellSave.MaxQuantity = cell.MaxQuantity;
             cellSave.IsSingle = cell.IsSingle;
             cellSave.Description = cell.Description;
@@ -188,7 +188,7 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
             var cell = cellQuery.Where(c => c.CellCode == parameter).OrderBy(b => b.CellCode).AsEnumerable()
-                .Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer,b.Col,b.ImgX,b.ImgY,b.IsSingle, b.MaxQuantity, b.Description, b.warehouse.WarehouseName, b.warehouse.WarehouseCode, b.area.AreaCode, b.area.AreaName, b.shelf.ShelfCode, b.shelf.ShelfName, DefaultProductCode = b.product == null ? string.Empty : b.product.ProductCode, ProductName = b.product == null ? string.Empty : b.product.ProductName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+                .Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer,b.Col,b.ImgX,b.ImgY,b.IsSingle, b.MaxQuantity, b.Description, b.Warehouse.WarehouseName, b.Warehouse.WarehouseCode, b.Area.AreaCode, b.Area.AreaName, b.Shelf.ShelfCode, b.Shelf.ShelfName, DefaultProductCode = b.Product == null ? string.Empty : b.Product.ProductCode, ProductName = b.Product == null ? string.Empty : b.Product.ProductName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             return cell.First(c => c.CellCode == parameter);
         }
 
@@ -214,7 +214,7 @@ namespace THOK.Wms.Bll.Service
                 wareTree.UpdateTime = warehouse.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss");
                 wareTree.ShortName = warehouse.ShortName;
                 wareTree.attributes = "ware";
-                var areas = AreaRepository.GetQueryable().Where(a => a.warehouse.WarehouseCode == warehouse.WarehouseCode)
+                var areas = AreaRepository.GetQueryable().Where(a => a.Warehouse.WarehouseCode == warehouse.WarehouseCode)
                                                         .OrderBy(a => a.AreaCode).Select(a => a);
                 HashSet<WareTree> areaSet = new HashSet<WareTree>();
                 foreach (var area in areas)//库区
@@ -224,8 +224,8 @@ namespace THOK.Wms.Bll.Service
                     areaTree.Name = "库区：" + area.AreaName;
                     areaTree.AreaCode = area.AreaCode;
                     areaTree.AreaName = area.AreaName;
-                    areaTree.WarehouseCode = area.warehouse.WarehouseCode;
-                    areaTree.WarehouseName = area.warehouse.WarehouseName;
+                    areaTree.WarehouseCode = area.Warehouse.WarehouseCode;
+                    areaTree.WarehouseName = area.Warehouse.WarehouseName;
                     areaTree.Type = area.AreaType;
                     areaTree.Description = area.Description;
                     areaTree.IsActive = area.IsActive == "1" ? "可用" : "不可用";
@@ -234,7 +234,7 @@ namespace THOK.Wms.Bll.Service
                     areaTree.AllotInOrder = area.AllotInOrder;
                     areaTree.AllotOutOrder = area.AllotOutOrder;
                     areaTree.attributes = "area";
-                    var shelfs = ShelfRepository.GetQueryable().Where(s => s.area.AreaCode == area.AreaCode)
+                    var shelfs = ShelfRepository.GetQueryable().Where(s => s.Area.AreaCode == area.AreaCode)
                                                                .OrderBy(s => s.ShelfCode).Select(s => s);
                     HashSet<WareTree> shelfSet = new HashSet<WareTree>();
                     foreach (var shelf in shelfs)//货架
@@ -245,10 +245,10 @@ namespace THOK.Wms.Bll.Service
                         shelfTree.ShelfCode = shelf.ShelfCode;
                         shelfTree.ShelfName = shelf.ShelfName;
 
-                        shelfTree.WarehouseCode = shelf.warehouse.WarehouseCode;
-                        shelfTree.WarehouseName = shelf.warehouse.WarehouseName;
-                        shelfTree.AreaCode = shelf.area.AreaCode;
-                        shelfTree.AreaName = shelf.area.AreaName;
+                        shelfTree.WarehouseCode = shelf.Warehouse.WarehouseCode;
+                        shelfTree.WarehouseName = shelf.Warehouse.WarehouseName;
+                        shelfTree.AreaCode = shelf.Area.AreaCode;
+                        shelfTree.AreaName = shelf.Area.AreaName;
 
                         shelfTree.Type = shelf.ShelfType;
                         shelfTree.Description = shelf.Description;
@@ -270,7 +270,7 @@ namespace THOK.Wms.Bll.Service
         public object GetCell(string shelfCode)
         {
             HashSet<WareTree> wareSet = new HashSet<WareTree>();
-            var cells = CellRepository.GetQueryable().Where(c => c.shelf.ShelfCode == shelfCode)
+            var cells = CellRepository.GetQueryable().Where(c => c.Shelf.ShelfCode == shelfCode)
                                                      .OrderBy(c => c.CellCode).Select(c => c);
             foreach (var cell in cells)//货位
             {
@@ -282,14 +282,14 @@ namespace THOK.Wms.Bll.Service
                 cellTree.CellCode = cell.CellCode;
                 cellTree.CellName = cell.CellName;
 
-                cellTree.WarehouseCode = cell.warehouse.WarehouseCode;
-                cellTree.WarehouseName = cell.warehouse.WarehouseName;
+                cellTree.WarehouseCode = cell.Warehouse.WarehouseCode;
+                cellTree.WarehouseName = cell.Warehouse.WarehouseName;
 
-                cellTree.AreaCode = cell.area.AreaCode;
-                cellTree.AreaName = cell.area.AreaName;
+                cellTree.AreaCode = cell.Area.AreaCode;
+                cellTree.AreaName = cell.Area.AreaName;
 
-                cellTree.ShelfCode = cell.shelf.ShelfCode;
-                cellTree.ShelfName = cell.shelf.ShelfName;
+                cellTree.ShelfCode = cell.Shelf.ShelfCode;
+                cellTree.ShelfName = cell.Shelf.ShelfName;
 
                 cellTree.Type = cell.CellType;
                 cellTree.Description = cell.Description;

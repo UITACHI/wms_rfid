@@ -24,7 +24,7 @@ namespace THOK.Wms.DbModel
        public string IsActive { get; set; }
        public DateTime UpdateTime { get; set; }
 
-       public virtual Warehouse warehouse { get; set; }
+       public virtual Warehouse Warehouse { get; set; }
 
        public virtual ICollection<Shelf> Shelfs { get; set; }
        public virtual ICollection<Cell> Cells { get; set; }

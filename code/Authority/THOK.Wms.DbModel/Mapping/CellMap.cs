@@ -96,22 +96,22 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
             // Relationships
-            this.HasRequired(t => t.warehouse)
+            this.HasRequired(t => t.Warehouse)
                 .WithMany(t => t.Cells)
                 .HasForeignKey(d => d.WarehouseCode)
                 .WillCascadeOnDelete(false);
 
-            this.HasRequired(t => t.area)
+            this.HasRequired(t => t.Area)
                 .WithMany(t => t.Cells)
                 .HasForeignKey(d => d.AreaCode)
                 .WillCascadeOnDelete(false);
 
-            this.HasRequired(t => t.shelf)
+            this.HasRequired(t => t.Shelf)
                 .WithMany(t => t.Cells)
                 .HasForeignKey(d => d.ShelfCode)
                 .WillCascadeOnDelete(false);
 
-            this.HasOptional(t => t.product)
+            this.HasOptional(t => t.Product)
                 .WithMany(t => t.Cells)
                 .HasForeignKey(d => d.DefaultProductCode)
                 .WillCascadeOnDelete(false);

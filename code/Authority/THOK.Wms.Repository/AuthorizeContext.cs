@@ -91,6 +91,7 @@ namespace THOK.Wms.Repository
             modelBuilder.Configurations.Add(new ShelfMap());
             modelBuilder.Configurations.Add(new CellMap());
             modelBuilder.Configurations.Add(new StorageMap());
+            modelBuilder.Configurations.Add(new DailyBalanceMap());//++
 
             modelBuilder.Configurations.Add(new BillTypeMap());
             modelBuilder.Configurations.Add(new InBillMasterMap());
@@ -99,6 +100,11 @@ namespace THOK.Wms.Repository
             modelBuilder.Configurations.Add(new OutBillMasterMap());
             modelBuilder.Configurations.Add(new OutBillDetailMap());
             modelBuilder.Configurations.Add(new OutBillAllotMap());
+
+            modelBuilder.Configurations.Add(new MoveBillMasterMap());//++
+            modelBuilder.Configurations.Add(new MoveBillDetailMap());//++
+            modelBuilder.Configurations.Add(new CheckBillMasterMap());//++
+            modelBuilder.Configurations.Add(new CheckBillDetailMap());//++
 
             #endregion
         }

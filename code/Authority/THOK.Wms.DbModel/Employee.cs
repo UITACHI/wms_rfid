@@ -10,6 +10,10 @@ namespace THOK.Wms.DbModel
         public Employee()
         {
             this.LeadDepartments = new List<Department>();
+            this.MoveBillMasters = new List<MoveBillMaster>();
+            this.MoveBillDetails = new List<MoveBillDetail>();
+            this.CheckBillMasters = new List<CheckBillMaster>();
+            this.CheckBillDetails = new List<CheckBillDetail>();
         }
 
         public Guid ID { get; set; }
@@ -28,5 +32,9 @@ namespace THOK.Wms.DbModel
         public virtual Job Job { get; set; }
 
         public virtual ICollection<Department> LeadDepartments { get; set; }
+        public virtual ICollection<MoveBillMaster> MoveBillMasters { get; set; }
+        public virtual ICollection<MoveBillDetail> MoveBillDetails { get; set; }
+        public virtual ICollection<CheckBillMaster> CheckBillMasters { get; set; }
+        public virtual ICollection<CheckBillDetail> CheckBillDetails { get; set; }
     }
 }
