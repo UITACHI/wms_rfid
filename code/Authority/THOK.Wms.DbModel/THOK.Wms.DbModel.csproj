@@ -71,7 +71,11 @@
     <Compile Include="Mapping\OutBillDetailMap.cs" />
     <Compile Include="Mapping\OutBillMasterMap.cs" />
     <Compile Include="Mapping\ProductMap.cs" />
+    <Compile Include="Mapping\ProfitLossBillDetailMap.cs" />
+    <Compile Include="Mapping\ProfitLossBillMasterMap.cs" />
     <Compile Include="Mapping\ShelfMap.cs" />
+    <Compile Include="Mapping\SortOrderDetailMap.cs" />
+    <Compile Include="Mapping\SortOrderMap.cs" />
     <Compile Include="Mapping\StorageMap.cs" />
     <Compile Include="Mapping\SupplierMap.cs" />
     <Compile Include="Mapping\UnitListMap.cs" />
@@ -81,8 +85,12 @@
     <Compile Include="OutBillDetail.cs" />
     <Compile Include="OutBillMaster.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="ProfitLossBillDetail.cs" />
+    <Compile Include="ProfitLossBillMaster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shelf.cs" />
+    <Compile Include="SortOrder.cs" />
+    <Compile Include="SortOrderDetail.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Supplier.cs" />
     <Compile Include="Unit.cs" />

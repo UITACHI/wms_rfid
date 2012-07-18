@@ -100,6 +100,11 @@ namespace THOK.Wms.Repository
             modelBuilder.Configurations.Add(new OutBillDetailMap());
             modelBuilder.Configurations.Add(new OutBillAllotMap());
 
+            modelBuilder.Configurations.Add(new ProfitLossBillMasterMap());
+            modelBuilder.Configurations.Add(new ProfitLossBillDetailMap());
+            modelBuilder.Configurations.Add(new SortOrderMap());
+            modelBuilder.Configurations.Add(new SortOrderDetailMap());
+
             #endregion
         }
     }
