@@ -16,6 +16,8 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool Save(Cell cell);
 
+        object GetWareCheck(string shelfCode);
+
         object GetSearch(string wareCode);
 
         object FindCell(string parameter);

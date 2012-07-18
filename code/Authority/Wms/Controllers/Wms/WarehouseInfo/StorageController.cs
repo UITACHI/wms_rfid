@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Practices.Unity;
+using THOK.Wms.Bll.Interfaces;
 
 namespace Authority.Controllers.Wms.WarehouseInfo
 {
     public class StorageController : Controller
     {
+        [Dependency]
+        public IStorageService StorageService { get; set; }
+
         //
         // GET: /Storage/
 
@@ -16,5 +21,13 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return View();
         }
 
+        //查询库存信息表
+        // POST: /Storage/Details
+        [HttpPost]
+        public ActionResult Details(int page, int rows)
+        {
+            var storage = StorageService.GetDetails(page, rows);
+            return Json(storage, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }
