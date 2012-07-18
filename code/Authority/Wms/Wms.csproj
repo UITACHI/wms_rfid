@@ -159,6 +159,7 @@
     <Content Include="Content\Images\banner.jpg" />
     <Content Include="Content\Images\login_bg.jpg" />
     <Content Include="Content\Images\noscript.gif" />
+    <Content Include="Content\Scripts\jquery.json.js" />
     <Content Include="Content\Scripts\jthok-ui\JDiv.js" />
     <Content Include="Content\Scripts\jquery.fullscreen.js" />
     <Content Include="Content\themes\base\css\css.css" />
