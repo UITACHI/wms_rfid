@@ -26,7 +26,7 @@ namespace THOK.Wms.Bll.Service
             if (BillNo!=""&&BillNo!=null)
             {
                 IQueryable<InBillDetail> inBillDetailQuery = InBillDetailRepository.GetQueryable();
-                var inBillDetail = inBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.ProductCode, i.UnitCode, i.BillQuantity, i.RealQuantity, i.Price, i.Description });
+                var inBillDetail = inBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.ProductCode,i.Product.ProductName,i.UnitCode,i.Unit.UnitName,i.BillQuantity, i.RealQuantity, i.Price, i.Description });
                 int total = inBillDetail.Count();
                 inBillDetail = inBillDetail.Skip((page - 1) * rows).Take(rows);
                 return new { total, rows = inBillDetail.ToArray() };

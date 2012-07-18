@@ -50,5 +50,15 @@ namespace Authority.Controllers.Wms.StockIn
             var inBillDetail = InBillDetailService.GetDetails(page,rows,BillNo);
             return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
         }
+
+        //
+        // GET: /InBillMaster/GenInBillNo/
+
+        public ActionResult GenInBillNo()
+        {
+            var inBillNo = InBillMasterService.GenInBillNo();
+            return Json(inBillNo, "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

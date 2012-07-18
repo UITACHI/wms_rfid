@@ -20,6 +20,8 @@ namespace THOK.Wms.DbModel
         public decimal RealQuantity { get; set; }
         public string Description { get; set; }
 
+        public virtual Product Product { get; set; }
+        public virtual Unit Unit { get; set; }
         public virtual InBillMaster InBillMaster { get; set; }
     }
 }
