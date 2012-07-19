@@ -92,7 +92,7 @@
 	background:url('icons/Menu_StockInto.png') no-repeat;
 }
 .icon-Menu_StockOut{
-	background:url('icons/Menu_StockInto.png') no-repeat;
+	background:url('icons/Menu_StockOut.png') no-repeat;
 }
 .icon-Menu_StockMove{
 	background:url('icons/Menu_StockMove.png') no-repeat;
@@ -203,7 +203,7 @@
 	background:url('icons/son_StockPlace.png') no-repeat;
 }
 .icon-son_Warehouse{
-	background:url('icons/son_Warehouse') no-repeat;
+	background:url('icons/son_Warehouse.png') no-repeat;
 }
 .icon-son_CheckBill{
 	background:url('icons/son_CheckBill.png') no-repeat;
@@ -238,7 +238,7 @@
 	background:url('images/Menu_StockInto.png') no-repeat;
 }
 .image-Menu_StockOut{
-	background:url('images/Menu_StockInto.png') no-repeat;
+	background:url('images/Menu_StockOut.png') no-repeat;
 }
 .image-Menu_StockMove{
 	background:url('images/Menu_StockMove.png') no-repeat;
@@ -349,7 +349,7 @@
 	background:url('images/son_StockPlace.png') no-repeat;
 }
 .image-son_Warehouse{
-	background:url('images/son_Warehouse') no-repeat;
+	background:url('images/son_Warehouse.png') no-repeat;
 }
 .image-son_CheckBill{
 	background:url('images/son_CheckBill.png') no-repeat;
