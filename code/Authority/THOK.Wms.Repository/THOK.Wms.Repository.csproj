@@ -81,6 +81,10 @@
     <Compile Include="Migrations\201207190356389_add_table_001.Designer.cs">
       <DependentUpon>201207190356389_add_table_001.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207190755173_modify_datatype_nullable.cs" />
+    <Compile Include="Migrations\201207190755173_modify_datatype_nullable.Designer.cs">
+      <DependentUpon>201207190755173_modify_datatype_nullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
