@@ -23,5 +23,7 @@ namespace THOK.Wms.Bll.Interfaces
         object FindCell(string parameter);
 
         object GetCell(string shelfCode);
+
+        
     }
 }

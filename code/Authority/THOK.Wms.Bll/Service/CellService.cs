@@ -272,7 +272,6 @@ namespace THOK.Wms.Bll.Service
             {
                 var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == cell.DefaultProductCode);
                 WareTree cellTree = new WareTree();
-
                 cellTree.Code = cell.CellCode;
                 cellTree.Name = "货位：" + cell.CellName;
                 cellTree.CellCode = cell.CellCode;

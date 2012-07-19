@@ -22,11 +22,11 @@ namespace Authority.Controllers.Wms.WarehouseInfo
         }
 
         //查询库存信息表
-        // POST: /Storage/Details
+        // POST: /Storage/Details/
         [HttpPost]
-        public ActionResult Details(int page, int rows)
+        public ActionResult Details(int page, int rows,string type,string id)
         {
-            var storage = StorageService.GetDetails(page, rows);
+            var storage = StorageService.GetDetails(page, rows, type, id);
             return Json(storage, "text", JsonRequestBehavior.AllowGet);
         }
     }
