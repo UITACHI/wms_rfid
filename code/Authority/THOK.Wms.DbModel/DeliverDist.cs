@@ -21,7 +21,8 @@ namespace THOK.Wms.DbModel
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
 
-
+        public virtual Company Company { get; set; }
+        public virtual Company DistCenter { get; set; }
         public virtual ICollection<DeliverLine> DeliverLines { get; set; }
 
     }
