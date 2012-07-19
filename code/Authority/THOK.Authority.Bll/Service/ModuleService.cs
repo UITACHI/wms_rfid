@@ -297,7 +297,7 @@ namespace THOK.Authority.Bll.Service
                         funid = userFunction.Function.FunctionID.ToString(),
                         funname = userFunction.Function.ControlName,
                         iconCls = userFunction.Function.IndicateImage,
-                        isActive = userFunction.IsActive || bResult
+                        isActive = userFunction.IsActive || bResult || user.UserName=="Admin"
                     });
 
             }
@@ -319,9 +319,9 @@ namespace THOK.Authority.Bll.Service
                 if (childModule != module)
                 {
                     var roles = userSystem.User.UserRoles.Select(ur=> ur.Role);
-                    if (userModule.IsActive ||
+                    if (userModule.IsActive || userModule.UserFunctions.Any(uf=>uf.IsActive) ||
                         userModule.Module.RoleModules.Any(rm => roles.Any(r => r.RoleID == rm.RoleSystem.Role.RoleID
-                            && rm.IsActive)) ||
+                            && (rm.IsActive || rm.RoleFunctions.Any(rf=>rf.IsActive)))) ||
                         userModule.Module.Modules
                             .Any(m => m.UserModules.Any(um => um.UserSystem.User.UserID == userModule.UserSystem.User.UserID
                                 && (um.IsActive || um.UserFunctions.Any(uf => uf.IsActive)))) ||
@@ -482,12 +482,27 @@ namespace THOK.Authority.Bll.Service
                         Module = module,
                         IsActive = userSystem.User.UserName == "Admin"
                     };
+                    userSystem.IsActive = userSystem.User.UserName == "Admin";
+                    SetParentUserModuleIsActiveFalse(um);
                     UserModuleRepository.Add(um);
                     UserModuleRepository.SaveChanges();
                 }
                 var userModule = userSystem.UserModules.Single(um => um.Module.ModuleID == module.ModuleID
                     && um.UserSystem.UserSystemID == userSystem.UserSystemID);
                 InitUserFunctions(userModule);
+            }
+        }
+
+        private void SetParentUserModuleIsActiveFalse(UserModule userModule)
+        {
+            var parentUserModule = userModule.Module.ParentModule.UserModules.FirstOrDefault(pum => pum.UserSystem.User.UserID == userModule.UserSystem.User.UserID);
+            if (parentUserModule != null)
+            {
+                parentUserModule.IsActive = false;
+                if (parentUserModule.Module.ModuleID != parentUserModule.Module.ParentModule.ModuleID)
+                {
+                    SetParentUserModuleIsActiveFalse(parentUserModule);
+                }
             }
         }
 
@@ -505,6 +520,9 @@ namespace THOK.Authority.Bll.Service
                         Function = function,
                         IsActive = userModule.UserSystem.User.UserName == "Admin"
                     };
+                    userModule.UserSystem.IsActive = userModule.UserSystem.User.UserName == "Admin";
+                    SetParentUserModuleIsActiveFalse(userModule);
+                    userModule.IsActive = userModule.UserSystem.User.UserName == "Admin";     
                     UserFunctionRepository.Add(uf);
                     UserFunctionRepository.SaveChanges();
                 }
