@@ -19,12 +19,13 @@ namespace Authority.Controllers.Wms.StockIn
         //
         // GET: /StockInBill/
 
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 

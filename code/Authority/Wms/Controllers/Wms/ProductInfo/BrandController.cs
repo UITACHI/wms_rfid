@@ -14,10 +14,11 @@ namespace Authority.Controllers.Wms.ProductInfo
     {
         [Dependency]
         public IBrandService BrandService { get; set; }
+
         //
         // GET: /Brand/
 
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
@@ -25,6 +26,7 @@ namespace Authority.Controllers.Wms.ProductInfo
             ViewBag.hasDelete = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 
