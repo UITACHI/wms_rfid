@@ -12,12 +12,7 @@
                 hasDownArrow: false
             });
             $('#fm').form('load', row);
-            if (row.Status == '是') {
-                $('#cc').combo('setValue', true).combo('setText', row.Status);
-            } else {
-                $('#cc').combo('setValue', false).combo('setText', row.Status);
-            }
-            url = '/Role/Delete/?RoleID=' + row.RoleID;
+            url = '/StockInBillType/Delete/?billtypeCode=' + row.BillTypeCode;
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }

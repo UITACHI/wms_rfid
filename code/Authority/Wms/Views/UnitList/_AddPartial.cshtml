@@ -1,1 +1,117 @@
-﻿
+﻿<script type="text/javascript">
+    var url;
+    $(function () {
+        $('#isActive').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 100
+        });
+    })
+
+    function addClick() {
+        $('#dlg-add').dialog('open').dialog('setTitle', '新增单位系列信息');
+        $('#unitListCode').attr("readonly", false);
+        $('#fm-add').form('clear');
+        $('#fm-add .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('form input').removeAttr("disabled");
+        $('#IsActive').combo({
+            hasDownArrow: true
+        });
+        url = '/UnitList/Create/';
+    };
+
+    function save() {
+        $('#fm-add').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg-add').dialog('close');
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').datagrid('reload');
+                }
+            }
+        });
+    }
+</script>
+<div id="dlg-add" class="easyui-dialog" modal="true" style="width:540px;height:350px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-add">
+    <div class="easyui-layout" fit="true">
+		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " > 
+            <form id="fm-add" method="post" novalidate>  
+                <table align="left" width="460">
+                  <tr>
+                    <td width="100">计量单位系列编码:</td>
+                    <td><input id="UnitListCode" name="UnitListCode" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td>
+                    <td width="100">计量单位编码_01:</td>
+                    <td><input id="unitCode01" name="UnitCode01" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td>
+                  </tr>
+                  <tr>
+                    <td width="100">计量单位系列名称:</td>
+                    <td><input id="unitListName" name="UnitListName" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td> 
+                    <td width="100">计量单位名称_01:</td>
+                    <td><input id="unitName01" name="UnitName01" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td> 
+                   </tr>
+                   <tr>
+                    <td width="60">统一编码:</td>
+                    <td><input id="uniformCode" name="UniformCode" type="text" style="width: 100px"></td>
+                    <td width="100">计量单位编码_02:</td>
+                    <td><input id="unitCode02" name="UnitCode02" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td>
+                  </tr>
+                  <tr>
+                    <td width="100">转换比率_01:</td>
+                    <td><input id="quantity01" name="Quantity01" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td>
+                    <td width="100">计量单位名称_02:</td>
+                    <td><input id="unitName02" name="UnitName02" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td>
+                  </tr>
+                  <tr>
+                    <td width="100">转换比率_02:</td>
+                    <td><input id="quantity02" name="Quantity02" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td> 
+                    <td width="100">计量单位编码_03:</td>
+                    <td><input id="unitCode03" name="UnitCode03" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td>
+                  </tr>
+                  <tr>
+                    <td width="100">转换比率_03:</td>
+                    <td><input id="quantity03" name="Quantity03" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td> 
+                    <td width="100">计量单位名称_03:</td>
+                    <td><input id="unitName03" name="UnitName03" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td> 
+                  </tr>
+                  <tr>
+                    <td width="100">计量单位编码_04:</td>
+                    <td><input id="unitCode04" name="UnitCode04" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td>
+                    <td width="100">计量单位名称_04:</td>
+                    <td><input id="unitName04" name="UnitName04" type="text" style="width: 100px" class="easyui-validatebox" required="true"></td> 
+                  </tr>
+                  <tr> 
+                    <td width="60">是否可用:</td>
+                    <td><select id="isActive" name="IsActive" class="easyui-combobox" style="width: 100px">
+                      <option value="">请选择</option>
+                      <option value="1">可用</option>
+                      <option value="0">不可用</option>
+                     </select></td>
+                   </tr>
+                 </table>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons-add">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+

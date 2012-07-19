@@ -8,7 +8,7 @@ namespace THOK.Wms.Bll.Interfaces
 {
     public interface IUnitListService:IService<UnitList>
     {
-        object GetDetails(int page, int rows, string unitListCode);
+        object GetDetails(int page, int rows, UnitList ul);
 
         bool Add(UnitList unitList);
 

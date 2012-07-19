@@ -3,6 +3,7 @@
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#Productfm').form('clear');
+        $('#p').attr("readonly", false);
         $('#Productfm .easyui-validatebox').validatebox({
             required: true
         });
@@ -56,7 +57,7 @@
         selectSupplier();
     }
     function unitlistSelect() {
-        $('#unitlistData').dialog('open').dialog('setTitle', '选择单位信息');
+        $('#unitlistData').dialog('open').dialog('setTitle', '选择单位系列信息');
         $('#unitlistDetail').datagrid({ url: '/UnitList/Details/' });
         $("#unitlistDetail").datagrid('reload');
         selectSupplier();
@@ -72,7 +73,7 @@
                     <table >
                       <tr>
                         <td>商品编码</td>
-                        <td style="padding-right:30px;"><input name="ProductCode" class="easyui-validatebox" required="true"></td>
+                        <td style="padding-right:30px;"><input name="ProductCode" id="p" class="easyui-validatebox" required="true"></td>
                         <td>助记码</td>
                         <td style="padding-right:30px;"><input name="ShortCode"></td>
                         <td>计量单位系列</td>
@@ -140,9 +141,9 @@
                         <td><input name="PieceBarcode"></td>
                         <td>滤嘴</td>
                         <td>
-                             <select   class="easyui-combobox"  name="IsFilterTip" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+                             <select   class="easyui-combobox"   name="IsFilterTip" editable="false"  panelHeight="70" style="width: 129px;" required="true">
 		                       <option value="1">是</option>
-		                        <option value="0">否</option>
+		                        <option value="0">不是</option>
 	                        </select>
                         </td>
                         <td>包装类型</td>
@@ -222,7 +223,7 @@
                         </td>
                         <td>异形烟</td>
                         <td>
-                        <select  class="easyui-combobox"  editable="false"  name="IsAbnormity" panelHeight="70" style="width: 129px;" required="true">
+                        <select  class="easyui-combobox" id="ft"  editable="false"  name="IsAbnormity" panelHeight="70" style="width: 129px;" required="true">
 		                       <option value="1">是</option>
 		                        <option value="0">否</option>
 	                        </select>
@@ -239,13 +240,13 @@
                       <tr>
                       <td>是否可用</td>
                         <td>
-                        <select  class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70" style="width: 129px;" required="true">
+                        <select  id="cc" class="easyui-combobox"  name="IsActive" editable="false"  panelHeight="70" style="width: 129px;" required="true">
 		                       <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>
                         </td>
                         <td>更新时间</td>
-                        <td ><input style="width:129px;" class="easyui-datetimebox" name="UpdateTime" editable="false" /></td>
+                        <td ><input style="width:129px;"    readonly="true" class="easyui-datetimebox"  name="UpdateTime" editable="false" /></td>
                       </tr>
                         <td>描述:</td>
                         <td colspan="5"><textarea name="Description" style="height: 50px;width:210px;"></textarea></td>

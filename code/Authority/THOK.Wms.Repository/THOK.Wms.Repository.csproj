@@ -77,13 +77,9 @@
     <Compile Include="Migrations\201207160657580_add_In_Out_Bill.Designer.cs">
       <DependentUpon>201207160657580_add_In_Out_Bill.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201207170615379_editWareField.cs" />
-    <Compile Include="Migrations\201207170615379_editWareField.Designer.cs">
-      <DependentUpon>201207170615379_editWareField.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201207190303018_zxladdTable.cs" />
-    <Compile Include="Migrations\201207190303018_zxladdTable.Designer.cs">
-      <DependentUpon>201207190303018_zxladdTable.cs</DependentUpon>
+    <Compile Include="Migrations\201207190356389_add_table_001.cs" />
+    <Compile Include="Migrations\201207190356389_add_table_001.Designer.cs">
+      <DependentUpon>201207190356389_add_table_001.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />

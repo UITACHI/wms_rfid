@@ -1,8 +1,8 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#status').combo({
+        $('#IsActive').combo({
             editable: false,
-            panelHeight: 45
+            panelHeight: 65
         });
     })
 
@@ -12,46 +12,44 @@
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.SystemName = $('#systemname').val();
-        queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.BillTypeCode = $('#BillTypeCode').val();
+        queryParams.BillTypeName = $('#BillTypeName').val();
+        queryParams.IsActive = $('#IsActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
             pageSize: 10
-        }); 
+        });
         $("#details").datagrid('reload');
-        $('#dlg-search').dialog('close'); 
+        $('#dlg-search').dialog('close');
     }
 
 </script>
 
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:240px;padding:2px 2px"
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:210px;padding:2px 2px"
 		closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
 		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
             <table width="250">
-                      <tr>
-                        <td width="60">类型编码:</td>
-                        <td width="168"><input name="typeCode" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                       <tr>
-                        <td width="60">类型名称:</td>
-                        <td width="168"><input name="typeName" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                      <tr>
-                        <td>是否启用:</td>
-                        <td><select id="isType" name="Status" class="easyui-combobox" style="width: 80px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
-	                        </select>
-	                    </td>
-                      </tr>
-                       <tr>
-                        <td>备注:</td>
-                        <td><textarea name="Description" style="width: 180px; height: 50px"></textarea></td>
-                      </tr>
-                    </table>
+              <tr>
+                <td width="80">订单类型编码</td>
+                <td width="168" align="left"><input id="BillTypeCode"></td> 
+              </tr>
+              <tr>
+                <td width="80">订单类型名称</td>
+                <td width="168" align="left"><input id="BillTypeName"></td>
+              </tr>
+              <tr>
+                <td>是否可用:</td>
+                <td align="left">      
+		            <select  id="IsActive" required="true" class="easyui-combobox" style="width: 100px">
+                        <option value=""></option>
+		                <option value="1">可用</option>
+		                <option value="0">不可用</option>
+	                </select>
+	            </td>
+              </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -59,3 +57,5 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
 </div>
+
+

@@ -1,1 +1,27 @@
 ﻿
+<script type="text/javascript">
+    function deleteClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $('#dlg-add').dialog('open').dialog('setTitle', '删除单位信息');
+            $('#fm-add .easyui-validatebox').validatebox({
+                required: false
+            });
+            $('form input').attr("disabled", "disabled");
+            $('#IsActive').combo({
+                hasDownArrow: false
+            });
+            $('#fm-add').form('load', row);
+            if (row.Status == '启用') {
+                $('#IsActive').combo('setValue', true).combo('setText', row.IsActive);
+            } else {
+                $('#IsActive').combo('setValue', false).combo('setText', row.IsActive);
+            }
+            url = '/UnitList/Delete/?UnitListCode=' + row.UnitListCode;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>
+
+

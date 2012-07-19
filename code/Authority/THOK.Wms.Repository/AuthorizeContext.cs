@@ -20,36 +20,6 @@ namespace THOK.Wms.Repository
 		{
 		}
 
-        #region auth
-                
-        //public DbSet<City> Cities { get; set; }
-        //public DbSet<Function> Functions { get; set; }
-        //public DbSet<LoginLog> LoginLogs { get; set; }
-        //public DbSet<Module> Modules { get; set; }
-        //public DbSet<Role> Roles { get; set; }
-        //public DbSet<RoleFunction> RoleFunctions { get; set; }
-        //public DbSet<RoleModule> RoleModules { get; set; }
-        //public DbSet<RoleSystem> RoleSystems { get; set; }
-        //public DbSet<Server> Servers { get; set; }
-        //public DbSet<THOK.Authority.DbModel.System> Systems { get; set; }
-        //public DbSet<SystemEventLog> SystemEventLogs { get; set; }
-        //public DbSet<User> Users { get; set; }
-        //public DbSet<UserFunction> UserFunctions { get; set; }
-        //public DbSet<UserModule> UserModules { get; set; }
-        //public DbSet<UserRole> UserRoles { get; set; }
-        //public DbSet<UserSystem> UserSystems { get; set; }
-
-        #endregion
-
-        #region wms
-
-        //public DbSet<Company> Companies { get; set; }
-        //public DbSet<Department> Departments { get; set; }
-        //public DbSet<Job> Jobs { get; set; }
-        //public DbSet<Employee> Employees { get; set; }
-
-        #endregion
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             #region auth
@@ -91,7 +61,7 @@ namespace THOK.Wms.Repository
             modelBuilder.Configurations.Add(new ShelfMap());
             modelBuilder.Configurations.Add(new CellMap());
             modelBuilder.Configurations.Add(new StorageMap());
-            modelBuilder.Configurations.Add(new DailyBalanceMap());//++
+            modelBuilder.Configurations.Add(new DailyBalanceMap());
 
             modelBuilder.Configurations.Add(new BillTypeMap());
             modelBuilder.Configurations.Add(new InBillMasterMap());
@@ -101,10 +71,15 @@ namespace THOK.Wms.Repository
             modelBuilder.Configurations.Add(new OutBillDetailMap());
             modelBuilder.Configurations.Add(new OutBillAllotMap());
 
-            modelBuilder.Configurations.Add(new MoveBillMasterMap());//++
-            modelBuilder.Configurations.Add(new MoveBillDetailMap());//++
-            modelBuilder.Configurations.Add(new CheckBillMasterMap());//++
-            modelBuilder.Configurations.Add(new CheckBillDetailMap());//++
+            modelBuilder.Configurations.Add(new MoveBillMasterMap());
+            modelBuilder.Configurations.Add(new MoveBillDetailMap());
+            modelBuilder.Configurations.Add(new CheckBillMasterMap());
+            modelBuilder.Configurations.Add(new CheckBillDetailMap());
+
+            modelBuilder.Configurations.Add(new ProfitLossBillMasterMap());
+            modelBuilder.Configurations.Add(new ProfitLossBillDetailMap());
+            modelBuilder.Configurations.Add(new SortOrderMap());
+            modelBuilder.Configurations.Add(new SortOrderDetailMap());
 
             #endregion
         }

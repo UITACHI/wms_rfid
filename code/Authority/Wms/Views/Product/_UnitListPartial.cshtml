@@ -1,6 +1,6 @@
 ﻿<script type="text/javascript">
     function UnitlistQueryClick() {
-        $('#dlg-Unitlistsearch').dialog('open').dialog('setTitle', '查询厂商信息');
+        $('#dlg-Unitlistsearch').dialog('open').dialog('setTitle', '查询单位系列信息');
         $("input[type=text]").attr("value", "");
     };
 
@@ -13,8 +13,8 @@
     }
 </script>
 <div id="unitlistData" class="easyui-dialog" modal="true" style="width: 500px; height: 500px;
-    padding: 2px 2px" closed="true" buttons="#dlgUnitlist-buttons">
-    <div split="true" border="false" style="width: 480px; height: 425px">
+    padding: 0px 0px" closed="true" buttons="#dlgUnitlist-buttons">
+    <div split="true" border="false" style="width: 484px; height: 425px">
         <table id="unitlistDetail" class="easyui-datagrid" border="false" toolbar="#btn-query4"
             singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true">
             <thead>
