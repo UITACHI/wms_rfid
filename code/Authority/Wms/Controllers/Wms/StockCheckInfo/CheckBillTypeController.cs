@@ -24,6 +24,8 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.hasPrint = true;
+            ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;
             return View();
         }

@@ -1121,7 +1121,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("20DF1E53-5D2F-4147-8097-88F134E794AE"),
                     FunctionName = "°ïÖú",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 }
                 );
