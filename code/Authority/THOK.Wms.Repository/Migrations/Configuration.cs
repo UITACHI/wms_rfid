@@ -3522,10 +3522,22 @@ namespace THOK.Wms.Repository.Migrations
                     },
                     new Module()
                     {
+                        ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB571101"),
+                        ModuleName = "积压产品清单查询",
+                        ShowOrder = 1,
+                        ModuleURL = "/OverStockProductSearch/",
+                        IndicateImage = "icon-son_StockPlace",
+                        DeskTopImage = "image-son_StockPlace",
+                        System = system,
+                        System_SystemID = system.SystemID,
+                        ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")
+                    },
+                    new Module()
+                    {
                         ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471102"),
                         ModuleName = "入库单查询",
-                        ShowOrder = 1,
-                        ModuleURL = "/StockInSearch/",
+                        ShowOrder = 2,
+                        ModuleURL = "/StockIntoSearch/",
                         IndicateImage = "icon-son_StockIntoBill",
                         DeskTopImage = "image-son_StockIntoBill",
                         System = system,
@@ -3536,7 +3548,7 @@ namespace THOK.Wms.Repository.Migrations
                     {
                         ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471103"),
                         ModuleName = "出库单查询",
-                        ShowOrder = 2,
+                        ShowOrder = 3,
                         ModuleURL = "/StockOutSearch/",
                         IndicateImage = "icon-son_StockOutBill",
                         DeskTopImage = "image-son_StockOutBill",
@@ -3548,7 +3560,7 @@ namespace THOK.Wms.Repository.Migrations
                     {
                         ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471104"),
                         ModuleName = "移库单查询",
-                        ShowOrder = 3,
+                        ShowOrder = 4,
                         ModuleURL = "/StockMoveSearch/",
                         IndicateImage = "icon-son_MoveBill",
                         DeskTopImage = "image-son_MoveBill",
@@ -3560,7 +3572,7 @@ namespace THOK.Wms.Repository.Migrations
                     {
                         ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471105"),
                         ModuleName = "盘点单查询",
-                        ShowOrder = 4,
+                        ShowOrder = 5,
                         ModuleURL = "/StockCheckSearch/",
                         IndicateImage = "icon-son_CheckBill",
                         DeskTopImage = "image-son_CheckBill",
@@ -3572,8 +3584,8 @@ namespace THOK.Wms.Repository.Migrations
                     {
                         ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471106"),
                         ModuleName = "损益单查询",
-                        ShowOrder = 5,
-                        ModuleURL = "/ProfitLossSearch/",
+                        ShowOrder = 6,
+                        ModuleURL = "/StockDifferSearch/",
                         IndicateImage = "icon-son_DifferBill",
                         DeskTopImage = "image-son_DifferBill",
                         System = system,
@@ -3584,7 +3596,7 @@ namespace THOK.Wms.Repository.Migrations
                     {
                         ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471107"),
                         ModuleName = "分拣单查询",
-                        ShowOrder = 6,
+                        ShowOrder = 7,
                         ModuleURL = "/SortOrderSearch/",
                         IndicateImage = "icon-son_SortOrder",
                         DeskTopImage = "image-son_SortOrder",
