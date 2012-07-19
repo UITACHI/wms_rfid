@@ -36,7 +36,22 @@ namespace THOK.Wms.Bll.Service
 
         public new bool Add(InBillMaster inBillMaster)
         {
-            throw new NotImplementedException();
+            var ibm = new InBillMaster();
+            ibm.BillNo = inBillMaster.BillNo;
+            ibm.BillDate = inBillMaster.BillDate;
+            ibm.BillTypeCode =inBillMaster.BillTypeCode ;
+            ibm.WarehouseCode = inBillMaster.WarehouseCode;
+            ibm.OperatePersonCode =inBillMaster.OperatePersonCode ;
+            ibm.Status="1";
+            ibm.VerifyPersonCode=inBillMaster.VerifyPersonCode;
+            ibm.VerifyDate=inBillMaster.VerifyDate;
+            ibm.Description=inBillMaster.Description;
+            ibm.IsActive=inBillMaster.IsActive;
+            ibm.UpdateTime=DateTime.Now;
+
+            InBillMasterRepository.Add(ibm);
+            InBillMasterRepository.SaveChanges();
+            return true;
         }
 
         public bool Delete(string BillNo)
