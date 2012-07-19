@@ -59,6 +59,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
             // Relationships
+
         
         }
     }

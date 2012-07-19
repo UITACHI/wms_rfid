@@ -7,10 +7,7 @@ namespace THOK.Wms.DbModel
 {
     public class DeliverDist
     {
-        public DeliverDist()
-        {
-            this.DeliverLines = new List<DeliverLine>();
-        }
+
         public string DistCode { get; set; }
         public string CustomCode { get; set; }
         public string DistName { get; set; }
@@ -22,7 +19,6 @@ namespace THOK.Wms.DbModel
         public DateTime UpdateTime { get; set; }
 
 
-        public virtual ICollection<DeliverLine> DeliverLines { get; set; }
 
     }
 }
