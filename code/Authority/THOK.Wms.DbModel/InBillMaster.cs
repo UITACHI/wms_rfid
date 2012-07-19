@@ -19,7 +19,7 @@ namespace THOK.Wms.DbModel
         public string OperatePersonCode { get; set; }
         public string Status { get; set; }
         public string VerifyPersonCode { get; set; }
-        public DateTime VerifyDate { get; set; }
+        public DateTime ?VerifyDate { get; set; }
         public string Description { get; set; }
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
