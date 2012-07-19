@@ -18,12 +18,13 @@ namespace Authority.Controllers.WarehouseInfo
         //
         // GET: /Warehouse/
 
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 

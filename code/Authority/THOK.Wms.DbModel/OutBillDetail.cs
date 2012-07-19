@@ -10,7 +10,7 @@ namespace THOK.Wms.DbModel
         public OutBillDetail()
         {
         }
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string BillNo { get; set; }
         public string ProductCode { get; set; }
         public string UnitCode { get; set; }

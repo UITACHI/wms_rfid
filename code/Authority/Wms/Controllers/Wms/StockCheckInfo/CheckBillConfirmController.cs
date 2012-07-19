@@ -11,7 +11,7 @@ namespace Authority.Controllers.Wms.StockCheckInfo
         //
         // GET: /CheckBillConfirm/
 
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
@@ -21,6 +21,7 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             ViewBag.hasAntiConfirm = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 

@@ -1,20 +1,23 @@
 <script type="text/javascript">
+    function addLoad() {
+        $('#warehouseTree').tree({
+            onClick: function (node) {
+                if (node) {
+                    $('#loadShowTable').datagrid('options').url = '/Storage/Details/?type=' + node.attributes + '&id=' + node.id;
+                    $('#loadShowTable').datagrid('load');
+                }
+            }
+        });
+    }
+
     function addClick() {
+        addLoad();
         $('#addCheck').dialog('open').dialog('setTitle', '新增');
-        $('#loadShowTable').datagrid('options').url = '/Storage/Details/';
-        $('#loadShowTable').datagrid('reload');
     }
     function nextDivClick() {
         $('#nextShowTable').datagrid('options').url = '/Storage/Details/';
-        $('#nextShowTable').datagrid('reload');
-        $('#sidebar').css({ display: "none" });
-        $('#cellDiv').css({ display: "none" });
-        $('#nextDiv').css({ display: "block" });
-    }
-
-    function upDivClick() {
-        $('#container').css({ display: "block" });
-        $('#nextDiv').css({ display: "none" });
+        $('#nextShowTable').datagrid('load');
+        $('#nextShowDiv').dialog('open').dialog('setTitle', '盘点数据');
     }
 </script>
 <div id="addCheck" class="easyui-dialog" modal="true" style="width: 800px; height: 460px;padding: 1px 1px" closed="true">
@@ -32,11 +35,10 @@
                     </ul>
                 </div>
                 <div id="main">
-                <div id="cellDiv" style="display:block">
                  <div id="top" style="text-align: left; font-size: 12px; font-weight: lighter; font-family: 宋体">
                     当前选中的节点：<label id="lblTree"></label>
                  </div>
-                 <div id="loadShowDiv" style="margin: 6px 0px 0px 10px; height:320px; background: #fff; border: 1px solid #ccc;">
+                 <div id="loadShowDiv" style="margin: 6px 0px 0px 10px; height:330px; background: #fff; border: 1px solid #ccc;">
                     <table id="loadShowTable" class="easyui-datagrid" border="false" singleSelect="true"  fit="true" pagination="true" rownumbers="true">
                         <thead>
                             <tr>
@@ -44,40 +46,16 @@
                                 <th field="CellName" width="80">货位名称</th>
                                 <th field="StorageCode" width="60">储存编码</th>
                                 <th field="ProductCode" width="60">产品编码</th>
-                                <th field="ProductName" width="100">产品名称</th>
+                                <th field="ProductName" width="124">产品名称</th>
                                 <th field="UnitCode" width="60">单位名称</th>
-                                <th field="UnitName" width="60">单位名称</th>
                                 <th field="Quantity" width="60">数量</th>
                             </tr>
                         </thead>
                     </table>
                  </div>
-                 <div id="next" style="width:100%; text-align:right;">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="nextDivClick()">下一步</a>
+                 <div id="next" style="width:100%; text-align:right; height:20px">
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="nextDivClick()">浏览</a>
                  </div>
-                </div>
-                <div id="nextDiv" style="display: none">
-                <div id="nextShowDiv" style="margin: 6px 0px 0px 10px; height:320px; background: #fff; border: 1px solid #ccc;">
-                    <table id="nextShowTable" class="easyui-datagrid" border="false" singleSelect="true" fit="true" pagination="true" rownumbers="true">
-                        <thead>
-                            <tr>
-                                <th field="CellCode" width="60">货位编码</th>
-                                <th field="CellName" width="80">货位名称</th>
-                                <th field="StorageCode" width="60">储存编码</th>
-                                <th field="ProductCode" width="60">产品编码</th>
-                                <th field="ProductName" width="100">产品名称</th>
-                                <th field="UnitCode" width="60">单位名称</th>
-                                <th field="UnitName" width="60">单位名称</th>
-                                <th field="Quantity" width="60">数量</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div id="upDiv" style="width:100%; text-align:right;">
-	                <a href="#" class="easyui-linkbutton" iconCls="icon-" onclick="upDivClick()">上一步</a>
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-" onclick="upCheckClick()">生成盘点单</a>
-                </div>
-        </div>
          </div>
     </div>
     @*
@@ -126,3 +104,5 @@
         line-height: 0px;
     }
 </style>
+
+@Html.Partial("_NextShowPartial")

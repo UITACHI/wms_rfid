@@ -48,9 +48,7 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsRequired()
                 .HasPrecision(9, 2);
 
-            this.Property(t => t.OperatePersonCode)
-                .IsRequired()
-                .HasMaxLength(20);
+            this.Property(t => t.OperatePersonID);
 
             this.Property(t => t.Status)
                  .IsRequired()
@@ -65,7 +63,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.StorageCode).HasColumnName(ColumnMap.Value.To("StorageCode"));
             this.Property(t => t.AllotQuantity).HasColumnName(ColumnMap.Value.To("AllotQuantity"));
             this.Property(t => t.RealQuantity).HasColumnName(ColumnMap.Value.To("RealQuantity"));
-            this.Property(t => t.OperatePersonCode).HasColumnName(ColumnMap.Value.To("OperatePersonCode"));
+            this.Property(t => t.OperatePersonID).HasColumnName(ColumnMap.Value.To("OperatePersonID"));
             this.Property(t => t.StartTime).HasColumnName(ColumnMap.Value.To("StartTime"));
             this.Property(t => t.FinishTime).HasColumnName(ColumnMap.Value.To("FinishTime"));
             this.Property(t => t.Status).HasColumnName(ColumnMap.Value.To("Status"));
