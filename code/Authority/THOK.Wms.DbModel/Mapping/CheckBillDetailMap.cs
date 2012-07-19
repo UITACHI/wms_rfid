@@ -91,22 +91,22 @@ namespace THOK.Wms.DbModel.Mapping
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.Product)
-                .WithMany(t => t.CheckBillDetails)
+                .WithMany(t => t.CheckBillDetailProducts)
                 .HasForeignKey(d => d.ProductCode)
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.RealProduct)
-                .WithMany(t => t.CheckBillDetails)
+                .WithMany(t => t.CheckBillDetailRealProducts)
                 .HasForeignKey(d => d.RealProductCode)
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.Unit)
-                .WithMany(t => t.CheckBillDetails)
+                .WithMany(t => t.CheckBillDetailUnits)
                 .HasForeignKey(d => d.UnitCode)
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.RealUnit)
-                .WithMany(t => t.CheckBillDetails)
+                .WithMany(t => t.CheckBillDetailRealUnits)
                 .HasForeignKey(d => d.RealUnitCode)
                 .WillCascadeOnDelete(false);
 

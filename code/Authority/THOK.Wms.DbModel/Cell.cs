@@ -10,7 +10,8 @@ namespace THOK.Wms.DbModel
         public Cell()
         {
             this.Storage = new List<Storage>();
-            this.MoveBillDetails = new List<MoveBillDetail>();
+            this.MoveBillDetailOutCells = new List<MoveBillDetail>();
+            this.MoveBillDetailInCells = new List<MoveBillDetail>();
             this.CheckBillDetails = new List<CheckBillDetail>();
         }
         public string CellCode { get; set; }
@@ -38,7 +39,8 @@ namespace THOK.Wms.DbModel
         public virtual Product Product { get; set; }
 
         public virtual ICollection<Storage> Storage { get; set; }
-        public virtual ICollection<MoveBillDetail> MoveBillDetails { get; set; }
+        public virtual ICollection<MoveBillDetail> MoveBillDetailOutCells { get; set; }
+        public virtual ICollection<MoveBillDetail> MoveBillDetailInCells { get; set; }
         public virtual ICollection<CheckBillDetail> CheckBillDetails { get; set; }
     }
 }
