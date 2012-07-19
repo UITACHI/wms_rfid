@@ -7,7 +7,6 @@ namespace THOK.Wms.DbModel
 {
     public class DeliverLine
     {
-
         public string DeliverLineCode { get; set; }
         public string CustomCode { get; set; }
         public string DeliverLineName { get; set; }
@@ -16,7 +15,6 @@ namespace THOK.Wms.DbModel
         public string Description { get; set; }
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
-
 
     }
 }

@@ -18,7 +18,5 @@ namespace THOK.Wms.DbModel
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
 
-
-
     }
 }
