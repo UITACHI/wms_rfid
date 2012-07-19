@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IBillTypeService.cs" />
+    <Compile Include="Interfaces\ICheckBillDetailService.cs" />
+    <Compile Include="Interfaces\ICheckBillMasterService.cs" />
     <Compile Include="Interfaces\IInBillAllotService.cs" />
     <Compile Include="Interfaces\IInBillDetailService.cs" />
     <Compile Include="Interfaces\IInBillMasterService.cs" />
@@ -67,8 +69,11 @@
     <Compile Include="Interfaces\IUnitService.cs" />
     <Compile Include="Interfaces\IWarehouseService.cs" />
     <Compile Include="Models\Tree.cs" />
+    <Compile Include="Models\WareTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BillTypeService.cs" />
+    <Compile Include="Service\CheckBillDetailService.cs" />
+    <Compile Include="Service\CheckBillMasterService.cs" />
     <Compile Include="Service\InBillAllotService.cs" />
     <Compile Include="Service\InBillDetailService.cs" />
     <Compile Include="Service\InBillMasterService.cs" />

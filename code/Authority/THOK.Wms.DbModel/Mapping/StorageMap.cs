@@ -79,7 +79,7 @@ namespace THOK.Wms.DbModel.Mapping
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.product)
-                .WithMany(t => t.Storage)
+                .WithMany(t => t.Storages)
                 .HasForeignKey(d => d.ProductCode)
                 .WillCascadeOnDelete(false);
         }

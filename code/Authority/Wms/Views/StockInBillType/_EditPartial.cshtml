@@ -7,17 +7,18 @@
             $('#fm .easyui-validatebox').validatebox({
                 required: true
             });
-            if (row.Status == '是') {
-                $('#cc').combo('setValue', true).combo('setText', row.Status);
+            if (row.IsActive == '可用') {
+                $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
             } else {
-                $('#cc').combo('setValue', false).combo('setText', row.Status);
+                $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
             }
             $('form input').removeAttr("disabled");
             $('form textarea').removeAttr("disabled");
+            $('#b').attr("readonly", true);
             $('#cc').combo({
                 hasDownArrow: true
             });
-            url = '/Role/Edit/?RoleID=' + row.RoleID;
+            url = '/StockInBillType/Edit/'
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }

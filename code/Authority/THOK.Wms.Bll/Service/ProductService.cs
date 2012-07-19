@@ -39,7 +39,7 @@ namespace THOK.Wms.Bll.Service
                     c.CostPrice,
                     c.CustomCode,
                     c.Description,
-                    IsAbnormity = c.IsAbnormity == "1" ? "可用" : "不可用",
+                    IsAbnormity = c.IsAbnormity == "1" ? "是" : "不是",
                     IsActive = c.IsActive == "1" ? "可用" : "不可用",
                     c.IsConfiscate,
                     c.IsFamous,
@@ -130,9 +130,9 @@ namespace THOK.Wms.Bll.Service
             prod.TradePrice = product.TradePrice;
             prod.UniformCode = product.UniformCode;
             prod.UnitCode = product.UnitCode;
-            //prod.UnitListCode = product.UnitListCode;
-            prod.UnitListCode = "3232";
+            prod.UnitListCode = product.UnitListCode;
             prod.UpdateTime = DateTime.Now;
+       
 
 
 
@@ -187,8 +187,7 @@ namespace THOK.Wms.Bll.Service
             prod.TradePrice = product.TradePrice;
             prod.UniformCode = product.UniformCode;
             prod.UnitCode = product.UnitCode;
-            //prod.UnitListCode = product.UnitListCode;
-            prod.UnitListCode = "3232";
+            prod.UnitListCode = product.UnitListCode;
             prod.UpdateTime = DateTime.Now;
 
             ProductRepository.SaveChanges();

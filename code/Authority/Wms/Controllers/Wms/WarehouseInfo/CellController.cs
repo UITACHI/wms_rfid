@@ -23,7 +23,7 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return View();
         }
 
-        //查询货架信息表
+        //查询货位信息表
         // POST: /Cell/CellDetails
         [HttpPost]
         public ActionResult CellDetails(int page, int rows, string cellCode)
@@ -32,7 +32,7 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return Json(cell, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //查询货架信息表
+        //查询货位信息表
         // POST: /Cell/FindCell
         [HttpPost]
         public ActionResult FindCell(string parameter)
@@ -41,12 +41,19 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return Json(cell, "text", JsonRequestBehavior.AllowGet);
         }
 
-
-        //
+        //查询仓库数据treegrid结构，用于修改
         // GET: /Cell/Details/
-        public ActionResult Details(string wareCode,string id)
+        public ActionResult Details(string wareCode)
         {
-            var wareCell = CellService.GetSearch(wareCode, id);
+            var wareCell = CellService.GetSearch(wareCode);
+            return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //查询仓库数据tree结构,用于盘点
+        // GET: /Cell/GetCheckDetails/
+        public ActionResult GetCheckDetails(string id)
+        {
+            var wareCell = CellService.GetWareCheck(id);
             return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
         }
 
@@ -77,6 +84,14 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             bool bResult = CellService.Delete(cellCode);
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // GET: /Cell/GetCell/
+        public ActionResult GetCell(string shelfCode)
+        {
+            var wareCell = CellService.GetCell(shelfCode); ;
+            return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
         }
     }
 }
