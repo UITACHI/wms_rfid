@@ -66,26 +66,26 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
-            //// Relationships
-            //this.HasRequired(t => t.BillType)
-            //    .WithMany(t => t.MoveBillMasters)
-            //    .HasForeignKey(d => d.BillTypeCode)
-            //    .WillCascadeOnDelete(false);
+            // Relationships
+            this.HasRequired(t => t.BillType)
+                .WithMany(t => t.MoveBillMasters)
+                .HasForeignKey(d => d.BillTypeCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.Warehouse)
-            //    .WithMany(t => t.MoveBillMasters)
-            //    .HasForeignKey(d => d.WarehouseCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.Warehouse)
+                .WithMany(t => t.MoveBillMasters)
+                .HasForeignKey(d => d.WarehouseCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.OperatePerson)
-            //    .WithMany(t => t.MoveBillMasters)
-            //    .HasForeignKey(d => d.OperatePersonCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.OperatePerson)
+                .WithMany(t => t.MoveBillMasters)
+                .HasForeignKey(d => d.OperatePersonCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasOptional(t => t.VerifyPerson)
-            //    .WithMany(t => t.MoveBillMasters)
-            //    .HasForeignKey(d => d.VerifyPersonCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasOptional(t => t.VerifyPerson)
+                .WithMany(t => t.MoveBillMasters)
+                .HasForeignKey(d => d.VerifyPersonCode)
+                .WillCascadeOnDelete(false);
         }
     }
 }

@@ -62,20 +62,20 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.Ending).HasColumnName(ColumnMap.Value.To("Ending"));
 
             // Relationships
-            //this.HasRequired(t => t.Warehouse)
-            //    .WithMany(t => t.DailyBalances)
-            //    .HasForeignKey(d => d.WarehouseCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.Warehouse)
+                .WithMany(t => t.DailyBalances)
+                .HasForeignKey(d => d.WarehouseCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.Product)
-            //    .WithMany(t => t.DailyBalances)
-            //    .HasForeignKey(d => d.ProductCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.Product)
+                .WithMany(t => t.DailyBalances)
+                .HasForeignKey(d => d.ProductCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.Unit)
-            //    .WithMany(t => t.DailyBalances)
-            //    .HasForeignKey(d => d.UnitCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.Unit)
+                .WithMany(t => t.DailyBalances)
+                .HasForeignKey(d => d.UnitCode)
+                .WillCascadeOnDelete(false);
         }
     }
 }
