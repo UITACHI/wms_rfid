@@ -86,9 +86,7 @@
     <Compile Include="Controllers\Wms\InterfaceInfo\BasisUploadController.cs" />
     <Compile Include="Controllers\Wms\InterfaceInfo\SortingRealTimeController.cs" />
     <Compile Include="Controllers\Wms\Inventory\CargospaceController.cs" />
-    <Compile Include="Controllers\Wms\Inventory\CigaretteController.cs" />
-    <Compile Include="Controllers\Wms\Inventory\distributionController.cs" />
-    <Compile Include="Controllers\Wms\Inventory\ReservoirController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\DailyBalanceController.cs" />
     <Compile Include="Controllers\Wms\Inventory\StockledgerController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillCheckController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillController.cs" />
@@ -769,10 +767,6 @@
     <Content Include="Views\CheckBillGenerate\_ProductCheckPartial.cshtml" />
     <Content Include="Views\CheckBillGenerate\_RealTimeCheckPartial.cshtml" />
     <Content Include="Views\Cargospace\Index.cshtml" />
-    <Content Include="Views\distribution\Index.cshtml" />
-    <Content Include="Views\distribution\_SearchPartial.cshtml" />
-    <Content Include="Views\Cigarette\Index.cshtml" />
-    <Content Include="Views\Cigarette\_SearchPartial.cshtml" />
     <Content Include="Views\Supplier\_AddPartial.cshtml" />
     <Content Include="Views\Supplier\_DeletePartial.cshtml" />
     <Content Include="Views\Supplier\_EditPartial.cshtml" />
@@ -798,6 +792,9 @@
     <Content Include="Views\CheckBill\_ProductCheckPartial.cshtml" />
     <Content Include="Views\CheckBill\_RealTimeCheckPartial.cshtml" />
     <Content Include="Views\CheckBill\_NextShowPartial.cshtml" />
+    <Content Include="Views\DailyBalance\Index.cshtml" />
+    <Content Include="Views\DailyBalance\_Detail.cshtml" />
+    <Content Include="Views\DailyBalance\_SearchPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
@@ -918,8 +915,6 @@
     <Content Include="Views\StockOutSearch\_SearchPartial.cshtml" />
     <Content Include="Views\SystemEventLog\Index.cshtml" />
     <Content Include="Views\SystemEventLog\_SearchPartial.cshtml" />
-    <Content Include="Views\Reservoir\Index.cshtml" />
-    <Content Include="Views\Reservoir\_SearchPartial.cshtml" />
     <Content Include="Views\StockMoveSearch\_SearchPartial.cshtml" />
     <Content Include="Views\StockDifferSearch\Index.cshtml" />
     <Content Include="Views\StockDifferSearch\_SearchPartial.cshtml" />
