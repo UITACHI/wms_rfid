@@ -52,7 +52,10 @@
     <Compile Include="CheckBillDetail.cs" />
     <Compile Include="CheckBillMaster.cs" />
     <Compile Include="Company.cs" />
+    <Compile Include="Customer.cs" />
     <Compile Include="DailyBalance.cs" />
+    <Compile Include="DeliverDist.cs" />
+    <Compile Include="DeliverLine.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="InBillAllot.cs" />
@@ -66,7 +69,10 @@
     <Compile Include="Mapping\CheckBillDetailMap.cs" />
     <Compile Include="Mapping\CheckBillMasterMap.cs" />
     <Compile Include="Mapping\CompanyMap.cs" />
+    <Compile Include="Mapping\CustomerMap.cs" />
     <Compile Include="Mapping\DailyBalanceMap.cs" />
+    <Compile Include="Mapping\DeliverDistMap.cs" />
+    <Compile Include="Mapping\DeliverLineMap.cs" />
     <Compile Include="Mapping\DepartmentMap.cs" />
     <Compile Include="Mapping\EmployeeMap.cs" />
     <Compile Include="Mapping\InBillAllotMap.cs" />
