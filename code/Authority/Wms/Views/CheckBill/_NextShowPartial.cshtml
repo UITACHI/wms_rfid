@@ -1,0 +1,39 @@
+﻿    <div id="nextShowDiv" class="easyui-dialog" modal="true" closed="true" style="margin: 6px 0px 0px 10px; width:690px; height: 320px; background: #fff;
+        border: 1px solid #ccc;">
+        <table id="nextShowTable" class="easyui-datagrid" border="false" singleselect="true"
+            fit="true" pagination="true" rownumbers="true">
+            <thead>
+                <tr>
+                    <th field="CellCode" width="60">
+                        货位编码
+                    </th>
+                    <th field="CellName" width="80">
+                        货位名称
+                    </th>
+                    <th field="StorageCode" width="60">
+                        储存编码
+                    </th>
+                    <th field="ProductCode" width="60">
+                        产品编码
+                    </th>
+                    <th field="ProductName" width="100">
+                        产品名称
+                    </th>
+                    <th field="UnitCode" width="60">
+                        单位名称
+                    </th>
+                    <th field="UnitName" width="60">
+                        单位名称
+                    </th>
+                    <th field="Quantity" width="60">
+                        数量
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="upDiv" style="width: 100%; text-align: right;">
+        <a href="#" class="easyui-linkbutton" iconcls="icon-" onclick="upDivClick()">上一步</a>
+        <a href="#" class="easyui-linkbutton" iconcls="icon-" onclick="upCheckClick()">生成盘点单</a>
+    </div>
+

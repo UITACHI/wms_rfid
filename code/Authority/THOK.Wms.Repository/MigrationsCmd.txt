@@ -1,7 +1,7 @@
 Enable-Migrations 启用数据迁移版本控制
 Add-Migration
 Update-Database
-Update-Database -TargetMigration
+Update-Database -TargetMigration 
 Get-Migrations
 
 Install-Package EntityFramework –Pre

@@ -81,9 +81,9 @@
     <Compile Include="Migrations\201207170615379_editWareField.Designer.cs">
       <DependentUpon>201207170615379_editWareField.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201207190211257_zxladdTable.cs" />
-    <Compile Include="Migrations\201207190211257_zxladdTable.Designer.cs">
-      <DependentUpon>201207190211257_zxladdTable.cs</DependentUpon>
+    <Compile Include="Migrations\201207190303018_zxladdTable.cs" />
+    <Compile Include="Migrations\201207190303018_zxladdTable.Designer.cs">
+      <DependentUpon>201207190303018_zxladdTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />

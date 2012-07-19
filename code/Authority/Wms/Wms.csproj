@@ -671,6 +671,7 @@
     <Content Include="Views\CheckBill\_CellCheckPartial.cshtml" />
     <Content Include="Views\CheckBill\_ProductCheckPartial.cshtml" />
     <Content Include="Views\CheckBill\_RealTimeCheckPartial.cshtml" />
+    <Content Include="Views\CheckBill\_NextShowPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />

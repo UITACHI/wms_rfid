@@ -8,7 +8,7 @@ namespace THOK.Wms.Repository.Migrations
     {
         string IMigrationMetadata.Id
         {
-            get { return "201207190211257_zxladdTable"; }
+            get { return "201207190303018_zxladdTable"; }
         }
         
         string IMigrationMetadata.Source
