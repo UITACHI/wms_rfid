@@ -49,7 +49,6 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasPrecision(9, 2);
 
             this.Property(t => t.OperatePersonCode)
-                .IsRequired()
                 .HasMaxLength(20);
 
             this.Property(t => t.Status)

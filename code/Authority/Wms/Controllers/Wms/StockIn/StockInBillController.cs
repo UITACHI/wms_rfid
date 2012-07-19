@@ -60,5 +60,16 @@ namespace Authority.Controllers.Wms.StockIn
             return Json(inBillNo, "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /InBillMaster/Create/
+
+        [HttpPost]
+        public ActionResult Create(InBillMaster inBillMaster)
+        {
+            bool bResult = InBillMasterService.Add(inBillMaster);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
