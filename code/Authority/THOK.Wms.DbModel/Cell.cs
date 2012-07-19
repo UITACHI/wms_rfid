@@ -10,12 +10,18 @@ namespace THOK.Wms.DbModel
         public Cell()
         {
             this.Storage = new List<Storage>();
+            this.MoveBillDetailOutCells = new List<MoveBillDetail>();
+            this.MoveBillDetailInCells = new List<MoveBillDetail>();
+            this.CheckBillDetails = new List<CheckBillDetail>();
         }
         public string CellCode { get; set; }
         public string CellName { get; set; }
         public string ShortName { get; set; }
         public string CellType { get; set; }
         public int Layer { get; set; }
+        public int Col { get; set; }
+        public int ImgX { get; set; }
+        public int ImgY { get; set; }
         public string Rfid { get; set; }
         public string WarehouseCode { get; set; }
         public string AreaCode { get; set; }
@@ -27,11 +33,14 @@ namespace THOK.Wms.DbModel
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
 
-        public virtual Warehouse warehouse { get; set; }
-        public virtual Area area { get; set; }
-        public virtual Shelf shelf { get; set; }
-        public virtual Product product { get; set; }
+        public virtual Warehouse Warehouse { get; set; }
+        public virtual Area Area { get; set; }
+        public virtual Shelf Shelf { get; set; }
+        public virtual Product Product { get; set; }
 
         public virtual ICollection<Storage> Storage { get; set; }
+        public virtual ICollection<MoveBillDetail> MoveBillDetailOutCells { get; set; }
+        public virtual ICollection<MoveBillDetail> MoveBillDetailInCells { get; set; }
+        public virtual ICollection<CheckBillDetail> CheckBillDetails { get; set; }
     }
 }

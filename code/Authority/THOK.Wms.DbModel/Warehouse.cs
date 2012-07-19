@@ -12,6 +12,9 @@ namespace THOK.Wms.DbModel
             this.Areas = new List<Area>();
             this.Shelfs = new List<Shelf>();
             this.Cells = new List<Cell>();
+            this.DailyBalances = new List<DailyBalance>();
+            this.MoveBillMasters = new List<MoveBillMaster>();
+            this.CheckBillMasters = new List<CheckBillMaster>();
         }
 
         public string WarehouseCode { get; set; }
@@ -26,5 +29,8 @@ namespace THOK.Wms.DbModel
         public virtual ICollection<Area> Areas { get; set; }
         public virtual ICollection<Shelf> Shelfs { get; set; }
         public virtual ICollection<Cell> Cells { get; set; }
+        public virtual ICollection<DailyBalance> DailyBalances { get; set; }
+        public virtual ICollection<MoveBillMaster> MoveBillMasters { get; set; }
+        public virtual ICollection<CheckBillMaster> CheckBillMasters { get; set; }
     }
 }

@@ -30,17 +30,23 @@ namespace THOK.Wms.Bll.Service
 
         #region IShelfService 成员
 
-        public object GetDetails(int page, int rows, string shelfCode)
+        public object GetDetails(string warehouseCode,string areaCode, string shelfCode)
         {
             IQueryable<Shelf> shelfQuery = ShelfRepository.GetQueryable();
-            var shelf = shelfQuery.OrderBy(b => b.ShelfCode).AsEnumerable().Select(b => new { b.ShelfCode, b.ShelfName, b.ShelfType, b.ShortName, b.Description, b.area.AreaCode, b.area.AreaName, b.warehouse.WarehouseCode, b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
-            if (shelfCode != null)
+            var shelf = shelfQuery.OrderBy(b => b.ShelfCode).AsEnumerable().Select(b => new { b.ShelfCode, b.ShelfName, b.ShelfType, b.ShortName,b.CellCols,b.CellRows,b.ImgX,b.ImgY,b.Description, b.Area.AreaCode, b.Area.AreaName, b.Warehouse.WarehouseCode, b.Warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            if (warehouseCode != null && warehouseCode != string.Empty)
             {
-                shelf = shelf.Where(s => s.ShelfCode == shelfCode);
+                shelf = shelf.Where(s => s.WarehouseCode == warehouseCode).OrderBy(s => s.ShelfCode).Select(s => s);
             }
-            int total = shelf.Count();
-            shelf = shelf.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = shelf.ToArray() };
+            if (areaCode != null && areaCode != string.Empty)
+            {
+                shelf = shelf.Where(s => s.AreaCode == areaCode).OrderBy(s => s.ShelfCode).Select(s => s);
+            }
+            if (shelfCode != null && shelfCode!=string.Empty)
+            {
+                shelf = shelf.Where(s => s.ShelfCode == shelfCode).OrderBy(s => s.ShelfCode).Select(s => s);
+            }
+            return shelf.ToArray();
         }
 
         public new bool Add(Shelf shelf)
@@ -52,8 +58,12 @@ namespace THOK.Wms.Bll.Service
             shelfAdd.ShelfName = shelf.ShelfName;
             shelfAdd.ShortName = shelf.ShortName;
             shelfAdd.ShelfType = shelf.ShelfType;
-            shelfAdd.warehouse = warehouse;
-            shelfAdd.area = area;
+            shelfAdd.CellRows = shelf.CellRows;
+            shelfAdd.CellCols = shelf.CellCols;
+            shelfAdd.ImgX = shelf.ImgX;
+            shelfAdd.ImgY = shelf.ImgY;
+            shelfAdd.Warehouse = warehouse;
+            shelfAdd.Area = area;
             shelfAdd.Description = shelf.Description;
             shelfAdd.IsActive = shelf.IsActive;
             shelfAdd.UpdateTime = DateTime.Now;
@@ -87,8 +97,12 @@ namespace THOK.Wms.Bll.Service
             shelfSave.ShelfName = shelf.ShelfName;
             shelfSave.ShortName = shelf.ShortName;
             shelfSave.ShelfType = shelf.ShelfType;
-            shelfSave.warehouse = warehouse;
-            shelfSave.area = area;
+            shelfSave.CellCols = shelf.CellCols;
+            shelfSave.CellRows = shelf.CellRows;
+            shelfSave.ImgX = shelf.ImgX;
+            shelfSave.ImgY = shelf.ImgY;
+            shelfSave.Warehouse = warehouse;
+            shelfSave.Area = area;
             shelfSave.Description = shelf.Description;
             shelfSave.IsActive = shelf.IsActive;
             shelfSave.UpdateTime = DateTime.Now;
@@ -100,7 +114,8 @@ namespace THOK.Wms.Bll.Service
         public object FindShelf(string parameter)
         {
             IQueryable<Shelf> shelfQuery = ShelfRepository.GetQueryable();
-            var shelf = shelfQuery.Where(s=>s.ShelfCode==parameter).OrderBy(b => b.ShelfCode).AsEnumerable().Select(b => new { b.ShelfCode, b.ShelfName, b.ShelfType, b.ShortName, b.Description, b.area.AreaCode, b.area.AreaName, b.warehouse.WarehouseCode, b.warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var shelf = shelfQuery.Where(s=>s.ShelfCode==parameter).OrderBy(b => b.ShelfCode).AsEnumerable()
+                                  .Select(b => new { b.ShelfCode, b.ShelfName, b.ShelfType,b.CellCols,b.CellRows,b.ImgX,b.ImgY,b.ShortName, b.Description, b.Area.AreaCode, b.Area.AreaName, b.Warehouse.WarehouseCode, b.Warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             return shelf.First(s => s.ShelfCode == parameter);
         }
 

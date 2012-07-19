@@ -1,38 +1,104 @@
 <script type="text/javascript">
     function addClick() {
         $('#addCheck').dialog('open').dialog('setTitle', '新增');
+        $('#loadShowTable').datagrid('options').url = '/Storage/Details/';
+        $('#loadShowTable').datagrid('reload');
     }
-    function cellCheckClick() {
-        $('#cellDiv').css({ display: "block" });
-        $('#produceDiv').css({ display: "none" });
-        $('#realDiv').css({ display: "none" });
+    function nextDivClick() {
+        $('#nextShowTable').datagrid('options').url = '/Storage/Details/';
+        $('#nextShowTable').datagrid('reload');
+        $('#nextShowDiv').dialog('open').dialog('setTitle', '盘点数据');
     }
-    function productCheckClick() {
-        $('#cellDiv').css({ display: "none" });
-        $('#produceDiv').css({ display: "block" });
-        $('#realDiv').css({ display: "none" });
-    }
-    function realCheckClick() {
-        $('#cellDiv').css({ display: "none" });
-        $('#produceDiv').css({ display: "none" });
-        $('#realDiv').css({ display: "block" });
+
+    function upDivClick() {
+        $('#container').css({ display: "block" });
+        $('#nextDiv').css({ display: "none" });
     }
 </script>
-<div id="addCheck" class="easyui-dialog" modal="true" style="width: 100%; height: 100%;  padding: 1px 1px" closed="true" fit="true">
-    <div id="11111" toolbar="#toolbar" fit="true" style="text-align: left; border: 1px solid #ccc;">
+<div id="addCheck" class="easyui-dialog" modal="true" style="width: 800px; height: 460px;padding: 1px 1px" closed="true">
+    <div id="11111" toolbar="#toolbar" style="text-align: left; border: 1px solid #ccc;">
         <div id="toolbar" class="datagrid-toolbar" style="width: auto; height: auto; background-color: #FFFFFF;">
-            <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="cellCheck" onclick="cellCheckClick()">货位盘点</a> 
-            <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="productCheck" onclick="productCheckClick()">产品盘点</a>
+            <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="cellCheck" onclick="cellCheckClick()">货位盘点</a>
+            <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="productCheck" onclick="productCheckClick()">产品盘点</a> 
             <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="realCheck" onclick="realCheckClick()">异动盘点</a>
         </div>
     </div>
-    <div id="cellDiv">
-        @Html.Partial("_CellCheckPartial")
+    <div id="container">
+                <div id="sidebar">
+                    <ul id="warehouseTree" style="text-align: left;" class="easyui-tree" checkbox="true"
+                        onclick="treeClick()" url='/Cell/GetCheckDetails/'>
+                    </ul>
+                </div>
+                <div id="main">
+                 <div id="top" style="text-align: left; font-size: 12px; font-weight: lighter; font-family: 宋体">
+                    当前选中的节点：<label id="lblTree"></label>
+                 </div>
+                 <div id="loadShowDiv" style="margin: 6px 0px 0px 10px; height:320px; background: #fff; border: 1px solid #ccc;">
+                    <table id="loadShowTable" class="easyui-datagrid" border="false" singleSelect="true"  fit="true" pagination="true" rownumbers="true">
+                        <thead>
+                            <tr>
+                                <th field="CellCode" width="60">货位编码</th>
+                                <th field="CellName" width="80">货位名称</th>
+                                <th field="StorageCode" width="60">储存编码</th>
+                                <th field="ProductCode" width="60">产品编码</th>
+                                <th field="ProductName" width="100">产品名称</th>
+                                <th field="UnitCode" width="60">单位名称</th>
+                                <th field="UnitName" width="60">单位名称</th>
+                                <th field="Quantity" width="60">数量</th>
+                            </tr>
+                        </thead>
+                    </table>
+                 </div>
+                 <div id="next" style="width:100%; text-align:right;">
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="nextDivClick()">下一步</a>
+                 </div>
+         </div>
     </div>
-    <div id="produceDiv" style="display: none">
-        @Html.Partial("_ProductCheckPartial")
-    </div>
+    @*
     <div id="realDiv" style="display: none">
         @Html.Partial("_RealTimeCheckPartial")
-    </div>
+    </div>*@
 </div>
+<style type="text/css">    
+    #layout
+    {
+        width: 100%;
+        height: 100%;
+        margin: 0px auto;
+    }
+    #header
+    {
+        height: 6%;
+    }
+    #container
+    {
+        height: 94%;
+    }
+    #container #sidebar
+    {
+        height: 100%;
+        width: 28%;
+        float: left;
+        overflow: scroll;
+        margin: 0px 0px 0px 0xp;
+    }
+    #container #main
+    {
+        height: 100%;
+        width: 72%;
+        float: left;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    .clearfloat
+    {
+        /* 此类应当放在 div 或 break 元素上，而且该元素应当是完全包含浮动的容器关闭之前的最后一个元素 */
+        clear: both;
+        height: 0;
+        font-size: 1px;
+        line-height: 0px;
+    }
+</style>
+
+@Html.Partial("_NextShowPartial")

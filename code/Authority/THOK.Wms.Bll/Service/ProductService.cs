@@ -132,6 +132,7 @@ namespace THOK.Wms.Bll.Service
             prod.UnitCode = product.UnitCode;
             prod.UnitListCode = product.UnitListCode;
             prod.UpdateTime = DateTime.Now;
+       
 
 
 

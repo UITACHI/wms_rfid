@@ -196,6 +196,7 @@ namespace THOK.Wms.DbModel.Mapping
                 .WithMany(t => t.Products)
                 .HasForeignKey(d => d.UnitListCode)
                 .WillCascadeOnDelete(false);
+           
         }
     }
 }

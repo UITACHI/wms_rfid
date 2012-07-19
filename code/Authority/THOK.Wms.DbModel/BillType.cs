@@ -11,6 +11,9 @@ namespace THOK.Wms.DbModel
         {
             this.InBillMasters=new List<InBillMaster>();
             this.OutBillMasters = new List<OutBillMaster>();
+            this.MoveBillMasters = new List<MoveBillMaster>();
+            this.CheckBillMasters = new List<CheckBillMaster>();
+            this.ProfitLossBillMasters = new List<ProfitLossBillMaster>();
         }
         public string BillTypeCode { get; set; }
         public string BillTypeName { get; set; }
@@ -21,5 +24,8 @@ namespace THOK.Wms.DbModel
 
         public virtual ICollection<InBillMaster> InBillMasters { get; set; }
         public virtual ICollection<OutBillMaster> OutBillMasters { get; set; }
+        public virtual ICollection<MoveBillMaster> MoveBillMasters { get; set; }
+        public virtual ICollection<CheckBillMaster> CheckBillMasters { get; set; }
+        public virtual ICollection<ProfitLossBillMaster> ProfitLossBillMasters { get; set; }
     }
 }

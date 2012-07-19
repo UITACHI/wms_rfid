@@ -71,6 +71,300 @@
     line-height: 18px;
     display: inline-block;
 }
+
+/*新增icon.css -icons*/
+.icon-Menu_Organization{
+	background:url('icons/Menu_Organization.png') no-repeat;
+}
+.icon-Menu_Cigarette{
+	background:url('icons/Menu_Cigarette.png') no-repeat;
+}
+.icon-Menu_CheckBill{
+	background:url('icons/Menu_CheckBill.png') no-repeat;
+}
+.icon-Menu_Research{
+	background:url('icons/Menu_Research.png') no-repeat;
+}
+.icon-Menu_Sort{
+	background:url('icons/Menu_Sort.png') no-repeat;
+}
+.icon-Menu_StockInto{
+	background:url('icons/Menu_StockInto.png') no-repeat;
+}
+.icon-Menu_StockOut{
+	background:url('icons/Menu_StockOut.png') no-repeat;
+}
+.icon-Menu_StockMove{
+	background:url('icons/Menu_StockMove.png') no-repeat;
+}
+.icon-Menu_StockDiffer{
+	background:url('icons/Menu_StockDiffer.png') no-repeat;
+}
+.icon-Menu_Warehouse{
+	background:url('icons/Menu_Warehouse.png') no-repeat;
+}
+.icon-Menu_WarehouseM{
+	background:url('icons/Menu_WarehouseM.png') no-repeat;
+}
+.icon-son_Bill_Type{
+	background:url('icons/son_Bill_Type.jpg') no-repeat;
+}
+.icon-son_CigaretteBrand{
+	background:url('icons/son_CigaretteBrand.jpg') no-repeat;
+}
+.icon-son_CigaretteInfo{
+	background:url('icons/son_CigaretteInfo.png') no-repeat;
+}
+.icon-son_CigaretteSupplier{
+	background:url('icons/son_CigaretteSupplier.jpg') no-repeat;
+}
+.icon-son_CigaretteUnit{
+	background:url('icons/son_CigaretteUnit.png') no-repeat;
+}
+.icon-son_CigaretteUnitList{
+	background:url('icons/son_CigaretteUnitList.png') no-repeat;
+}
+.icon-son_Company{
+	background:url('icons/son_Company.png') no-repeat;
+}
+.icon-son_Department{
+	background:url('icons/son_Department.png') no-repeat;
+}
+.icon-son_DifferBill{
+	background:url('icons/son_DifferBill.png') no-repeat;
+}
+.icon-son_Employee{
+	background:url('icons/son_Employee.png') no-repeat;
+}
+.icon-son_Job{
+	background:url('icons/son_Job.png') no-repeat;
+}
+.icon-son_MoveBill{
+	background:url('icons/son_MoveBill.png') no-repeat;
+}
+.icon-son_MoveBillAllot{
+	background:url('icons/son_MoveBillAllot.png') no-repeat;
+}
+.icon-son_MoveBillWork{
+	background:url('icons/son_MoveBillWork.png') no-repeat;
+}
+.icon-son_SortInfo{
+	background:url('icons/son_SortInfo.png') no-repeat;
+}
+.icon-son_SortOrder{
+	background:url('icons/son_SortOrder.png') no-repeat;
+}
+.icon-son_SortOrderc{
+	background:url('icons/son_SortOrderc.png') no-repeat;
+}
+.icon-son_SortWork{
+	background:url('icons/son_SortWork.png') no-repeat;
+}
+.icon-son_StockArea{
+	background:url('icons/son_StockArea.png') no-repeat;
+}
+.icon-son_StockAreaDownline{
+	background:url('icons/son_StockAreaDownline.png') no-repeat;
+}
+.icon-son_StockDayBill{
+	background:url('icons/son_StockDayBill.png') no-repeat;
+}
+.icon-son_StockIntoBill{
+	background:url('icons/son_StockIntoBill.png') no-repeat;
+}
+.icon-son_StockIntoBillAllot{
+	background:url('icons/son_StockIntoBillAllot.png') no-repeat;
+}
+.icon-son_Bill_Check{
+	background:url('icons/son_Bill_Check.png') no-repeat;
+}
+.icon-son_StockIntoBillWork{
+	background:url('icons/son_StockIntoBillWork.png') no-repeat;
+}
+.icon-son_StockNow{
+	background:url('icons/son_StockNow.png') no-repeat;
+}
+.icon-son_StockOldAll{
+	background:url('icons/son_StockOldAll.png') no-repeat;
+}
+.icon-son_StockOlddetails{
+	background:url('icons/son_StockOlddetails.png') no-repeat;
+}
+.icon-son_StockOutBill{
+	background:url('icons/son_StockOutBill.png') no-repeat;
+}
+.icon-son_StockOutBillAllot{
+	background:url('icons/son_StockOutBillAllot.png') no-repeat;
+}
+.icon-son_StockOutBillWork{
+	background:url('icons/son_StockOutBillWork.png') no-repeat;
+}
+.icon-son_StockPlace{
+	background:url('icons/son_StockPlace.png') no-repeat;
+}
+.icon-son_Warehouse{
+	background:url('icons/son_Warehouse.png') no-repeat;
+}
+.icon-son_CheckBill{
+	background:url('icons/son_CheckBill.png') no-repeat;
+}
+.icon-son_CheckBillAllot{
+	background:url('icons/son_CheckBillAllot.png') no-repeat;
+}
+.icon-son_CheckBillWork{
+	background:url('icons/son_CheckBillWork.png') no-repeat;
+}
+.icon-son_CheckBillMake{
+	background:url('icons/son_CheckBillMake.png') no-repeat;
+}
+
+/*新增icon.css -images*/
+.image-Menu_Organization{
+	background:url('images/Menu_Organization.png') no-repeat;
+}
+.image-Menu_Cigarette{
+	background:url('images/Menu_Cigarette.png') no-repeat;
+}
+.image-Menu_CheckBill{
+	background:url('images/Menu_CheckBill.png') no-repeat;
+}
+.image-Menu_Research{
+	background:url('images/Menu_Research.png') no-repeat;
+}
+.image-Menu_Sort{
+	background:url('images/Menu_Sort.png') no-repeat;
+}
+.image-Menu_StockInto{
+	background:url('images/Menu_StockInto.png') no-repeat;
+}
+.image-Menu_StockOut{
+	background:url('images/Menu_StockOut.png') no-repeat;
+}
+.image-Menu_StockMove{
+	background:url('images/Menu_StockMove.png') no-repeat;
+}
+.image-Menu_StockDiffer{
+	background:url('images/Menu_StockDiffer.png') no-repeat;
+}
+.image-Menu_Warehouse{
+	background:url('images/Menu_Warehouse.png') no-repeat;
+}
+.image-Menu_WarehouseM{
+	background:url('images/Menu_WarehouseM.png') no-repeat;
+}
+.image-son_Bill_Type{
+	background:url('images/son_Bill_Type.jpg') no-repeat;
+}
+.image-son_CigaretteBrand{
+	background:url('images/son_CigaretteBrand.jpg') no-repeat;
+}
+.image-son_CigaretteInfo{
+	background:url('images/son_CigaretteInfo.png') no-repeat;
+}
+.image-son_CigaretteSupplier{
+	background:url('images/son_CigaretteSupplier.jpg') no-repeat;
+}
+.image-son_CigaretteUnit{
+	background:url('images/son_CigaretteUnit.png') no-repeat;
+}
+.image-son_CigaretteUnitList{
+	background:url('images/son_CigaretteUnitList.png') no-repeat;
+}
+.image-son_Company{
+	background:url('images/son_Company.png') no-repeat;
+}
+.image-son_Department{
+	background:url('images/son_Department.png') no-repeat;
+}
+.image-son_DifferBill{
+	background:url('images/son_DifferBill.png') no-repeat;
+}
+.image-son_Employee{
+	background:url('images/son_Employee.png') no-repeat;
+}
+.image-son_Job{
+	background:url('images/son_Job.png') no-repeat;
+}
+.image-son_MoveBill{
+	background:url('images/son_MoveBill.png') no-repeat;
+}
+.image-son_MoveBillAllot{
+	background:url('images/son_MoveBillAllot.png') no-repeat;
+}
+.image-son_MoveBillWork{
+	background:url('images/son_MoveBillWork.png') no-repeat;
+}
+.image-son_SortInfo{
+	background:url('images/son_SortInfo.png') no-repeat;
+}
+.image-son_SortOrder{
+	background:url('images/son_SortOrder.png') no-repeat;
+}
+.image-son_SortOrderc{
+	background:url('images/son_SortOrderc.png') no-repeat;
+}
+.image-son_SortWork{
+	background:url('images/son_SortWork.png') no-repeat;
+}
+.image-son_StockArea{
+	background:url('images/son_StockArea.png') no-repeat;
+}
+.image-son_StockAreaDownline{
+	background:url('images/son_StockAreaDownline.png') no-repeat;
+}
+.image-son_StockDayBill{
+	background:url('images/son_StockDayBill.png') no-repeat;
+}
+.image-son_StockIntoBill{
+	background:url('images/son_StockIntoBill.png') no-repeat;
+}
+.image-son_StockIntoBillAllot{
+	background:url('images/son_StockIntoBillAllot.png') no-repeat;
+}
+.image-son_Bill_Check{
+	background:url('images/son_Bill_Check.png') no-repeat;
+}
+.image-son_StockIntoBillWork{
+	background:url('images/son_StockIntoBillWork.png') no-repeat;
+}
+.image-son_StockNow{
+	background:url('images/son_StockNow.png') no-repeat;
+}
+.image-son_StockOldAll{
+	background:url('images/son_StockOldAll.png') no-repeat;
+}
+.image-son_StockOlddetails{
+	background:url('images/son_StockOlddetails.png') no-repeat;
+}
+.image-son_StockOutBill{
+	background:url('images/son_StockOutBill.png') no-repeat;
+}
+.image-son_StockOutBillAllot{
+	background:url('images/son_StockOutBillAllot.png') no-repeat;
+}
+.image-son_StockOutBillWork{
+	background:url('images/son_StockOutBillWork.png') no-repeat;
+}
+.image-son_StockPlace{
+	background:url('images/son_StockPlace.png') no-repeat;
+}
+.image-son_Warehouse{
+	background:url('images/son_Warehouse.png') no-repeat;
+}
+.image-son_CheckBill{
+	background:url('images/son_CheckBill.png') no-repeat;
+}
+.image-son_CheckBillAllot{
+	background:url('images/son_CheckBillAllot.png') no-repeat;
+}
+.image-son_CheckBillWork{
+	background:url('images/son_CheckBillWork.png') no-repeat;
+}
+.image-son_CheckBillMake{
+	background:url('images/son_CheckBillMake.png') no-repeat;
+}
+
+
 .icon-sys{background-position:0px -200px;}
 .icon-set{background-position:-380px -200px;}
 .icon-nav{background-position: -100px -20px; }

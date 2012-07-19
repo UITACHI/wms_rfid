@@ -10,7 +10,14 @@ namespace THOK.Wms.DbModel
         public Product()
         {
             this.Cells = new List<Cell>();
+            this.Storages = new List<Storage>();
+            this.DailyBalances = new List<DailyBalance>();
+            this.MoveBillDetails = new List<MoveBillDetail>();
+            this.CheckBillDetailProducts = new List<CheckBillDetail>();
+            this.CheckBillDetailRealProducts = new List<CheckBillDetail>();
             this.Storage = new List<Storage>();
+            this.ProfitLossBillDetails = new List<ProfitLossBillDetail>();
+            this.SortOrderDetails = new List<SortOrderDetail>();
         }
 
         public string ProductCode { get; set; }
@@ -53,6 +60,13 @@ namespace THOK.Wms.DbModel
         public virtual UnitList UnitList { get; set; }
 
         public virtual ICollection<Cell> Cells { get; set; }
+        public virtual ICollection<Storage> Storages { get; set; }
+        public virtual ICollection<DailyBalance> DailyBalances { get; set; }
+        public virtual ICollection<MoveBillDetail> MoveBillDetails { get; set; }
+        public virtual ICollection<CheckBillDetail> CheckBillDetailProducts { get; set; }
+        public virtual ICollection<CheckBillDetail> CheckBillDetailRealProducts { get; set; }
         public virtual ICollection<Storage> Storage { get; set; }
+        public virtual ICollection<ProfitLossBillDetail> ProfitLossBillDetails { get; set; }
+        public virtual ICollection<SortOrderDetail> SortOrderDetails { get; set; }
     }
 }
