@@ -75,8 +75,8 @@ namespace Authority.Controllers
                 new Fun() { funname = "help", iconCls = "icon-search", funid = "EEB02601-9BF6-412F-A63E-92857BF38638", isActive = true }
                 }
             };
-            //var funs = ModuleService.GetModuleFuns(User.Identity.Name,this.GetCookieValue("cityid"),moduleId);
-            return Json(fun,"text",JsonRequestBehavior.AllowGet);
+            var funs = ModuleService.GetModuleFuns(User.Identity.Name, this.GetCookieValue("cityid"), moduleId);
+            return Json(funs,"text",JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult PageNotFound()
