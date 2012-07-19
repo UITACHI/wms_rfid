@@ -6,6 +6,14 @@
             editable: false,
             panelHeight: 45
         });
+        $.extend($.fn.validatebox.defaults.rules, {
+            maxLength: {
+                validator: function (value, param) {
+                    return value.length <= param[0];
+                },
+                message: 'Please enter at most {0} characters.'
+            }
+        }); 
     })
 
     function addClick() {
@@ -59,7 +67,7 @@
                     <table>
                       <tr>
                         <td>订单类型编码</td>
-                        <td style="padding-right:30px;"><input name="BillTypeCode" id="b" class="easyui-validatebox" required="true"></td>
+                        <td style="padding-right:30px;"><input name="BillTypeCode" validType="maxLength[4]" id="b" class="easyui-validatebox" required="true"></td>
                         <td>订单类型名称</td>
                         <td><input name="BillTypeName" class="easyui-validatebox" required="true"></td>
                       </tr>
