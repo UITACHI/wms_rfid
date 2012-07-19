@@ -49,10 +49,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.RealQuantity)
                 .IsRequired()
                 .HasPrecision(9, 2);
-
-            this.Property(t => t.OperatePersonCode)
-                .HasMaxLength(20);           
-
+           
             this.Property(t => t.Status)
                 .IsRequired()
                 .IsFixedLength()
@@ -69,7 +66,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.InStorageCode).HasColumnName(ColumnMap.Value.To("InStorageCode"));
             this.Property(t => t.UnitCode).HasColumnName(ColumnMap.Value.To("UnitCode"));
             this.Property(t => t.RealQuantity).HasColumnName(ColumnMap.Value.To("RealQuantity"));
-            this.Property(t => t.OperatePersonCode).HasColumnName(ColumnMap.Value.To("OperatePersonCode"));
+            this.Property(t => t.OperatePersonID).HasColumnName(ColumnMap.Value.To("OperatePersonID"));
             this.Property(t => t.StartTime).HasColumnName(ColumnMap.Value.To("StartTime"));
             this.Property(t => t.FinishTime).HasColumnName(ColumnMap.Value.To("FinishTime"));
             this.Property(t => t.Status).HasColumnName(ColumnMap.Value.To("Status"));
@@ -112,7 +109,7 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.HasOptional(t => t.OperatePerson)
                 .WithMany(t => t.MoveBillDetails)
-                .HasForeignKey(d => d.OperatePersonCode)
+                .HasForeignKey(d => d.OperatePersonID)
                 .WillCascadeOnDelete(false);
 
         }
