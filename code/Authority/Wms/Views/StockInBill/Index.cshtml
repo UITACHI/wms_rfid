@@ -4,7 +4,7 @@
             onClickRow: function () {
                 var row = $('#details').datagrid('getSelected');
                 if (row) {
-                    $('#inBillDetails').datagrid({ url: '/StockInBill/InBillDetails/?BillNo='+row.BillNo });
+                    $('#inBillDetails').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + row.BillNo });
                 } else {
                     $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
                 }
