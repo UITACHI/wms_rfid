@@ -10,7 +10,7 @@ namespace THOK.Wms.DbModel
         public OutBillAllot()
         {
         }
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string BillNo { get; set; }
         public int OutPalletTag { get; set; }
         public string ProductCode { get; set; }
@@ -19,9 +19,9 @@ namespace THOK.Wms.DbModel
         public string UnitCode { get; set; }
         public decimal AllotQuantity { get; set; }
         public decimal RealQuantity { get; set; }
-        public string OperatePersonCode { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime FinishTime { get; set; }
+        public Guid OperatePersonID { get; set; }
+        public DateTime ?StartTime { get; set; }
+        public DateTime ?FinishTime { get; set; }
         public string Status { get; set; }
 
         public virtual OutBillMaster OutBillMaster { get; set; }
