@@ -80,40 +80,40 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasForeignKey(d => d.BillNo)
                 .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.Product)
-            //    .WithMany(t => t.MoveBillDetails)
-            //    .HasForeignKey(d => d.ProductCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.Product)
+                .WithMany(t => t.MoveBillDetails)
+                .HasForeignKey(d => d.ProductCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.OutCell)
-            //    .WithMany(t => t.MoveBillDetails)
-            //    .HasForeignKey(d => d.OutCellCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.OutCell)
+                .WithMany(t => t.MoveBillDetails)
+                .HasForeignKey(d => d.OutCellCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.OutStorage)
-            //    .WithMany(t => t.MoveBillDetails)
-            //    .HasForeignKey(d => d.OutStorageCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.OutStorage)
+                .WithMany(t => t.MoveBillDetails)
+                .HasForeignKey(d => d.OutStorageCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.InCell)
-            //    .WithMany(t => t.MoveBillDetails)
-            //    .HasForeignKey(d => d.InCellCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.InCell)
+                .WithMany(t => t.MoveBillDetails)
+                .HasForeignKey(d => d.InCellCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.InStorage)
-            //    .WithMany(t => t.MoveBillDetails)
-            //    .HasForeignKey(d => d.InStorageCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.InStorage)
+                .WithMany(t => t.MoveBillDetails)
+                .HasForeignKey(d => d.InStorageCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasRequired(t => t.Unit)
-            //    .WithMany(t => t.MoveBillDetails)
-            //    .HasForeignKey(d => d.UnitCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.Unit)
+                .WithMany(t => t.MoveBillDetails)
+                .HasForeignKey(d => d.UnitCode)
+                .WillCascadeOnDelete(false);
 
-            //this.HasOptional(t => t.OperatePerson)
-            //    .WithMany(t => t.MoveBillDetails)
-            //    .HasForeignKey(d => d.OperatePersonCode)
-            //    .WillCascadeOnDelete(false);
+            this.HasOptional(t => t.OperatePerson)
+                .WithMany(t => t.MoveBillDetails)
+                .HasForeignKey(d => d.OperatePersonCode)
+                .WillCascadeOnDelete(false);
 
         }
     }

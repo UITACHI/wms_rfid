@@ -1,7 +1,7 @@
 ﻿<script type="text/javascript">
     function treeClick() {
         var treeRow = $('#warehouseTree').tree('getSelected');
-        $('#lblTree').text(treeRow.text);        
+        $('#lblTree').text(treeRow.text);
     }
 </script>
 <style type="text/css">
@@ -53,110 +53,51 @@
         line-height: 0px;
     }
 </style>
-<div id="layout">   
+<div id="layout">
     <div id="container">
         <div id="sidebar">
-            <ul id="warehouseTree" style="text-align: left;" class="easyui-tree" checkbox="true"
-                onclick="treeClick()" url='/Module/GetUserSystemDetails?userID=2ee1d3d4-1ff2-4740-b777-7fbe2abe31f6&cityID=ef3751ec-0249-4214-8a3f-7bb71cf00a9c&systemID=123f219d-7a38-4938-99fd-4b5eacbb6c14'>
+            <ul id="warehouseTree" style="text-align: left;" class="easyui-tree" checkbox="false"
+                onclick="treeClick()" url='/Cell/GetCheckDetails/'>
             </ul>
         </div>
         <div id="main">
             <div id="top" style="text-align: left; font-size: 12px; font-weight: lighter; font-family: 宋体">
                 当前选中的节点：<label id="lblTree"></label></div>
-            <div id="waredlg"style="margin: 10px 0px 0px 30px;">
-                <form id="warefm" action="/Module/Create/" method="post">
-                <fieldset style="width: 520px; height: 260px">
-                    <legend>&nbsp;仓库</legend>
-                    <table>
+            <div id="waredlg" style="margin: 10px 0px 0px 30px;">
+                <table id="detail" class="easyui-datagrid" border="false" singleselect="true" fit="true"
+                    pagination="true" rownumbers="true">
+                    <thead>
                         <tr>
-                            <td>
-                                仓库编码:
-                            </td>
-                            <td>
-                                <input name="txtWhCode" type="text" id="txtWhCode" class="easyui-validatebox" required="true"
-                                    style="width: 140px;" />
-                            </td>
-                            <td>
-                                仓库名称:
-                            </td>
-                            <td>
-                                <input name="txtWhName" type="text" id="txtWhName" class="easyui-validatebox" required="true"
-                                    style="width: 140px;" />
-                            </td>
+                            <th field="CellCode" width="120">
+                                货位编码
+                            </th>
+                            <th field="CellName" width="120">
+                                货位名称
+                            </th>
+                             <th field="StorageCode" width="120">
+                                储存编码
+                            </th>
+                            <th field="StorageName" width="120">
+                                储存名称
+                            </th>
+                             <th field="ProductCode" width="120">
+                                产品编码
+                            </th>
+                            <th field="ProductName" width="120">
+                                产品名称
+                            </th>
+                             <th field="UnitCode" width="120">
+                                单位名称
+                            </th>
+                            <th field="UnitName" width="120">
+                                单位名称
+                            </th>
+                            <th field="Quantity" width="120">
+                                数量
+                            </th>
                         </tr>
-                        <tr>
-                            <td>
-                                仓库简称:
-                            </td>
-                            <td>
-                                <input name="txtShortName" type="text" id="txtShortName" style="width: 140px;" />
-                            </td>
-                            <td class="tdTitle">
-                                仓库类型:
-                            </td>
-                            <td>
-                                <select name="ddlType" id="ddlType" disabled="disabled">
-                                    <option selected="selected" value="0">主库区</option>
-                                    <option value="1">暂存区</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                仓库面积:
-                            </td>
-                            <td>
-                                <input name="txtArea" type="text" value="0.00" id="txtArea" class="TextBoxRight"
-                                    style="width: 140px;" /><span style="font-size: 13pt; font-family: 宋体">㎡</span>
-                            </td>
-                            <td class="tdTitle">
-                                仓库容量:
-                            </td>
-                            <td>
-                                <input name="txtCapacity" type="text" value="0" id="txtCapacity" class="TextBoxRight"
-                                    style="width: 140px;" /><span style="font-size: 9pt">件</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdTitle">
-                                默认单位:
-                            </td>
-                            <td>
-                                <input name="txtDEFAULTUNIT" type="text" value="002" id="txtDEFAULTUNIT" class="myinput"
-                                    style="width: 48px;" />
-                                <input name="txtUNITNAME" type="text" id="txtUNITNAME" class="myinput" style="width: 52px;" />
-                                <input id="Button2" class="ButtonBrowse" type="button" value="..." />
-                            </td>
-                            <td class="tdTitle">
-                                是否启用:
-                            </td>
-                            <td>
-                                <select name="ddlActive" id="ddlActive">
-                                    <option selected="selected" value="1">启用</option>
-                                    <option value="0">未启用</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tdTitle">
-                                备注:
-                            </td>
-                            <td colspan="3">
-                                <textarea name="txtMemo" style="width: 400px; height: 50px" id="txtMemo" class="MultilineTextbox"
-                                    style="width: 376px;"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="height: 35px; text-align: center;" colspan="4">
-                                &nbsp;&nbsp;
-                                <input type="submit" name="btnSave" value="保存" id="btnSave" class="button" />&nbsp;
-                                &nbsp;&nbsp;
-                                <input type="submit" name="btnDelete" value="删除" id="btnDelete" class="button" />
-                            &nbsp; &nbsp;
-                        </tr>
-                    </table>
-                </fieldset>
-                </form>
+                    </thead>
+                </table>
             </div>
         </div>
         <br class="clearfloat" />
