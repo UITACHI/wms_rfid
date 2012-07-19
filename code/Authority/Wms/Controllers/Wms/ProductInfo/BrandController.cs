@@ -14,6 +14,7 @@ namespace Authority.Controllers.Wms.ProductInfo
     {
         [Dependency]
         public IBrandService BrandService { get; set; }
+
         //
         // GET: /Brand/
 

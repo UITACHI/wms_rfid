@@ -15,12 +15,13 @@ namespace Authority.Controllers.Wms.StockMove
         [Dependency]
         public IBillTypeService BillTypeService { get; set; }
         //
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
         public ActionResult Details(int page, int rows, FormCollection collection)

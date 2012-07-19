@@ -26,6 +26,9 @@
         $('#isUnitlistActive').combo('setValue', null).combo('setText', '');
         $("#UnitlistCode").val('');
         $("#UnitlistName").val('');
+        queryUnitlistParams.UnitListCode = $('#UnitlistCode').val();
+        queryUnitlistParams.UnitListName = $('#UnitlistName').val();
+        queryUnitlistParams.IsActive = $('#isUnitlistActive').combo('getValue');
     }
 
 </script>

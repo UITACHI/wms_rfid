@@ -26,6 +26,9 @@
         $('#isUnitActive').combo('setValue', null).combo('setText', '');
         $("#UnitCode").val('');
         $("#UnitName").val('');
+        queryUnitParams.UnitCode = $('#UnitCode').val();
+        queryUnitParams.UnitName = $('#UnitName').val();
+        queryUnitParams.IsActive = $('#isUnitActive').combo('getValue');
     }
 
 </script>
