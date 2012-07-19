@@ -84,6 +84,9 @@
     <Compile Include="Migrations\201207190211257_zxladdTable.cs" />
     <Compile Include="Migrations\201207190211257_zxladdTable.Designer.cs">
       <DependentUpon>201207190211257_zxladdTable.cs</DependentUpon>
+    <Compile Include="Migrations\201207181016234_zzbaddtable.cs" />
+    <Compile Include="Migrations\201207181016234_zzbaddtable.Designer.cs">
+      <DependentUpon>201207181016234_zzbaddtable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
