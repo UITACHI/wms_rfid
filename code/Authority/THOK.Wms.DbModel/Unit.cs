@@ -12,7 +12,8 @@ namespace THOK.Wms.DbModel
             this.Products = new List<Product>();
             this.DailyBalances = new List<DailyBalance>();
             this.MoveBillDetails = new List<MoveBillDetail>();
-            this.CheckBillDetails = new List<CheckBillDetail>();
+            this.CheckBillDetailUnits = new List<CheckBillDetail>();
+            this.CheckBillDetailRealUnits = new List<CheckBillDetail>();
         }
         public string UnitCode { get; set; }
         public string UnitName { get; set; }
@@ -23,6 +24,7 @@ namespace THOK.Wms.DbModel
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<DailyBalance> DailyBalances { get; set; }
         public virtual ICollection<MoveBillDetail> MoveBillDetails { get; set; }
-        public virtual ICollection<CheckBillDetail> CheckBillDetails { get; set; }
+        public virtual ICollection<CheckBillDetail> CheckBillDetailUnits { get; set; }
+        public virtual ICollection<CheckBillDetail> CheckBillDetailRealUnits { get; set; }
     }
 }
