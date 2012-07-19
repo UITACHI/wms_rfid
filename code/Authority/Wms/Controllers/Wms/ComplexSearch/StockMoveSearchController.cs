@@ -11,12 +11,13 @@ namespace Authority.Controllers.Wms.ComplexSearch
         //
         // GET: /StockMoveSearch/
 
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasEdit = true;
             ViewBag.hasAdd = true;
             ViewBag.hasHelp = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 
