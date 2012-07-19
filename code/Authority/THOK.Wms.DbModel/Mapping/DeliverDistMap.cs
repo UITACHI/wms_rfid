@@ -59,15 +59,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
             // Relationships
-            this.HasOptional(t => t.Company)
-                .WithMany(t => t.DeliverDists)
-                .HasForeignKey(d => d.CompanyCode)
-                .WillCascadeOnDelete(false);
 
-            this.HasOptional(t => t.DistCenter)
-                .WithMany(t => t.DistCenters)
-                .HasForeignKey(d => d.DistCenterCode)
-                .WillCascadeOnDelete(false);
         
         }
     }

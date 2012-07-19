@@ -28,7 +28,7 @@ namespace THOK.Wms.DbModel.Mapping
                       .HasMaxLength(100);
 
                   this.Property(t => t.DistCode)
-                       .HasMaxLength(50);
+                      .HasMaxLength(50);
 
                   this.Property(t => t.DeliverOrder)
                        .IsRequired();
@@ -56,10 +56,6 @@ namespace THOK.Wms.DbModel.Mapping
 
                   // Relationships
 
-                  this.HasOptional(t => t.DeliverDist)
-                           .WithMany(t => t.DeliverLines)
-                           .HasForeignKey(d => d.DistCode)
-                           .WillCascadeOnDelete(false);
               }
 
 
