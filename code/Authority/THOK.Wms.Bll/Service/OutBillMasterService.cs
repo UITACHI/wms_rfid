@@ -14,6 +14,9 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public IOutBillMasterRepository OutBillMasterRepository { get; set; }
 
+        [Dependency]
+        public IOutBillDetailRepository OutBillDetailRepository { get; set; }
+
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -84,8 +87,13 @@ namespace THOK.Wms.Bll.Service
         public bool Delete(string BillNo)
         {
             var ibm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
-            OutBillMasterRepository.Delete(ibm);
-            OutBillMasterRepository.SaveChanges();
+            if (ibm != null)
+            {
+                //Del(OutBillDetailRepository, ibm.OutBillAllots);
+                Del(OutBillDetailRepository, ibm.OutBillDetails);
+                OutBillMasterRepository.Delete(ibm);
+                OutBillMasterRepository.SaveChanges();
+            }
             return true;
         }
 

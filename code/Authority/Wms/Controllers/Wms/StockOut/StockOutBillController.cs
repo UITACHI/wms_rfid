@@ -29,13 +29,14 @@ namespace Authority.Controllers.Wms.StockOut
             ViewBag.hasDownload = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
+            ViewBag.hasAllot = true;
             ViewBag.ModuleID = moduleID;
             return View();
         }
 
 
         //
-        // GET: /InBillMaster/Details/
+        // GET: /StockOutBill/Details/
 
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
@@ -49,16 +50,16 @@ namespace Authority.Controllers.Wms.StockOut
         }
 
         //
-        // GET: /InBillDetail/InBillDetails/
+        // GET: /StockOutBill/OutBillDetails/
 
-        public ActionResult InBillDetails(int page, int rows, string BillNo)
+        public ActionResult OutBillDetails(int page, int rows, string BillNo)
         {
             var inBillDetail = OutBillDetailService.GetDetails(page, rows, BillNo);
             return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
         }
 
         //
-        // GET: /InBillMaster/GenInBillNo/
+        // GET: /StockOutBill/GenInBillNo/
 
         public ActionResult GenInBillNo()
         {
@@ -67,7 +68,7 @@ namespace Authority.Controllers.Wms.StockOut
         }
 
         //
-        // POST: /InBillMaster/Create/
+        // POST: /StockOutBill/Create/
 
         [HttpPost]
         public ActionResult Create(OutBillMaster outBillMaster)
@@ -78,7 +79,7 @@ namespace Authority.Controllers.Wms.StockOut
         }
 
         //
-        // POST: /InBillMaster/Edit/
+        // POST: /StockOutBill/Edit/
 
         [HttpPost]
         public ActionResult Edit(OutBillMaster outBillMaster)
@@ -89,7 +90,7 @@ namespace Authority.Controllers.Wms.StockOut
         }
 
         //
-        // POST: /InBillMaster/Delete/
+        // POST: /StockOutBill/Delete/
 
         [HttpPost]
         public ActionResult Delete(string BillNo)
@@ -99,15 +100,24 @@ namespace Authority.Controllers.Wms.StockOut
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
-        // POST: /InBillDetail/OutBillDetailCreate/
+        //根据主表ID和细表ID删除细表数据
+        // POST: /StockOutBill/outBillDelete/
+        public ActionResult outBillDelete(string BillNo,string ID)
+        {
+            bool bResult = OutBillDetailService.Delete(BillNo, ID);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
 
-        //[HttpPost]
-        //public ActionResult OutBillDetailCreate(OutBillMaster outBillDetail)
-        //{
-        //    bool bResult = OutBillDetailService.Add(outBillDetail);
-        //    string msg = bResult ? "新增成功" : "新增失败";
-        //    return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
-        //}
+        //
+        // POST: /StockOutBill/OutBillDetailCreate/
+
+        [HttpPost]
+        public ActionResult OutBillDetailCreate(OutBillDetail outBillDetail)
+        {
+            bool bResult = OutBillDetailService.Add(outBillDetail);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

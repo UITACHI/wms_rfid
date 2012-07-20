@@ -34,7 +34,7 @@
             required: true,
             width: 130,
             panelWidth: 340,
-            url: '/StockInBillType/Details/?page=1&rows=10',
+            url: '/StockOutBillType/Details/?page=1&rows=10',
             idField: 'BillTypeCode',
             textField: 'BillTypeName',
             mode: 'local',
@@ -61,12 +61,13 @@
 
     function addClick() {
         isInBillMasterSaved = true;
-        isInBillMasterCanEdit=false;
+        isInBillMasterCanEdit = false;
         $('#billNo').attr("readonly", true);
         $('#billDate').attr("readonly", true);
         DataLoad();
-        $.getJSON("/StockInBill/GenInBillNo/", function (json) {
+        $.getJSON("/StockOutBill/GenInBillNo/", function (json) {
             if (json) {
+                $('#outBillDeatil').datagrid({ url: '/StockOutBill/OutBillDetails/'});
                 $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
                 $('#fm').form('clear');
                 $('#billNo').val(json);
@@ -80,20 +81,21 @@
                 $('#cc').combo({
                     hasDownArrow: true
                 });
-                url = '/StockInBill/Create/';
+                url = '/StockOutBill/Create/';
             } else {
                 $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
             }
         });
-    };
+    }
 
+   //新增明细
     function addBillDetailClick() {
         if (isInBillMasterSaved) {
             inBillMasterSave();
         } else {
             $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增入库订单明细');
-//            $('#fm-inBillDetail').form('clear');
-//            $('#searchProduct').clear();
+            //$('#fm-inBillDetail').form('clear');//继续新增，清楚之前表单
+            //$('#searchProduct').clear();
             $('#detailBillNo').val(billno);
             $('#detailBillNo').attr("readonly", true);
 
@@ -135,8 +137,9 @@
         });
     }
 
+    //保存主单
     function save() {
-        if (isInBillMasterCanEdit == true) {
+//        if (isInBillMasterCanEdit == true) {
         $('#fm').form('submit', {
             url: url,
             onSubmit: function () {
@@ -162,12 +165,13 @@
                 }
             }
         });
-    }
+//    }
     }
 
+    //新增细单
     function iBillDetailSave() {
         $('#fm-inBillDetail').form('submit', {
-            url: '/StockInBill/InBillDetailCreate/',
+            url: '/StockOutBill/OutBillDetailCreate/',
             onSubmit: function () {
                 return $(this).form('validate');
             },
@@ -179,21 +183,37 @@
                         msg: result.msg
                     });
                     $('#dlg-AddBillDetail').dialog('close');
-                    $('#inBillDetail').datagrid('reload');
+                    $('#outBillDeatil').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + billno});
                 } else {
                     $.messager.show({
                         title: '错误',
                         msg: result.msg
                     });
-                    $('#inBillDetail').datagrid('reload');
+                    $('#outBillDetail').datagrid('reload');
                 }
             }
         });
     }
 
+    //删除细单
+    function deleteBillDetailClick() {
+        var detailRow = $('#outBillDeatil').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '删除入库细表信息');
+            $('#fm-inBillDetail .easyui-validatebox').validatebox({
+                required: false
+            });
+            //            $('form input').attr("disabled", "disabled");
+            //            $('form textarea').attr("disabled", "disabled");
+            $('#fm-inBillDetail').form('load', detailRow);
+            detailUrl = '/StockOutBill/outBillDelete/?BillNo=' + detailRow.BillNo + '&ID=' + detailRow.ID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+        $('#outBillDeatil').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + detailRow.BillNo });
+    }
 </script>
-<div id="dlg" class="easyui-dialog" modal="true"
-        style="width:700px;height:500px;padding:2px 2px"
+<div id="dlg" class="easyui-dialog" modal="true"  style="width:700px;height:500px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc;">     
@@ -201,27 +221,27 @@
                     <table height="100px">
                       <tr>
                         <td width="60">订单号</td>
-                        <td width="168"><input name="BillNo" id="billNo" class="easyui-validatebox" required="true"></td>
+                        <td width="168"><input name="BillNo" id="billNo" class="easyui-validatebox" required="true" /></td>
                         <td width="60">制单日期</td>
-                        <td width="168"><input name="BillDate" id="billDate" class="easyui-validatebox" required="true"></td>
+                        <td width="168"><input name="BillDate" id="billDate" class="easyui-validatebox" required="true" /></td>
                         <td width="60">订单类型</td>
-                        <td width="168"><input name="BillTypeCode" id="biiTypeadd" missingmessage="请选择订单类型"></td>
+                        <td width="168"><input name="BillTypeCode" id="biiTypeadd" missingmessage="请选择订单类型" /></td>
                       </tr>
                       <tr>
                         <td width="60">仓库编码</td>
-                        <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
+                        <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码" /></td>
                         <td width="60">经办人</td>
-                        <td width="168"><input name="OperatePersonCode" class="easyui-validatebox" required="true"></td>
+                        <td width="168"><input name="OperatePersonCode" class="easyui-validatebox" required="true" /></td>
                         <td width="60">状态</td>
                         <td width="168"><input name="Status"></td>
                       </tr>
                       <tr>
                       <td width="60">审核人员</td>
-                        <td width="168"><input name="VerifyPersonCode"></td>
+                        <td width="168"><input name="VerifyPersonCode" /></td>
                         <td width="60">审核时间</td>
-                        <td width="168"><input name="VerifyDate"></td>
+                        <td width="168"><input name="VerifyDate" /></td>
                         <td width="60">描述</td>
-                        <td width="168"><input name="Description"></td>
+                        <td width="168"><input name="Description" /></td>
                       </tr>
                       <tr>
                         <td>状态:</td>
@@ -235,10 +255,12 @@
 	            </form>
             </div>
             <div region="south" border="false" style="padding:0px 0px;background:#fff;border:1px solid #ccc; width:650" >
-            <table class="easyui-datagrid" border="false" id="details" toolbar="#dlg-detailButtons" height="250px" width="700" id="inBillDetail"
-        fit="true" fitColumns="true" singleSelect="true"  pagination="true" rownumbers="true"  url="/StockInBill/InBillDetails/?BillNo=1207190001IN">
+            <table class="easyui-datagrid" border="false" id="outBillDeatil" toolbar="#dlg-detailButtons" height="250px" width="700" id="outBillDetail"
+        fit="true" fitColumns="true" singleSelect="true"  pagination="true" rownumbers="true">
         <thead>
             <tr>
+                <th field="ID"  width="100">细表ID</th>
+                <th field="BillNo"  width="80" align="right">单据号</th>
                 <th field="ProductCode" width="100">产品代码</th>
                 <th field="ProductName" width="80" align="right">产品名称</th>
                 <th field="UnitCode" width="80" align="right">单位编码</th>
@@ -255,8 +277,7 @@
     </div>
 
 
-<div  id="dlg-AddBillDetail" class="easyui-dialog" modal="true"
-        style="width:260px;height:350px;padding:0px 0px"
+<div  id="dlg-AddBillDetail" class="easyui-dialog" modal="true" style="width:260px;height:350px;padding:0px 0px"
         closed="true" buttons="#dlg-AddBillDetailbuttons">
         <form id="fm-inBillDetail" method="post" novalidate>
             <table style="padding:10px 10px 0px 5px">
@@ -331,7 +352,7 @@
 </div>
 
 <div id="dlg-detailButtons">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()">保存主单并添加明细</a>
-	<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dlg').dialog('close')">删除明细</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()">添加明细</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteBillDetailClick()">删除明细</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:$('#dlg').dialog('close')">修改明细</a>
 </div>

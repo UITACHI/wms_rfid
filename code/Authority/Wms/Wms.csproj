@@ -1005,6 +1005,7 @@
     <Content Include="Views\StockOutBill\_EditPartial.cshtml" />
     <Content Include="Views\OverStockProductSearch\Index.cshtml" />
     <Content Include="Views\OverStockProductSearch\_SearchPartial.cshtml" />
+    <Content Include="Views\StockInBill\_AllotPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
