@@ -7,7 +7,7 @@
             if (row.Status != "已审核") {
                 $.messager.confirm('错误', '该记录未审核无法进行分配！');
             } else {
-                $('#dlg').dialog('open').dialog('setTitle', '入库单据分配');
+                $('#dlg-allot').dialog('open').dialog('setTitle', '入库单据分配');
             }
         } else {
             $.messager.confirm('错误', '没有选择行！');
@@ -15,7 +15,61 @@
     };
 </script>
 
+<div id="dlg-allot" class="easyui-dialog" modal="true"
+        style="width:800px;height:500px;padding:0px 0px 0px 0px"
+        closed="true" buttons="" >
+        <div region="north" split="true"  border="false" style=" height:210px; border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">   
+    <table class="easyui-datagrid" border="false" singleSelect="true" id="inBillDetails" url="/StockInBill/InBillDetails/" toolbar="#bar"
+        fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
+        <thead>
+            <tr>
+                <th field="ProductCode" width="100">产品代码</th>
+                <th field="ProductName" width="80" align="right">产品名称</th>
+                <th field="UnitCode" width="80" align="right">单位编码</th>
+                <th field="UnitName" width="80" align="right">单位名称</th>
+                <th field="BillQuantity" width="80" align="right">数量</th>
+                <th field="RealQuantity" width="80" align="right">实际入库量</th>
+                <th field="Price" width="80" align="right">单价(元)</th>
+                <th field="Description" width="80" align="right">备注</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div id="bar">库区
+    <input class="easyui-combobox"
+            name="language"
+            url=""
+            valueField="id"
+            textField="text"
+            multiple="true"
+            panelHeight="auto">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="allot()">分配</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="allotSave()">保存</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="editAllot()">修改分配结果</a>
+</div>
 
+<div region="south" split="true" border="false" style=" height:250px; border-top-style: solid; border-top-width: 0px; border-top-color: 99BBE8;">
+    <table class="easyui-datagrid" border="false" singleSelect="true" id="allotBillDetails" url=""
+        fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
+        <thead>
+            <tr>
+                <th field="ID" width="100" hidden="true">分配细单ID</th>
+                <th field="BillNo" width="80" align="right">订单号</th>
+                <th field="ProductCode" width="80" align="right">商品编码</th>
+                <th field="CellCode" width="80" align="right">储位编码</th>
+                <th field="StorageCode" width="80" align="right">存储编码</th>
+                <th field="UnitCode" width="80" align="right">单位</th>
+                <th field="AllotQuantity" width="80" align="right">分配入库数量</th>
+                <th field="RealQuantity" width="80" align="right">实际入库数量</th>
+                <th field="OperatePersonID" width="80" align="right">作业人员</th>
+                <th field="StartTime" width="80" align="right">开始时间</th>
+                <th field="FinishTime" width="80" align="right">完成时间</th>
+                <th field="Status" width="80" align="right">作业状态</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+</div>
 
 
 
