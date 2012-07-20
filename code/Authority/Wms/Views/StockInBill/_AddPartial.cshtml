@@ -1,5 +1,6 @@
 ﻿<script type="text/javascript">
     var url;
+    var detailUrl;
     var billno;
     var isInBillMasterSaved;
     var isInBillMasterCanEdit;
@@ -81,6 +82,7 @@
                     hasDownArrow: true
                 });
                 url = '/StockInBill/Create/';
+                detailUrl = '/StockInBill/InBillDetailCreate/';
             } else {
                 $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
             }
@@ -165,9 +167,9 @@
     }
     }
 
-    function iBillDetailSave() {
+    function DetailSave() {
         $('#fm-inBillDetail').form('submit', {
-            url: '/StockInBill/InBillDetailCreate/',
+            url: detailUrl,
             onSubmit: function () {
                 return $(this).form('validate');
             },
@@ -189,6 +191,26 @@
                 }
             }
         });
+    }
+
+    function editBillDetailClick() {
+        alert("编辑");
+    }
+
+    function deleteBillDetailClick() {
+        var detailRow = $('#inBillDetail').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '删除入库细表信息');
+            $('#fm-inBillDetail .easyui-validatebox').validatebox({
+                required: false
+            });
+//            $('form input').attr("disabled", "disabled");
+//            $('form textarea').attr("disabled", "disabled");
+            $('#fm-inBillDetail').form('load', detailRow);
+            detailUrl = '/StockInBill/InBillDetailDelete/?ID=' + detailRow.ID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
     }
 
 </script>
@@ -235,10 +257,11 @@
 	            </form>
             </div>
             <div region="south" border="false" style="padding:0px 0px;background:#fff;border:1px solid #ccc; width:650" >
-            <table class="easyui-datagrid" border="false" id="details" toolbar="#dlg-detailButtons" height="250px" width="700" id="inBillDetail"
+            <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" height="250px" width="700" id="inBillDetail"
         fit="true" fitColumns="true" singleSelect="true"  pagination="true" rownumbers="true"  url="/StockInBill/InBillDetails/?BillNo=1207190001IN">
         <thead>
             <tr>
+                <th field="ID" width="100">细单ID</th>
                 <th field="ProductCode" width="100">产品代码</th>
                 <th field="ProductName" width="80" align="right">产品名称</th>
                 <th field="UnitCode" width="80" align="right">单位编码</th>
@@ -273,24 +296,24 @@
   </tr>
   <tr>
     <td style=" text-align:right">产品名称</td>
-    <td align="left"><input type="text" name="ProductName"/></td>
+    <td align="left"><input type="text" name="ProductName" class="easyui-validatebox" required="true"/></td>
     <td></td>
   </tr>
   <tr>
     <td style=" text-align:right">单位编码</td>
     <td align="left"><label>
-      <input type="text" name="UnitCode"/>
+      <input type="text" name="UnitCode" class="easyui-validatebox" required="true"/>
     </label></td>
     <td></td>
   </tr>
   <tr>
     <td style=" text-align:right">单位名称</td>
-    <td align="left"><input type="text" name="UnitName"/></td>
+    <td align="left"><input type="text" name="UnitName" class="easyui-validatebox" required="true"/></td>
     <td></td>
   </tr>
   <tr>
     <td style=" text-align:right">数量</td>
-    <td align="left"><input type="text" name="BillQuantity"/></td>
+    <td align="left"><input type="text" name="BillQuantity" class="easyui-validatebox" required="true"/></td>
     <td></td>
   </tr>
   <tr>
@@ -300,7 +323,7 @@
   </tr>
   <tr>
     <td style=" text-align:right">单价</td>
-    <td align="left"><input type="text" name="Price"/></td>
+    <td align="left"><input type="text" name="Price"class="easyui-validatebox" required="true"/></td>
     <td></td>
   </tr>
   <tr>
@@ -321,7 +344,7 @@
 
 </div>
 <div id="dlg-AddBillDetailbuttons">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="iBillDetailSave()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="DetailSave()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-AddBillDetail').dialog('close')">取消</a>
 </div>
 
@@ -331,7 +354,7 @@
 </div>
 
 <div id="dlg-detailButtons">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()">保存主单并添加明细</a>
-	<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dlg').dialog('close')">删除明细</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:$('#dlg').dialog('close')">修改明细</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()">添加明细</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteBillDetailClick()">删除明细</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBillDetailClick()">修改明细</a>
 </div>

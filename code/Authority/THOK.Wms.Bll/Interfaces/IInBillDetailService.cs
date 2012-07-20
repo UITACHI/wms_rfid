@@ -12,7 +12,7 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool Add(InBillDetail inBillDetail);
 
-        bool Delete(string BillNo);
+        bool Delete(string ID);
 
         bool Save(InBillDetail inBillDetail);
     }
