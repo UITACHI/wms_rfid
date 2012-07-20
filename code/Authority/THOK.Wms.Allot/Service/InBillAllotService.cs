@@ -15,5 +15,10 @@ namespace THOK.Wms.Allot.Service
         {
             get { return this.GetType(); }
         }
+
+        public bool Allot(string billNo)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

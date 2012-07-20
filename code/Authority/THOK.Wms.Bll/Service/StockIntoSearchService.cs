@@ -35,5 +35,11 @@ namespace THOK.Wms.Bll.Service
         }
 
         #endregion
+
+
+        public object GenInBillNo()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

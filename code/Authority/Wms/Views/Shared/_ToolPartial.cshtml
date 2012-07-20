@@ -24,21 +24,22 @@
     @if (ViewBag.hasExport != null && ViewBag.hasExport)
     {<a id="export" href="#" class="easyui-linkbutton" plain="true" fun="true">导出</a>}
     @if (ViewBag.hasDownload != null && ViewBag.hasDownload)
-    {<a id="Download" href="#" class="easyui-linkbutton" plain="true" fun="true">下载</a>}                                                                                              
+    {<a id="download" href="#" class="easyui-linkbutton" plain="true" fun="true">下载</a>}                                                                                              
     @if (ViewBag.hasAudit != null && ViewBag.hasAudit)
     {<a id="audit" href="#" class="easyui-linkbutton"  plain="true" fun="true">审核</a>}
     @if (ViewBag.hasAntiTrial != null && ViewBag.hasAntiTrial)
     {<a id="antitrial" href="#" class="easyui-linkbutton"  plain="true" fun="true">反审</a>}
+    @if (ViewBag.hasAllot != null && ViewBag.hasAllot)
+    {<a id="allot" href="#" class="easyui-linkbutton" plain="true" fun="true">分配</a>}
     @if (ViewBag.hasConfirm != null && ViewBag.hasConfirm)
-    {<a id="Confirm" href="#" class="easyui-linkbutton"  plain="true" fun="true">确认</a>}
+    {<a id="confirm" href="#" class="easyui-linkbutton"  plain="true" fun="true">确认</a>}
     @if (ViewBag.hasAntiConfirm != null && ViewBag.hasAntiConfirm)
     {<a id="anticonfirm" href="#" class="easyui-linkbutton"  plain="true" fun="true">反确认</a>}                                                                                                    
     @if (ViewBag.hasPrint != null && ViewBag.hasPrint)
     {<a id="print" href="#" class="easyui-linkbutton"  plain="true" fun="true">打印</a>}
     @if (ViewBag.hasHelp != null && ViewBag.hasHelp)
     {<a id="help" href="#" class="easyui-linkbutton"  plain="true" fun="true">帮助</a>}
-    @if (ViewBag.hasAllot != null && ViewBag.hasAllot)
-    {<a id="allot" href="#" class="easyui-linkbutton"  plain="true" fun="true">分配</a>}
+
    @*                                                                                 
     @if (ViewBag.hasAddWarehouse != null && ViewBag.hasAddWarehouse)
     {<a id="addWarehouse" href="#" class="easyui-linkbutton"  plain="true" fun="true">新增仓库</a>}
@@ -49,46 +50,6 @@
     @if (ViewBag.hasAddCell != null && ViewBag.hasAddCell)
     {<a id="addCell" href="#" class="easyui-linkbutton"  plain="true" fun="true">新增货位</a>}                       *@                                                                                                                                                                                                                                                                                                  
 </div>
-@if (ViewBag.hasSearch != null && ViewBag.hasSearch)
-{    @Html.Partial("_SearchPartial")}
-@if (ViewBag.hasAdd != null && ViewBag.hasAdd)
-{    @Html.Partial("_AddPartial")}
-@if (ViewBag.hasEdit != null && ViewBag.hasEdit)
-{    @Html.Partial("_EditPartial")}
-@if (ViewBag.hasDelete != null && ViewBag.hasDelete)
-{    @Html.Partial("_DeletePartial")}
-@if (ViewBag.hasSave != null && ViewBag.hasSave)
-{    @Html.Partial("_SavePartial")} 
-@if (ViewBag.hasFunctionAdmin != null && ViewBag.hasFunctionAdmin)
-{    @Html.Partial("_FunctionAdminPartial")}                                                                                             
-@if (ViewBag.hasPermissionAdmin != null && ViewBag.hasPermissionAdmin)
-{    @Html.Partial("_PermissionAdminPartial")}
-@if (ViewBag.hasRoleAdmin != null && ViewBag.hasRoleAdmin)
-{    @Html.Partial("_RoleAdminPartial")}
-@if (ViewBag.hasUserAdmin != null && ViewBag.hasUserAdmin)
-{    @Html.Partial("_UserAdminPartial")}
-@if (ViewBag.hasAuthorize != null && ViewBag.hasAuthorize)
-{    @Html.Partial("_AuthorizePartial")}
-@if (ViewBag.hasImport != null && ViewBag.hasImport)
-{   @Html.Partial("_ImportPartial")}
-@if (ViewBag.hasExport != null && ViewBag.hasExport)
-{   @Html.Partial("_ExportPartial")}
-@if (ViewBag.hasDownload != null && ViewBag.hasDownload)
-{   @Html.Partial("_DownLoadPartial")}
-@if (ViewBag.hasAudit != null && ViewBag.hasAudit)
-{   @Html.Partial("_AuditPartial")}
-@if (ViewBag.hasAntiTrial != null && ViewBag.hasAntiTrial)
-{   @Html.Partial("_AntiTrialPartial")}
-@if (ViewBag.hasConfirm != null && ViewBag.hasConfirm)
-{   @Html.Partial("_ConfirmPartial")}
-@if (ViewBag.hasAntiConfirm != null && ViewBag.hasAntiConfirm)
-{   @Html.Partial("_AntiConfirmPartial")}
-@if (ViewBag.hasPrint != null && ViewBag.hasPrint)
-{    @Html.Partial("_PrintPartial")}
-@if (ViewBag.hasHelp != null && ViewBag.hasHelp)
-{    @Html.Partial("_HelpPartial")}
-@if (ViewBag.hasAllot != null && ViewBag.hasAllot)
-{    @Html.Partial("_AllotPartial")}
                                   
 @*@if (ViewBag.hasAddWarehouse != null && ViewBag.hasAddWarehouse)
 {   @Html.Partial("_WarehouseEdit")}

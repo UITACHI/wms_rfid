@@ -27,9 +27,11 @@ namespace Authority.Controllers.Wms.StockOut
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
             ViewBag.hasDownload = true;
-            ViewBag.hasPrint = true;
-            ViewBag.hasHelp = true;
+            ViewBag.hasAudit = true;
+            ViewBag.hasAntiTrial = true;
             ViewBag.hasAllot = true;
+            ViewBag.hasPrint = true;
+            ViewBag.hasHelp = true;            
             ViewBag.ModuleID = moduleID;
             return View();
         }

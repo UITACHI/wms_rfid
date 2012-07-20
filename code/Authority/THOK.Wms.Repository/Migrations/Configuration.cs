@@ -1663,8 +1663,32 @@ namespace THOK.Wms.Repository.Migrations
                 {
                     FunctionID = new Guid("87565519-A56F-44e2-856D-24C2868142C0"),
                     FunctionName = "œ¬‘ÿ",
-                    ControlName = "Download",
+                    ControlName = "download",
                     IndicateImage = "icon-reload",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("87565519-A56F-44e2-856D-24C2868142D1"),
+                    FunctionName = "…Û∫À",
+                    ControlName = "audit",
+                    IndicateImage = "icon-ok",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("87565519-A56F-44e2-856D-24C2868142D2"),
+                    FunctionName = "∑¥…Û",
+                    ControlName = "antitrial",
+                    IndicateImage = "icon-undo",
+                    Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("87565519-A56F-44e2-856D-24C2868142C1"),
+                    FunctionName = "∑÷≈‰",
+                    ControlName = "allot",
+                    IndicateImage = "icon-Menu_CheckBill",
                     Module_ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
                 new Function()
@@ -1815,8 +1839,31 @@ namespace THOK.Wms.Repository.Migrations
                 {
                     FunctionID = new Guid("EF3789C5-9369-4f93-BFFB-E300C0493698"),
                     FunctionName = "œ¬‘ÿ",
-                    ControlName = "Download",
+                    ControlName = "download",
                     IndicateImage = "icon-reload",
+                    Module_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                }, new Function()
+                {
+                    FunctionID = new Guid("87565519-A56F-44e2-856D-24C2868142E1"),
+                    FunctionName = "…Û∫À",
+                    ControlName = "audit",
+                    IndicateImage = "icon-ok",
+                    Module_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("87565519-A56F-44e2-856D-24C2868142E2"),
+                    FunctionName = "∑¥…Û",
+                    ControlName = "antitrial",
+                    IndicateImage = "icon-undo",
+                    Module_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("87565519-A56F-44e2-856D-24C2868142C2"),
+                    FunctionName = "∑÷≈‰",
+                    ControlName = "allot",
+                    IndicateImage = "icon-Menu_CheckBill",
                     Module_ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471103")
                 },
                 new Function()
