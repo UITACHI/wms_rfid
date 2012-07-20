@@ -73,6 +73,17 @@ namespace Authority.Controllers.Wms.StockIn
         }
 
         //
+        // POST: /InBillMaster/Edit/
+
+        [HttpPost]
+        public ActionResult Edit(InBillMaster inBillMaster)
+        {
+            bool bResult = InBillMasterService.Save(inBillMaster);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
         // POST: /InBillDetail/InBillDetailCreate/
 
         [HttpPost]

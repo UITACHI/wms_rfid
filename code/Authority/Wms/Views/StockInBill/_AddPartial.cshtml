@@ -90,14 +90,25 @@
             save();
         } else {
             $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增入库订单明细');
+//            $('#fm-inBillDetail').form('clear');
+//            $('#searchProduct').clear();
             $('#detailBillNo').val(billno);
             $('#detailBillNo').attr("readonly", true);
+
+            $('#searchProduct').searchbox({
+                width: 130,
+                searcher: function (value, name) {
+                    alert(value + "," + name)
+                },
+                menu: '#',
+                prompt: '请输入产品代码'
+            }); 
         }
     };
 
     function save() {
         $('#fm').form('submit', {
-            url: '/StockInBill/Create/',
+            url:url,
             onSubmit: function () {
                 return $(this).form('validate');
             },
@@ -225,7 +236,8 @@
   </tr>
   <tr>
     <td style=" text-align:right">产品代码</td>
-    <td align="left"><input type="text" name="ProductCode"/></td>
+    @*<td align="left"><input type="text" name="ProductCode"/></td>*@
+    <td><input name="ProductCode" id="searchProduct"></input>
     <td></td>
   </tr>
   <tr>

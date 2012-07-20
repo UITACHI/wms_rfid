@@ -24,10 +24,10 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive)
         {
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
-            var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"), i.OperatePersonID, Status = i.Status == "1" ? "可用" : "不可用", IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)&&i.Status!="6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"), i.OperatePersonID,i.WarehouseCode,i.BillTypeCode, Status = i.Status == "1" ? "已录入" : "不可用", IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             if (!IsActive.Equals(""))
             {
-                inBillMaster = inBillMaster.Where(i => i.BillNo.Contains(BillNo) && i.IsActive.Contains(IsActive)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.BillDate, i.OperatePersonID, Status = i.Status == "1" ? "可用" : "不可用", IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime});
+                inBillMaster = inBillMaster.Where(i => i.BillNo.Contains(BillNo) && i.IsActive.Contains(IsActive)&&i.Status!="6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.BillDate, i.OperatePersonID, i.WarehouseCode, i.BillTypeCode, Status = i.Status == "1" ? "已录入" : "不可用", IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime });
             }
             int total = inBillMaster.Count();
             inBillMaster = inBillMaster.Skip((page - 1) * rows).Take(rows);
@@ -61,7 +61,25 @@ namespace THOK.Wms.Bll.Service
 
         public bool Save(InBillMaster inBillMaster)
         {
-            throw new NotImplementedException();
+            bool result=false;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo ==inBillMaster.BillNo&&i.Status=="1");
+            if (ibm!=null)
+            {
+                ibm.BillDate = inBillMaster.BillDate;
+                ibm.BillTypeCode = inBillMaster.BillTypeCode;
+                ibm.WarehouseCode = inBillMaster.WarehouseCode;
+                ibm.OperatePersonID = inBillMaster.OperatePersonID;
+                ibm.Status = "1";
+                ibm.VerifyPersonID = inBillMaster.VerifyPersonID;
+                ibm.VerifyDate = inBillMaster.VerifyDate;
+                ibm.Description = inBillMaster.Description;
+                ibm.IsActive = inBillMaster.IsActive;
+                ibm.UpdateTime = DateTime.Now;
+
+                InBillMasterRepository.SaveChanges();
+                result=true;
+            }
+            return result;
         }
 
         #endregion
