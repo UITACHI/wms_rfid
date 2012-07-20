@@ -21,7 +21,7 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return View();
         }
 
-        //查询库存信息表
+        //查询库存盘点预览信息
         // POST: /Storage/Details/
         [HttpPost]
         public ActionResult Details(int page, int rows,string type,string id)
@@ -30,7 +30,7 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return Json(storage, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //盘点查询货位库存信息表
+        //查询要生成的盘点数据表
         // POST: /Storage/CheckDetails/
         [HttpPost]
         public ActionResult CheckDetails(int page, int rows, string ware,string area,string shelf,string cell)

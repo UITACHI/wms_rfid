@@ -85,11 +85,16 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
-        public object FindWarehouse(string parameter)
+        /// <summary>
+        /// 根据参数Code查询仓库信息
+        /// </summary>
+        /// <param name="wareCode">仓库Code</param>
+        /// <returns></returns>
+        public object FindWarehouse(string wareCode)
         {
             IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
-            var warehouse = wareQuery.Where(w => w.WarehouseCode == parameter).AsEnumerable().Select(w => new { w.WarehouseCode, w.WarehouseName, w.WarehouseType, w.ShortName, w.Description, IsActive = w.IsActive == "1" ? "可用" : "不可用", UpdateTime = w.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
-            return warehouse.First(w => w.WarehouseCode == parameter);
+            var warehouse = wareQuery.Where(w => w.WarehouseCode == wareCode).AsEnumerable().Select(w => new { w.WarehouseCode, w.WarehouseName, w.WarehouseType, w.ShortName, w.Description, IsActive = w.IsActive == "1" ? "可用" : "不可用", UpdateTime = w.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            return warehouse.First(w => w.WarehouseCode == wareCode);
         }
 
         #endregion

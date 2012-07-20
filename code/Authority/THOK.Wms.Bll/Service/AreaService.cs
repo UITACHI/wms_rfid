@@ -90,11 +90,16 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
-        public object FindArea(string parameter)
+        /// <summary>
+        /// 查询参数Code查询库区信息
+        /// </summary>
+        /// <param name="areaCode">库区Code</param>
+        /// <returns></returns>
+        public object FindArea(string areaCode)
         {
             IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
-            var area = areaQuery.Where(a => a.AreaCode == parameter).OrderBy(b => b.AreaCode).AsEnumerable().Select(b => new { b.AreaCode, b.AreaName, b.AreaType, b.ShortName,b.AllotInOrder,b.AllotOutOrder, b.Description, b.Warehouse.WarehouseCode, b.Warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
-            return area.First(a => a.AreaCode == parameter);
+            var area = areaQuery.Where(a => a.AreaCode == areaCode).OrderBy(b => b.AreaCode).AsEnumerable().Select(b => new { b.AreaCode, b.AreaName, b.AreaType, b.ShortName,b.AllotInOrder,b.AllotOutOrder, b.Description, b.Warehouse.WarehouseCode, b.Warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            return area.First(a => a.AreaCode == areaCode);
         }
 
         #endregion

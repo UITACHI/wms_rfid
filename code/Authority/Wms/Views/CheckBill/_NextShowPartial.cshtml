@@ -6,9 +6,10 @@
     }
 
     function generateCheckClick() {
-        var data = $('#loadShowTable').datagrid('getData');
-        alert(data);
-        alert(data[0].CellCode);
+        alert(cellParameter);
+        $.getJSON('/CheckBill/CheckCreate/', { wareCodes: ware, areaCodes: area, shelfCodes: shelf, cellCodes: cell }, function (json) {
+            alert(json);
+        });
     }
 </script>
 <div id="nextShowDiv" class="easyui-dialog" modal="true" closed="true" style="width: 620px;
