@@ -18,5 +18,60 @@ namespace THOK.Wms.Bll.Service
         {
             get { return this.GetType(); }
         }
+
+        #region IOutBillDetailService 成员
+
+        public object GetDetails(int page, int rows, string BillNo)
+        {
+            if (BillNo != "" && BillNo != null)
+            {
+                IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
+                var outBillDetail = outBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.ProductCode, i.Product.ProductName, i.UnitCode, i.Unit.UnitName, i.BillQuantity, i.RealQuantity, i.Price, i.Description });
+                int total = outBillDetail.Count();
+                outBillDetail = outBillDetail.Skip((page - 1) * rows).Take(rows);
+                return new { total, rows = outBillDetail.ToArray() };
+            }
+            return "";
+        }
+
+        public bool Add(OutBillDetail outBillDetail)
+        {
+            IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
+            var isExistProduct = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode);
+            if (isExistProduct == null)
+            {
+                var ibd = new OutBillDetail();
+                ibd.BillNo = outBillDetail.BillNo;
+                ibd.ProductCode = outBillDetail.ProductCode;
+                ibd.UnitCode = outBillDetail.UnitCode;
+                ibd.Price = outBillDetail.Price;
+                ibd.BillQuantity = outBillDetail.BillQuantity;
+                ibd.AllotQuantity = 0;
+                ibd.RealQuantity = 0;
+                ibd.Description = outBillDetail.Description;
+
+                OutBillDetailRepository.Add(ibd);
+                OutBillDetailRepository.SaveChanges();
+            }
+            else
+            {
+                var ibd = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode);
+                ibd.BillQuantity = ibd.BillQuantity + outBillDetail.BillQuantity;
+                OutBillDetailRepository.SaveChanges();
+            }
+            return true;
+        }
+
+        public bool Delete(string BillNo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save(OutBillDetail inBillDetail)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
