@@ -1005,6 +1005,7 @@
     <Content Include="Views\StockOutBill\_EditPartial.cshtml" />
     <Content Include="Views\OverStockProductSearch\Index.cshtml" />
     <Content Include="Views\OverStockProductSearch\_SearchPartial.cshtml" />
+    <Content Include="Views\StockInBill\_ProductPartial.cshtml" />
     <Content Include="Views\StockInBill\_AllotPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

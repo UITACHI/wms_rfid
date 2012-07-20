@@ -28,6 +28,7 @@ namespace Authority.Controllers.Wms.StockIn
             ViewBag.hasDownload = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
+            ViewBag.hasAllot = true;
             ViewBag.ModuleID = moduleID;
             return View();
         }
