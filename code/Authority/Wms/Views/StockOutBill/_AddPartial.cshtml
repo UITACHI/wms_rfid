@@ -34,7 +34,7 @@
             required: true,
             width: 130,
             panelWidth: 340,
-            url: '/StockInBillType/Details/?page=1&rows=10',
+            url: '/StockOutBillType/Details/?page=1&rows=10',
             idField: 'BillTypeCode',
             textField: 'BillTypeName',
             mode: 'local',
@@ -65,7 +65,7 @@
         $('#billNo').attr("readonly", true);
         $('#billDate').attr("readonly", true);
         DataLoad();
-        $.getJSON("/StockInBill/GenInBillNo/", function (json) {
+        $.getJSON("/StockOutBill/GenInBillNo/", function (json) {
             if (json) {
                 $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
                 $('#fm').form('clear');
@@ -80,7 +80,7 @@
                 $('#cc').combo({
                     hasDownArrow: true
                 });
-                url = '/StockInBill/Create/';
+                url = '/StockOutBill/Create/';
             } else {
                 $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
             }
@@ -167,7 +167,7 @@
 
     function iBillDetailSave() {
         $('#fm-inBillDetail').form('submit', {
-            url: '/StockInBill/InBillDetailCreate/',
+            url: '/StockOutBill/OutBillDetailCreate/',
             onSubmit: function () {
                 return $(this).form('validate');
             },
@@ -192,8 +192,7 @@
     }
 
 </script>
-<div id="dlg" class="easyui-dialog" modal="true"
-        style="width:700px;height:500px;padding:2px 2px"
+<div id="dlg" class="easyui-dialog" modal="true"  style="width:700px;height:500px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc;">     
@@ -201,27 +200,27 @@
                     <table height="100px">
                       <tr>
                         <td width="60">订单号</td>
-                        <td width="168"><input name="BillNo" id="billNo" class="easyui-validatebox" required="true"></td>
+                        <td width="168"><input name="BillNo" id="billNo" class="easyui-validatebox" required="true" /></td>
                         <td width="60">制单日期</td>
-                        <td width="168"><input name="BillDate" id="billDate" class="easyui-validatebox" required="true"></td>
+                        <td width="168"><input name="BillDate" id="billDate" class="easyui-validatebox" required="true" /></td>
                         <td width="60">订单类型</td>
-                        <td width="168"><input name="BillTypeCode" id="biiTypeadd" missingmessage="请选择订单类型"></td>
+                        <td width="168"><input name="BillTypeCode" id="biiTypeadd" missingmessage="请选择订单类型" /></td>
                       </tr>
                       <tr>
                         <td width="60">仓库编码</td>
-                        <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
+                        <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码" /></td>
                         <td width="60">经办人</td>
-                        <td width="168"><input name="OperatePersonCode" class="easyui-validatebox" required="true"></td>
+                        <td width="168"><input name="OperatePersonCode" class="easyui-validatebox" required="true" /></td>
                         <td width="60">状态</td>
                         <td width="168"><input name="Status"></td>
                       </tr>
                       <tr>
                       <td width="60">审核人员</td>
-                        <td width="168"><input name="VerifyPersonCode"></td>
+                        <td width="168"><input name="VerifyPersonCode" /></td>
                         <td width="60">审核时间</td>
-                        <td width="168"><input name="VerifyDate"></td>
+                        <td width="168"><input name="VerifyDate" /></td>
                         <td width="60">描述</td>
-                        <td width="168"><input name="Description"></td>
+                        <td width="168"><input name="Description" /></td>
                       </tr>
                       <tr>
                         <td>状态:</td>

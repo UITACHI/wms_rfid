@@ -21,7 +21,7 @@
                 } else {
                     $('#cc').combo('setValue', false).combo('setText', row.IsActive);
                 }
-                url = '/StockInBill/Delete/?BillNo=' + row.BillNo;
+                url = '/StockOutBill/Delete/?BillNo=' + row.BillNo;
             }
         } else {
             $.messager.confirm('错误', '没有选择行！');

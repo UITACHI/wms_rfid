@@ -12,7 +12,7 @@ namespace Authority.Controllers.Wms.StockOut
     public class StockOutBillTypeController : Controller
     {
         //
-        // GET: /StockInBillType/
+        // GET: /StockOutBillType/
         [Dependency]
         public IBillTypeService BillTypeService { get; set; }
         //
