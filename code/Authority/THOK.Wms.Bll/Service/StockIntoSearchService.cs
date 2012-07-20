@@ -34,30 +34,6 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = inBillMaster.ToArray() };
         }
 
-
-        public object GenInBillNo()
-        {
-            IQueryable<InBillMaster> inBillMasterQuery = StockIntoSearchRepository.GetQueryable();
-            string sysTime = System.DateTime.Now.ToString("yyMMdd");
-            var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
-            if (inBillMaster.Count() == 0)
-            {
-                return System.DateTime.Now.ToString("yyMMdd") + "0001" + "IN";
-            }
-            else
-            {
-                string billNoStr = inBillMaster.Last(b => b.Contains(sysTime));
-                int i = Convert.ToInt32(billNoStr.ToString().Substring(6, 4));
-                i++;
-                string newcode = i.ToString();
-                for (int j = 0; j < 4 - i.ToString().Length; j++)
-                {
-                    newcode = "0" + newcode;
-                }
-                return System.DateTime.Now.ToString("yyMMdd") + newcode + "IN";
-            }
-        }
-
         #endregion
     }
 }

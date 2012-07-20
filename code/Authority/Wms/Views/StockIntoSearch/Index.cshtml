@@ -1,4 +1,18 @@
-﻿<div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
+﻿<script type="text/javascript">
+    $(function () {
+        $('#masters').datagrid({
+            onClickRow: function () {
+                var row = $('#masters').datagrid('getSelected');
+                if (row) {
+                    $('#details').datagrid({ url: '/StockIntoSearch/Details/?IntoBillNo=' + row.IntoBillNo });
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+                }
+            }
+        })
+    });
+</script>
+<div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
     <table id="masters" class="easyui-datagrid" 
         url="/StockIntoSearch/masters/" border="false" singleSelect="true"
         fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
