@@ -45,7 +45,8 @@ namespace Authority.Controllers.Wms.StockCheckInfo
         // POST: /CheckBill/CheckCreate/       
         public ActionResult CheckCreate(string wareCodes, string areaCodes, string shelfCodes, string cellCodes)
         {
-            bool bResult = CheckBillMasterService.CellAdd(wareCodes, areaCodes, shelfCodes, cellCodes);
+            bool bResult = CheckBillMasterService.Add(wareCodes, cellCodes);
+            //bool bResult = CheckBillMasterService.CellAdd(wareCodes, areaCodes, shelfCodes, cellCodes);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }        
