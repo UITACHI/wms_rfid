@@ -29,6 +29,7 @@ namespace Authority.Controllers.Wms.StockOut
             ViewBag.hasDownload = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
+            ViewBag.hasAllot = true;
             ViewBag.ModuleID = moduleID;
             return View();
         }
@@ -95,6 +96,15 @@ namespace Authority.Controllers.Wms.StockOut
         public ActionResult Delete(string BillNo)
         {
             bool bResult = OutBillMasterService.Delete(BillNo);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //根据主表ID和细表ID删除细表数据
+        // POST: /StockOutBill/outBillDelete/
+        public ActionResult outBillDelete(string BillNo,string ID)
+        {
+            bool bResult = OutBillDetailService.Delete(BillNo, ID);
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

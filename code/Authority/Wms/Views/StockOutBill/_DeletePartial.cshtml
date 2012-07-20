@@ -6,6 +6,7 @@
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
             } else {
+                $('#outBillDeatil').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + row.BillNo });
                 $('#dlg').dialog('open').dialog('setTitle', '删除入库主单信息');
                 $('#fm .easyui-validatebox').validatebox({
                     required: false
@@ -26,7 +27,7 @@
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }
-    };
+    }
 </script>
 
 

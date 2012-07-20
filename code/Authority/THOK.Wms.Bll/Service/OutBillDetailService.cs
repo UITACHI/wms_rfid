@@ -26,7 +26,7 @@ namespace THOK.Wms.Bll.Service
             if (BillNo != "" && BillNo != null)
             {
                 IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
-                var outBillDetail = outBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.ProductCode, i.Product.ProductName, i.UnitCode, i.Unit.UnitName, i.BillQuantity, i.RealQuantity, i.Price, i.Description });
+                var outBillDetail = outBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new {i.ID, i.BillNo, i.ProductCode, i.Product.ProductName, i.UnitCode, i.Unit.UnitName, i.BillQuantity, i.RealQuantity, i.Price, i.Description });
                 int total = outBillDetail.Count();
                 outBillDetail = outBillDetail.Skip((page - 1) * rows).Take(rows);
                 return new { total, rows = outBillDetail.ToArray() };
@@ -62,9 +62,17 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
-        public bool Delete(string BillNo)
+        public bool Delete(string BillNo, string ID)
         {
-            throw new NotImplementedException();
+            IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
+            int id = Convert.ToInt32(ID);
+            var outBillDetail = outBillDetailQuery.FirstOrDefault(o => o.BillNo == BillNo && o.ID == id);
+            if (outBillDetail != null)
+            {
+                OutBillDetailRepository.Delete(outBillDetail);
+                OutBillDetailRepository.SaveChanges();
+            }
+            return true;
         }
 
         public bool Save(OutBillDetail inBillDetail)
