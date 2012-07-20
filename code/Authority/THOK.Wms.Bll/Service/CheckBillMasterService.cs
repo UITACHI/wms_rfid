@@ -37,12 +37,14 @@ namespace THOK.Wms.Bll.Service
 
         public bool Add(string billNo,string wareCode)
         {
+            Guid empanyid = new Guid("d9f369dd-d793-41f5-a191-815503766e94");
             var check = new CheckBillMaster();
-            check.BillNo = billNo;
+            check.BillNo = "12070001CK";
             check.BillDate = DateTime.Now;
             check.BillTypeCode = "1";
-            check.WarehouseCode = wareCode;
-            check.OperatePersonID = Guid.NewGuid();
+            check.WarehouseCode = "CK001";
+            check.OperatePersonID = empanyid;
+            check.VerifyDate = null;
             check.Status = "1";
             check.IsActive = "1";
             check.UpdateTime = DateTime.Now;
@@ -114,7 +116,7 @@ namespace THOK.Wms.Bll.Service
                     var storages = storageQuery.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode.Contains(item.WarehouseCode))
                                                .OrderBy(s => s.StorageCode).AsEnumerable()
                                                .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
-                    if (storages != null)
+                    if (storages.Count() > 0 )
                     {
                         string billNo = GetCheckBillNo().ToString();
                         var check = new CheckBillMaster();
@@ -161,7 +163,7 @@ namespace THOK.Wms.Bll.Service
                 var storages = storageQuery.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode || area.Contains(s.cell.Shelf.Area.AreaCode) || shelf.Contains(s.cell.Shelf.ShelfCode) || cell.Contains(s.cell.CellCode))
                                            .OrderBy(s => s.StorageCode).AsEnumerable()
                                            .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
-                if (storages != null)
+                if (storages.Count() > 0)
                 {
                     string billNo = GetCheckBillNo().ToString();
                     var check = new CheckBillMaster();
