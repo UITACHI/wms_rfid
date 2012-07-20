@@ -25,6 +25,9 @@ namespace Authority.Controllers.Wms.StockIn
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.hasDownload = true;
+            ViewBag.hasPrint = true;
+            ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;
             return View();
         }
@@ -69,6 +72,28 @@ namespace Authority.Controllers.Wms.StockIn
         {
             bool bResult = InBillMasterService.Add(inBillMaster);
             string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /InBillMaster/Edit/
+
+        [HttpPost]
+        public ActionResult Edit(InBillMaster inBillMaster)
+        {
+            bool bResult = InBillMasterService.Save(inBillMaster);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /InBillMaster/Delete/
+
+        [HttpPost]
+        public ActionResult Delete(string BillNo)
+        {
+            bool bResult = InBillMasterService.Delete(BillNo);
+            string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 

@@ -1,4 +1,4 @@
-﻿<div id="toolbar" class="datagrid-toolbar" style="width: auto; height: auto; background-color: #FFFFFF;">
+﻿<div id="toolbars" class="datagrid-toolbar" style="width: auto; height: auto; background-color: #FFFFFF;">
     @if (ViewBag.hasSearch != null && ViewBag.hasSearch)
     {<a id="search" href="#" class="easyui-linkbutton" plain="true" fun="true">查询</a>}
     @if (ViewBag.hasAdd != null && ViewBag.hasAdd)
@@ -72,7 +72,7 @@
 @if (ViewBag.hasExport != null && ViewBag.hasExport)
 {   @Html.Partial("_ExportPartial")}
 @if (ViewBag.hasDownload != null && ViewBag.hasDownload)
-{@Html.Partial("_DownLoadPartial")}
+{   @Html.Partial("_DownLoadPartial")}
 @if (ViewBag.hasAudit != null && ViewBag.hasAudit)
 {   @Html.Partial("_AuditPartial")}
 @if (ViewBag.hasAntiTrial != null && ViewBag.hasAntiTrial)

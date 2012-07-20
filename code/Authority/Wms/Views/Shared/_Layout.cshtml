@@ -22,11 +22,11 @@
                 $('#centerPanel').layout('resize');
             });
             $('#centerPanel').panel({ onResize: function (width, height) {
-                    $('#layout').css('height', $('#centerPanel').height() - $('#toolbar').height() - 3);
+                    $('#layout').css('height', $('#centerPanel').height() - $('#toolbars').height() - 3);
                     $('#layout').layout('resize');
                 }
             });
-            $('#layout').css('height', $('#centerPanel').height() - $('#toolbar').height() - 3);
+            $('#layout').css('height', $('#centerPanel').height() - $('#toolbars').height() - 3);
             $('#layout').layout('resize');
 
             $('a.easyui-linkbutton[fun="true"]').linkbutton({

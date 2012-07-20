@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Data.Entity;
 using THOK.Common.Ef.Interfaces;
 using Microsoft.Practices.Unity;
+using System.Data;
 
 namespace THOK.Common.Ef.EntityRepository
 {
@@ -46,8 +47,13 @@ namespace THOK.Common.Ef.EntityRepository
         }
 
         public void Attach(T entity)
-        {
-            this.ObjectSet.Attach(entity);
+        {     
+            var entry = RepositoryContext.DbContext.Entry(entity);
+            if (entry.State == EntityState.Detached)
+            {
+                entry.State = EntityState.Modified;
+                //ObjectSet.Attach(entity);
+            }
         }
 
         public IQueryable<T> GetQueryable()

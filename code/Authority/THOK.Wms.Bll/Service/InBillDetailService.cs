@@ -55,7 +55,7 @@ namespace THOK.Wms.Bll.Service
             }
             else
             {
-                var ibd = inBillDetailQuery.FirstOrDefault(i => i.BillNo == inBillDetail.BillNo);
+                var ibd = inBillDetailQuery.FirstOrDefault(i => i.BillNo == inBillDetail.BillNo && i.ProductCode == inBillDetail.ProductCode);
                 ibd.BillQuantity = ibd.BillQuantity + inBillDetail.BillQuantity;
                 InBillDetailRepository.SaveChanges();
             }

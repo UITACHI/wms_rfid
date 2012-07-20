@@ -4,10 +4,15 @@
         $('#loadShowTable').datagrid('reload');
         $('#nextShowDiv').dialog('close');
     }
+
+    function generateCheckClick() {
+        $.getJSON('/CheckBill/CheckCreate/', { wareCodes: ware, areaCodes: area, shelfCodes: shelf, cellCodes: cell }, function (json) {
+            
+        });
+    }
 </script>
-<div id="nextShowDiv" class="easyui-dialog" modal="true" closed="true" style="width: 620px;
-    height: 400px; background: #fff; border: 1px solid #ccc;">
-    <div style="margin: 6px 0px 0px 10px; height: 320px; background: #fff; border: 1px solid #ccc;">
+<div id="nextShowDiv" class="easyui-dialog" modal="true" closed="true" style="width: 620px; height: 400px; 
+    background: #fff; border: 1px solid #ccc;" buttons="#upDiv">
         <table id="nextShowTable" class="easyui-datagrid" border="false" singleselect="true"
             fit="true" pagination="true" rownumbers="true">
             <thead>
@@ -39,9 +44,8 @@
                 </tr>
             </thead>
         </table>
-    </div>
-    <div id="upDiv" style="width: 100%; text-align: right;">
-        <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="upDivClick()">取消</a>
-        <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="upCheckClick()">生成盘点单</a>
-    </div>
+ </div>
+ <div id="upDiv">
+        <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="generateCheckClick()">生成盘点单</a>
+        <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="upDivClick()">取消</a>        
 </div>

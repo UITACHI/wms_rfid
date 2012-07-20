@@ -21,13 +21,40 @@ namespace THOK.Wms.Bll.Service
 
         #region IInBillMasterService 成员
 
+        public string WhatStatus(string status)
+        {
+            string statusStr="";
+            switch (status)
+            {
+                case "1":
+                    statusStr = "已录入";
+                    break;
+                case "2":
+                    statusStr = "已审核";
+                    break;
+                case "3":
+                    statusStr = "已分配";
+                    break;
+                case "4":
+                    statusStr = "已确认";
+                    break;
+                case "5":
+                    statusStr = "执行中";
+                    break;
+                case "6":
+                    statusStr = "已入库";
+                    break;
+            }
+            return statusStr;
+        }
+
         public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive)
         {
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
-            var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"), i.OperatePersonID, Status = i.Status == "1" ? "可用" : "不可用", IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)&&i.Status!="6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"), i.OperatePersonID,i.WarehouseCode,i.BillTypeCode, Status = WhatStatus(i.Status), IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             if (!IsActive.Equals(""))
             {
-                inBillMaster = inBillMaster.Where(i => i.BillNo.Contains(BillNo) && i.IsActive.Contains(IsActive)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.BillDate, i.OperatePersonID, Status = i.Status == "1" ? "可用" : "不可用", IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime});
+                inBillMaster = inBillMaster.Where(i => i.BillNo.Contains(BillNo) && i.IsActive.Contains(IsActive) &&i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.BillDate, i.OperatePersonID, i.WarehouseCode, i.BillTypeCode, Status = WhatStatus(i.Status), IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime });
             }
             int total = inBillMaster.Count();
             inBillMaster = inBillMaster.Skip((page - 1) * rows).Take(rows);
@@ -56,12 +83,33 @@ namespace THOK.Wms.Bll.Service
 
         public bool Delete(string BillNo)
         {
-            throw new NotImplementedException();
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i=>i.BillNo==BillNo&&i.Status=="1");
+            InBillMasterRepository.Delete(ibm);
+            InBillMasterRepository.SaveChanges();
+            return true;
         }
 
         public bool Save(InBillMaster inBillMaster)
         {
-            throw new NotImplementedException();
+            bool result=false;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo ==inBillMaster.BillNo&&i.Status=="1");
+            if (ibm!=null)
+            {
+                ibm.BillDate = inBillMaster.BillDate;
+                ibm.BillTypeCode = inBillMaster.BillTypeCode;
+                ibm.WarehouseCode = inBillMaster.WarehouseCode;
+                ibm.OperatePersonID = inBillMaster.OperatePersonID;
+                ibm.Status = "1";
+                ibm.VerifyPersonID = inBillMaster.VerifyPersonID;
+                ibm.VerifyDate = inBillMaster.VerifyDate;
+                ibm.Description = inBillMaster.Description;
+                ibm.IsActive = inBillMaster.IsActive;
+                ibm.UpdateTime = DateTime.Now;
+
+                InBillMasterRepository.SaveChanges();
+                result=true;
+            }
+            return result;
         }
 
         #endregion

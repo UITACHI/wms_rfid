@@ -111,12 +111,17 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
        
-        public object FindShelf(string parameter)
+        /// <summary>
+        /// 根据参数Code查询货架信息
+        /// </summary>
+        /// <param name="shelfCode">货架Code</param>
+        /// <returns></returns>
+        public object FindShelf(string shelfCode)
         {
             IQueryable<Shelf> shelfQuery = ShelfRepository.GetQueryable();
-            var shelf = shelfQuery.Where(s=>s.ShelfCode==parameter).OrderBy(b => b.ShelfCode).AsEnumerable()
+            var shelf = shelfQuery.Where(s=>s.ShelfCode==shelfCode).OrderBy(b => b.ShelfCode).AsEnumerable()
                                   .Select(b => new { b.ShelfCode, b.ShelfName, b.ShelfType,b.CellCols,b.CellRows,b.ImgX,b.ImgY,b.ShortName, b.Description, b.Area.AreaCode, b.Area.AreaName, b.Warehouse.WarehouseCode, b.Warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
-            return shelf.First(s => s.ShelfCode == parameter);
+            return shelf.First(s => s.ShelfCode == shelfCode);
         }
 
         #endregion

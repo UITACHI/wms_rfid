@@ -10,12 +10,15 @@ namespace THOK.Wms.Bll.Interfaces
     {
         object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status);
 
-        bool Add(CheckBillMaster inBillMaster);
+        bool Add(string billNo,string wareCode);
+
+        bool CellAdd(string ware, string area, string shelf, string cell);
 
         bool Delete(string BillNo);
 
         bool Save(CheckBillMaster inBillMaster);
 
-        object GetCheckCellInfo(string type, string id);
+        object GetCheckBillNo();
+
     }
 }
