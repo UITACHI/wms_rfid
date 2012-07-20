@@ -15,7 +15,45 @@
         $('#addCheck').dialog('open').dialog('setTitle', '新增');
     }
     function nextDivClick() {
-        $('#nextShowTable').datagrid('options').url = '/Storage/Details/';
+        var roots = $('#warehouseTree').tree('getRoots');
+        var ware = "", area = "", shelf = "", cell = "";
+        var areaChildren, shelfChildren, cellChildren;
+        if (roots) {
+            //仓库
+            for (i = 0; i < roots.length; i++) {
+                if (roots[i].attributes == "ware" && roots[i].checked == true) {
+                    ware += roots[i].id + ",";
+                } else {
+                    areaChildren = $('#warehouseTree').tree('getChildren', roots[i].target);
+                    //库区
+                    for (j = 0; j < areaChildren.length; j++) {
+                        if (areaChildren[j].attributes == "area" && areaChildren[j].checked == true) {
+                            area += areaChildren[j].id + ",";
+                        } else {
+                            shelfChildren = $('#warehouseTree').tree('getChildren', areaChildren[j].target);
+                            //货架
+                            for (h = 0; h < shelfChildren.length; h++) {
+                                if (shelfChildren[h].attributes == "shelf" && shelfChildren[h].checked == true) {
+                                    shelf += shelfChildren[h].id + ",";
+                                } else {
+                                    cellChildren = $('#warehouseTree').tree('getChildren', shelfChildren[h].target);
+                                   //货位
+                                    for (k = 0; k < cellChildren.length; k++) {
+                                        if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
+                                            cell += cellChildren[k].id + ",";
+                                        } 
+                                    }
+                                } 
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            alert("请选择需盘点的货位！");
+        }
+        //alert("仓库：" + ware + "库区：" + area + "货架" + shelf + "货位：" + cell);
+        $('#nextShowTable').datagrid('options').url = '/Storage/CheckDetails/?ware=' + ware + '&area=' + area + '&shelf=' + shelf + '&cell=' + cell;
         $('#nextShowTable').datagrid('load');
         $('#nextShowDiv').dialog('open').dialog('setTitle', '盘点数据');
     }
@@ -30,8 +68,7 @@
     </div>
     <div id="container">
                 <div id="sidebar">
-                    <ul id="warehouseTree" style="text-align: left;" class="easyui-tree" checkbox="true"
-                        onclick="treeClick()" url='/Cell/GetCheckDetails/'>
+                    <ul id="warehouseTree" style="text-align:left;" class="easyui-tree" checkbox="true" url='/Cell/GetCheckDetails/'>
                     </ul>
                 </div>
                 <div id="main">
