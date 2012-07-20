@@ -8,5 +8,12 @@ namespace THOK.Wms.Bll.Interfaces
 {
     public interface IOutBillDetailService:IService<OutBillDetail>
     {
+        object GetDetails(int page, int rows, string BillNo);
+
+        bool Add(OutBillDetail outBillDetail);
+
+        bool Delete(string BillNo);
+
+        bool Save(OutBillDetail outBillDetail);
     }
 }
