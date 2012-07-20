@@ -25,6 +25,7 @@ namespace Authority.Controllers.Wms.StockIn
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.hasAllot = true;
             ViewBag.ModuleID = moduleID;
             return View();
         }
