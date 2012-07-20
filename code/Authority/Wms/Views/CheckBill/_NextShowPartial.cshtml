@@ -6,7 +6,6 @@
     }
 
     function generateCheckClick() {
-        alert(cellParameter);
         $.getJSON('/CheckBill/CheckCreate/', { wareCodes: ware, areaCodes: area, shelfCodes: shelf, cellCodes: cell }, function (json) {
             alert(json);
         });
