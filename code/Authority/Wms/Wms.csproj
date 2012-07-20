@@ -997,6 +997,7 @@
     <Content Include="Views\StockInBill\_AddPartial.cshtml" />
     <Content Include="Views\StockInBill\_EditPartial.cshtml" />
     <Content Include="Views\StockInBill\_DeletePartial.cshtml" />
+    <Content Include="Views\Shared\_DownLoadPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
