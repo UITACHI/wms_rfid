@@ -52,14 +52,13 @@
         } else {
             alert("请选择需盘点的货位！");
         }
-        //alert("仓库：" + ware + "库区：" + area + "货架" + shelf + "货位：" + cell);
         $('#nextShowTable').datagrid('options').url = '/Storage/CheckDetails/?ware=' + ware + '&area=' + area + '&shelf=' + shelf + '&cell=' + cell;
         $('#nextShowTable').datagrid('load');
         $('#nextShowDiv').dialog('open').dialog('setTitle', '盘点数据');
     }
 </script>
 <div id="addCheck" class="easyui-dialog" modal="true" style="width: 800px; height: 460px;padding: 1px 1px" closed="true">
-    <div id="11111" toolbar="#toolbar" style="text-align: left; border: 1px solid #ccc;">
+    <div id="topDiv" toolbar="#toolbar" style="text-align: left; border: 1px solid #ccc;">
         <div id="toolbar" class="datagrid-toolbar" style="width: auto; height: auto; background-color: #FFFFFF;">
             <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="cellCheck" onclick="cellCheckClick()">货位盘点</a>
             <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" id="productCheck" onclick="productCheckClick()">产品盘点</a> 
@@ -95,10 +94,6 @@
                  </div>
          </div>
     </div>
-    @*
-    <div id="realDiv" style="display: none">
-        @Html.Partial("_RealTimeCheckPartial")
-    </div>*@
 </div>
 <style type="text/css">    
     #layout
@@ -141,5 +136,4 @@
         line-height: 0px;
     }
 </style>
-
 @Html.Partial("_NextShowPartial")
