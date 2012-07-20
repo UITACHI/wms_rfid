@@ -56,7 +56,10 @@ namespace THOK.Wms.Bll.Service
 
         public bool Delete(string BillNo)
         {
-            throw new NotImplementedException();
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i=>i.BillNo==BillNo&&i.Status=="1");
+            InBillMasterRepository.Delete(ibm);
+            InBillMasterRepository.SaveChanges();
+            return true;
         }
 
         public bool Save(InBillMaster inBillMaster)
