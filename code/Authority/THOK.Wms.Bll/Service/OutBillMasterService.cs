@@ -70,7 +70,7 @@ namespace THOK.Wms.Bll.Service
             outbm.WarehouseCode = outBillMaster.WarehouseCode;
             outbm.OperatePersonID = outBillMaster.OperatePersonID;
             outbm.Status = "1";
-            outbm.VerifyPersonCode = outBillMaster.VerifyPersonCode;
+            outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
             outbm.VerifyDate = outBillMaster.VerifyDate;
             outbm.Description = outBillMaster.Description;
             outbm.IsActive = outBillMaster.IsActive;
@@ -100,7 +100,7 @@ namespace THOK.Wms.Bll.Service
                 outbm.WarehouseCode = outBillMaster.WarehouseCode;
                 outbm.OperatePersonID = outBillMaster.OperatePersonID;
                 outbm.Status = "1";
-                outbm.VerifyPersonCode = outBillMaster.VerifyPersonCode;
+                outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
                 outbm.VerifyDate = outBillMaster.VerifyDate;
                 outbm.Description = outBillMaster.Description;
                 outbm.IsActive = outBillMaster.IsActive;
