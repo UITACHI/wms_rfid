@@ -118,6 +118,11 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
+        /// <summary>
+        /// 盘点时用的树形结构数据，可根据货架Code查询
+        /// </summary>
+        /// <param name="shelfCode">货架Code</param>
+        /// <returns></returns>
         public object GetWareCheck(string shelfCode)
         {
             var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();          
@@ -180,14 +185,24 @@ namespace THOK.Wms.Bll.Service
             return wareSet.ToArray();
         }
 
-        public object FindCell(string parameter)
+        /// <summary>
+        /// 根据参数Code查询货位信息
+        /// </summary>
+        /// <param name="cellCode">货位Code</param>
+        /// <returns></returns>
+        public object FindCell(string cellCode)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
-            var cell = cellQuery.Where(c => c.CellCode == parameter).OrderBy(b => b.CellCode).AsEnumerable()
+            var cell = cellQuery.Where(c => c.CellCode == cellCode).OrderBy(b => b.CellCode).AsEnumerable()
                                 .Select(b => new { b.CellCode, b.CellName, b.CellType, b.ShortName, b.Rfid, b.Layer,b.Col,b.ImgX,b.ImgY,b.IsSingle, b.MaxQuantity, b.Description, b.Warehouse.WarehouseName, b.Warehouse.WarehouseCode, b.Area.AreaCode, b.Area.AreaName, b.Shelf.ShelfCode, b.Shelf.ShelfName, DefaultProductCode = b.Product == null ? string.Empty : b.Product.ProductCode, ProductName = b.Product == null ? string.Empty : b.Product.ProductName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
-            return cell.First(c => c.CellCode == parameter);
+            return cell.First(c => c.CellCode == cellCode);
         }
 
+        /// <summary>
+        /// 仓库设置时用的TreeGrid的树形结构，可根据仓库Code查询
+        /// </summary>
+        /// <param name="wareCode">仓库Code</param>
+        /// <returns></returns>
         public object GetSearch(string wareCode)
         {
             var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();
@@ -263,6 +278,11 @@ namespace THOK.Wms.Bll.Service
             return wareSet.ToArray();
         }
 
+        /// <summary>
+        /// 仓库设置点击货架查询货架的货位信息
+        /// </summary>
+        /// <param name="shelfCode">货架Code</param>
+        /// <returns></returns>
         public object GetCell(string shelfCode)
         {
             HashSet<WareTree> wareSet = new HashSet<WareTree>();

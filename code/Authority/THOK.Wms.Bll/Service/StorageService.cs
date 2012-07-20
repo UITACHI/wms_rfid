@@ -24,6 +24,14 @@ namespace THOK.Wms.Bll.Service
 
         #region IStorageService 成员
 
+        /// <summary>
+        /// 根据类型获和id获取存储表的数据
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="type">类型</param>
+        /// <param name="id">ID</param>
+        /// <returns></returns>
         public object GetDetails(int page, int rows, string type, string id)
         {
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
@@ -57,7 +65,16 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = storages.ToArray() };
         }
 
-
+        /// <summary>
+        /// 根据参数获取要生成的盘点数据
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="ware">仓库</param>
+        /// <param name="area">库区</param>
+        /// <param name="shelf">货架</param>
+        /// <param name="cell">货位</param>
+        /// <returns></returns>
         public object GetDetails(int page, int rows, string ware, string area, string shelf, string cell)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
