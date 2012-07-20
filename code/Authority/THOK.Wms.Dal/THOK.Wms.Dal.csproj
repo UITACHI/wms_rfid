@@ -86,6 +86,7 @@
     <Compile Include="Interfaces\IOutBillMasterRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IShelfRepository.cs" />
+    <Compile Include="Interfaces\IStockIntoSearchRepository.cs" />
     <Compile Include="Interfaces\IStorageRepository.cs" />
     <Compile Include="Interfaces\ISupplierRepository.cs" />
     <Compile Include="Interfaces\IUnitListRepository.cs" />
