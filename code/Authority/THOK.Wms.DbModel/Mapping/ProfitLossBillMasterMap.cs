@@ -42,8 +42,8 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsFixedLength()
                 .HasMaxLength(1);
 
-            this.Property(t => t.VerifyPersonCode)
-                .HasMaxLength(20);
+            this.Property(t => t.VerifyPersonID)
+                 .IsRequired();
 
             this.Property(t => t.Description)
                 .HasMaxLength(100);
@@ -64,7 +64,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.WarehouseCode).HasColumnName(ColumnMap.Value.To("WarehouseCode"));
             this.Property(t => t.OperatePersonCode).HasColumnName(ColumnMap.Value.To("OperatePersonCode"));
             this.Property(t => t.Status).HasColumnName(ColumnMap.Value.To("Status"));
-            this.Property(t => t.VerifyPersonCode).HasColumnName(ColumnMap.Value.To("VerifyPersonCode"));
+            this.Property(t => t.VerifyPersonID).HasColumnName(ColumnMap.Value.To("VerifyPersonCode"));
             this.Property(t => t.VerifyDate).HasColumnName(ColumnMap.Value.To("VerifyDate"));
             this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
