@@ -45,8 +45,13 @@ namespace Wms
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
             RegisterIocUnityControllerFactory();
-        }        
+        }
 
+        public void Session_OnEnd()
+        {
+            int i = 0;
+            i++;
+        }
         //protected void Application_Error(object sender, EventArgs e)
         //{
         //    Exception exception = Server.GetLastError();

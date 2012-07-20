@@ -9,6 +9,15 @@
                 msg: thrownError
             });
         });
+        window.onbeforeunload = function ()  
+        {
+            var n = window.event.screenX - window.screenLeft;
+            var b = n > document.documentElement.scrollWidth - 20;
+            if (b && window.event.clientY < 0 || window.event.altKey) {
+                alert("是关闭而非刷新");
+                window.event.returnValue = false; //这里可以放置你想做的操作代码    
+            }
+        };
         LogOn();
     });
     function LogOn() {
@@ -262,7 +271,7 @@
                 left: e.pageX,
                 top: e.pageY
             });
-            $('#mm').css({'z-index': 2147483647});
+            $('#mm').css({ 'z-index': 2147483647 });
             return false;
         });
     }
