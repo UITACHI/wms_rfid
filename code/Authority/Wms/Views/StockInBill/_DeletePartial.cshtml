@@ -3,6 +3,7 @@
     function deleteClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
+            isInBillMasterCanEdit = true;
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
             } else {

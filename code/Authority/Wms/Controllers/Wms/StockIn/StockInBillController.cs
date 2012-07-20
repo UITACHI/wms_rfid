@@ -105,5 +105,16 @@ namespace Authority.Controllers.Wms.StockIn
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /InBillDetail/InBillDetailDelete/
+
+        [HttpPost]
+        public ActionResult InBillDetailDelete(string ID)
+        {
+            bool bResult = InBillDetailService.Delete(ID);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
