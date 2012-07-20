@@ -1,6 +1,7 @@
 ﻿<script type="text/javascript">
     var url;
     var billno;
+    var isInBillMasterSaved;
     $(function () {
         $('#cc').combo({
             required: true,
@@ -58,6 +59,7 @@
     }
 
     function addClick() {
+        isInBillMasterSaved = true;
         $('#billNo').attr("readonly", true);
         $('#billDate').attr("readonly", true);
         DataLoad();
@@ -84,14 +86,18 @@
     };
 
     function addBillDetailClick() {
-        $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增入库订单明细');
-        $('#detailBillNo').val(billno);
-        $('#detailBillNo').attr("readonly", true);
+        if (isInBillMasterSaved) {
+            save();
+        } else {
+            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增入库订单明细');
+            $('#detailBillNo').val(billno);
+            $('#detailBillNo').attr("readonly", true);
+        }
     };
 
     function save() {
         $('#fm').form('submit', {
-            url: url,
+            url: '/StockInBill/Create/',
             onSubmit: function () {
                 return $(this).form('validate');
             },
@@ -102,7 +108,9 @@
                         title: '成功',
                         msg: result.msg
                     });
-                    $('#dlg').dialog('close');
+
+                    isInBillMasterSaved = false;
+                    //                    $('#dlg').dialog('close');
                     $('#details').datagrid('reload');
                 } else {
                     $.messager.show({
@@ -114,29 +122,56 @@
             }
         });
     }
+
+    function iBillDetailSave() {
+        $('#fm-inBillDetail').form('submit', {
+            url: '/StockInBill/InBillDetailCreate/',
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg-AddBillDetail').dialog('close');
+                    $('#inBillDetail').datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#inBillDetail').datagrid('reload');
+                }
+            }
+        });
+    }
+
 </script>
 <div id="dlg" class="easyui-dialog" modal="true"
         style="width:700px;height:500px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
-			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; width:auto ; height:auto ">     
+			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc;">     
 	            <form id="fm" method="post" novalidate>
-                    <table width="650">
+                    <table height="100px">
                       <tr>
                         <td width="60">订单号</td>
                         <td width="168"><input name="BillNo" id="billNo" class="easyui-validatebox" required="true"></td>
                         <td width="60">制单日期</td>
                         <td width="168"><input name="BillDate" id="billDate" class="easyui-validatebox" required="true"></td>
                         <td width="60">订单类型</td>
-                        <td width="168"><input name="BillTypeCode" id="biiTypeadd"></td>
+                        <td width="168"><input name="BillTypeCode" id="biiTypeadd" missingmessage="请选择订单类型"></td>
                       </tr>
                       <tr>
                         <td width="60">仓库编码</td>
-                        <td width="168"><input name="WarehouseCode" id="wareHouseadd"></td>
+                        <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
                         <td width="60">经办人</td>
                         <td width="168"><input name="OperatePersonCode" class="easyui-validatebox" required="true"></td>
                         <td width="60">状态</td>
-                        <td width="168"><input name="Status" class="easyui-validatebox" required="true" ></td>
+                        <td width="168"><input name="Status"></td>
                       </tr>
                       <tr>
                       <td width="60">审核人员</td>
@@ -157,9 +192,9 @@
                     </table>
 	            </form>
             </div>
-            <div region="south" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; width:650" >
-            <table class="easyui-datagrid" border="false" id="details" toolbar="#dlg-detailButtons" height="250px" width="700"
-        fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
+            <div region="south" border="false" style="padding:0px 0px;background:#fff;border:1px solid #ccc; width:650" >
+            <table class="easyui-datagrid" border="false" id="details" toolbar="#dlg-detailButtons" height="250px" width="700" id="inBillDetail"
+        fit="true" fitColumns="true" singleSelect="true"  pagination="true" rownumbers="true"  url="/StockInBill/InBillDetails/?BillNo=1207190001IN">
         <thead>
             <tr>
                 <th field="ProductCode" width="100">产品代码</th>
@@ -181,6 +216,7 @@
     <div  id="dlg-AddBillDetail" class="easyui-dialog" modal="true"
         style="width:260px;height:350px;padding:0px 0px"
         closed="true" buttons="#dlg-AddBillDetailbuttons">
+        <form id="fm-inBillDetail" method="post" novalidate>
 <table style="padding:10px 10px 0px 5px">
   <tr>
     <td style=" text-align:right">入库单号</td>
@@ -234,13 +270,15 @@
     <td align="left"><label>
       <textarea name="textarea" id="textarea" cols="21" rows="4"></textarea>
     </label></td>
-    <td></td>
+    <td>
+    </td>
   </tr>
 </table>
+</form>
 
 </div>
 <div id="dlg-AddBillDetailbuttons">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="sav()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="iBillDetailSave()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-AddBillDetail').dialog('close')">取消</a>
 </div>
 
@@ -250,7 +288,7 @@
 </div>
 
 <div id="dlg-detailButtons">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()">添加明细</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()">保存主单并添加明细</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dlg').dialog('close')">删除明细</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:$('#dlg').dialog('close')">修改明细</a>
 </div>

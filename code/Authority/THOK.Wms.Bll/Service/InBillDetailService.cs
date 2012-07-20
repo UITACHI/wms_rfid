@@ -36,7 +36,30 @@ namespace THOK.Wms.Bll.Service
 
         public new bool Add(InBillDetail inBillDetail)
         {
-            throw new NotImplementedException();
+            IQueryable<InBillDetail> inBillDetailQuery = InBillDetailRepository.GetQueryable();
+            var isExistProduct = inBillDetailQuery.FirstOrDefault(i=>i.BillNo==inBillDetail.BillNo&&i.ProductCode==inBillDetail.ProductCode);
+            if (isExistProduct == null)
+            {
+                var ibd = new InBillDetail();
+                ibd.BillNo = inBillDetail.BillNo;
+                ibd.ProductCode = inBillDetail.ProductCode;
+                ibd.UnitCode = inBillDetail.UnitCode;
+                ibd.Price = inBillDetail.Price;
+                ibd.BillQuantity = inBillDetail.BillQuantity;
+                ibd.AllotQuantity = 0;
+                ibd.RealQuantity = 0;
+                ibd.Description = inBillDetail.Description;
+
+                InBillDetailRepository.Add(ibd);
+                InBillDetailRepository.SaveChanges();
+            }
+            else
+            {
+                var ibd = inBillDetailQuery.FirstOrDefault(i => i.BillNo == inBillDetail.BillNo);
+                ibd.BillQuantity = ibd.BillQuantity + inBillDetail.BillQuantity;
+                InBillDetailRepository.SaveChanges();
+            }
+            return true;
         }
 
         public bool Delete(string BillNo)
