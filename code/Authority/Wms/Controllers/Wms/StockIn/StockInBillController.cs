@@ -19,12 +19,13 @@ namespace Authority.Controllers.Wms.StockIn
         //
         // GET: /StockInBill/
 
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 
@@ -67,6 +68,17 @@ namespace Authority.Controllers.Wms.StockIn
         public ActionResult Create(InBillMaster inBillMaster)
         {
             bool bResult = InBillMasterService.Add(inBillMaster);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /InBillDetail/InBillDetailCreate/
+
+        [HttpPost]
+        public ActionResult InBillDetailCreate(InBillDetail inBillDetail)
+        {
+            bool bResult = InBillDetailService.Add(inBillDetail);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

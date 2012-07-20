@@ -17,12 +17,15 @@ namespace Authority.Controllers.ProductInfo
         //
         // GET: /Units/
 
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.hasPrint = true;
+            ViewBag.hasHelp = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 

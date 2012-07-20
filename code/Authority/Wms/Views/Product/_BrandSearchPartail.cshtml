@@ -26,6 +26,9 @@
         $('#isBrandActive').combo('setValue', null).combo('setText', '');
         $("#BrandCode").val('');
         $("#BrandName").val('');
+        queryBrandParams.IsActive = $('#isBrandActive').combo('getValue');
+        queryBrandParams.BrandCode = $('#BrandCode').val();
+        queryBrandParams.BrandName = $('#BrandName').val();
     }
 
 </script>

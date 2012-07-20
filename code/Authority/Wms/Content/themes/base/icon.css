@@ -364,6 +364,110 @@
 	background:url('images/son_CheckBillMake.png') no-repeat;
 }
 
+/*新增权限系统icon.css -icons*/
+.icon-Menu_Help{
+	background:url('icons/2Menu_Help.png') no-repeat;
+}
+.icon-Menu_Jurisdiction{
+	background:url('icons/2Menu_Jurisdiction.png') no-repeat;
+}
+.icon-Menu_ServerDevice{
+	background:url('icons/2Menu_ServerDevice.png') no-repeat;
+}
+.icon-Menu_SysLog{
+	background:url('icons/2Menu_SysLog.png') no-repeat;
+}
+.icon-Son_Cities{
+	background:url('icons/2Son_Cities.png') no-repeat;
+}
+.icon-Son_HelpContents{
+	background:url('icons/2Son_HelpContents.png') no-repeat;
+}
+.icon-Son_HelpEdit{
+	background:url('icons/2Son_HelpEdit.png') no-repeat;
+}
+.icon-Son_HelpIndex{
+	background:url('icons/2Son_HelpIndex.png') no-repeat;
+}
+.icon-Son_LoginLog{
+	background:url('icons/2Son_LoginLog.png') no-repeat;
+}
+.icon-Son_ModuleJurisdiction{
+	background:url('icons/2Son_ModuleJurisdiction.png') no-repeat;
+}
+.icon-Son_RoleJurisdiction{
+	background:url('icons/2Son_RoleJurisdiction.png') no-repeat;
+}
+.icon-Son_ServerComputer{
+	background:url('icons/2Son_ServerComputer.png') no-repeat;
+}
+.icon-Son_SysJurisdiction{
+	background:url('icons/2Son_SysJurisdiction.png') no-repeat;
+}
+
+.icon-Son_UserJurisdiction{
+	background:url('icons/2Son_UserJurisdiction.png') no-repeat;
+}
+.icon-Son_WorkLog{
+	background:url('icons/2Son_WorkLog.png') no-repeat;
+}
+
+.icon-Son_WrongLog{
+	background:url('icons/2Son_WrongLog.png') no-repeat;
+}
+
+/*新增权限系统icon.css -images*/
+.image-Menu_Help{
+	background:url('images/2Menu_Help.png') no-repeat;
+}
+.image-Menu_Jurisdiction{
+	background:url('images/2Menu_Jurisdiction.png') no-repeat;
+}
+.image-Menu_ServerDevice{
+	background:url('images/2Menu_ServerDevice.png') no-repeat;
+}
+.image-Menu_SysLog{
+	background:url('images/2Menu_SysLog.png') no-repeat;
+}
+.image-Son_Cities{
+	background:url('images/2Son_Cities.png') no-repeat;
+}
+.image-Son_HelpContents{
+	background:url('images/2Son_HelpContents.png') no-repeat;
+}
+.image-Son_HelpEdit{
+	background:url('images/2Son_HelpEdit.png') no-repeat;
+}
+.image-Son_HelpIndex{
+	background:url('images/2Son_HelpIndex.png') no-repeat;
+}
+.image-Son_LoginLog{
+	background:url('images/2Son_LoginLog.png') no-repeat;
+}
+.image-Son_ModuleJurisdiction{
+	background:url('images/2Son_ModuleJurisdiction.png') no-repeat;
+}
+.image-Son_RoleJurisdiction{
+	background:url('images/2Son_RoleJurisdiction.png') no-repeat;
+}
+.image-Son_ServerComputer{
+	background:url('images/2Son_ServerComputer.png') no-repeat;
+}
+.image-Son_SysJurisdiction{
+	background:url('images/2Son_SysJurisdiction.png') no-repeat;
+}
+
+.image-Son_UserJurisdiction{
+	background:url('images/2Son_UserJurisdiction.png') no-repeat;
+}
+.image-Son_WorkLog{
+	background:url('images/2Son_WorkLog.png') no-repeat;
+}
+
+.image-Son_WrongLog{
+	background:url('images/2Son_WrongLog.png') no-repeat;
+}
+
 
 .icon-sys{background-position:0px -200px;}
 .icon-set{background-position:-380px -200px;}

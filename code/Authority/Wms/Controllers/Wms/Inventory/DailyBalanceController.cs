@@ -4,18 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Authority.Controllers.Wms.Inventory
+namespace Wms.Controllers.Wms.Inventory
 {
-    public class CigaretteController : Controller
+    public class DailyBalanceController : Controller
     {
         //
-        // GET: /Cigarette/
+        // GET: /DailyBalance/
 
-        public ActionResult Index()
+        public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
+            ViewBag.ModuleID = moduleID;
             return View();
         }
 

@@ -1,6 +1,12 @@
 ﻿<script type="text/javascript">
-
-
+    function formatAction(value, row, index) {
+        var e = '<a href="#" onclick="detail()">日结明细</a> ';
+        return e
+    }
+    function detail() {
+        alert("fgf");
+        $('#mx').dialog('open').dialog('setTitle', '日结明细');
+    }
 </script>
 
     <div region="center" split="true" border="false">    
@@ -9,10 +15,13 @@
         fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="CityID" width="80">库存查询</th>
+                <th field="CityID" width="80">日期</th>
                 <th field="CityName" width="100">产品代码</th>
                 <th field="Description" width="80">产品简称</th>
-                <th field="IsActive" width="80">单位日期</th>
+                <th field="IsActive" width="80">期出量</th>
+                <th field="detail" width="80" align="center" formatter="formatAction">明细</th>
+
         </thead>
     </table>
   </div>
+    @Html.Partial("_Detail")

@@ -90,8 +90,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "服务器信息管理",
                        ShowOrder = 1,
                        ModuleURL = "",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Menu_ServerDevice",
+                       DeskTopImage = "image-Menu_ServerDevice",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("87104EFF-4D12-4ac9-BD62-11F8C0DA1032")
@@ -102,8 +102,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "地市信息",
                        ShowOrder = 1,
                        ModuleURL =  "/City/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_Cities",
+                       DeskTopImage = "image-Son_Cities",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("87104EFF-4D12-4ac9-BD62-11F8C0DA1032")
@@ -114,8 +114,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "服务器信息",
                        ShowOrder = 2,
                        ModuleURL = "/Server/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_ServerComputer",
+                       DeskTopImage = "image-Son_ServerComputer",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("87104EFF-4D12-4ac9-BD62-11F8C0DA1032")
@@ -129,7 +129,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("C2F089D7-90C6-4ae9-A941-C1454CADA3CA"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("4CCF72D8-2590-4b86-97B5-DCA5B6F2C426")
                  },
                 new Function()
@@ -137,7 +137,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("6F34032B-6EC9-45fa-90C8-33FADDE2C4BA"),
                     FunctionName = "新增",
                     ControlName = "add",
-                    IndicateImage = "",
+                    IndicateImage = "icon-add",
                     Module_ModuleID = new Guid("4CCF72D8-2590-4b86-97B5-DCA5B6F2C426")
                 },
                 new Function()
@@ -145,7 +145,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("51E449C0-96C9-4f63-8453-360B4A38BF32"),
                     FunctionName = "编辑",
                     ControlName = "edit",
-                    IndicateImage = "",
+                    IndicateImage = "icon-edit",
                     Module_ModuleID = new Guid("4CCF72D8-2590-4b86-97B5-DCA5B6F2C426")
                 },
                 new Function()
@@ -153,7 +153,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("EC68F16E-52E3-46bd-9D90-7E7E4A5ED5E1"),
                     FunctionName = "删除",
                     ControlName = "delete",
-                    IndicateImage = "",
+                    IndicateImage = "icon-remove",
                     Module_ModuleID = new Guid("4CCF72D8-2590-4b86-97B5-DCA5B6F2C426")
                 },
                 new Function()
@@ -161,7 +161,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("E355C8D8-E28F-4662-930F-67B61DCE4675"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("4CCF72D8-2590-4b86-97B5-DCA5B6F2C426")
                 },
                 new Function()
@@ -169,7 +169,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("63CD539F-2358-48d0-ABBE-6A09E027661A"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("4CCF72D8-2590-4b86-97B5-DCA5B6F2C426")
                 },
                 new Function()
@@ -177,7 +177,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("593116DE-EF9D-4ffa-BBFC-352A70B9545B"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("55F51C66-AF1F-4893-8710-A5420B899FD7")
                  },
                 new Function()
@@ -185,7 +185,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("D255D452-767B-4dc3-8FE1-B5661E134E68"),
                     FunctionName = "新增",
                     ControlName = "add",
-                    IndicateImage = "",
+                    IndicateImage = "icon-add",
                     Module_ModuleID = new Guid("55F51C66-AF1F-4893-8710-A5420B899FD7")
                 },
                 new Function()
@@ -193,7 +193,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("1616070B-9D6B-4e60-9E8A-FF88BD20C2D2"),
                     FunctionName = "编辑",
                     ControlName = "edit",
-                    IndicateImage = "",
+                    IndicateImage = "icon-edit",
                     Module_ModuleID = new Guid("55F51C66-AF1F-4893-8710-A5420B899FD7")
                 },
                 new Function()
@@ -201,7 +201,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("B056C5A6-8647-4f11-9471-BAE9811627E3"),
                     FunctionName = "删除",
                     ControlName = "delete",
-                    IndicateImage = "",
+                    IndicateImage = "icon-remove",
                     Module_ModuleID = new Guid("55F51C66-AF1F-4893-8710-A5420B899FD7")
                 },
                 new Function()
@@ -209,7 +209,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("09CB7C0C-8E5E-4d2b-802A-249BF9D76298"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("55F51C66-AF1F-4893-8710-A5420B899FD7")
                 },
                 new Function()
@@ -217,7 +217,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("8A0FFF66-2BE9-44c3-8B5C-C9C3FBF7EFF7"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("55F51C66-AF1F-4893-8710-A5420B899FD7")
                 }
                 );
@@ -234,8 +234,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "系统权限管理",
                        ShowOrder = 2,
                        ModuleURL = "",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Menu_Jurisdiction",
+                       DeskTopImage = "image-Menu_Jurisdiction",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("0C07E22C-B747-453c-9ED6-D02962D00CE5")
@@ -246,8 +246,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "系统信息",
                        ShowOrder = 1,
                        ModuleURL = "/System/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_SysJurisdiction",
+                       DeskTopImage = "image-Son_SysJurisdiction",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("0C07E22C-B747-453c-9ED6-D02962D00CE5")
@@ -258,8 +258,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "模块信息",
                        ShowOrder = 2,
                        ModuleURL = "/Module/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_ModuleJurisdiction",
+                       DeskTopImage = "image-Son_ModuleJurisdiction",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("0C07E22C-B747-453c-9ED6-D02962D00CE5")
@@ -270,8 +270,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "角色信息",
                        ShowOrder = 3,
                        ModuleURL = "/Role/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_RoleJurisdiction",
+                       DeskTopImage = "image-Son_RoleJurisdiction",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("0C07E22C-B747-453c-9ED6-D02962D00CE5")
@@ -282,8 +282,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "用户信息",
                        ShowOrder = 4,
                        ModuleURL = "/User/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_UserJurisdiction",
+                       DeskTopImage = "image-Son_UserJurisdiction",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("0C07E22C-B747-453c-9ED6-D02962D00CE5")
@@ -297,7 +297,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("CB027D95-9425-403e-B229-E569BC771887"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("D06BA0E2-8CD8-4c61-9518-6172286C2052")
                 },
                 new Function()
@@ -305,7 +305,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("1C40D6EA-C8ED-4711-82E4-411836CA6C98"),
                     FunctionName = "新增",
                     ControlName = "add",
-                    IndicateImage = "",
+                    IndicateImage = "icon-add",
                     Module_ModuleID = new Guid("D06BA0E2-8CD8-4c61-9518-6172286C2052")
                 },
                 new Function()
@@ -313,7 +313,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("6642B9DA-BA7F-407f-B206-A34A8FFDEAA5"),
                     FunctionName = "编辑",
                     ControlName = "edit",
-                    IndicateImage = "",
+                    IndicateImage = "icon-edit",
                     Module_ModuleID = new Guid("D06BA0E2-8CD8-4c61-9518-6172286C2052")
                 },
                 new Function()
@@ -321,7 +321,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("07D6EBEA-1FC8-4de3-95B4-2A36537C4553"),
                     FunctionName = "删除",
                     ControlName = "delete",
-                    IndicateImage = "",
+                    IndicateImage = "icon-remove",
                     Module_ModuleID = new Guid("D06BA0E2-8CD8-4c61-9518-6172286C2052")
                 },
                 new Function()
@@ -329,7 +329,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("5497040B-EACE-4c77-896C-0431B5C226F4"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("D06BA0E2-8CD8-4c61-9518-6172286C2052")
                 },
                 new Function()
@@ -337,7 +337,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("9703FC37-FA3D-4cbd-8A47-EF18FA57F7D2"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("D06BA0E2-8CD8-4c61-9518-6172286C2052")
                 },
                 new Function()
@@ -345,7 +345,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("76FE9BAF-7D5E-4022-BD8F-DBF129251D65"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("182120F0-CC8E-43cb-858C-E074972412DC")
                 },
                 new Function()
@@ -353,7 +353,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("1C336946-1047-47bd-B8CD-8A4331C5075B"),
                     FunctionName = "新增",
                     ControlName = "add",
-                    IndicateImage = "",
+                    IndicateImage = "icon-add",
                     Module_ModuleID = new Guid("182120F0-CC8E-43cb-858C-E074972412DC")
                 },
                 new Function()
@@ -361,7 +361,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("D753CA72-AA60-41b6-8879-59A34967A17C"),
                     FunctionName = "编辑",
                     ControlName = "edit",
-                    IndicateImage = "",
+                    IndicateImage = "icon-edit",
                     Module_ModuleID = new Guid("182120F0-CC8E-43cb-858C-E074972412DC")
                 },
                 new Function()
@@ -369,7 +369,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("2931BDD1-A043-4c4b-866A-310229C10B8C"),
                     FunctionName = "删除",
                     ControlName = "delete",
-                    IndicateImage = "",
+                    IndicateImage = "icon-remove",
                     Module_ModuleID = new Guid("182120F0-CC8E-43cb-858C-E074972412DC")
                 },
                 new Function()
@@ -385,7 +385,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("E3C2261D-B643-4614-8943-C975E9BFFC64"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("182120F0-CC8E-43cb-858C-E074972412DC")
                 },
                 new Function()
@@ -393,7 +393,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("FD685941-16E6-4965-B848-8411702BD943"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("182120F0-CC8E-43cb-858C-E074972412DC")
                 },
                 new Function()
@@ -401,7 +401,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("1AFA4F03-297A-46a7-A634-59EAEFA7DF99"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("ADD20759-88F7-43db-A885-4508DB9BEEC2")
                 },
                 new Function()
@@ -409,7 +409,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("7143E1B5-C545-41f5-A475-BB05B058F6A7"),
                     FunctionName = "新增",
                     ControlName = "add",
-                    IndicateImage = "",
+                    IndicateImage = "icon-add",
                     Module_ModuleID = new Guid("ADD20759-88F7-43db-A885-4508DB9BEEC2")
                 },
                 new Function()
@@ -417,7 +417,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("726D92A4-8FEC-4836-92FE-D68BB8C8F1D2"),
                     FunctionName = "编辑",
                     ControlName = "edit",
-                    IndicateImage = "",
+                    IndicateImage = "icon-edit",
                     Module_ModuleID = new Guid("ADD20759-88F7-43db-A885-4508DB9BEEC2")
                 },
                 new Function()
@@ -425,7 +425,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("78317237-70AC-41a4-8768-B17438315EE6"),
                     FunctionName = "删除",
                     ControlName = "delete",
-                    IndicateImage = "",
+                    IndicateImage = "icon-remove",
                     Module_ModuleID = new Guid("ADD20759-88F7-43db-A885-4508DB9BEEC2")
                 },
                 new Function()
@@ -449,7 +449,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("71AA92B0-CD04-4042-9E6B-6B63701B90AB"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("ADD20759-88F7-43db-A885-4508DB9BEEC2")
                 },
                 new Function()
@@ -457,7 +457,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("A59DEFCF-3F17-47c2-8B8C-AEF6CEAF0B7A"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("ADD20759-88F7-43db-A885-4508DB9BEEC2")
                 },
                 new Function()
@@ -465,7 +465,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("38EAD282-DA22-4c9a-8963-47E5B94C434C"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("D7A91161-12CB-4938-872C-E9CBFFFF80DA")
                 },
                 new Function()
@@ -473,7 +473,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("7C176C75-3B0E-4f48-BEAF-54C6E68EBBAC"),
                     FunctionName = "新增",
                     ControlName = "add",
-                    IndicateImage = "",
+                    IndicateImage = "icon-add",
                     Module_ModuleID = new Guid("D7A91161-12CB-4938-872C-E9CBFFFF80DA")
                 },
                 new Function()
@@ -481,7 +481,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("7407C692-E6B8-4731-8729-9F45BA1F42D1"),
                     FunctionName = "编辑",
                     ControlName = "edit",
-                    IndicateImage = "",
+                    IndicateImage = "icon-edit",
                     Module_ModuleID = new Guid("D7A91161-12CB-4938-872C-E9CBFFFF80DA")
                 },
                 new Function()
@@ -489,7 +489,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("838BE0BA-C9F1-409d-9644-6694418EF1BF"),
                     FunctionName = "删除",
                     ControlName = "delete",
-                    IndicateImage = "",
+                    IndicateImage = "icon-remove",
                     Module_ModuleID = new Guid("D7A91161-12CB-4938-872C-E9CBFFFF80DA")
                 },
                 new Function()
@@ -513,7 +513,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("2ABA26B1-126A-48dc-8337-E69D9D91C1A2"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("D7A91161-12CB-4938-872C-E9CBFFFF80DA")
                 },
                 new Function()
@@ -521,7 +521,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("12DE4CCE-2EF1-4794-A314-FB825B38EE91"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("D7A91161-12CB-4938-872C-E9CBFFFF80DA")
                 }
                 );
@@ -538,8 +538,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "系统日志管理",
                        ShowOrder = 3,
                        ModuleURL = "",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Menu_SysLog",
+                       DeskTopImage = "image-Menu_SysLog",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("54C11B83-884A-4256-87E8-F3CD62004661")
@@ -550,8 +550,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "登录日志",
                        ShowOrder = 1,
                        ModuleURL = "/SystemEventLog/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_LoginLog",
+                       DeskTopImage = "image-Son_LoginLog",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("54C11B83-884A-4256-87E8-F3CD62004661")
@@ -562,8 +562,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "业务日志",
                        ShowOrder = 2,
                        ModuleURL = "/SystemEventLog/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_WorkLog",
+                       DeskTopImage = "image-Son_WorkLog",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("54C11B83-884A-4256-87E8-F3CD62004661")
@@ -574,8 +574,8 @@ namespace THOK.Wms.Repository.Migrations
                         ModuleName = "错误日志",
                         ShowOrder = 3,
                         ModuleURL = "/SystemEventLog/",
-                        IndicateImage = "",
-                        DeskTopImage = "",
+                        IndicateImage = "icon-Son_WrongLog",
+                        DeskTopImage = "image-Son_WrongLog",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("54C11B83-884A-4256-87E8-F3CD62004661")
@@ -589,7 +589,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("5400F22F-D11B-421a-9FBF-3B08D6BB4223"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("A031D57E-2352-4a4d-81A5-8E7001915A29")
                 },
                 new Function()
@@ -597,7 +597,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("A979C69D-BEA5-468e-9890-FA057093A0D3"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("A031D57E-2352-4a4d-81A5-8E7001915A29")
                 },
                 new Function()
@@ -605,7 +605,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("C223CB09-ADF4-4ad6-8ADB-1DDCCB0E4E5A"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("A031D57E-2352-4a4d-81A5-8E7001915A29")
                 },
                 new Function()
@@ -613,7 +613,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("FC581C8B-2D60-4a79-A112-4C7BE1C4BFCD"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("848EFB88-9816-4fd1-BD14-3D41A2876BB5")
                 },
                 new Function()
@@ -621,7 +621,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("AC83BE1B-66FB-453f-B5CD-D4FC957C2235"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("848EFB88-9816-4fd1-BD14-3D41A2876BB5")
                 },
                 new Function()
@@ -629,7 +629,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("B904FA69-268B-4be7-85DC-D9F30DD3C84F"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("848EFB88-9816-4fd1-BD14-3D41A2876BB5")
                 },
                 new Function()
@@ -637,7 +637,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("F6DDF9EC-73F4-43de-803E-4E7027F9097B"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("8A7D294A-FCD1-44de-A816-3D3ED2E21853")
                 },
                 new Function()
@@ -645,7 +645,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("864BF3F2-1717-400f-B176-C80D11017672"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("8A7D294A-FCD1-44de-A816-3D3ED2E21853")
                 },
                 new Function()
@@ -653,7 +653,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("591A15A6-B8C0-4638-8E3B-28DBDB54C74E"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("8A7D294A-FCD1-44de-A816-3D3ED2E21853")
                 }
                 );
@@ -670,8 +670,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "帮助文档管理",
                        ShowOrder = 4,
                        ModuleURL = "",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Menu_Help",
+                       DeskTopImage = "image-Menu_Help",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("9280918A-632F-43a9-B611-D7597C858EA8")
@@ -682,8 +682,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "帮助目录",
                        ShowOrder = 1,
                        ModuleURL = "/HelpContents/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_HelpContents",
+                       DeskTopImage = "image-Son_HelpContents",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("9280918A-632F-43a9-B611-D7597C858EA8")
@@ -694,8 +694,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "帮助维护",
                        ShowOrder = 2,
                        ModuleURL = "/HelpEdit/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_HelpEdit",
+                       DeskTopImage = "image-Son_HelpEdit",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("9280918A-632F-43a9-B611-D7597C858EA8")
@@ -706,8 +706,8 @@ namespace THOK.Wms.Repository.Migrations
                        ModuleName = "帮助主页",
                        ShowOrder = 3,
                        ModuleURL = "/Help/",
-                       IndicateImage = "",
-                       DeskTopImage = "",
+                       IndicateImage = "icon-Son_HelpIndex",
+                       DeskTopImage = "image-Son_HelpIndex",
                        System = system,
                        System_SystemID = system.SystemID,
                        ParentModule_ModuleID = new Guid("9280918A-632F-43a9-B611-D7597C858EA8")
@@ -721,7 +721,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("4C0DF8C9-5B71-4e78-AC9A-6E4B6220245D"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("008DD08E-CC34-4f41-98A6-3FAC28F89CED")
                 },
                 new Function()
@@ -729,7 +729,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("C67CB9CE-732D-49c9-8AD3-33E417E39EB7"),
                     FunctionName = "新增",
                     ControlName = "add",
-                    IndicateImage = "",
+                    IndicateImage = "icon-add",
                     Module_ModuleID = new Guid("008DD08E-CC34-4f41-98A6-3FAC28F89CED")
                 },
                 new Function()
@@ -737,7 +737,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("973E55CE-A543-4e01-B907-992B67A63B2D"),
                     FunctionName = "编辑",
                     ControlName = "edit",
-                    IndicateImage = "",
+                    IndicateImage = "icon-edit",
                     Module_ModuleID = new Guid("008DD08E-CC34-4f41-98A6-3FAC28F89CED")
                 },
                 new Function()
@@ -745,7 +745,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("8D0226E3-9790-4b6d-AB19-6FD9635AC9D3"),
                     FunctionName = "删除",
                     ControlName = "delete",
-                    IndicateImage = "",
+                    IndicateImage = "icon-remove",
                     Module_ModuleID = new Guid("008DD08E-CC34-4f41-98A6-3FAC28F89CED")
                 },
                 new Function()
@@ -753,7 +753,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("1DA521F8-25AD-40ca-B581-36168D3BF9AD"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("008DD08E-CC34-4f41-98A6-3FAC28F89CED")
                 },
                 new Function()
@@ -761,7 +761,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("DEEB9C0E-D9BB-446b-8A93-3448EFC9989E"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("008DD08E-CC34-4f41-98A6-3FAC28F89CED")
                 },
                 new Function()
@@ -769,7 +769,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("1C4D26DE-B10A-4bf9-A060-17FEDA640C11"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("A9FB8AFF-4233-4824-94A6-52D4B37466B3")
                 },
                 new Function()
@@ -777,7 +777,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("57D9BE18-9943-405c-AC2B-A6CBD34A6C84"),
                     FunctionName = "新增",
                     ControlName = "add",
-                    IndicateImage = "",
+                    IndicateImage = "icon-add",
                     Module_ModuleID = new Guid("A9FB8AFF-4233-4824-94A6-52D4B37466B3")
                 },
                 new Function()
@@ -785,7 +785,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("3594D7A3-E40A-475e-A4A4-53335152ED42"),
                     FunctionName = "编辑",
                     ControlName = "edit",
-                    IndicateImage = "",
+                    IndicateImage = "icon-edit",
                     Module_ModuleID = new Guid("A9FB8AFF-4233-4824-94A6-52D4B37466B3")
                 },
                 new Function()
@@ -793,7 +793,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("74CEDC92-2DF4-43a6-9BF0-DC24CAE024AD"),
                     FunctionName = "删除",
                     ControlName = "delete",
-                    IndicateImage = "",
+                    IndicateImage = "icon-remove",
                     Module_ModuleID = new Guid("A9FB8AFF-4233-4824-94A6-52D4B37466B3")
                 },
                 new Function()
@@ -801,7 +801,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("FA842F7D-2F2E-4563-BE14-1FC90066E49F"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("A9FB8AFF-4233-4824-94A6-52D4B37466B3")
                 },
                 new Function()
@@ -809,7 +809,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("D3E30CA1-7244-4ed4-ADF7-7984C3E56395"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("A9FB8AFF-4233-4824-94A6-52D4B37466B3")
                 },
                 new Function()
@@ -817,7 +817,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("F1F6E2D4-5A97-478e-82A5-BE66B1F03F71"),
                     FunctionName = "查询",
                     ControlName = "search",
-                    IndicateImage = "",
+                    IndicateImage = "icon-search",
                     Module_ModuleID = new Guid("63D5366F-1B84-4d72-9DC0-38BB68F0AAE0")
                 },
                 new Function()
@@ -825,7 +825,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("AB8A58CC-584E-4aee-9A36-96F99003C755"),
                     FunctionName = "新增",
                     ControlName = "add",
-                    IndicateImage = "",
+                    IndicateImage = "icon-add",
                     Module_ModuleID = new Guid("63D5366F-1B84-4d72-9DC0-38BB68F0AAE0")
                 },
                 new Function()
@@ -833,7 +833,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("8F0B2F3A-2A72-41ec-80F6-05756A252846"),
                     FunctionName = "编辑",
                     ControlName = "edit",
-                    IndicateImage = "",
+                    IndicateImage = "icon-edit",
                     Module_ModuleID = new Guid("63D5366F-1B84-4d72-9DC0-38BB68F0AAE0")
                 },
                 new Function()
@@ -841,7 +841,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("225BAE5D-9516-43b4-8353-82B961099991"),
                     FunctionName = "删除",
                     ControlName = "delete",
-                    IndicateImage = "",
+                    IndicateImage = "icon-remove",
                     Module_ModuleID = new Guid("63D5366F-1B84-4d72-9DC0-38BB68F0AAE0")
                 },
                 new Function()
@@ -849,7 +849,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("2890F02A-FE5F-4459-82BD-1F7DD8A16D9B"),
                     FunctionName = "打印",
                     ControlName = "print",
-                    IndicateImage = "",
+                    IndicateImage = "icon-print",
                     Module_ModuleID = new Guid("63D5366F-1B84-4d72-9DC0-38BB68F0AAE0")
                 },
                 new Function()
@@ -857,7 +857,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("A187C965-7866-4945-9926-FA756925F584"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("63D5366F-1B84-4d72-9DC0-38BB68F0AAE0")
                 }
                 );
@@ -1121,7 +1121,7 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionID = new Guid("20DF1E53-5D2F-4147-8097-88F134E794AE"),
                     FunctionName = "帮助",
                     ControlName = "help",
-                    IndicateImage = "",
+                    IndicateImage = "icon-help",
                     Module_ModuleID = new Guid("A8344F88-08AD-4FDA-8F45-EAD3BB471105")
                 }
                 );
