@@ -63,6 +63,7 @@
     <Compile Include="Interfaces\IJobService.cs" />
     <Compile Include="Interfaces\IProductService.cs" />
     <Compile Include="Interfaces\IShelfService.cs" />
+    <Compile Include="Interfaces\IStockIntoSearchService.cs" />
     <Compile Include="Interfaces\IStorageService.cs" />
     <Compile Include="Interfaces\ISupplierService.cs" />
     <Compile Include="Interfaces\IUnitListService.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Service\JobService.cs" />
     <Compile Include="Service\ProductService.cs" />
     <Compile Include="Service\ShelfService.cs" />
+    <Compile Include="Service\StockIntoSearchService.cs" />
     <Compile Include="Service\StorageService.cs" />
     <Compile Include="Service\SupplierService.cs" />
     <Compile Include="Service\UnitListService.cs" />
