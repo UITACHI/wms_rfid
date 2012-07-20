@@ -1,0 +1,35 @@
+﻿<script type="text/javascript">
+    function editClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            DataLoad();
+            billno = row.BillNo;
+            isInBillMasterSaved = false;
+            if (row.Status != "已录入") {
+                $.messager.confirm('错误', '该记录状态不是已录入状态无法编辑！');
+            } else {
+            $('#dlg').dialog('open').dialog('setTitle', '编辑入库主单信息');
+            $('#fm').form('load', row);
+            $('#fm .easyui-validatebox').validatebox({
+                required: true
+            });
+            if (row.IsActive == '可用') {
+                $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
+            } else {
+                $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
+            }
+            $('form input').removeAttr("disabled");
+            $('form textarea').removeAttr("disabled");
+            $('#cc').combo({
+                hasDownArrow: true
+            });
+            url = '/StockInBill/Edit/';
+        }
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>
+   
+
+
