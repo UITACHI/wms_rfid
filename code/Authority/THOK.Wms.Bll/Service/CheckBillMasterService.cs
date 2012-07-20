@@ -112,9 +112,65 @@ namespace THOK.Wms.Bll.Service
                 ware = ware.Substring(0, ware.Length - 1);
                 var wares = wareQuery.Where(w => ware.Contains(w.WarehouseCode));
 
-                foreach (var item in wares)
+                foreach (var item in wares.ToArray())
                 {
-                    var storages = storageQuery.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode.Contains(item.WarehouseCode))
+                    var storages = storageQuery.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode)
+                                               .OrderBy(s => s.StorageCode).AsEnumerable()
+                                               .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                    if (storages.Count() > 0)
+                    {
+                        string billNo = GetCheckBillNo().ToString();
+                        var check = new CheckBillMaster();
+                        check.BillNo = billNo;
+                        check.BillDate = DateTime.Now;
+                        check.BillTypeCode = "1";
+                        check.WarehouseCode = ware;
+                        check.OperatePersonID = empanyid;
+                        check.Status = "1";
+                        check.IsActive = "1";
+                        check.UpdateTime = DateTime.Now;
+
+                        CheckBillMasterRepository.Add(check);
+                        CheckBillMasterRepository.SaveChanges();
+
+                        foreach (var stor in storages.ToArray())
+                        {
+                            var checkDetail = new CheckBillDetail();
+                            checkDetail.BillNo = billNo;
+                            checkDetail.CellCode = stor.CellCode;
+                            checkDetail.StorageCode = stor.StorageCode;
+                            checkDetail.ProductCode = stor.ProductCode;
+                            checkDetail.UnitCode = "01";
+                            checkDetail.Quantity = stor.Quantity;
+                            checkDetail.RealProductCode = stor.ProductCode;
+                            checkDetail.RealUnitCode = "01";
+                            checkDetail.RealQuantity = stor.Quantity;
+                            checkDetail.Status = "1";
+                            CheckBillDetailRepository.Add(checkDetail);
+                            CheckBillDetailRepository.SaveChanges();
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            #region ware 这个无值，把全部仓库里面包含area，shelf，cell的数据生成盘点单，一个仓库一个盘点单据
+
+            if (area != null && area != string.Empty || shelf != null && shelf != string.Empty || cell != null && cell != string.Empty)
+            {
+                if (area != string.Empty)
+                    area = area.Substring(0, area.Length - 1);
+                if (shelf != string.Empty)
+                    shelf = shelf.Substring(0, shelf.Length - 1);
+                if (cell != string.Empty)
+                    cell = cell.Substring(0, cell.Length - 1);
+
+                var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
+
+                foreach (var item in warehouses.ToArray())
+                {
+                    var storages = storageQuery.ToList().Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && (area.Contains(s.cell.Shelf.Area.AreaCode) || shelf.Contains(s.cell.Shelf.ShelfCode) || cell.Contains(s.cell.CellCode)))
                                                .OrderBy(s => s.StorageCode).AsEnumerable()
                                                .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
                     if (storages.Count() > 0)
@@ -133,78 +189,22 @@ namespace THOK.Wms.Bll.Service
                         CheckBillMasterRepository.Add(check);
                         CheckBillMasterRepository.SaveChanges();
 
-                        foreach (var stor in storages)
+                        foreach (var stor in storages.ToArray())
                         {
                             var checkDetail = new CheckBillDetail();
                             checkDetail.BillNo = billNo;
                             checkDetail.CellCode = stor.CellCode;
                             checkDetail.StorageCode = stor.StorageCode;
                             checkDetail.ProductCode = stor.ProductCode;
-                            checkDetail.UnitCode = "";
+                            checkDetail.UnitCode = "01";
                             checkDetail.Quantity = stor.Quantity;
                             checkDetail.RealProductCode = stor.ProductCode;
-                            checkDetail.RealUnitCode = "";
+                            checkDetail.RealUnitCode = "01";
                             checkDetail.RealQuantity = stor.Quantity;
                             checkDetail.Status = "1";
                             CheckBillDetailRepository.Add(checkDetail);
                             CheckBillDetailRepository.SaveChanges();
                         }
-                    }
-                }
-            }
-
-            #endregion
-
-            #region ware 这个无值，把全部仓库里面包含area，shelf，cell的数据生成盘点单，一个仓库一个盘点单据
-
-            var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
-
-            foreach (var item in warehouses)
-            {
-                var storages = storageQuery.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode || area.Contains(s.cell.Shelf.Area.AreaCode) || shelf.Contains(s.cell.Shelf.ShelfCode) || cell.Contains(s.cell.CellCode))
-                                           .OrderBy(s => s.StorageCode).AsEnumerable()
-                                           .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
-                if (storages.Count() > 0)
-                {
-                    string billNo = GetCheckBillNo().ToString();
-                    var check = new CheckBillMaster();
-                    check.BillNo = billNo;
-                    check.BillDate = DateTime.Now;
-                    check.BillTypeCode = "1";
-                    check.WarehouseCode = item.WarehouseCode;
-                    check.OperatePersonID = empanyid;
-                    check.Status = "1";
-                    check.IsActive = "1";
-                    check.UpdateTime = DateTime.Now;
-
-                    CheckBillMasterRepository.Add(check);
-                    CheckBillMasterRepository.SaveChanges();
-
-                    if (area != null && area != string.Empty || shelf != null && shelf != string.Empty || cell != null && cell != string.Empty)
-                    {
-                        if (area != string.Empty)
-                            area = area.Substring(0, area.Length - 1);
-                        if (shelf != string.Empty)
-                            shelf = shelf.Substring(0, shelf.Length - 1);
-                        if (cell != string.Empty)
-                            cell = cell.Substring(0, cell.Length - 1);
-                    }
-
-                    foreach (var stor in storages)
-                    {
-                        var checkDetail = new CheckBillDetail();
-                        checkDetail.BillNo = billNo;
-                        checkDetail.CellCode = stor.CellCode;
-                        checkDetail.StorageCode = stor.StorageCode;
-                        checkDetail.ProductCode = stor.ProductCode;
-                        checkDetail.UnitCode = "";
-                        checkDetail.Quantity = stor.Quantity;
-                        checkDetail.RealProductCode = stor.ProductCode;
-                        checkDetail.RealUnitCode = "";
-                        checkDetail.RealQuantity = stor.Quantity;
-                        checkDetail.Status = "1";
-                        CheckBillDetailRepository.Add(checkDetail);
-                        CheckBillDetailRepository.SaveChanges();
                     }
                 }
             }

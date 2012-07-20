@@ -83,15 +83,23 @@ namespace THOK.Wms.Bll.Service
             if (ware != null && ware != string.Empty || area != null && area != string.Empty || shelf != null && shelf != string.Empty || cell != null && cell != string.Empty)
             {
                 if (ware != string.Empty)
+                {
                     ware = ware.Substring(0, ware.Length - 1);
+                }
                 if (area != string.Empty)
+                {
                     area = area.Substring(0, area.Length - 1);
+                }
                 if (shelf != string.Empty)
+                {
                     shelf = shelf.Substring(0, shelf.Length - 1);
+                }
                 if (cell != string.Empty)
+                {
                     cell = cell.Substring(0, cell.Length - 1);
+                }
 
-                //var cells = cellQuery.Where(c => ware.Contains(c.WarehouseCode) || area.Contains(c.AreaCode) || shelf.Contains(c.ShelfCode)|| cell.Contains(c.CellCode))
+                //var cells = cellQuery.Where(c => ware.Contains(c.WarehouseCode) || area.Contains(c.AreaCode) || shelf.Contains(c.ShelfCode) || cell.Contains(c.CellCode))
                 //                     .OrderBy(c => c.CellCode)
                 //                     .Select(c => c.CellCode);
 
@@ -99,7 +107,7 @@ namespace THOK.Wms.Bll.Service
                 //                       .OrderBy(s => s.StorageCode).AsEnumerable()
                 //                       .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
 
-                storages = storageQuery.Where(s => ware.Contains(s.cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.cell.Shelf.Area.AreaCode) || shelf.Contains(s.cell.Shelf.ShelfCode) || cell.Contains(s.cell.CellCode))
+                storages = storageQuery.ToList().Where(s => ware.Contains(s.cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.cell.Shelf.Area.AreaCode) || shelf.Contains(s.cell.Shelf.ShelfCode) || cell.Contains(s.cell.CellCode))
                                        .OrderBy(s => s.StorageCode).AsEnumerable()
                                        .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
             }
