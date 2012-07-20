@@ -35,7 +35,7 @@ namespace THOK.Wms.Bll.Service
             throw new NotImplementedException();
         }
 
-        public bool Add(string billNo,string wareCode)
+        public bool Add(string billNo, string wareCode)
         {
             Guid empanyid = new Guid("d9f369dd-d793-41f5-a191-815503766e94");
             var check = new CheckBillMaster();
@@ -44,7 +44,7 @@ namespace THOK.Wms.Bll.Service
             check.BillTypeCode = "1";
             check.WarehouseCode = "CK001";
             check.OperatePersonID = empanyid;
-            check.VerifyDate = null;
+            check.VerifyDate = DateTime.Now;
             check.Status = "1";
             check.IsActive = "1";
             check.UpdateTime = DateTime.Now;
@@ -52,7 +52,7 @@ namespace THOK.Wms.Bll.Service
             CheckBillMasterRepository.Add(check);
             CheckBillMasterRepository.SaveChanges();
             return true;
-        }        
+        }
 
         public bool Delete(string BillNo)
         {
@@ -111,12 +111,13 @@ namespace THOK.Wms.Bll.Service
             {
                 ware = ware.Substring(0, ware.Length - 1);
                 var wares = wareQuery.Where(w => ware.Contains(w.WarehouseCode));
+
                 foreach (var item in wares)
                 {
                     var storages = storageQuery.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode.Contains(item.WarehouseCode))
                                                .OrderBy(s => s.StorageCode).AsEnumerable()
                                                .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
-                    if (storages.Count() > 0 )
+                    if (storages.Count() > 0)
                     {
                         string billNo = GetCheckBillNo().ToString();
                         var check = new CheckBillMaster();
@@ -214,6 +215,5 @@ namespace THOK.Wms.Bll.Service
         }
 
         #endregion
-        
     }
 }
