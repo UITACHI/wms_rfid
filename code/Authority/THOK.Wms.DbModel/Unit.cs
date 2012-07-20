@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace THOK.Wms.DbModel
 {
@@ -22,6 +23,7 @@ namespace THOK.Wms.DbModel
         public int COUNT { get; set; }
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
+        public byte[] RowVersion { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<DailyBalance> DailyBalances { get; set; }
