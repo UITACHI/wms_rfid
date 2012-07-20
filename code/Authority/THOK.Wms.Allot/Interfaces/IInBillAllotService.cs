@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using THOK.Wms.DbModel;
 
-namespace THOK.Wms.Bll.Interfaces
+namespace THOK.Wms.Allot.Interfaces
 {
     public interface IInBillAllotService:IService<InBillAllot>
     {
+        bool Allot(string billNo);
     }
 }

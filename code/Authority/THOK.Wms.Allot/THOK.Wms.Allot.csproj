@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2B8E7C92-13CA-426C-94DA-7D021EBD504C}</ProjectGuid>
+    <ProjectGuid>{330D59D0-3B57-4F12-BB7D-49AF46DCD46D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>THOK.Wms.Bll</RootNamespace>
-    <AssemblyName>THOK.Wms.Bll</AssemblyName>
+    <RootNamespace>THOK.Wms.Allot</RootNamespace>
+    <AssemblyName>THOK.Wms.Allot</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,10 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\Libraries\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
@@ -44,57 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IBillTypeService.cs" />
-    <Compile Include="Interfaces\ICheckBillDetailService.cs" />
-    <Compile Include="Interfaces\ICheckBillMasterService.cs" />
-    <Compile Include="Interfaces\IInBillDetailService.cs" />
-    <Compile Include="Interfaces\IInBillMasterService.cs" />
-    <Compile Include="Interfaces\IOutBillDetailService.cs" />
-    <Compile Include="Interfaces\IOutBillMasterService.cs" />
+    <Compile Include="Interfaces\IInBillAllotService.cs" />
+    <Compile Include="Interfaces\IOutBillAllotService.cs" />
     <Compile Include="Interfaces\IService.cs" />
-    <Compile Include="Interfaces\IAreaService.cs" />
-    <Compile Include="Interfaces\IBrandService.cs" />
-    <Compile Include="Interfaces\ICellService.cs" />
-    <Compile Include="Interfaces\ICompanyService.cs" />
-    <Compile Include="Interfaces\IDepartmentService.cs" />
-    <Compile Include="Interfaces\IEmployeeService.cs" />
-    <Compile Include="Interfaces\IJobService.cs" />
-    <Compile Include="Interfaces\IProductService.cs" />
-    <Compile Include="Interfaces\IShelfService.cs" />
-    <Compile Include="Interfaces\IStockIntoSearchService.cs" />
-    <Compile Include="Interfaces\IStorageService.cs" />
-    <Compile Include="Interfaces\ISupplierService.cs" />
-    <Compile Include="Interfaces\IUnitListService.cs" />
-    <Compile Include="Interfaces\IUnitService.cs" />
-    <Compile Include="Interfaces\IWarehouseService.cs" />
-    <Compile Include="Models\Tree.cs" />
-    <Compile Include="Models\WareTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\BillTypeService.cs" />
-    <Compile Include="Service\CheckBillDetailService.cs" />
-    <Compile Include="Service\CheckBillMasterService.cs" />
-    <Compile Include="Service\InBillDetailService.cs" />
-    <Compile Include="Service\InBillMasterService.cs" />
-    <Compile Include="Service\OutBillDetailService.cs" />
-    <Compile Include="Service\OutBillMasterService.cs" />
+    <Compile Include="Service\InBillAllotService.cs" />
+    <Compile Include="Service\OutBillAllotService.cs" />
     <Compile Include="Service\ServiceBase.cs" />
-    <Compile Include="Service\AreaService.cs" />
-    <Compile Include="Service\BrandService.cs" />
-    <Compile Include="Service\CellService.cs" />
-    <Compile Include="Service\CompanyService.cs" />
-    <Compile Include="Service\DepartmentService.cs" />
-    <Compile Include="Service\EmployeeService.cs" />
-    <Compile Include="Service\JobService.cs" />
-    <Compile Include="Service\ProductService.cs" />
-    <Compile Include="Service\ShelfService.cs" />
-    <Compile Include="Service\StockIntoSearchService.cs" />
-    <Compile Include="Service\StorageService.cs" />
-    <Compile Include="Service\SupplierService.cs" />
-    <Compile Include="Service\UnitListService.cs" />
-    <Compile Include="Service\UnitService.cs" />
-    <Compile Include="Service\WarehouseService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\THOK.Common.Ef\THOK.Common.Ef.csproj">
       <Project>{59FB8EB5-F5B8-4423-8550-A7819C855CDE}</Project>
@@ -112,6 +76,10 @@
       <Project>{E243AB76-351D-4C97-BFE3-D55E0BA0DECF}</Project>
       <Name>THOK.Wms.DbModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

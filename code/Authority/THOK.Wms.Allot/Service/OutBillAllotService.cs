@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using THOK.Wms.Bll.Interfaces;
 using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
+using THOK.Wms.Allot.Interfaces;
 
 
-namespace THOK.Wms.Bll.Service
+namespace THOK.Wms.Allot.Service
 {
     public class OutBillAllotService:ServiceBase<OutBillAllot>,IOutBillAllotService
     {
