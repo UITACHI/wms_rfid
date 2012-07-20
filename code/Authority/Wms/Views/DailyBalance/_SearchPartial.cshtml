@@ -1,5 +1,21 @@
 ﻿<script type="text/javascript">
     $(function () {
+        $('#warehouse-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/Warehouse/Details/?page=1&rows=10',
+            idField: 'WarehouseCode',
+            textField: 'WarehouseName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'WarehouseCode', title: '仓库编码', hidden: true, width: 30 },
+					{ field: 'WarehouseName', title: '仓库名称', align: 'left', width: 40 },
+					{ field: 'WarehouseType', title: '仓库类型', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+				]]
+        });
 
     })
 
@@ -30,15 +46,15 @@
             <table width="250">
               <tr>
                 <td width="60" style="padding-top:5px;padding-left:15px">起始日期:</td>
-                <td style="padding-top:5px" align="left"><input class="easyui-datebox" required="true"></td>
+                <td style="padding-top:5px" align="left"><input class="easyui-datebox" style="width:130px" required="true"></td>
               </tr>
               <tr>
                 <td style="padding-top:7px;padding-left:15px">终止日期:</td>
-                <td  style="padding-top:7px" align="left"><input class="easyui-datebox" required="true"></td>
+                <td  style="padding-top:7px" align="left"><input style="width:130px" class="easyui-datebox" required="true"></td>
               </tr>
                <tr>
                 <td style="padding-top:7px;padding-left:15px">仓库选择:</td>
-                <td  style="padding-top:7px" align="left"><input class="easyui-datebox" required="true"></td>
+                <td  style="padding-top:7px" align="left"><input name="WarehouseCode" id="warehouse-add"/></td>
               </tr>
             </table>
         </div>
