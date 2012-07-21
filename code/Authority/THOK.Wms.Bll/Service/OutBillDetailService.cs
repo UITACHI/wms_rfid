@@ -62,11 +62,11 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
-        public bool Delete(string BillNo, string ID)
+        public bool Delete(string ID)
         {
             IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
             int id = Convert.ToInt32(ID);
-            var outBillDetail = outBillDetailQuery.FirstOrDefault(o => o.BillNo == BillNo && o.ID == id);
+            var outBillDetail = outBillDetailQuery.FirstOrDefault(o => o.ID == id);
             if (outBillDetail != null)
             {
                 OutBillDetailRepository.Delete(outBillDetail);
@@ -75,9 +75,25 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
-        public bool Save(OutBillDetail inBillDetail)
+        public bool Save(OutBillDetail outBillDetail)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var outbm = OutBillDetailRepository.GetQueryable().FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ID == outBillDetail.ID);
+            if (outbm != null)
+            {
+                outbm.BillNo = outBillDetail.BillNo;
+                outbm.ProductCode = outBillDetail.ProductCode;
+                outbm.UnitCode = outBillDetail.UnitCode;
+                outbm.Price = outBillDetail.Price;
+                outbm.BillQuantity = outBillDetail.BillQuantity;
+                outbm.AllotQuantity = 0;
+                outbm.RealQuantity = 0;
+                outbm.Description = outBillDetail.Description;
+
+                OutBillDetailRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         #endregion
