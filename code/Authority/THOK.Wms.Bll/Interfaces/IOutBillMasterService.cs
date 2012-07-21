@@ -17,5 +17,7 @@ namespace THOK.Wms.Bll.Interfaces
         bool Save(OutBillMaster outBillMaster);
 
         object GenInBillNo();
+
+        bool UpdateBillMasterStatus(string billNo);
     }
 }
