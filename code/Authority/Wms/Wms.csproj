@@ -1017,6 +1017,8 @@
     <Content Include="Views\StockOutBillType\_DeletePartial.cshtml" />
     <Content Include="Views\StockOutBillType\_EditPartial.cshtml" />
     <Content Include="Views\StockOutBillType\_SearchPartial.cshtml" />
+    <Content Include="Views\StockOutBill\_AntiTrialPartial.cshtml" />
+    <Content Include="Views\StockOutBill\_AuditPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -36,7 +36,6 @@ namespace Authority.Controllers.Wms.StockOut
             return View();
         }
 
-
         //查询主单
         // GET: /StockOutBill/Details/
         public ActionResult Details(int page, int rows, FormCollection collection)
@@ -97,6 +96,15 @@ namespace Authority.Controllers.Wms.StockOut
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //修改主单状态
+        // POST: /StockOutBill/editoutBillMasterStatus/
+        public ActionResult editoutBillMasterStatus(string BillNo, string status)
+        {
+            bool bResult = OutBillMasterService.UpdateBillMasterStatus(BillNo, status);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
         //新增细单
         // POST: /StockOutBill/OutBillDetailCreate/
         [HttpPost]
@@ -125,5 +133,6 @@ namespace Authority.Controllers.Wms.StockOut
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+        
     }
 }

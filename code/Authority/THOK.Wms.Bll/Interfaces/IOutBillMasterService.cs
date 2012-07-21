@@ -18,6 +18,6 @@ namespace THOK.Wms.Bll.Interfaces
 
         object GenInBillNo();
 
-        bool UpdateBillMasterStatus(string billNo);
+        bool UpdateBillMasterStatus(string billNo, string status);
     }
 }
