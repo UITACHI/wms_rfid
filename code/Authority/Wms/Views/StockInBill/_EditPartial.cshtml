@@ -11,6 +11,7 @@
             } else {
             $('#dlg').dialog('open').dialog('setTitle', '编辑入库主单信息');
             $('#fm').form('load', row);
+            $('#inBillDetail').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + row.BillNo });
             $('#fm .easyui-validatebox').validatebox({
                 required: true
             });
