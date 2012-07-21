@@ -52,6 +52,7 @@
     <Compile Include="EntityRepository\CheckBillDetailRepository.cs" />
     <Compile Include="EntityRepository\CheckBillMasterRepository.cs" />
     <Compile Include="EntityRepository\CompanyRepository.cs" />
+    <Compile Include="EntityRepository\DailyBalanceRepository.cs" />
     <Compile Include="EntityRepository\DepartmentRepository.cs" />
     <Compile Include="EntityRepository\EmployeeRepository.cs" />
     <Compile Include="EntityRepository\InBillAllotRepository.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Interfaces\ICheckBillDetailRepository.cs" />
     <Compile Include="Interfaces\ICheckBillMasterRepository.cs" />
     <Compile Include="Interfaces\ICompanyRepository.cs" />
+    <Compile Include="Interfaces\IDailyBalanceRepository.cs" />
     <Compile Include="Interfaces\IDepartmentRepository.cs" />
     <Compile Include="Interfaces\IEmployeeRepository.cs" />
     <Compile Include="Interfaces\IInBillAllotRepository.cs" />

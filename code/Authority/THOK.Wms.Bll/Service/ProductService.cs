@@ -62,35 +62,10 @@ namespace THOK.Wms.Bll.Service
                     c.TradePrice,
                     c.UniformCode,
                     c.UnitCode,
+                    c.Unit.UnitName,
                     c.UnitListCode,
                     UpdateTime = c.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
-                    //ParentCompanyName = c.ParentCompany.CompanyName,
-                    //c.ParentCompanyID,
-                    //IsActive = c.IsActive == "1" ? "可用" : "不可用",
-                    //UpdateTime = c.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
                 });
-            //if (!IsActive.Equals(""))
-            //{
-            //    string bStatus = IsActive == "可用" ? "1" : "0";
-            //    company = companyQuery.Where(c => c.CompanyCode.Contains(CompanyCode) && c.CompanyName.Contains(CompanyName) && c.CompanyType.Contains(CompanyType) && c.IsActive.Contains(bStatus))
-            //    .OrderBy(c => c.CompanyCode).AsEnumerable()
-            //    .Select(c => new
-            //    {
-            //        c.ID,
-            //        c.CompanyCode,
-            //        c.CompanyName,
-            //        c.Description,
-            //        c.CompanyType,
-            //        c.WarehouseCapacity,
-            //        c.WarehouseCount,
-            //        c.WarehouseSpace,
-            //        c.SortingCount,
-            //        ParentCompanyName = c.ParentCompany.CompanyName,
-            //        c.ParentCompanyID,
-            //        IsActive = c.IsActive == "1" ? "可用" : "不可用",
-            //        UpdateTime = c.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
-            //    });
-            //}
             int total = product.Count();
             product = product.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = product.ToArray() };
