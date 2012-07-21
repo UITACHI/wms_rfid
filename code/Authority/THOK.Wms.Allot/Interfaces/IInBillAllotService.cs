@@ -8,6 +8,6 @@ namespace THOK.Wms.Allot.Interfaces
 {
     public interface IInBillAllotService:IService<InBillAllot>
     {
-        bool Allot(string billNo);
+        bool Allot(string billNo,string [] areaCode);
     }
 }

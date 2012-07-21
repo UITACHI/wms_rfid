@@ -11,15 +11,28 @@ namespace THOK.Wms.Allot.Service
     {
         [Dependency]
         public IOutBillAllotRepository OutBillAllotRepository { get; set; }
+        [Dependency]
+        public IOutBillMasterRepository OutBillMasterRepository { get; set; }
+        [Dependency]
+        public IOutBillDetailRepository OutBillDetailRepository { get; set; }
+
+        [Dependency]
+        public IWarehouseRepository WarehouseRepository { get; set; }
+        [Dependency]
+        public IAreaRepository AreaRepository { get; set; }
+        [Dependency]
+        public IShelfRepository ShelfRepository { get; set; }
+        [Dependency]
+        public ICellRepository CellRepository { get; set; }
 
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
         }
 
-        public bool Allot(string billNo)
+        public bool Allot(string billNo, string[] areaCode)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }
