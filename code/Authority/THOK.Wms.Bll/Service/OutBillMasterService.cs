@@ -142,6 +142,30 @@ namespace THOK.Wms.Bll.Service
                 return System.DateTime.Now.ToString("yyMMdd") + newcode + "CK";
             }
         }
+        
+        public bool UpdateBillMasterStatus(string billNo,string status)
+        {
+            bool result = false;
+            IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable();
+            var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
+            if (outbm != null)
+            {
+                //outbm.BillDate = outBillMaster.BillDate;
+                //outbm.BillTypeCode = outBillMaster.BillTypeCode;
+                //outbm.WarehouseCode = outBillMaster.WarehouseCode;
+                //outbm.OperatePersonID = outBillMaster.OperatePersonID;
+                outbm.Status = status;
+                //outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
+                //outbm.VerifyDate = outBillMaster.VerifyDate;
+                //outbm.Description = outBillMaster.Description;
+                //outbm.IsActive = outBillMaster.IsActive;
+                //outbm.UpdateTime = DateTime.Now;
+
+                OutBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
+        }
 
         #endregion
     }

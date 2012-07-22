@@ -1,0 +1,24 @@
+﻿<script type="text/javascript">
+    function antitrialClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            if (row.Status == "已审核") {
+                $.post("/StockOutBill/editoutBillMasterStatus/", { BillNo: row.BillNo, status: "1" }, function (json) {
+                    if (json) {
+                        $('#details').datagrid({ url: '/StockOutBill/Details/'}); //加载主表
+                        $.messager.show({
+                            title: '成功',
+                            msg: '单据反审成功！'
+                        });
+                    }
+                });
+            } else {
+                $.messager.confirm('错误', '所选择单据状态不为已审核！');
+            }
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+</script>
+
+

@@ -1,0 +1,24 @@
+﻿<script type="text/javascript">
+    function auditClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            if (row.Status == "已录入") {
+                $.post("/StockOutBill/editoutBillMasterStatus/", { BillNo: row.BillNo, status: "2" }, function (json) {
+                    if (json) {
+                        $('#details').datagrid({ url: '/StockOutBill/Details/' }); //加载主表
+                        $.messager.show({
+                            title: '成功',
+                            msg: '单据审核成功！'
+                        });
+                    }
+                });
+            } else {
+                $.messager.confirm('错误', '所选择单据状态不为已录入！');
+            }
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+</script>
+
+
