@@ -1,0 +1,16 @@
+﻿<script type="text/javascript">
+    function auditClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            isInBillMasterSaved = false;
+            isInBillMasterCanEdit = true;
+            if (row.Status != "已录入") {
+                $.messager.confirm('错误', '该记录已审核无需重复审核！');
+            } else {
+                $('#dlg-audit').dialog('open').dialog('setTitle', '入库单据反审');
+            }
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>

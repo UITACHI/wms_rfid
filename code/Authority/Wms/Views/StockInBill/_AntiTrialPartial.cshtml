@@ -1,0 +1,16 @@
+﻿<script type="text/javascript">
+    function antitrialClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            isInBillMasterSaved = false;
+            isInBillMasterCanEdit = true;
+            if (row.Status != "已审核") {
+                $.messager.confirm('错误', '该记录的状态不是已审核无法反审！');
+            } else {
+                $('#dlg-antitrial').dialog('open').dialog('setTitle', '入库单据反审');
+            }
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>
