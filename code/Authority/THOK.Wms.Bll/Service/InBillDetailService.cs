@@ -74,7 +74,14 @@ namespace THOK.Wms.Bll.Service
 
         public bool Save(InBillDetail inBillDetail)
         {
-            throw new NotImplementedException();
+            IQueryable<InBillDetail> inBillDetailQuery = InBillDetailRepository.GetQueryable();
+            var ibd = inBillDetailQuery.FirstOrDefault(i=>i.ID==inBillDetail.ID&&i.BillNo==inBillDetail.BillNo);
+            ibd.ProductCode = inBillDetail.ProductCode;
+            ibd.UnitCode = inBillDetail.UnitCode;
+            ibd.BillQuantity = inBillDetail.BillQuantity;
+            ibd.Description = inBillDetail.Description;
+            InBillDetailRepository.SaveChanges();
+            return true;
         }
 
         #endregion
