@@ -7,7 +7,9 @@
             if (row.Status != "已审核") {
                 $.messager.confirm('错误', '该记录的状态不是已审核无法反审！');
             } else {
-                $('#dlg-antitrial').dialog('open').dialog('setTitle', '入库单据反审');
+                $('#dlg').dialog('open').dialog('setTitle', '反审入库单据信息');
+                $('#fm').form('load', row);
+                url = '/StockInBill/AntiTrial/?BillNo=' + row.BillNo;
             }
         } else {
             $.messager.confirm('错误', '没有选择行！');

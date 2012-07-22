@@ -7,7 +7,9 @@
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录已审核无需重复审核！');
             } else {
-                $('#dlg-audit').dialog('open').dialog('setTitle', '入库单据反审');
+                $('#dlg').dialog('open').dialog('setTitle', '审核入库单据信息');
+                $('#fm').form('load', row);
+                url = '/StockInBill/Audit/?BillNo='+row.BillNo;
             }
         } else {
             $.messager.confirm('错误', '没有选择行！');

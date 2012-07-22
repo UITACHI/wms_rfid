@@ -122,5 +122,27 @@ namespace Authority.Controllers.Wms.StockIn
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /InBillMaster/Audit/
+
+        [HttpPost]
+        public ActionResult Audit(string BillNo)
+        {
+            bool bResult = InBillMasterService.Audit(BillNo);
+            string msg = bResult ? "审核成功" : "审核失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /InBillMaster/AntiTria/
+
+        [HttpPost]
+        public ActionResult AntiTrial(string BillNo)
+        {
+            bool bResult = InBillMasterService.AntiTrial(BillNo);
+            string msg = bResult ? "反审成功" : "反审失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

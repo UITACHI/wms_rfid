@@ -141,5 +141,43 @@ namespace THOK.Wms.Bll.Service
         }
 
         #endregion
+
+        #region IInBillMasterService 成员
+
+
+        public bool Audit(string BillNo)
+        {
+            bool result = false;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo ==BillNo && i.Status == "1");
+            if (ibm != null)
+            {
+                ibm.Status = "2";
+                ibm.UpdateTime = DateTime.Now;
+                InBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region IInBillMasterService 成员
+
+
+        public bool AntiTrial(string BillNo)
+        {
+            bool result = false;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "2");
+            if (ibm != null)
+            {
+                ibm.Status = "1";
+                ibm.UpdateTime = DateTime.Now;
+                InBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
+        }
+
+        #endregion
     }
 }
