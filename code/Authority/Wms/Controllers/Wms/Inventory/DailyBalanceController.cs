@@ -29,5 +29,10 @@ namespace Wms.Controllers.Wms.Inventory
             var brand = DailyBalanceService.GetDetails(page, rows);
             return Json(brand, "text", JsonRequestBehavior.AllowGet);
         }
+        public ActionResult MXDetails(int page, int rows, string date)
+        {
+            var brand = DailyBalanceService.MXGetDetails(page, rows, date);
+            return Json(brand, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }
