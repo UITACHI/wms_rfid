@@ -66,7 +66,6 @@
         $('#billNo').attr("readonly", true);
         $('#billDate').attr("readonly", true);
         DataLoad();
-        $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] });
         $.getJSON("/StockInBill/GenInBillNo/", function (json) {
             if (json) {
                 $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
@@ -210,6 +209,7 @@
         $("#productDetail").datagrid('reload');
         selectProduct();
     }
+
 </script>
 
 <div id="dlg" class="easyui-dialog" modal="true"
@@ -218,7 +218,7 @@
 	<div class="easyui-layout" fit="true">
         <div region="center" border="false">
             <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="700" id="inBillDetail"
-                fit="true" fitColumns="true" singleSelect="true"  pagination="true" rownumbers="true"  url="/StockInBill/InBillDetails/">
+                fit="true" fitColumns="true" singleSelect="true" rownumbers="true"  url="/StockInBill/InBillDetails/?BillNo=1207190001IN">
                 <thead>
                     <tr>
                         <th field="ID" width="100">细单ID</th>
