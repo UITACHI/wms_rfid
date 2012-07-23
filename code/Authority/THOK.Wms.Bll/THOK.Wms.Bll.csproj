@@ -47,6 +47,7 @@
     <Compile Include="Interfaces\IBillTypeService.cs" />
     <Compile Include="Interfaces\ICheckBillDetailService.cs" />
     <Compile Include="Interfaces\ICheckBillMasterService.cs" />
+    <Compile Include="Interfaces\IDailyBalanceService.cs" />
     <Compile Include="Interfaces\IInBillDetailService.cs" />
     <Compile Include="Interfaces\IInBillMasterService.cs" />
     <Compile Include="Interfaces\IOutBillDetailService.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Service\BillTypeService.cs" />
     <Compile Include="Service\CheckBillDetailService.cs" />
     <Compile Include="Service\CheckBillMasterService.cs" />
+    <Compile Include="Service\DailyBalanceService.cs" />
     <Compile Include="Service\InBillDetailService.cs" />
     <Compile Include="Service\InBillMasterService.cs" />
     <Compile Include="Service\OutBillDetailService.cs" />
