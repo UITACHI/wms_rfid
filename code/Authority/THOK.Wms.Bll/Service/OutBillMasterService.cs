@@ -157,7 +157,6 @@ namespace THOK.Wms.Bll.Service
             return result;
         }
 
-
         public bool Audit(string billNo)
         {
             bool result = false;
