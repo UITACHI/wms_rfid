@@ -25,6 +25,9 @@ namespace THOK.Wms.DbModel
         public DateTime UpdateTime { get; set; }
 
         public virtual BillType BillType { get; set; }
+        public virtual Warehouse Warehouse { get; set; }
+        public virtual Employee OperatePerson { get; set; }
+        public virtual Employee VerifyPerson { get; set; }
 
         public virtual ICollection<InBillDetail> InBillDetails { get; set; }
         public virtual ICollection<InBillAllot> InBillAllots { get; set; }
