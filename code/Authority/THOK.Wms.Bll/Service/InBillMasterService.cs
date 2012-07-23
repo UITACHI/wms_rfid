@@ -13,6 +13,10 @@ namespace THOK.Wms.Bll.Service
     {
         [Dependency]
         public IInBillMasterRepository InBillMasterRepository { get; set; }
+        [Dependency]
+        public IBillTypeRepository BillTypeRepository { get; set; }
+        [Dependency]
+        public IWarehouseRepository WarehouseRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -59,7 +63,10 @@ namespace THOK.Wms.Bll.Service
                     i.OperatePersonID,
                     i.WarehouseCode,
                     i.BillTypeCode,
+                    i.BillType.BillTypeName,
                     i.Warehouse.WarehouseName,
+                    OperatePersonCode=i.OperatePerson.EmployeeCode,
+                    OperatePersonName = i.OperatePerson.EmployeeName,
                     VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss")),
                     Status = WhatStatus(i.Status),
                     IsActive = i.IsActive == "1" ? "可用" : "不可用",
@@ -78,7 +85,10 @@ namespace THOK.Wms.Bll.Service
                         i.OperatePersonID,
                         i.WarehouseCode,
                         i.BillTypeCode,
+                        i.BillTypeName,
                         i.WarehouseName,
+                        i.OperatePersonCode,
+                        i.OperatePersonName,
                         i.VerifyDate,
                         Status = WhatStatus(i.Status),
                         IsActive = i.IsActive == "1" ? "可用" : "不可用",
@@ -208,6 +218,57 @@ namespace THOK.Wms.Bll.Service
                 result = true;
             }
             return result;
+        }
+
+        #endregion
+
+        #region IInBillMasterService 成员
+
+        /// <summary>
+        /// 根据条件查询订单类型
+        /// </summary>
+        /// <param name="BillClass">订单类别</param>
+        /// <param name="IsActive">是否可用</param>
+        /// <returns></returns>
+        public object GetBillTypeDetail( string BillClass, string IsActive)
+        {
+            IQueryable<BillType> billtypeQuery = BillTypeRepository.GetQueryable();
+            var billtype = billtypeQuery.Where(b => b.BillClass == BillClass
+                && b.IsActive.Contains(IsActive)).OrderBy(b => b.BillTypeCode).AsEnumerable().Select(b => new
+            {
+                b.BillTypeCode,
+                b.BillTypeName,
+                b.BillClass,
+                b.Description,
+                IsActive = b.IsActive == "1" ? "可用" : "不可用",
+                UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+            });
+            return billtype.ToArray();
+        }
+
+        #endregion
+
+        #region IInBillMasterService 成员
+
+        /// <summary>
+        /// 根据条件查询仓库信息
+        /// </summary>
+        /// <param name="IsActive">是否可用</param>
+        /// <returns></returns>
+        public object GetWareHouseDetail(string IsActive)
+        {
+            IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
+            var warehouse = wareQuery.Where(w=>w.IsActive==IsActive).OrderBy(w =>w.WarehouseCode).AsEnumerable().Select(w => new
+                {
+                    w.WarehouseCode,
+                    w.WarehouseName,
+                    w.WarehouseType,
+                    w.Description,
+                    w.ShortName,
+                    IsActive = w.IsActive == "1" ? "可用" : "不可用",
+                    UpdateTime = w.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                });
+            return warehouse.ToArray();
         }
 
         #endregion

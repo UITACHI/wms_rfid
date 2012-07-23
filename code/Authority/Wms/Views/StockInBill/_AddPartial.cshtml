@@ -18,7 +18,7 @@
             required: true,
             width: 130,
             panelWidth: 340,
-            url: '/WareHouse/Details/?page=1&rows=10',
+            url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
             idField: 'WarehouseCode',
             textField: 'WarehouseName',
             mode: 'local',
@@ -35,7 +35,7 @@
             required: true,
             width: 130,
             panelWidth: 340,
-            url: '/StockInBillType/Details/?page=1&rows=10',
+            url: '/StockInBill/GetBillTypeDetail/?BillClass=0001&IsActive=1',
             idField: 'BillTypeCode',
             textField: 'BillTypeName',
             mode: 'local',
@@ -271,7 +271,7 @@
                 <td width="60">仓库编码</td>
                 <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
                 <td width="60">经办人</td>
-                <td width="168"><input name="OperatePersonCode" readonly="true"></td>
+                <td width="168"><input name="OperatePersonName" readonly="true"></td>
                 <td width="60">状态</td>
                 <td width="168"><input name="Status" readonly="true"></td>
                 </tr>

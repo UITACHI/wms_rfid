@@ -21,5 +21,9 @@ namespace THOK.Wms.Bll.Interfaces
         bool Audit(string BillNo);
 
         bool AntiTrial(string BillNo);
+
+        object GetBillTypeDetail(string BillClass, string IsActive);
+
+        object GetWareHouseDetail(string IsActive);
     }
 }
