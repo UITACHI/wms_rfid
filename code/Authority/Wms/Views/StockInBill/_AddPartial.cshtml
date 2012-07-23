@@ -68,6 +68,7 @@
         DataLoad();
         $.getJSON("/StockInBill/GenInBillNo/", function (json) {
             if (json) {
+                $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
                 $('#fm').form('clear');
                 $('#billNo').val(json);
@@ -225,7 +226,6 @@
         $('#productData').dialog('open').dialog('setTitle', '选择产品信息');
         $('#productDetail').datagrid({ url: '/Product/Details/' });
         $("#productDetail").datagrid('reload');
-        selectProduct();
     }
 
 </script>
