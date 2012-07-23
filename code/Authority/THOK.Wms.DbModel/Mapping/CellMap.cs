@@ -92,6 +92,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.MaxQuantity).HasColumnName(ColumnMap.Value.To("MaxQuantity"));
             this.Property(t => t.IsSingle).HasColumnName(ColumnMap.Value.To("IsSingle"));
             this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
+            this.Property(t => t.LockTag).HasColumnName(ColumnMap.Value.To("LockTag"));
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 

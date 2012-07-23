@@ -30,6 +30,7 @@ namespace THOK.Wms.DbModel
         public int MaxQuantity { get; set; }
         public string IsSingle { get; set; }
         public string Description { get; set; }
+        public string LockTag { get; set; }
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
 
