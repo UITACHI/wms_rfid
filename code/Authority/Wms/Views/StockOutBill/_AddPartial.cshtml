@@ -152,6 +152,7 @@
             });
         } else {
             outBillMasterSave();
+            $('#dlg-AddBillDetail').dialog('close');
         }
     }
 
@@ -163,9 +164,10 @@
         }
     };
 
+    //打开新增明细页面
     function outBillDetailShoew() {
         $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增出库订单明细');
-        $("input[type=text]").attr("value", "");
+        $('input[type=text]', '#fm-inBillDetail').attr("value", "");
         $('#detailBillNo').val(billno);
         $('#detailBillNo').attr("readonly", true);
         detailUrl = '/StockOutBill/OutBillDetailCreate/';
@@ -316,7 +318,7 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 
-<div  id="dlg-AddBillDetail" class="easyui-dialog" modal="true" style="width:260px;height:350px;padding:0px 0px"
+<div id="dlg-AddBillDetail" class="easyui-dialog" modal="true" style="width:260px;height:350px;padding:0px 0px"
         closed="true" buttons="#dlg-AddBillDetailbuttons">
         <form id="fm-inBillDetail" method="post" novalidate>
             <table style="padding:10px 10px 0px 5px">
@@ -347,7 +349,7 @@
               </tr>
               <tr>
                 <td style=" text-align:right">单位名称</td>
-                <td align="left"><input type="text" name="UnitName"/></td>
+                <td align="left"><input type="text" name="UnitName" id="unitName"/></td>
                 <td></td>
               </tr>
               <tr>
