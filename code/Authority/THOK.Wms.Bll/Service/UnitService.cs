@@ -26,12 +26,12 @@ namespace THOK.Wms.Bll.Service
             IQueryable<Unit> unitQuery = UnitRepository.GetQueryable();
             var unit = unitQuery.Where(u => u.UnitCode.Contains(UnitCode) && u.UnitName.Contains(UnitName))
                 .OrderBy(u => u.UnitCode).AsEnumerable()
-                .Select(u => new { u.UnitCode, u.UnitName, u.COUNT, IsActive = u.IsActive == "1" ? "可用" : "不可用", UpdateTime = u.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss"),RowVersion = Convert.ToBase64String(u.RowVersion) });
+                .Select(u => new { u.UnitCode, u.UnitName, COUNT = u.Count, IsActive = u.IsActive == "1" ? "可用" : "不可用", UpdateTime = u.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss"),RowVersion = Convert.ToBase64String(u.RowVersion) });
             if (!IsActive.Equals(""))
             {
                 unit = unitQuery.Where(u => u.UnitCode.Contains(UnitCode) && u.UnitName.Contains(UnitName) && u.IsActive.Contains(IsActive))
                     .OrderBy(u => u.UnitCode).AsEnumerable()
-                    .Select(u => new { u.UnitCode, u.UnitName, u.COUNT, IsActive = u.IsActive == "1" ? "可用" : "不可用", UpdateTime = u.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss"), RowVersion = Convert.ToBase64String(u.RowVersion) });
+                    .Select(u => new { u.UnitCode, u.UnitName, COUNT = u.Count, IsActive = u.IsActive == "1" ? "可用" : "不可用", UpdateTime = u.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss"), RowVersion = Convert.ToBase64String(u.RowVersion) });
             }
             int total = unit.Count();
             unit = unit.Skip((page - 1) * rows).Take(rows);
@@ -43,7 +43,7 @@ namespace THOK.Wms.Bll.Service
             var un = new Unit();
             un.UnitCode = unit.UnitCode;
             un.UnitName = unit.UnitName;
-            un.COUNT = unit.COUNT;
+            un.Count = unit.Count;
             un.IsActive = unit.IsActive;
             un.UpdateTime = DateTime.Now;
 

@@ -4,7 +4,7 @@
         if (row) {
             isInBillMasterSaved = false;
             isInBillMasterCanEdit = true;
-            if (row.Status == "已审核") {
+            if (!row.Status == "已审核") {
                 $.messager.confirm('错误', '该记录未审核无法进行分配！');
             } else {
                 $('#dlg-allot').dialog('open').dialog('setTitle', '入库单据分配');

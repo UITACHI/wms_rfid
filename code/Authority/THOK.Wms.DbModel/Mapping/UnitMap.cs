@@ -35,7 +35,7 @@ namespace THOK.Wms.DbModel.Mapping
             // Table & Column Mappings
             this.Property(t => t.UnitCode).HasColumnName(ColumnMap.Value.To("UnitCode"));
             this.Property(t => t.UnitName).HasColumnName(ColumnMap.Value.To("UnitName"));
-            this.Property(t => t.COUNT).HasColumnName(ColumnMap.Value.To("COUNT"));
+            this.Property(t => t.Count).HasColumnName(ColumnMap.Value.To("COUNT"));
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
             this.Property(t => t.RowVersion).HasColumnName(ColumnMap.Value.To("RowVersion"));
