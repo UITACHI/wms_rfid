@@ -693,6 +693,7 @@
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="menu.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\App_Data\" />
@@ -940,7 +941,6 @@
     <Content Include="Views\StockOutBillAllotConfirm\Index.cshtml" />
     <Content Include="Views\StockOutBillCheck\Index.cshtml" />
     <Content Include="Views\StockOutBill\Index.cshtml" />
-    <Content Include="Views\StockOutBillType\Index.cshtml" />
     <Content Include="Views\StockInBillAllotConfirm\Index.cshtml" />
     <Content Include="Views\StockInBillAllot\Index.cshtml" />
     <Content Include="Views\StockOutBillAllot\Index.cshtml" />
@@ -962,16 +962,12 @@
     <Content Include="Views\SortOrderSearch\_SearchPartial.cshtml" />
     <Content Include="Views\StockMoveBillType\_AddPartial.cshtml" />
     <Content Include="Views\StockInBillType\_AddPartial.cshtml" />
-    <Content Include="Views\StockOutBillType\_AddPartial.cshtml" />
     <Content Include="Views\StockMoveBillType\_SearchPartial.cshtml" />
     <Content Include="Views\StockInBillType\_SearchPartial.cshtml" />
-    <Content Include="Views\StockOutBillType\_SearchPartial.cshtml" />
     <Content Include="Views\StockMoveBillType\_EditPartial.cshtml" />
     <Content Include="Views\StockMoveBillType\_DeletePartial.cshtml" />
     <Content Include="Views\StockInBillType\_DeletePartial.cshtml" />
-    <Content Include="Views\StockOutBillType\_DeletePartial.cshtml" />
     <Content Include="Views\StockInBillType\_EditPartial.cshtml" />
-    <Content Include="Views\StockOutBillType\_EditPartial.cshtml" />
     <Content Include="Views\Product\_AddPartial.cshtml" />
     <Content Include="Views\Stockledger\_Detail.cshtml" />
     <Content Include="Views\Unit\_DeletePartial.cshtml" />
@@ -1016,6 +1012,14 @@
     <Content Include="Views\Shared\_AntiTrialPartial.cshtml" />
     <Content Include="Views\Shared\_FunctionPartial.cshtml" />
     <Content Include="Views\StockOutBill\_AllotPartial.cshtml" />
+    <Content Include="Views\StockOutBill\_ProductPartial.cshtml" />
+    <Content Include="Views\StockOutBillType\Index.cshtml" />
+    <Content Include="Views\StockOutBillType\_AddPartial.cshtml" />
+    <Content Include="Views\StockOutBillType\_DeletePartial.cshtml" />
+    <Content Include="Views\StockOutBillType\_EditPartial.cshtml" />
+    <Content Include="Views\StockOutBillType\_SearchPartial.cshtml" />
+    <Content Include="Views\StockOutBill\_AntiTrialPartial.cshtml" />
+    <Content Include="Views\StockOutBill\_AuditPartial.cshtml" />
     <Content Include="Views\StockInBill\_AuditPartial.cshtml" />
     <Content Include="Views\StockInBill\_AntiTrialPartial.cshtml" />
   </ItemGroup>
