@@ -68,6 +68,7 @@
         DataLoad();
         $.getJSON("/StockInBill/GenInBillNo/", function (json) {
             if (json) {
+                $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
                 $('#fm').form('clear');
                 $('#billNo').val(json);
@@ -187,6 +188,7 @@
         alert("编辑");
     }
 
+    //删除入库单明细
     function deleteBillDetailClick() {
         var detailRow = $('#inBillDetail').datagrid('getSelected');
         if (detailRow) {
@@ -203,11 +205,27 @@
         }
     }
 
+    //修改入库单明细
+    function editBillDetailClick() {
+        var detailRow = $('#inBillDetail').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '修改入库细表信息');
+            $('#fm-inBillDetail .easyui-validatebox').validatebox({
+                required: false
+            });
+            //            $('form input').attr("disabled", "disabled");
+            //            $('form textarea').attr("disabled", "disabled");
+            $('#fm-inBillDetail').form('load', detailRow);
+            detailUrl = '/StockInBill/InBillDetailEdit/?ID=' + detailRow.ID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+
     function productSelect() {
         $('#productData').dialog('open').dialog('setTitle', '选择产品信息');
         $('#productDetail').datagrid({ url: '/Product/Details/' });
         $("#productDetail").datagrid('reload');
-        selectProduct();
     }
 
 </script>

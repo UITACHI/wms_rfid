@@ -22,6 +22,9 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsRequired()
                 .HasMaxLength(100);
 
+            this.Property(t => t.UserName)
+                .HasMaxLength(50);
+
             this.Property(t => t.Sex)
                 .IsRequired()
                 .IsFixedLength()
@@ -44,6 +47,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.ID).HasColumnName(ColumnMap.Value.To("EmployeeID"));
             this.Property(t => t.EmployeeCode).HasColumnName(ColumnMap.Value.To("EmployeeCode"));
             this.Property(t => t.EmployeeName).HasColumnName(ColumnMap.Value.To("EmployeeName"));
+            this.Property(t => t.UserName).HasColumnName(ColumnMap.Value.To("UserName"));
             
             this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
             this.Property(t => t.DepartmentID).HasColumnName(ColumnMap.Value.To("DepartmentID")).IsOptional();
