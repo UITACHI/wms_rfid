@@ -10,14 +10,14 @@ namespace THOK.Wms.DbModel
         public Employee()
         {
             this.LeadDepartments = new List<Department>();
-            this.MoveBillMasterOperatePersons = new List<MoveBillMaster>();
-            this.MoveBillMasterVerifyPersons = new List<MoveBillMaster>();
+            this.OperatePersonMoveBillMasters = new List<MoveBillMaster>();
+            this.VerifyPersonMoveBillMasters = new List<MoveBillMaster>();
             this.MoveBillDetails = new List<MoveBillDetail>();
-            this.CheckBillMasterOperatePersons = new List<CheckBillMaster>();
-            this.CheckBillMasterVerifyPersons = new List<CheckBillMaster>();
+            this.OperatePersonCheckBillMasters = new List<CheckBillMaster>();
+            this.VerifyPersonCheckBillMasters = new List<CheckBillMaster>();
             this.CheckBillDetails = new List<CheckBillDetail>();
-            this.OutBillMasterOperatePersons = new List<OutBillMaster>();
-            this.OutBillMasterVerifyPersons = new List<OutBillMaster>();
+            this.OperatePersonOutBillMasters = new List<OutBillMaster>();
+            this.VerifyPersonOutBillMasters = new List<OutBillMaster>();
         }
 
         public Guid ID { get; set; }
@@ -36,14 +36,14 @@ namespace THOK.Wms.DbModel
         public virtual Job Job { get; set; }
 
         public virtual ICollection<Department> LeadDepartments { get; set; }
-        public virtual ICollection<MoveBillMaster> MoveBillMasterOperatePersons { get; set; }
-        public virtual ICollection<MoveBillMaster> MoveBillMasterVerifyPersons { get; set; }
+        public virtual ICollection<MoveBillMaster> OperatePersonMoveBillMasters { get; set; }
+        public virtual ICollection<MoveBillMaster> VerifyPersonMoveBillMasters { get; set; }
         public virtual ICollection<MoveBillDetail> MoveBillDetails { get; set; }
-        public virtual ICollection<CheckBillMaster> CheckBillMasterOperatePersons { get; set; }
-        public virtual ICollection<CheckBillMaster> CheckBillMasterVerifyPersons { get; set; }
+        public virtual ICollection<CheckBillMaster> OperatePersonCheckBillMasters { get; set; }
+        public virtual ICollection<CheckBillMaster> VerifyPersonCheckBillMasters { get; set; }
         public virtual ICollection<CheckBillDetail> CheckBillDetails { get; set; }
-        public virtual ICollection<OutBillMaster> OutBillMasterOperatePersons { get; set; }
-        public virtual ICollection<OutBillMaster> OutBillMasterVerifyPersons { get; set; }
+        public virtual ICollection<OutBillMaster> OperatePersonOutBillMasters { get; set; }
+        public virtual ICollection<OutBillMaster> VerifyPersonOutBillMasters { get; set; }
 
     }
 }
