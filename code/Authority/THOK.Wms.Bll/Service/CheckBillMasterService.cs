@@ -30,9 +30,76 @@ namespace THOK.Wms.Bll.Service
 
         #region ICheckBillMasterService 成员
 
-        public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status)
+        public string WhatStatus(string status)
         {
-            throw new NotImplementedException();
+            string statusStr = "";
+            switch (status)
+            {
+                case "1":
+                    statusStr = "已录入";
+                    break;
+                case "2":
+                    statusStr = "已审核";
+                    break;
+                case "3":
+                    statusStr = "已分配";
+                    break;
+                case "4":
+                    statusStr = "已确认";
+                    break;
+                case "5":
+                    statusStr = "执行中";
+                    break;
+                case "6":
+                    statusStr = "已入库";
+                    break;
+            }
+            return statusStr;
+        }
+
+        public object GetDetails(int page, int rows, string BillNo, string beginDate, string endDate, string OperatePersonCode, string Status)
+        {
+            IQueryable<CheckBillMaster> CheckBillMasterQuery = CheckBillMasterRepository.GetQueryable();
+            var checkBillMaster = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)).OrderBy(i => i.BillNo).AsEnumerable()
+                                    .Select(i => new
+                                    {
+                                        i.BillNo,
+                                        BillDate = i.BillDate,
+                                        i.Warehouse.WarehouseCode,
+                                        i.Warehouse.WarehouseName,
+                                        OperatePersonCode = i.OperatePerson.EmployeeCode,
+                                        OperatePersonName = i.OperatePerson.EmployeeName,
+                                        VerifyPersonCode = i.OperatePersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
+                                        VerifyPersonName = i.OperatePersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
+                                        i.BillTypeCode,
+                                        Status = WhatStatus(i.Status),
+                                        IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                                        Description = i.Description,
+                                        UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                                    });
+            if (!Status.Equals(string.Empty))
+            {
+                checkBillMaster = checkBillMaster.Where(i => i.BillNo.Contains(BillNo) && i.BillDate > Convert.ToDateTime(beginDate) && i.BillDate < Convert.ToDateTime(endDate))
+                                                 .OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                                                 {
+                                                     i.BillNo,
+                                                     i.BillDate,
+                                                     i.WarehouseCode,
+                                                     i.WarehouseName,
+                                                     i.OperatePersonCode,
+                                                     i.OperatePersonName,
+                                                     i.VerifyPersonCode,
+                                                     i.VerifyPersonName,
+                                                     i.BillTypeCode,
+                                                     Status = WhatStatus(i.Status),
+                                                     IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                                                     Description = i.Description,
+                                                     UpdateTime = i.UpdateTime
+                                                 });
+            }
+            int total = checkBillMaster.Count();
+            checkBillMaster = checkBillMaster.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = checkBillMaster.ToArray() };
         }
 
         public bool Add(string billNo, string wareCode)
@@ -212,6 +279,15 @@ namespace THOK.Wms.Bll.Service
             #endregion
 
             return true;
+        }
+
+        #endregion
+
+        #region ICheckBillMasterService 成员
+
+        public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

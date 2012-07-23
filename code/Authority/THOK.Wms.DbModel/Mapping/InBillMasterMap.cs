@@ -69,6 +69,21 @@ namespace THOK.Wms.DbModel.Mapping
                 .WithMany(t => t.InBillMasters)
                 .HasForeignKey(d => d.BillTypeCode)
                 .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.Warehouse)
+                .WithMany(t => t.InBillMasters)
+                .HasForeignKey(d => d.WarehouseCode)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.OperatePerson)
+                .WithMany(t => t.OperatePersonInBillMasters)
+                .HasForeignKey(d => d.OperatePersonID)
+                .WillCascadeOnDelete(false);
+
+            this.HasOptional(t => t.VerifyPerson)
+               .WithMany(t => t.VerifyPersonInBillMasters)
+               .HasForeignKey(d => d.VerifyPersonID)
+               .WillCascadeOnDelete(false);
         }
     }
 }

@@ -64,12 +64,13 @@
         isOutBillMasterAdd = true;
         $('#billNo').attr("readonly", true);
         $('#billDate').attr("readonly", true);
-        $('#deleteBillDetail').attr("disabled", "disabled");
-        $('#editBillDetail').attr("disabled", "disabled");
         DataLoad();
+        $('#OperatePersonID').attr("disabled", "disabled");
+        $('#VerifyPersonID').attr("disabled", "disabled");
+        $('#VerifyDateID').attr("disabled", "disabled");
         $.getJSON("/StockOutBill/GenInBillNo/", function (json) {
             if (json) {
-                $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] });//清空细单
+                $('#outBillDeatil').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增出库订单');
                 $('#fm').form('clear');
                 $('#billNo').val(json);
@@ -78,6 +79,7 @@
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
+                
                 $('form input').removeAttr("disabled");
                 $('form textarea').removeAttr("disabled");
                 $('#cc').combo({
@@ -165,6 +167,9 @@
 
     //打开新增明细页面
     function outBillDetailShoew() {
+        $('#fm-inBillDetail .easyui-validatebox').validatebox({
+            required: true
+        });
         $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增出库订单明细');
         $('input[type=text]', '#fm-inBillDetail').attr("value", "");
         $('#detailBillNo').val(billno);
@@ -249,8 +254,8 @@
                 fit="true" fitColumns="true" singleSelect="true"  pagination="true" rownumbers="true">
                 <thead>
                     <tr>
-                        <th field="ID"  width="100">细表ID</th>
-                        <th field="BillNo"  width="80" align="right">单据号</th>
+                        <th field="ID"  hidden="true" width="100">细表ID</th>
+                        <th field="BillNo"  width="120" align="right">单据号</th>
                         <th field="ProductCode" width="100">产品代码</th>
                         <th field="ProductName" width="80" align="right">产品名称</th>
                         <th field="UnitCode" width="80" align="right">单位编码</th>
@@ -272,25 +277,26 @@
             <table height="100px">
                 <tr>
                 <td width="60">订单号</td>
-                <td width="168"><input name="BillNo" id="billNo" class="easyui-validatebox" required="true" /></td>
+                <td width="168"><input name="BillNo" id="billNo" class="easyui-validatebox"  /></td>
                 <td width="60">制单日期</td>
-                <td width="168"><input name="BillDate" id="billDate" class="easyui-validatebox" required="true" /></td>
+                <td width="168"><input name="BillDate" id="billDate" class="easyui-validatebox" /></td>
                 <td width="60">订单类型</td>
                 <td width="168"><input name="BillTypeCode" id="biiTypeadd" missingmessage="请选择订单类型" /></td>
                 </tr>
                 <tr>
                 <td width="60">仓库编码</td>
-                <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码" /></td>
+                <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码" />
+                </td>
                 <td width="60">经办人</td>
-                <td width="168"><input name="OperatePersonCode" class="easyui-validatebox" required="true" /></td>
+                <td width="168"><input name="OperatePersonName" id="OperatePersonID" /></td>
                 <td width="60">状态</td>
-                <td width="168"><input name="Status"></td>
+                <td width="168"><input name="Status" /></td>
                 </tr>
                 <tr>
                 <td width="60">审核人员</td>
-                <td width="168"><input name="VerifyPersonCode" /></td>
+                <td width="168"><input name="VerifyPersonName" id="VerifyPersonID" /></td>
                 <td width="60">审核时间</td>
-                <td width="168"><input name="VerifyDate" /></td>
+                <td width="168"><input name="VerifyDate" id="VerifyDateID"/></td>
                 <td width="60">描述</td>
                 <td width="168"><input name="Description" /></td>
                 </tr>
@@ -330,7 +336,6 @@
               </tr>
               <tr>
                 <td style=" text-align:right">产品代码</td>
-                @*<td align="left"><input type="text" name="ProductCode"/></td>*@
                 <td><input name="ProductCode" id="productCode" />
                 <a href="#" onclick="productSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a></td>
               </tr>
@@ -353,22 +358,22 @@
               </tr>
               <tr>
                 <td style=" text-align:right">数量</td>
-                <td align="left"><input type="text" name="BillQuantity" class="easyui-validatebox" required="true"/></td>
+                <td align="left"><input type="text" name="BillQuantity" class="easyui-validatebox"/></td>
                 <td></td>
               </tr>
               <tr>
                 <td style=" text-align:right">实际入库量</td>
-                <td align="left"><input type="text" name="RealQuantity" class="easyui-validatebox" required="true"/></td>
+                <td align="left"><input type="text" name="RealQuantity" class="easyui-validatebox"/></td>
                 <td></td>
               </tr>
               <tr>
                 <td style=" text-align:right">单价</td>
-                <td align="left"><input type="text" name="Price" class="easyui-validatebox" required="true"/></td>
+                <td align="left"><input type="text" name="Price" class="easyui-validatebox" /></td>
                 <td></td>
               </tr>
               <tr>
                 <td style=" text-align:right">总金额</td>
-                <td align="left"><input type="text" name="textfield6" class="easyui-validatebox" required="true"/></td>
+                <td align="left"><input type="text" name="textfield6" class="easyui-validatebox" /></td>
                 <td></td>
               </tr>
               <tr>

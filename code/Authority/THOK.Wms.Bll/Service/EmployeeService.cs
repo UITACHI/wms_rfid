@@ -68,6 +68,7 @@ namespace THOK.Wms.Bll.Service
             emp.Tel = employee.Tel;
             emp.Status = employee.Status;
             emp.IsActive = employee.IsActive;
+            emp.UserName = employee.UserName;
             emp.UpdateTime = DateTime.Now;
 
             EmployeeRepository.Add(emp);
@@ -104,6 +105,7 @@ namespace THOK.Wms.Bll.Service
             emp.Tel = employee.Tel;
             emp.Status = employee.Status;
             emp.IsActive = employee.IsActive;
+            emp.UserName = employee.UserName;
             emp.UpdateTime = DateTime.Now;
 
             EmployeeRepository.SaveChanges();

@@ -38,6 +38,23 @@
 				]]
         });
 
+        $('#user-add').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/User/Details/?page=1&rows=10',
+            idField: 'UserID',
+            textField: 'UserName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'UserID', title: '用户ID', hidden: true, width: 30 },
+					{ field: 'UserName', title: '用户名称', align: 'left', width: 40 },
+					{ field: 'ChineseName', title: '中文名', align: 'left', width: 30 },
+					{ field: 'IsAdmin', title: '是否是管理员', align: 'left', width: 30 }
+				]]
+        });
+
         $('#job-add').combogrid({
             width: 130,
             panelWidth: 340,
@@ -147,6 +164,12 @@
                         <td width="60" align="right">岗位：</td>
                         <td width="168">
                         <input name="JobID" id="job-add" required="true" />
+                        </td>
+                      </tr>
+                      <tr>
+                       <td align="right">用户名称：</td>
+                        <td width="168" colspan="3">
+                        <input name="UserName" id="user-add"  />
                         </td>
                       </tr>
                        <tr>

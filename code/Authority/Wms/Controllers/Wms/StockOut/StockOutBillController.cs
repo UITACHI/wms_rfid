@@ -61,7 +61,7 @@ namespace Authority.Controllers.Wms.StockOut
         // GET: /StockOutBill/GenInBillNo/
         public ActionResult GenInBillNo()
         {
-            var inBillNo = OutBillMasterService.GenInBillNo();
+            var inBillNo = OutBillMasterService.GenInBillNo(this.User.Identity.Name.ToString());
             return Json(inBillNo, "text", JsonRequestBehavior.AllowGet);
         }
 
@@ -70,7 +70,7 @@ namespace Authority.Controllers.Wms.StockOut
         [HttpPost]
         public ActionResult Create(OutBillMaster outBillMaster)
         {
-            bool bResult = OutBillMasterService.Add(outBillMaster);
+            bool bResult = OutBillMasterService.Add(outBillMaster,this.User.Identity.Name.ToString());
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
@@ -138,8 +138,8 @@ namespace Authority.Controllers.Wms.StockOut
         // POST: /StockOutBill/outBillMasterAudit/
         public ActionResult outBillMasterAudit(string BillNo)
         {
-            bool bResult = OutBillMasterService.Audit(BillNo);
-            string msg = bResult ? "删除成功" : "删除失败";
+            bool bResult = OutBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString());
+            string msg = bResult ? "审核成功" : "审核失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
@@ -148,7 +148,7 @@ namespace Authority.Controllers.Wms.StockOut
         public ActionResult outBillMasterAntiTrial(string BillNo)
         {
             bool bResult = OutBillMasterService.AntiTrial(BillNo);
-            string msg = bResult ? "删除成功" : "删除失败";
+            string msg = bResult ? "反审成功" : "反审失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
         
