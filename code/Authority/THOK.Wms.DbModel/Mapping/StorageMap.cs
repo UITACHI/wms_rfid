@@ -58,6 +58,8 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.UpdateTime)
                 .IsRequired();
 
+            this.Property(t => t.RowVersion).IsRowVersion();
+
             // Table & Column Mappings
             this.Property(t => t.StorageCode).HasColumnName(ColumnMap.Value.To("StorageCode"));
             this.Property(t => t.CellCode).HasColumnName(ColumnMap.Value.To("CellCode"));
@@ -71,6 +73,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.LockTag).HasColumnName(ColumnMap.Value.To("LockTag"));
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
+            this.Property(t => t.RowVersion).HasColumnName(ColumnMap.Value.To("RowVersion"));
 
             // Relationships
             this.HasRequired(t => t.cell)
