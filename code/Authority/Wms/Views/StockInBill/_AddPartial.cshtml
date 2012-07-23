@@ -187,6 +187,7 @@
         alert("编辑");
     }
 
+    //删除入库单明细
     function deleteBillDetailClick() {
         var detailRow = $('#inBillDetail').datagrid('getSelected');
         if (detailRow) {
@@ -198,6 +199,23 @@
 //            $('form textarea').attr("disabled", "disabled");
             $('#fm-inBillDetail').form('load', detailRow);
             detailUrl = '/StockInBill/InBillDetailDelete/?ID=' + detailRow.ID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+
+    //修改入库单明细
+    function editBillDetailClick() {
+        var detailRow = $('#inBillDetail').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '修改入库细表信息');
+            $('#fm-inBillDetail .easyui-validatebox').validatebox({
+                required: false
+            });
+            //            $('form input').attr("disabled", "disabled");
+            //            $('form textarea').attr("disabled", "disabled");
+            $('#fm-inBillDetail').form('load', detailRow);
+            detailUrl = '/StockInBill/InBillDetailEdit/?ID=' + detailRow.ID;
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }
