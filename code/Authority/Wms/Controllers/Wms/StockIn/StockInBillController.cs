@@ -155,5 +155,24 @@ namespace Authority.Controllers.Wms.StockIn
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /InBillMaster/GetBillTypeDetail/
+
+        [HttpPost]
+        public ActionResult GetBillTypeDetail(string BillClass, string IsActive)
+        {
+            var billType = InBillMasterService.GetBillTypeDetail(BillClass,IsActive);
+            return Json(billType, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /InBillMaster/GetWareHouseDetail/
+
+        [HttpPost]
+        public ActionResult GetWareHouseDetail( string IsActive)
+        {
+            var wareHouse = InBillMasterService.GetWareHouseDetail(IsActive);
+            return Json(wareHouse, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }
