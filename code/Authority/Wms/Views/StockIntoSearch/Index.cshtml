@@ -13,12 +13,12 @@
     });
 </script>
 <div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
-    <table id="masters" class="easyui-datagrid" 
-        url="/StockIntoSearch/masters/" border="false" singleSelect="true"
+    <table id="details" class="easyui-datagrid" 
+        url="/StockIntoSearch/Details/" border="false" singleSelect="true"
         fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="IntoBillNo" width="120" align="center">入库单号</th>
+                <th field="BillNo" width="120" align="center">入库单号</th>
                 <th field="WarehouseName" width="120" align="center">仓库名称</th>
                 <th field="MakeDate" width="120" align="center">制单日期</th>
                 <th field="OperatePerson" width="120" align="center">操作员</th>
@@ -31,8 +31,8 @@
     </table>
 </div>
 <div region="south" split="true" border="false" style="height: 250px; border-top-style: solid; border-top-width: 1px; border-top-color: 99BBE8;">
-<table id="details" class="easyui-datagrid" 
-        url="/StockIntoSearch/Details/" border="false" singleSelect="true"
+<table id="infodetails" class="easyui-datagrid" 
+        url="/StockIntoSearch/InfoDetails/" border="false" singleSelect="true"
         fit="true"  pagination="true" rownumbers="true">
         <thead>
             <tr>

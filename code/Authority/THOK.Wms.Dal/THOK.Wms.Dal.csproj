@@ -63,6 +63,7 @@
     <Compile Include="EntityRepository\OutBillMasterRepository.cs" />
     <Compile Include="EntityRepository\ProductRepository.cs" />
     <Compile Include="EntityRepository\ShelfRepository.cs" />
+    <Compile Include="EntityRepository\StockIntoSearchRepository.cs" />
     <Compile Include="EntityRepository\StorageRepository.cs" />
     <Compile Include="EntityRepository\SupplierRepository.cs" />
     <Compile Include="EntityRepository\UnitListRepository.cs" />

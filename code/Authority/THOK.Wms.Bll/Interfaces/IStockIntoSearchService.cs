@@ -8,9 +8,6 @@ namespace THOK.Wms.Bll.Interfaces
 {
     public interface IStockIntoSearchService : IService<InBillMaster>
     {
-        object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive);
-
-        object GenInBillNo();
-
+        object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status);
     }
 }
