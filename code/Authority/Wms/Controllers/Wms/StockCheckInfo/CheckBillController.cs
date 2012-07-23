@@ -45,10 +45,41 @@ namespace Authority.Controllers.Wms.StockCheckInfo
         // POST: /CheckBill/CheckCreate/       
         public ActionResult CheckCreate(string wareCodes, string areaCodes, string shelfCodes, string cellCodes)
         {
-            //bool bResult = CheckBillMasterService.Add(wareCodes, cellCodes);
-            bool bResult = CheckBillMasterService.CellAdd(wareCodes, areaCodes, shelfCodes, cellCodes);
+            bool bResult = CheckBillMasterService.CellAdd(wareCodes, areaCodes, shelfCodes, cellCodes,this.User.Identity.Name.ToString());
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
-        }        
+        }
+
+        //查询主单
+        // GET: /CheckBill/Details/
+        public ActionResult Details(int page, int rows, FormCollection collection)
+        {
+            string BillNo = collection["BillNo"] ?? "";
+            string beginDate = collection["BillDate"] ?? "";
+            string endDate = collection["BillDate"] ?? "";
+            string OperatePersonCode = collection["OperatePersonCode"] ?? "";
+            string Status = collection["Status"] ?? "";
+            string IsActive = collection["IsActive"] ?? "";
+            var inBillMaster = CheckBillMasterService.GetDetails(page, rows, BillNo,beginDate,endDate, OperatePersonCode, Status, IsActive);
+            return Json(inBillMaster, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //查询细单
+        // GET: /CheckBill/CheckBillDetails/
+        public ActionResult CheckBillDetails(int page, int rows, string BillNo)
+        {
+            var inBillDetail = CheckBillDetailService.GetDetails(page, rows, BillNo);
+            return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //删除主单
+        // POST: /CheckBill/Delete/
+        public ActionResult Delete(string BillNo)
+        {
+            bool bResult = CheckBillMasterService.Delete(BillNo);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
