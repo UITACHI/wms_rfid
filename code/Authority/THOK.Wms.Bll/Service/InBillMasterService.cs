@@ -52,31 +52,39 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
             var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)
-                && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo,
-                                                                                            BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
-                                                                                            i.OperatePersonID, i.WarehouseCode,
-                                                                                            i.BillTypeCode,
-                                                                                            i.Warehouse.WarehouseName,
-                                                                                            VerifyDate=( i.VerifyDate ==null?"":((DateTime) i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss")),
-                                                                                            Status = WhatStatus(i.Status), IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                                                                                            Description = i.Description,
-                                                                                            UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+                && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                {
+                    i.BillNo,
+                    BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
+                    i.OperatePersonID,
+                    i.WarehouseCode,
+                    i.BillTypeCode,
+                    i.Warehouse.WarehouseName,
+                    VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss")),
+                    Status = WhatStatus(i.Status),
+                    IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                    Description = i.Description,
+                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                });
             if (!IsActive.Equals(""))
             {
                 inBillMaster = inBillMaster.Where(i =>
                     i.BillNo.Contains(BillNo)
                     && i.IsActive.Contains(IsActive)
-                    && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo,
-                                                                                                i.BillDate,
-                                                                                                i.OperatePersonID,
-                                                                                                i.WarehouseCode,
-                                                                                                i.BillTypeCode,
-                                                                                                i.WarehouseName,
-                                                                                                i.VerifyDate,
-                                                                                                Status = WhatStatus(i.Status),
-                                                                                                IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                                                                                                Description = i.Description,
-                                                                                                UpdateTime = i.UpdateTime });
+                    && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                    {
+                        i.BillNo,
+                        i.BillDate,
+                        i.OperatePersonID,
+                        i.WarehouseCode,
+                        i.BillTypeCode,
+                        i.WarehouseName,
+                        i.VerifyDate,
+                        Status = WhatStatus(i.Status),
+                        IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                        Description = i.Description,
+                        UpdateTime = i.UpdateTime
+                    });
             }
             int total = inBillMaster.Count();
             inBillMaster = inBillMaster.Skip((page - 1) * rows).Take(rows);
