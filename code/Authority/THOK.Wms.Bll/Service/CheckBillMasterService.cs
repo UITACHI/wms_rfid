@@ -57,15 +57,14 @@ namespace THOK.Wms.Bll.Service
             return statusStr;
         }
 
-        public object GetDetails(int page, int rows, string BillNo, string beginDate, string endDate, string OperatePersonCode, string VerifyPersonCode, string Status)
+        public object GetDetails(int page, int rows, string BillNo, string beginDate, string endDate, string OperatePersonCode, string Status)
         {
             IQueryable<CheckBillMaster> CheckBillMasterQuery = CheckBillMasterRepository.GetQueryable();
-            var checkBillMaster = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode) &&
-                                   i.VerifyPerson.EmployeeCode.Contains(VerifyPersonCode)).OrderBy(i => i.BillNo).AsEnumerable()
+            var checkBillMaster = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)).OrderBy(i => i.BillNo).AsEnumerable()
                                     .Select(i => new
                                     {
                                         i.BillNo,
-                                        i.BillDate,
+                                        BillDate = i.BillDate,
                                         i.Warehouse.WarehouseCode,
                                         i.Warehouse.WarehouseName,
                                         OperatePersonCode = i.OperatePerson.EmployeeCode,
@@ -78,7 +77,7 @@ namespace THOK.Wms.Bll.Service
                                         Description = i.Description,
                                         UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
                                     });
-            if (!Status.Equals(""))
+            if (!Status.Equals(string.Empty))
             {
                 checkBillMaster = checkBillMaster.Where(i => i.BillNo.Contains(BillNo) && i.BillDate > Convert.ToDateTime(beginDate) && i.BillDate < Convert.ToDateTime(endDate))
                                                  .OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
