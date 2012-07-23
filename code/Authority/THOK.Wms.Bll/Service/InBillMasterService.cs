@@ -152,6 +152,7 @@ namespace THOK.Wms.Bll.Service
             if (ibm != null)
             {
                 ibm.Status = "2";
+                ibm.VerifyDate = DateTime.Now;
                 ibm.UpdateTime = DateTime.Now;
                 InBillMasterRepository.SaveChanges();
                 result = true;
@@ -171,6 +172,7 @@ namespace THOK.Wms.Bll.Service
             if (ibm != null)
             {
                 ibm.Status = "1";
+                ibm.VerifyDate =null;
                 ibm.UpdateTime = DateTime.Now;
                 InBillMasterRepository.SaveChanges();
                 result = true;
