@@ -113,6 +113,10 @@
     <Compile Include="Migrations\201207230611264_modify_inbill.Designer.cs">
       <DependentUpon>201207230611264_modify_inbill.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207230803026_add_cell_storage_row_version.cs" />
+    <Compile Include="Migrations\201207230803026_add_cell_storage_row_version.Designer.cs">
+      <DependentUpon>201207230803026_add_cell_storage_row_version.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
