@@ -133,6 +133,24 @@ namespace Authority.Controllers.Wms.StockOut
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        //主单审核
+        // POST: /StockOutBill/outBillMasterAudit/
+        public ActionResult outBillMasterAudit(string BillNo)
+        {
+            bool bResult = OutBillMasterService.Audit(BillNo);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //主单反审
+        // POST: /StockOutBill/outBillMasterAntiTrial/
+        public ActionResult outBillMasterAntiTrial(string BillNo)
+        {
+            bool bResult = OutBillMasterService.AntiTrial(BillNo);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
         
     }
 }

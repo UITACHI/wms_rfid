@@ -74,12 +74,12 @@ namespace THOK.Wms.DbModel.Mapping
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.OperatePerson)
-                .WithMany(t => t.MoveBillMasterOperatePersons)
+                .WithMany(t => t.OperatePersonMoveBillMasters)
                 .HasForeignKey(d => d.OperatePersonID)
                 .WillCascadeOnDelete(false);
 
             this.HasOptional(t => t.VerifyPerson)
-                .WithMany(t => t.MoveBillMasterVerifyPersons)
+                .WithMany(t => t.VerifyPersonMoveBillMasters)
                 .HasForeignKey(d => d.VerifyPersonID)
                 .WillCascadeOnDelete(false);
         }
