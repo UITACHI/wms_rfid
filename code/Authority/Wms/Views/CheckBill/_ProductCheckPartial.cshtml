@@ -1,60 +1,58 @@
 ﻿<script type="text/javascript">
-    function nextDivClick() {
-        $('#productCheckDiv').css({ display: "none" });
-        $('#nextDiv').css({ display: "none" });
-        $('#generateDiv').css({ display: "block" });
-        $('#upDiv').css({ display: "block" });
-    }
-
-    function upDivClick() {
-        $('#productCheckDiv').css({ display: "block" });
-        $('#generateDiv').css({ display: "block" });
-        $('#onDiv').css({ display: "none" });
-        $('#nextDiv').css({ display: "none" });
-    }
-
     function upCheckClick() {
         alert("生成完成了");
     }
+
+    function formatAction(value, row, index) {
+        if (row.editing) {
+            var s = '<div class="item" onclick="saverow(' + index + ')">' + row.ProductName + '</div> ';
+            return s + c;
+        } else {
+            var s = '<div class="item" onclick="saverow(' + index + ')">' + row.ProductName + '</div> ';
+            return s + c;
+        }
+    }
 </script>
-
-<div id="productCheckDiv" region="center" split="true" border="false" style="height:450px; display:block;">    
-   <table id="details" class="easyui-treegrid" border="false" url="/Module/Details/" rownumbers="true" singleSelect="false" 
-			idField="ModuleID"  pagination="true" fit="true" >
-		<thead>
-			<tr>
-                <th field="ck" checkbox="true"></th>
-                <th field="ModuleID" hidden="true" width="50">模块编码</th>
-				<th field="ModuleName" width="200" align="left" iconCls="icon">模块名称</th>
-				<th field="IndicateImage" width="150">图标</th>                
-                <th field="ModuleURL" width="150">路径</th>
-                <th field="ShowOrder" width="150">显标顺序</th>
-                <th field="SystemID" hidden="true" width="50">系统编码</th>
-				<th field="SystemName" hidden="true" width="200" align="left" iconCls="icon">模块名称</th>
-                <th field="ParentModuleID" hidden="true" width="50">模块编码</th>
-				<th field="ParentModuleName" hidden="true" width="200" align="left" iconCls="icon">模块名称</th>
-			</tr>
-		</thead>
-	</table>
-</div>
- <div id="nextDiv" style="width:100%; text-align:right;display:block;">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="nextDivClick()">下一步</a></div>
-
-<div id="generateDiv" region="center" split="true" border="false" style="display:none;">    
-    <table id="details" class="easyui-datagrid" 
-        url="/System/Details/" border="false" singleSelect="true"
-        fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
-        <thead>
-            <tr>
-                <th field="SystemID" width="80" hidden="true">系统编码</th>
-                <th field="SystemName" width="200">系统名称</th>
-                <th field="Description" width="300" >描述</th>
-                <th field="Status" width="80">状态</th>
-            </tr>
-        </thead>
+<div class="easyui-layout" fit="true">
+    <div id="sidebar" region="west" style="width: 300px;  padding: 1px; margin: 1px">
+        <table id="productTable" class="easyui-datagrid" border="false" url='/Product/Details/'
+            singleselect="true" fit="true" pagination="true" rownumbers="true">
+            <thead>
+                <tr>
+                    <th field="ProductCode" width="100">
+                        产品编码
+                    </th>
+                    <th field="ProductName" width="120" formatter="formatAction">
+                        产品名称
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="main" region="center" style="width: 80px;" fit="true">
+    <table style=" height:100%; width:100%">
+        <tr style="height:50%;width:50%">
+        <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok">右移==></a></td>
+        </tr>
+        <tr style="height:50%;width:50%">
+        <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok"><==左移</a></td>
+        </tr>
     </table>
-</div>
- <div id="upDiv" style="width:100%; text-align:right;display:none;">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="upDivClick()">上一步</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="upCheckClick()">生成盘点单</a>    
+    
+    </div>
+    <div id="main" region="east" style="width: 300px;margin: 1px">
+        <table id="loadShow" class="easyui-datagrid" border="false" url='/Product/Details/'
+            singleselect="true" fit="true" pagination="true" rownumbers="true">
+            <thead>
+                <tr>
+                    <th field="ProductCode" width="100">
+                        产品编码
+                    </th>
+                    <th field="ProductName" width="120">
+                        产品名称
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>

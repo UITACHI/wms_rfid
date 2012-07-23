@@ -1,13 +1,30 @@
 ﻿<script type="text/javascript">
     function upDivClick() {
-        $('#loadShowTable').datagrid('options').url = '/Storage/Details/';
-        $('#loadShowTable').datagrid('reload');
         $('#nextShowDiv').dialog('close');
     }
 
     function generateCheckClick() {
         $.getJSON('/CheckBill/CheckCreate/', { wareCodes: ware, areaCodes: area, shelfCodes: shelf, cellCodes: cell }, function (json) {
-            
+            if (json) {
+                if (json.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: json.msg
+                    });
+                    $('#nextShowDiv').dialog('close');
+                    $('#addCheck').dialog('close');
+                    $('#details').datagrid('load');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: json.msg
+                    });
+                    $('#nextShowDiv').dialog('close');
+                    $('#details').datagrid('load');
+                }
+            } else { 
+                
+            }
         });
     }
 </script>

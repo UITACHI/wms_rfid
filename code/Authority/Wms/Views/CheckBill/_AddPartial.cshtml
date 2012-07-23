@@ -81,10 +81,10 @@
                         </thead>
                     </table>
                </div>
-              </div>
+          </div>
         </div>
 		<div title="产品盘点">
-			<img src="images/shirt2.gif">
+			@Html.Partial("_ProductCheckPartial")
 		</div>
 		<div title="异动盘点">
 			<img src="images/shirt3.gif">
@@ -93,6 +93,6 @@
     
 </div>
 <div id="dlg-buttons">
-    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="nextDivClick()">浏览</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="nextDivClick()">预览</a>
 </div>
 @Html.Partial("_NextShowPartial")

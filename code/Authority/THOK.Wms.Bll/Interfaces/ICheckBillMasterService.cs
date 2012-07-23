@@ -8,11 +8,11 @@ namespace THOK.Wms.Bll.Interfaces
 {
     public interface ICheckBillMasterService : IService<CheckBillMaster>
     {
-        object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status);
+        object GetDetails(int page, int rows, string BillNo, string beginDate, string endDate, string OperatePersonCode, string Status, string IsActive);
 
         bool Add(string billNo,string wareCode);
 
-        bool CellAdd(string ware, string area, string shelf, string cell);
+        bool CellAdd(string ware, string area, string shelf, string cell,string UserName);
 
         bool Delete(string BillNo);
 
