@@ -97,6 +97,10 @@
     <Compile Include="Migrations\201207201102037_modify_data_002.Designer.cs">
       <DependentUpon>201207201102037_modify_data_002.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207230216520_modify_employee_username.cs" />
+    <Compile Include="Migrations\201207230216520_modify_employee_username.Designer.cs">
+      <DependentUpon>201207230216520_modify_employee_username.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
