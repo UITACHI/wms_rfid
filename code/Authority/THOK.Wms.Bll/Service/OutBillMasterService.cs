@@ -54,10 +54,10 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive)
         {
             IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable();
-            var outBillMaster = OutBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"), i.OperatePersonID, i.WarehouseCode, i.BillTypeCode, Status = WhatStatus(i.Status), IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+            var outBillMaster = OutBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),i.Warehouse.WarehouseCode, i.Warehouse.WarehouseName,OperatePersonCode= i.OperatePerson.EmployeeCode,OperatePersonName= i.OperatePerson.EmployeeName, VerifyPersonCode=i.VerifyPerson.EmployeeCode,VerifyPersonName= i.VerifyPerson.EmployeeName, i.BillTypeCode, Status = WhatStatus(i.Status), IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             if (!IsActive.Equals(""))
             {
-                outBillMaster = outBillMaster.Where(i => i.BillNo.Contains(BillNo) && i.IsActive.Contains(IsActive) && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.BillDate, i.OperatePersonID, i.WarehouseCode, i.BillTypeCode, Status = WhatStatus(i.Status), IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime });
+                outBillMaster = outBillMaster.Where(i => i.BillNo.Contains(BillNo) && i.IsActive.Contains(IsActive) && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { i.BillNo, i.BillDate, i.WarehouseCode, i.WarehouseName, i.OperatePersonCode, i.OperatePersonName, i.VerifyPersonCode, i.VerifyPersonName, i.BillTypeCode, Status = WhatStatus(i.Status), IsActive = i.IsActive == "1" ? "可用" : "不可用", Description = i.Description, UpdateTime = i.UpdateTime });
             }
             int total = outBillMaster.Count();
             outBillMaster = outBillMaster.Skip((page - 1) * rows).Take(rows);
@@ -150,17 +150,41 @@ namespace THOK.Wms.Bll.Service
             var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
             if (outbm != null)
             {
-                //outbm.BillDate = outBillMaster.BillDate;
-                //outbm.BillTypeCode = outBillMaster.BillTypeCode;
-                //outbm.WarehouseCode = outBillMaster.WarehouseCode;
-                //outbm.OperatePersonID = outBillMaster.OperatePersonID;
                 outbm.Status = status;
-                //outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
-                //outbm.VerifyDate = outBillMaster.VerifyDate;
-                //outbm.Description = outBillMaster.Description;
-                //outbm.IsActive = outBillMaster.IsActive;
-                //outbm.UpdateTime = DateTime.Now;
+                OutBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
+        }
 
+
+        public bool Audit(string billNo)
+        {
+            bool result = false;
+            IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable();
+            var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
+            if (outbm != null && outbm.Status=="1")
+            {
+                outbm.Status = "2";
+                outbm.VerifyDate = DateTime.Now;
+                outbm.UpdateTime = DateTime.Now;
+                //outbm.VerifyPersonID =""
+                OutBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
+        }
+
+        public bool AntiTrial(string billNo)
+        {
+            bool result = false;
+            IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable();
+            var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
+            if (outbm != null && outbm.Status == "2")
+            {
+                outbm.Status = "1";
+                outbm.VerifyDate = null;
+                outbm.UpdateTime = DateTime.Now;
                 OutBillMasterRepository.SaveChanges();
                 result = true;
             }
