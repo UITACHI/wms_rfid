@@ -22,7 +22,7 @@
         if (row) {
             $('#module_functionadmin').window('open');
             $('#functiondatagrid').datagrid('clearSelections'); //清空所有选择项
-            moduleId = row.ModuleID;
+            moduleId = row.ModuleID;            
             $('#functiondatagrid').datagrid({
                 url: '/Function/Details/?ModuleId=' + row.ModuleID
             });

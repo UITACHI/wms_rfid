@@ -12,7 +12,7 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool Add(string billNo,string wareCode);
 
-        bool CellAdd(string ware, string area, string shelf, string cell,string UserName);
+        bool CellAdd(string ware, string area, string shelf, string cell, string UserName);
 
         bool Delete(string BillNo);
 
@@ -20,5 +20,8 @@ namespace THOK.Wms.Bll.Interfaces
 
         object GetCheckBillNo();
 
+        bool Audit(string billNo, string userName);
+
+        bool AntiTrial(string billNo);
     }
 }

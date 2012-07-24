@@ -15,14 +15,14 @@
 </script>
 <div class="easyui-layout" fit="true">
     <div id="sidebar" region="west" style="width: 300px;  padding: 1px; margin: 1px">
-        <table id="productTable" class="easyui-datagrid" border="false" url='/Product/Details/'
-            singleselect="true" fit="true" pagination="true" rownumbers="true">
+        <table id="productTable" class="easyui-datagrid" border="false" url='/Product/FindProduct/'
+            singleselect="true" fit="true"  rownumbers="true">
             <thead>
                 <tr>
                     <th field="ProductCode" width="100">
                         产品编码
                     </th>
-                    <th field="ProductName" width="120" formatter="formatAction">
+                    <th field="ProductName" width="120">
                         产品名称
                     </th>
                 </tr>
@@ -41,8 +41,8 @@
     
     </div>
     <div id="main" region="east" style="width: 300px;margin: 1px">
-        <table id="loadShow" class="easyui-datagrid" border="false" url='/Product/Details/'
-            singleselect="true" fit="true" pagination="true" rownumbers="true">
+        <table id="loadShow" class="easyui-datagrid" border="false" url='/Product/FindProduct/'
+            singleselect="true" fit="true"  rownumbers="true">
             <thead>
                 <tr>
                     <th field="ProductCode" width="100">

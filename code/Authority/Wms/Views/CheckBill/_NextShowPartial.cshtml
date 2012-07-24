@@ -3,6 +3,7 @@
         $('#nextShowDiv').dialog('close');
     }
 
+    //生成盘点单
     function generateCheckClick() {
         $.getJSON('/CheckBill/CheckCreate/', { wareCodes: ware, areaCodes: area, shelfCodes: shelf, cellCodes: cell }, function (json) {
             if (json) {
