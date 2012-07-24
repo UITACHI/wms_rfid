@@ -91,6 +91,7 @@ namespace THOK.Wms.Bll.Service
             var ibd = inBillDetailQuery.FirstOrDefault(i=>i.ID==inBillDetail.ID&&i.BillNo==inBillDetail.BillNo);
             ibd.ProductCode = inBillDetail.ProductCode;
             ibd.UnitCode = inBillDetail.UnitCode;
+            ibd.Price = inBillDetail.Price;
             ibd.BillQuantity = inBillDetail.BillQuantity;
             ibd.Description = inBillDetail.Description;
             InBillDetailRepository.SaveChanges();

@@ -80,6 +80,9 @@
                 });
                 $('form input').removeAttr("disabled");
                 $('form textarea').removeAttr("disabled");
+                $('#btnAddBillDetail').css('display', 'inline'); //设置新增明细按钮的可见性
+                $('#btnDeleteBillDetail').css('display', 'inline'); //设置删除明细按钮的可见性
+                $('#btnEditBillDetail').css('display', 'inline'); //设置修改明细按钮的可见性
                 $('#cc').combo({
                     hasDownArrow: true
                 });
@@ -97,6 +100,7 @@
         } else {
             $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增入库订单明细');
             $('#fm-inBillDetail').form('clear');
+            detailUrl = '/StockInBill/InBillDetailCreate/';
             $('#detailBillNo').val(billno);
             $('#detailBillNo').attr("readonly", true);
         }
@@ -160,6 +164,9 @@
     }
 
     function DetailSave() {
+        $('#fm-inBillDetail .easyui-validatebox').validatebox({
+            required: true
+        });
         $('#fm-inBillDetail').form('submit', {
             url: detailUrl,
             onSubmit: function () {
@@ -298,9 +305,9 @@
 	    </form>
     </div>
     <div border="false" style="padding:4px 4px;" > 
-	    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()">添加明细</a>
-	    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteBillDetailClick()">删除明细</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBillDetailClick()">修改明细</a>
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()" id="btnAddBillDetail">添加明细</a>
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteBillDetailClick()" id="btnDeleteBillDetail">删除明细</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBillDetailClick()" id="btnEditBillDetail">修改明细</a>
     </div>
 </div>
 
