@@ -21,7 +21,7 @@ namespace THOK.Authority.Dal.EntityRepository
             city.UserSystems.Do(us => Delete(us.UserModules.ToArray()));
             Delete(city.UserSystems.ToArray());
 
-            this.ObjectSet.Remove(city);
+            this.dbSet.Remove(city);
         }
     }
 }
