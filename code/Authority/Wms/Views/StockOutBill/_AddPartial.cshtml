@@ -173,9 +173,12 @@
             required: true
         });
         $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增出库订单明细');
+
         $('input[type=text]', '#fm-inBillDetail').attr("value", "");
         $('#detailBillNo').val(billno);
-        $('#detailBillNo').attr("readonly", true);
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
+        //$('#detailBillNo').attr("readonly", true);
         detailUrl = '/StockOutBill/OutBillDetailCreate/';
     }
 
@@ -333,7 +336,7 @@
             <table style="padding:10px 10px 0px 5px">
               <tr>
                 <td style=" text-align:right">入库单号</td>
-                <td align="left"><input  name="BillNo" id="detailBillNo" />
+                <td align="left"><input  name="BillNo" id="detailBillNo" readonly="readonly"/>
                 <input  name="ID" style=" display:none" />
                 </td>
                 <td></td>
@@ -341,23 +344,23 @@
               <tr>
                 <td style=" text-align:right">产品代码</td>
                 <td><input name="ProductCode" id="productCode" />
-                <a href="#" onclick="productSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a></td>
+                <a href="#" onclick="productSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true" ></a></td>
               </tr>
               <tr>
                 <td style=" text-align:right">产品名称</td>
-                <td align="left"><input type="text" name="ProductName" id="productName"/></td>
+                <td align="left"><input type="text" name="ProductName" id="productName" readonly="readonly"/></td>
                 <td></td>
               </tr>
               <tr>
                 <td style=" text-align:right">单位编码</td>
                 <td align="left"><label>
-                  <input type="text" name="UnitCode"  id="unitCode"/>
+                  <input type="text" name="UnitCode"  id="unitCode" readonly="readonly"/>
                 </label></td>
                 <td></td>
               </tr>
               <tr>
                 <td style=" text-align:right">单位名称</td>
-                <td align="left"><input type="text" name="UnitName" id="unitName"/></td>
+                <td align="left"><input type="text" name="UnitName" id="unitName" readonly="readonly"/></td>
                 <td></td>
               </tr>
               <tr>
@@ -367,12 +370,12 @@
               </tr>
               <tr style="display:none">
                 <td style=" text-align:right">实际入库量</td>
-                <td align="left"><input type="text" name="RealQuantity" class="easyui-validatebox" /></td>
+                <td align="left"><input type="text" name="RealQuantity" /></td>
                 <td></td>
               </tr>
               <tr>
                 <td style=" text-align:right">单价</td>
-                <td align="left"><input type="text" name="Price" class="easyui-validatebox" id="price" /></td>
+                <td align="left"><input type="text" name="Price" class="easyui-validatebox" id="price" readonly="readonly" /></td>
                 <td></td>
               </tr>
               <tr>
