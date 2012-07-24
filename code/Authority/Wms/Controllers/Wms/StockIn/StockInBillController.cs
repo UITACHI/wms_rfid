@@ -63,7 +63,7 @@ namespace Authority.Controllers.Wms.StockIn
 
         public ActionResult GenInBillNo()
         {
-            var inBillNo = InBillMasterService.GenInBillNo();
+            var inBillNo = InBillMasterService.GenInBillNo(this.User.Identity.Name.ToString());
             return Json(inBillNo, "text", JsonRequestBehavior.AllowGet);
         }
 

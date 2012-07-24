@@ -169,14 +169,16 @@ namespace THOK.Wms.Bll.Service
         #region IInBillMasterService 成员
 
 
-        public object GenInBillNo()
+        public object GenInBillNo(string userName)
         {
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
+            string billNo = "";
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             if (inBillMaster.Count()==0)
             {
-                return System.DateTime.Now.ToString("yyMMdd") + "0001" + "IN";
+                billNo= System.DateTime.Now.ToString("yyMMdd") + "0001" + "IN";
             }
             else
             {
@@ -188,8 +190,17 @@ namespace THOK.Wms.Bll.Service
                 {
                     newcode = "0" + newcode;
                 }
-                return System.DateTime.Now.ToString("yyMMdd") + newcode + "IN";
+                billNo= System.DateTime.Now.ToString("yyMMdd") + newcode + "IN";
             }
+            var findBillInfo = new
+            {
+                BillNo = billNo,
+                billNoDate = DateTime.Now.ToString("yyyy-MM-dd"),
+                employeeID = employee==null?"":employee.ID.ToString(),
+                employeeCode = employee == null ? "" : employee.EmployeeCode.ToString(),
+                employeeName = employee == null ? "" : employee.EmployeeName.ToString()
+            };
+            return findBillInfo;
         }
 
         #endregion

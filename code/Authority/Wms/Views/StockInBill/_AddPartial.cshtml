@@ -71,8 +71,9 @@
                 $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
                 $('#fm').form('clear');
-                $('#billNo').val(json);
-                billno = json;
+                $('#billNo').val(json.BillNo);
+                $('#operatePersonName').val(json.employeeName);
+                billno = json.BillNo;
                 $('#billDate').val(getTime());
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
@@ -271,7 +272,8 @@
                 <td width="60">仓库编码</td>
                 <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
                 <td width="60">经办人</td>
-                <td width="168"><input name="OperatePersonName" readonly="true"></td>
+                <td width="168"><input name="OperatePersonName" readonly="true" id="operatePersonName">
+                <input name="OperatePersonID" readonly="true" id="operatePersonCode"style=" display:none"></td>
                 <td width="60">状态</td>
                 <td width="168"><input name="Status" readonly="true"></td>
                 </tr>

@@ -16,7 +16,7 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool Save(InBillMaster inBillMaster);
 
-        object GenInBillNo();
+        object GenInBillNo(string userName);
 
         bool Audit(string BillNo, string userName);
 
