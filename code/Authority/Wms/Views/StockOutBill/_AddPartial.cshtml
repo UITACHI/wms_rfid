@@ -77,11 +77,12 @@
                 $('#OperatePersonID').val(json.employeeID);
                 $('#OperatePersonName').val(json.employeeName);
                 $('#billDate').val(json.billNoDate);
-
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
-
+                $('#deleteBillDetail').removeAttr("disabled");
+                $('#editBillDetail').removeAttr("disabled");
+                $('#addBillDetail').removeAttr("disabled");
                 $('form input').removeAttr("disabled");
                 $('form textarea').removeAttr("disabled");
                 $('#cc').combo({
@@ -109,6 +110,7 @@
                             title: '成功',
                             msg: result.msg
                         });
+                        url = '/StockOutBill/Edit/';
                         isShowOutBillDetail = true;
                         isOutBillMasterAdd = false;
                         outBillDetailShoew();
@@ -144,6 +146,7 @@
                         isInBillMasterSaved = false;
                         $('#dlg').dialog('close');
                         $('#details').datagrid('reload');
+                        $('#outBillDeatil').datagrid('load');
                     } else {
                         $.messager.show({
                             title: '错误',
