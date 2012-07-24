@@ -12,6 +12,8 @@ namespace Authority.Controllers.Wms.ComplexSearch
     {
         [Dependency]
         public IStockIntoSearchService StockIntoSearchService { get; set; }
+        [Dependency]
+        public IIntoSearchDetailService IntoSearchDetailService { get; set; }
         //
         // GET: /StockIntoSearch/
 
@@ -28,13 +30,20 @@ namespace Authority.Controllers.Wms.ComplexSearch
 
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
-            string IntoBillNo = collection["IntoBillNo"] ?? "";
-            string MakeDate = collection["MakeDate"] ?? "";
-            string OperatePerson = collection["OperatePerson"] ?? "";
-            string OperateStatus = collection["OperateStatus"] ?? "";
-            var inBillMaster = StockIntoSearchService.GetDetails(page, rows, IntoBillNo, MakeDate, OperatePerson, OperateStatus);
+            string BillNo = collection["BillNo"] ?? "";
+            string BillDate = collection["BillDate"] ?? "";
+            string OperatePersonCode = collection["OperatePersonCode"] ?? "";
+            string Status = collection["Status"] ?? "";
+            var inBillMaster = StockIntoSearchService.GetDetails(page, rows, BillNo, BillDate, OperatePersonCode, Status);
             return Json(inBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
+        //
+        // GET: /StockIntoSearch/InBillDetails/
 
+        public ActionResult InBillDetails(int page, int rows, string BillNo)
+        {
+            var inBillDetail = IntoSearchDetailService.GetDetails(page, rows, BillNo);
+            return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -58,12 +58,14 @@
     <Compile Include="EntityRepository\InBillAllotRepository.cs" />
     <Compile Include="EntityRepository\InBillDetailRepository.cs" />
     <Compile Include="EntityRepository\InBillMasterRepository.cs" />
+    <Compile Include="EntityRepository\IntoSearchDetailRepository.cs" />
     <Compile Include="EntityRepository\JobRepository.cs" />
     <Compile Include="EntityRepository\OutBillAllotRepository.cs" />
     <Compile Include="EntityRepository\OutBillDetailRepository.cs" />
     <Compile Include="EntityRepository\OutBillMasterRepository.cs" />
     <Compile Include="EntityRepository\ProductRepository.cs" />
     <Compile Include="EntityRepository\ShelfRepository.cs" />
+    <Compile Include="EntityRepository\StockIntoSearchRepository.cs" />
     <Compile Include="EntityRepository\StorageRepository.cs" />
     <Compile Include="EntityRepository\SupplierRepository.cs" />
     <Compile Include="EntityRepository\UnitListRepository.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="Interfaces\IInBillAllotRepository.cs" />
     <Compile Include="Interfaces\IInBillDetailRepository.cs" />
     <Compile Include="Interfaces\IInBillMasterRepository.cs" />
+    <Compile Include="Interfaces\IIntoSearchDetailRepository.cs" />
     <Compile Include="Interfaces\IJobRepository.cs" />
     <Compile Include="Interfaces\IOutBillAllotRepository.cs" />
     <Compile Include="Interfaces\IOutBillDetailRepository.cs" />
