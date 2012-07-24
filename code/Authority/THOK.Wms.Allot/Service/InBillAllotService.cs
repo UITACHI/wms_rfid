@@ -4,6 +4,7 @@ using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.Allot.Interfaces;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace THOK.Wms.Allot.Service
 {
@@ -54,6 +55,7 @@ namespace THOK.Wms.Allot.Service
             string [] areaTypes = new string []{};
             var cellList1 = cells.Where(c => areaTypes.All(a => a != c.Area.AreaType)
                                             && c.Area.AllotInOrder > 0
+                                            && c.IsSingle == "1" //选择货位是单一存储的货位；     
                                             && (c.Storage.Count==0
                                                     || c.Storage.Any(s => (s.LockTag == null 
                                                                         || s.LockTag == string.Empty)
@@ -65,12 +67,15 @@ namespace THOK.Wms.Allot.Service
 
             //条烟区
             areaTypes = new string[] {};
-            var cellList2 = cells.Where(c => areaTypes.All(a => a != c.Area.AreaType)).ToList();
+            var cellList2 = cells.Where(c => areaTypes.All(a => a != c.Area.AreaType)
+                                            && c.IsSingle == "1" //选择货位是单一存储的货位；     
+                                        ).ToList();
 
             //件烟区
             areaTypes = new string[] {};
             var cellList3 = cells.Where(c => areaTypes.All(a => a != c.Area.AreaType)
                                             && c.Area.AllotInOrder > 0
+                                            && c.IsSingle == "1" //选择货位是单一存储的货位；     
                                             && (c.Storage.Count == 0
                                                     || c.Storage.Any(s => (s.LockTag == null || s.LockTag == string.Empty)
                                                         && s.Quantity == 0
@@ -78,6 +83,23 @@ namespace THOK.Wms.Allot.Service
                                                     )
                                                 )
                                         ).ToList();
+
+            //非货位管理区
+            areaTypes = new string[] { };
+            List<Cell> cellList4 = new List<Cell>();
+            if (billMaster.BillType.BillTypeName == "损烟入库")
+            {
+                cellList4 = cells.Where(c => areaTypes.All(a => a != c.Area.AreaType)
+                                            && c.IsSingle == "0"
+                                        ).ToList();
+            }
+            else
+            {
+                cellList4 = cells.Where(c => areaTypes.All(a => a != c.Area.AreaType)
+                                            && c.Area.AllotInOrder > 0
+                                            && c.IsSingle == "0"
+                                        ).ToList();
+            }
 
             //排除 条烟区，件烟区
             var cellQueryFromList1 = cellList1.Where(c => c.Storage.Count == 0
@@ -94,6 +116,12 @@ namespace THOK.Wms.Allot.Service
                                                     && s.Quantity == 0
                                                     && s.InFrozenQuantity == 0)))
                                              .OrderBy(c => c.Area.AllotInOrder);
+            //非货位管理区
+            var cellQueryFromList4 = cellList4.Where(c => c.Storage.Count == 0
+                                    || c.Storage.Any(s => (s.LockTag == null || s.LockTag == string.Empty
+                                        && s.Quantity == 0
+                                        && s.InFrozenQuantity == 0)))
+                                 .OrderBy(c => c.Area.AllotInOrder);
 
             foreach (var billDetail in billDetails.ToArray())
             {
@@ -111,8 +139,7 @@ namespace THOK.Wms.Allot.Service
                             * billDetail.Product.Unit.Count;
                         if (billQuantity >= allotQuantity)
                         {
-                            if (LockCell(billNo, cell)) { Allot(billMaster, billDetail, cell); }
-                            else cellList1.Remove(cell);
+                            Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity);
                         }
                         else break;
                     }
@@ -132,8 +159,7 @@ namespace THOK.Wms.Allot.Service
                             * billDetail.Product.Unit.Count;
                         if (billQuantity >= allotQuantity)
                         {
-                            if (LockCell(billNo, cell)) { Allot(billMaster, billDetail, cell); }
-                            else cellList1.Remove(cell);
+                            Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity); 
                         }
                         else break;
                     }
@@ -154,8 +180,7 @@ namespace THOK.Wms.Allot.Service
                             * billDetail.Product.Unit.Count;
                         if (billQuantity >= allotQuantity)
                         {
-                            if (LockCell(billNo, cell)) { Allot(billMaster, billDetail, cell); }
-                            else cellList1.Remove(cell);
+                            Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity); 
                         }
                         else break;
                     }
@@ -164,7 +189,7 @@ namespace THOK.Wms.Allot.Service
 
                 while ((billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
                 {
-                    //分配条烟到条烟区；
+                    //分配条烟到条烟区；todo
                     cell = cellQueryFromList2.FirstOrDefault();
                     if (cell != null)
                     {
@@ -172,8 +197,7 @@ namespace THOK.Wms.Allot.Service
                         decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
                             / billDetail.Product.Unit.Count)
                             * billDetail.Product.Unit.Count;
-                        if (LockCell(billNo, cell)) { Allot(billMaster, billDetail, cell); }
-                        else cellList1.Remove(cell);
+                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity); 
                     }
                     else break;
                 }
@@ -184,8 +208,10 @@ namespace THOK.Wms.Allot.Service
                     cell = cellQueryFromList3.FirstOrDefault();
                     if (cell != null)
                     {
-                        if (LockCell(billNo, cell)) { Allot(billMaster, billDetail, cell); }
-                        else cellList1.Remove(cell);
+                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
+                        decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
+                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity); 
                     }
                     else break;
                 }
@@ -197,8 +223,10 @@ namespace THOK.Wms.Allot.Service
                                             .FirstOrDefault();
                     if (cell != null)
                     {
-                        if (LockCell(billNo, cell)) { Allot(billMaster, billDetail, cell); }
-                        else cellList1.Remove(cell);
+                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
+                        decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
+                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity); 
                     }
                     else break;
                 }
@@ -209,8 +237,26 @@ namespace THOK.Wms.Allot.Service
                     cell = cellQueryFromList1.FirstOrDefault();
                     if (cell != null)
                     {
-                        if (LockCell(billNo, cell)) { Allot(billMaster, billDetail, cell); }
-                        else cellList1.Remove(cell);
+                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
+                        decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
+                            / billDetail.Product.Unit.Count)
+                            * billDetail.Product.Unit.Count;
+                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity); 
+                    }
+                    else break;
+                }
+
+                while ((billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                {
+                    //分配未分配卷烟到其他非货位管理货位；
+                    cell = cellQueryFromList4.FirstOrDefault();
+                    if (cell != null)
+                    {
+                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
+                        decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
+                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity);
                     }
                     else break;
                 }
@@ -218,7 +264,7 @@ namespace THOK.Wms.Allot.Service
             return true;
         }
 
-        private bool LockCell(string billNo,Cell cell)
+        private Storage LockStorage(string billNo, Cell cell)
         {
             try
             {
@@ -228,15 +274,17 @@ namespace THOK.Wms.Allot.Service
             catch (Exception)
             {
                 CellRepository.Detach(cell);
-                return false;
+                return null;
             }
 
+            Storage storage = null;
             try
-            {
-                switch (cell.Storage.Count)
+            {                
+                if (cell.IsSingle == "1")
                 {
-                    case 0:
-                        cell.Storage.Add(new Storage()
+                    if (cell.Storage.Count == 0)
+                    {
+                        storage = new Storage()
                         {
                             StorageCode = Guid.NewGuid().ToString(),
                             CellCode = cell.CellCode,
@@ -244,53 +292,76 @@ namespace THOK.Wms.Allot.Service
                             LockTag = billNo,
                             IsActive = "0",
                             UpdateTime = DateTime.Now
-                        });
-                        break;
-                    case 1:
-                        cell.Storage.Single().LockTag = billNo;
-                        break;
-                    default:
-                        return false;
-                }                
+                        };
+                        cell.Storage.Add(storage);
+                    }
+                    else if (cell.Storage.Count == 1)
+                    {
+                        storage = cell.Storage.Single();
+                        storage.LockTag = billNo;
+                    }
+                }
+                else
+                {
+                    storage = cell.Storage.Where(s => s.LockTag == null || s.LockTag == string.Empty
+                                                && s.Quantity == 0
+                                                && s.InFrozenQuantity == 0)
+                                          .FirstOrDefault();
+                    if (storage != null)
+                    {
+                        storage.LockTag = billNo;
+                    }
+                    else
+                    {
+                        storage = new Storage()
+                        {
+                            StorageCode = Guid.NewGuid().ToString(),
+                            CellCode = cell.CellCode,
+                            IsLock = "0",
+                            LockTag = billNo,
+                            IsActive = "0",
+                            UpdateTime = DateTime.Now
+                        };
+                        cell.Storage.Add(storage);
+                    }
+                }               
                 StorageRepository.SaveChanges();
             }
             catch (Exception)
             {
-                StorageRepository.Detach(cell.Storage.Single());
-                return false;
+                StorageRepository.Detach(storage);                
             }
 
-            return true;
+            cell.LockTag = string.Empty;
+            CellRepository.SaveChanges();  
+
+            return storage;
         }
 
-        private void Allot(InBillMaster billMaster, InBillDetail billDetail, Cell cell)
+        private void Allot(InBillMaster billMaster, InBillDetail billDetail, Cell cell, Storage storage, decimal allotQuantity)
         {
-            InBillAllot billAllot = null;
-            decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
-            decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
-                                        / billDetail.Product.Unit.Count)
-                                        * billDetail.Product.Unit.Count;
-            allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-
-            billDetail.AllotQuantity += allotQuantity;
-            var storage = cell.Storage.Single();
-            storage.ProductCode = billDetail.ProductCode;
-            storage.LockTag = billDetail.BillNo;
-            storage.InFrozenQuantity += (int)allotQuantity;
-
-            billAllot = new InBillAllot()
+            if (storage != null)
             {
-                BillNo = billMaster.BillNo,
-                ProductCode = billDetail.ProductCode,
-                CellCode = cell.CellCode,
-                StorageCode = storage.StorageCode,
-                UnitCode = billDetail.UnitCode,
-                AllotQuantity = allotQuantity,
-                RealQuantity = 0,
-                Status = "1"
-            };
-            billMaster.InBillAllots.Add(billAllot);
-            StorageRepository.SaveChanges();
+                InBillAllot billAllot = null;
+                billDetail.AllotQuantity += allotQuantity;                
+                storage.ProductCode = billDetail.ProductCode;
+                storage.LockTag = billDetail.BillNo;
+                storage.InFrozenQuantity += (int)allotQuantity;
+
+                billAllot = new InBillAllot()
+                {
+                    BillNo = billMaster.BillNo,
+                    ProductCode = billDetail.ProductCode,
+                    CellCode = cell.CellCode,
+                    StorageCode = storage.StorageCode,
+                    UnitCode = billDetail.UnitCode,
+                    AllotQuantity = allotQuantity,
+                    RealQuantity = 0,
+                    Status = "1"
+                };
+                billMaster.InBillAllots.Add(billAllot);
+                StorageRepository.SaveChanges();
+            }
         }
     }
 }
