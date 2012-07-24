@@ -73,7 +73,7 @@ namespace Authority.Controllers.Wms.StockIn
         [HttpPost]
         public ActionResult Create(InBillMaster inBillMaster)
         {
-            bool bResult = InBillMasterService.Add(inBillMaster);
+            bool bResult = InBillMasterService.Add(inBillMaster, this.User.Identity.Name.ToString());
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
@@ -128,7 +128,7 @@ namespace Authority.Controllers.Wms.StockIn
         [HttpPost]
         public ActionResult Audit(string BillNo)
         {
-            bool bResult = InBillMasterService.Audit(BillNo);
+            bool bResult = InBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString());
             string msg = bResult ? "审核成功" : "审核失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
