@@ -41,28 +41,29 @@ namespace Authority.Controllers.Wms.StockOut
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string BillNo = collection["BillNo"] ?? "";
-            string BillDate = collection["BillDate"] ?? "";
+            string beginDate = collection["beginDate"] ?? "";
+            string endDate = collection["endDate"] ?? "";
             string OperatePersonCode = collection["OperatePersonCode"] ?? "";
             string Status = collection["Status"] ?? "";
             string IsActive = collection["IsActive"] ?? "";
-            var inBillMaster = OutBillMasterService.GetDetails(page, rows, BillNo, BillDate, OperatePersonCode, Status, IsActive);
-            return Json(inBillMaster, "text", JsonRequestBehavior.AllowGet);
+            var outBillMaster = OutBillMasterService.GetDetails(page, rows, BillNo, beginDate,endDate, OperatePersonCode, Status, IsActive);
+            return Json(outBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
 
         //查询细单
         // GET: /StockOutBill/OutBillDetails/
         public ActionResult OutBillDetails(int page, int rows, string BillNo)
         {
-            var inBillDetail = OutBillDetailService.GetDetails(page, rows, BillNo);
-            return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
+            var outBillDetail = OutBillDetailService.GetDetails(page, rows, BillNo);
+            return Json(outBillDetail, "text", JsonRequestBehavior.AllowGet);
         }
 
         //生成单号
         // GET: /StockOutBill/GenInBillNo/
         public ActionResult GenInBillNo()
         {
-            var inBillNo = OutBillMasterService.GenInBillNo(this.User.Identity.Name.ToString());
-            return Json(inBillNo, "text", JsonRequestBehavior.AllowGet);
+            var outBillNo = OutBillMasterService.GenInBillNo(this.User.Identity.Name.ToString());
+            return Json(outBillNo, "text", JsonRequestBehavior.AllowGet);
         }
 
         //新增主单

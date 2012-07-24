@@ -75,6 +75,11 @@ namespace THOK.Wms.Bll.Service
                 checkBillMasters = checkBillMasters.Where(i => i.Status.Contains(Status) && i.Status != "6");
             }
 
+            if (!IsActive.Equals(string.Empty))
+            {
+                checkBillMasters = checkBillMasters.Where(i => i.IsActive.Contains(IsActive));
+            }
+
             var temp = checkBillMasters.Where(t => t.BillNo.Contains(BillNo))
                 .AsEnumerable().OrderBy(t => t.BillNo).Select(i => new
             {
@@ -86,7 +91,9 @@ namespace THOK.Wms.Bll.Service
                 OperatePersonName = i.OperatePerson.EmployeeName,
                 VerifyPersonCode = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
                 VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                i.BillTypeCode,
+                BillTypeCode = i.BillType.BillTypeCode,
+                BillTypeName = i.BillType.BillTypeName,
+                VerifyDate = i.VerifyDate == null ? string.Empty :((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss"),
                 Status = WhatStatus(i.Status),
                 IsActive = i.IsActive == "1" ? "可用" : "不可用",
                 Description = i.Description,

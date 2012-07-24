@@ -57,7 +57,6 @@
         t = vYear + "-" + (vMon < 10 ? "0" + vMon : vMon) + "-" + (vDay < 10 ? "0" + vDay : vDay) + " " + (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m);
         return t;
     }
-
     
     function addClick() {
         isShowOutBillDetail = false;
@@ -73,13 +72,16 @@
                 $('#outBillDeatil').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增出库订单');
                 $('#fm').form('clear');
-                $('#billNo').val(json);
-                billno = json;
-                $('#billDate').val(getTime());
+                $('#billNo').val(json.BillNo);
+                billno = json.BillNo;
+                $('#OperatePersonID').val(json.employeeID);
+                $('#OperatePersonName').val(json.employeeName);
+                $('#billDate').val(json.billNoDate);
+
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
-                
+
                 $('form input').removeAttr("disabled");
                 $('form textarea').removeAttr("disabled");
                 $('#cc').combo({
@@ -288,15 +290,17 @@
                 <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码" />
                 </td>
                 <td width="60">经办人</td>
-                <td width="168"><input name="OperatePersonName" id="OperatePersonID" /></td>
+                <td width="168">
+                <input name="OperatePersonID" id="OperatePersonID" readonly="readonly" style="display:none"/>
+                <input name="OperatePersonName" id="OperatePersonName" readonly="readonly"/></td>
                 <td width="60">状态</td>
-                <td width="168"><input name="Status" /></td>
+                <td width="168"><input name="Status" readonly="readonly"/></td>
                 </tr>
                 <tr>
                 <td width="60">审核人员</td>
-                <td width="168"><input name="VerifyPersonName" id="VerifyPersonID" /></td>
+                <td width="168"><input name="VerifyPersonName" id="VerifyPersonID" readonly="readonly"/></td>
                 <td width="60">审核时间</td>
-                <td width="168"><input name="VerifyDate" id="VerifyDateID"/></td>
+                <td width="168"><input name="VerifyDate" id="VerifyDateID" readonly="readonly"/></td>
                 <td width="60">描述</td>
                 <td width="168"><input name="Description" /></td>
                 </tr>
@@ -361,28 +365,25 @@
                 <td align="left"><input type="text" name="BillQuantity" class="easyui-validatebox"/></td>
                 <td></td>
               </tr>
-              <tr>
+              <tr style="display:none">
                 <td style=" text-align:right">实际入库量</td>
-                <td align="left"><input type="text" name="RealQuantity" class="easyui-validatebox"/></td>
+                <td align="left"><input type="text" name="RealQuantity" class="easyui-validatebox" /></td>
                 <td></td>
               </tr>
               <tr>
                 <td style=" text-align:right">单价</td>
-                <td align="left"><input type="text" name="Price" class="easyui-validatebox" /></td>
+                <td align="left"><input type="text" name="Price" class="easyui-validatebox" id="price" /></td>
                 <td></td>
               </tr>
               <tr>
                 <td style=" text-align:right">总金额</td>
-                <td align="left"><input type="text" name="textfield6" class="easyui-validatebox" /></td>
+                <td align="left"><input type="text" name="textfield6" /></td>
                 <td></td>
               </tr>
               <tr>
                 <td style=" text-align:right">备注</td>
-                <td align="left"><label>
-                  <textarea name="textarea" id="textarea" cols="21" rows="4"></textarea>
-                </label></td>
-                <td>
-                </td>
+                <td align="left"><input type="text" name="textarea" /></td>
+                <td></td>
               </tr>
             </table>
      </form>

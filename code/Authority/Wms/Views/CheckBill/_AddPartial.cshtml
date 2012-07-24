@@ -54,7 +54,7 @@
             $('#nextShowTable').datagrid('load');
             $('#nextShowDiv').dialog('open').dialog('setTitle', '盘点数据');
         } else {
-            alert("请选择需盘点的货位！");
+            $.messager.confirm('错误', '请选择需盘点的货位！');
         }
     }
 </script>
