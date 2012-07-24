@@ -4,7 +4,7 @@
         $("input[type=text]").attr("value", "");
     };
 
-    function supplierSave() {
+    function productSave() {
         var productRow = $('#productDetail').datagrid('getSelected');
         if (productRow) {
             $('#productCode').val(productRow.ProductCode);
@@ -15,6 +15,14 @@
             $('#productData').dialog('close');
         }
     }
+
+    $(function () {
+        $('#productDetail').datagrid({
+            onDblClickRow: function () {
+                productSave();
+            }
+        })
+    });
 </script>
 <div id="productData" class="easyui-dialog" modal="true" style="width: 500px; height: 500px;
     padding: 0px 0px" closed="true" buttons="#dlgProduct-buttons">
@@ -35,6 +43,9 @@
                     <th field="UnitCode" width="80">
                         缺省单位编码
                     </th>
+                      <th field="UnitName" width="80">
+                        缺省单位名称
+                    </th>
                     <th field="BuyPrice" width="80">
                         购入价
                     </th>
@@ -53,7 +64,7 @@
     </div>
 </div>
 <div id="dlgProduct-buttons">
-    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="supplierSave()">确定</a> <a
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="productSave()">确定</a> <a
         href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#productData').dialog('close')">
         取消</a>
 </div>
