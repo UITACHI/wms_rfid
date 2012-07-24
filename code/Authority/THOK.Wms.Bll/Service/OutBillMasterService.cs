@@ -166,6 +166,11 @@ namespace THOK.Wms.Bll.Service
             return result;
         }
 
+        /// <summary>
+        /// 生成出库单号
+        /// </summary>
+        /// <param name="userName">登陆用户</param>
+        /// <returns></returns>
         public object GenInBillNo(string userName)
         {
             string billno = "";
@@ -215,6 +220,12 @@ namespace THOK.Wms.Bll.Service
             return result;
         }
 
+        /// <summary>
+        /// 出库审核
+        /// </summary>
+        /// <param name="billNo">单据号</param>
+        /// <param name="userName">登陆用户</param>
+        /// <returns></returns>
         public bool Audit(string billNo, string userName)
         {
             bool result = false;
@@ -232,6 +243,11 @@ namespace THOK.Wms.Bll.Service
             return result;
         }
 
+        /// <summary>
+        /// 盘点反审
+        /// </summary>
+        /// <param name="billNo">单据号</param>
+        /// <returns></returns>
         public bool AntiTrial(string billNo)
         {
             bool result = false;

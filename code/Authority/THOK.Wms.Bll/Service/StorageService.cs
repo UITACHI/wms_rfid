@@ -35,34 +35,40 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string type, string id)
         {
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
-            var storages = storageQuery.OrderBy(s => s.StorageCode).AsEnumerable().Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+            var storages = storageQuery.OrderBy(s => s.StorageCode).Where(s => s.StorageCode != null);
             if (type == "ware")
             {
-                storages = storageQuery.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode == id)
-                                       .OrderBy(s => s.StorageCode).AsEnumerable()
-                                       .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                storages = storages.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode == id);
             }
             else if (type == "area")
             {
-                storages = storageQuery.Where(s => s.cell.Shelf.Area.AreaCode == id)
-                                       .OrderBy(s => s.StorageCode).AsEnumerable()
-                                       .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                storages = storageQuery.Where(s => s.cell.Shelf.Area.AreaCode == id);
             }
             else if (type == "shelf")
             {
-                storages = storageQuery.Where(s => s.cell.Shelf.ShelfCode == id)
-                                       .OrderBy(s => s.StorageCode).AsEnumerable()
-                                       .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                storages = storageQuery.Where(s => s.cell.Shelf.ShelfCode == id);
             }
             else if (type == "cell")
             {
-                storages = storageQuery.Where(s => s.cell.CellCode == id)
-                                       .OrderBy(s => s.StorageCode).AsEnumerable()
-                                       .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                storages = storageQuery.Where(s => s.cell.CellCode == id);
             }
-            int total = storages.Count();
-            storages = storages.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = storages.ToArray() };
+
+            var temp = storages.AsEnumerable().Select(s => new
+           {
+               s.StorageCode,
+               s.cell.CellCode,
+               s.cell.CellName,
+               s.product.ProductCode,
+               s.product.ProductName,
+               s.Quantity,
+               IsActive = s.IsActive == "1" ? "可用" : "不可用",
+               StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+               UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+           });
+
+            int total = temp.Count();
+            temp = temp.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = temp.ToArray() };
         }
 
         /// <summary>
@@ -79,7 +85,18 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
-            var storages = storageQuery.OrderBy(s => s.StorageCode).AsEnumerable().Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+            var storages = storageQuery.OrderBy(s => s.StorageCode).AsEnumerable().Select(s => new
+            {
+                s.StorageCode,
+                s.cell.CellCode,
+                s.cell.CellName,
+                s.product.ProductCode,
+                s.product.ProductName,
+                s.Quantity,
+                IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+            });
             if (ware != null && ware != string.Empty || area != null && area != string.Empty || shelf != null && shelf != string.Empty || cell != null && cell != string.Empty)
             {
                 if (ware != string.Empty)
@@ -99,17 +116,20 @@ namespace THOK.Wms.Bll.Service
                     cell = cell.Substring(0, cell.Length - 1);
                 }
 
-                //var cells = cellQuery.Where(c => ware.Contains(c.WarehouseCode) || area.Contains(c.AreaCode) || shelf.Contains(c.ShelfCode) || cell.Contains(c.CellCode))
-                //                     .OrderBy(c => c.CellCode)
-                //                     .Select(c => c.CellCode);
-
-                //storages = storageQuery.Where(s => cells.Any(c => c == s.cell.CellCode))
-                //                       .OrderBy(s => s.StorageCode).AsEnumerable()
-                //                       .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
-
                 storages = storageQuery.ToList().Where(s => ware.Contains(s.cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.cell.Shelf.Area.AreaCode) || shelf.Contains(s.cell.Shelf.ShelfCode) || cell.Contains(s.cell.CellCode))
                                        .OrderBy(s => s.StorageCode).AsEnumerable()
-                                       .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                                       .Select(s => new
+                                       {
+                                           s.StorageCode,
+                                           s.cell.CellCode,
+                                           s.cell.CellName,
+                                           s.product.ProductCode,
+                                           s.product.ProductName,
+                                           s.Quantity,
+                                           IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                           StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                           UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                       });
             }
             int total = storages.Count();
             storages = storages.Skip((page - 1) * rows).Take(rows);

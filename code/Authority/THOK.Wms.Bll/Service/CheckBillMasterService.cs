@@ -143,7 +143,7 @@ namespace THOK.Wms.Bll.Service
         }
 
         /// <summary>
-        /// 生成获取盘点的主表ID
+        /// 生成盘点的主表ID
         /// </summary>
         /// <returns></returns>
         public object GetCheckBillNo()
@@ -170,15 +170,17 @@ namespace THOK.Wms.Bll.Service
         }
 
         /// <summary>
-        /// 根据参数保存盘点数据
+        /// 根据参数生成并保存盘点数据
         /// </summary>
         /// <param name="ware">仓库</param>
         /// <param name="area">库区</param>
         /// <param name="shelf">货架</param>
         /// <param name="cell">货位</param>
+        /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
         public bool CellAdd(string ware, string area, string shelf, string cell, string UserName)
         {
+            bool result = false;
             IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(e => e.UserName == UserName);
@@ -204,7 +206,7 @@ namespace THOK.Wms.Bll.Service
                             check.BillDate = DateTime.Now;
                             check.BillTypeCode = "1";
                             check.WarehouseCode = ware;
-                            check.OperatePersonID =employee.ID;
+                            check.OperatePersonID = employee.ID;
                             check.Status = "1";
                             check.IsActive = "1";
                             check.UpdateTime = DateTime.Now;
@@ -228,6 +230,7 @@ namespace THOK.Wms.Bll.Service
                                 CheckBillDetailRepository.Add(checkDetail);
                                 CheckBillDetailRepository.SaveChanges();
                             }
+                            result = true;
                         }
                     }
                 }
@@ -284,15 +287,61 @@ namespace THOK.Wms.Bll.Service
                                 CheckBillDetailRepository.Add(checkDetail);
                                 CheckBillDetailRepository.SaveChanges();
                             }
+                            result = true;
                         }
                     }
                 }
 
                 #endregion
-
-                return true;
             }
-            return false;
+            return result;
+        }
+
+        /// <summary>
+        /// 盘点审核
+        /// </summary>
+        /// <param name="billNo">单据号</param>
+        /// <param name="userName">登陆用户</param>
+        /// <returns></returns>
+        public bool Audit(string billNo, string userName)
+        {
+            bool result = false;
+            var checkbm = CheckBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            if (employee != null)
+            {
+                if (checkbm != null && checkbm.Status == "1")
+                {
+                    checkbm.Status = "2";
+                    checkbm.VerifyDate = DateTime.Now;
+                    checkbm.UpdateTime = DateTime.Now;
+                    checkbm.VerifyPersonID = employee.ID;
+                    CheckBillMasterRepository.SaveChanges();
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 盘点反审
+        /// </summary>
+        /// <param name="billNo">单据号</param>
+        /// <returns></returns>
+        public bool AntiTrial(string billNo)
+        {
+            bool result = false;
+            var outbm = CheckBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
+            if (outbm != null && outbm.Status == "2")
+            {
+                outbm.Status = "1";
+                outbm.VerifyDate = null;
+                outbm.UpdateTime = DateTime.Now;
+                outbm.VerifyPersonID = null;
+                CheckBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         #endregion

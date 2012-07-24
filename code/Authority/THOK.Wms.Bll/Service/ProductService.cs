@@ -169,5 +169,20 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
         #endregion
+
+        #region IProductService 成员
+
+        /// <summary>
+        /// 查询卷烟信息 zxl 2012年7月24日 16:26:24
+        /// </summary>
+        /// <returns></returns>
+        public object FindProduct()
+        {
+            IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
+            var product = ProductQuery.OrderBy(p => p.ProductCode).Select(p => new { p.ProductCode, p.ProductName });
+            return product.ToArray();
+        }
+
+        #endregion
     }
 }

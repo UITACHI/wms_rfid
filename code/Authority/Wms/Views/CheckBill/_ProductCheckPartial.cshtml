@@ -3,20 +3,66 @@
         alert("生成完成了");
     }
 
-    function formatAction(value, row, index) {
-        if (row.editing) {
-            var s = '<div class="item" onclick="saverow(' + index + ')">' + row.ProductName + '</div> ';
-            return s + c;
-        } else {
-            var s = '<div class="item" onclick="saverow(' + index + ')">' + row.ProductName + '</div> ';
-            return s + c;
+    var data = { "total": 0, "rows": [] };
+    var totalCost = 0;
+    var ydata = {"rows": [] };
+    var rdata = { "rows": [] };
+    $(function () {
+        $('#details').datagrid({
+            onLoadSuccess: function (data) {
+                //alert(data.ProductCode);
+                $('#loadShow').datagrid({
+                    singleSelect: true
+                });
+                $('.item').draggable({
+                    revert: true,
+                    proxy: 'clone',
+                    onStartDrag: function () {
+                        //$(this).draggable('options').cursor = 'not-allowed';
+                        $(this).draggable('proxy').css('z-index', 10);
+                    },
+                    onStopDrag: function () {
+                        $(this).draggable('options').cursor = 'move';
+                    }
+                });
+                $('.cart').droppable({
+                    onDragEnter: function (e, source) {
+                        $(source).draggable('options').cursor = 'auto';
+                    },
+                    onDragLeave: function (e, source) {
+                        $(source).draggable('options').cursor = 'not-allowed';
+                    },
+                    onDrop: function (e, source) {
+                        var productName = $(source).find('p:eq(0)').html();
+                        var producrCode = $(source).find('p:eq(1)').html();
+                        addProduct(producrCode, productName);
+                    }
+                });
+            }
+        });
+    });
+
+    function addProduct(producrCode, productName) {
+        function add() {
+            data.rows.push({
+                ProductCode: producrCode,
+                ProductName: productName
+            });
         }
+        add();
+        $('#loadShow').datagrid('loadData', data);       
+    }
+
+    function formatAction(value, row, index) {
+        var s = '<div id="'+index+'" class="item"><p>' + row.ProductName + '</p><p style="display:none">' + row.ProductCode + '</p></div> ';
+        return s;
     }
 </script>
+
 <div class="easyui-layout" fit="true">
-    <div id="sidebar" region="west" style="width: 300px;  padding: 1px; margin: 1px">
-        <table id="productTable" class="easyui-datagrid" border="false" url='/Product/Details/'
-            singleselect="true" fit="true" pagination="true" rownumbers="true">
+    <div id="sidebar" region="west" style="width: 300px;  padding: 1px; margin: 1px" >
+        <table id="productTable" class="easyui-datagrid" border="false" url='/Product/FindProduct/'
+            singleselect="true" fit="true"  rownumbers="true">
             <thead>
                 <tr>
                     <th field="ProductCode" width="100">
@@ -29,7 +75,7 @@
             </thead>
         </table>
     </div>
-    <div id="main" region="center" style="width: 80px;" fit="true">
+    <div id="main" region="center" style="width:80px;" fit="true">
     <table style=" height:100%; width:100%">
         <tr style="height:50%;width:50%">
         <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok">右移==></a></td>
@@ -38,11 +84,11 @@
         <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok"><==左移</a></td>
         </tr>
     </table>
-    
     </div>
-    <div id="main" region="east" style="width: 300px;margin: 1px">
-        <table id="loadShow" class="easyui-datagrid" border="false" url='/Product/Details/'
-            singleselect="true" fit="true" pagination="true" rownumbers="true">
+
+    <div id="main" class="cart" region="east" style="width: 300px;margin: 1px">
+        <table id="loadShow" class="easyui-datagrid" border="false" url=''
+            singleselect="true" fit="true"  rownumbers="true">
             <thead>
                 <tr>
                     <th field="ProductCode" width="100">

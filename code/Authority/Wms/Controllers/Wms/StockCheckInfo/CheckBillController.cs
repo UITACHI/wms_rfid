@@ -28,6 +28,9 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             ViewBag.hasDelete = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
+            ViewBag.hasAntiTrial = true;
+            ViewBag.hasAudit = true;
+            ViewBag.hasConfirm = true;
             ViewBag.ModuleID = moduleID;
             return View();
         }
@@ -78,6 +81,24 @@ namespace Authority.Controllers.Wms.StockCheckInfo
         {
             bool bResult = CheckBillMasterService.Delete(BillNo);
             string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //主单审核
+        // POST: /CheckBill/checkBillMasterAudit/
+        public ActionResult checkBillMasterAudit(string BillNo)
+        {
+            bool bResult = CheckBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString());
+            string msg = bResult ? "审核成功" : "审核失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //主单反审
+        // POST: /CheckBill/checkBillMasterAntiTrial/
+        public ActionResult checkBillMasterAntiTrial(string BillNo)
+        {
+            bool bResult = CheckBillMasterService.AntiTrial(BillNo);
+            string msg = bResult ? "反审成功" : "反审失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 

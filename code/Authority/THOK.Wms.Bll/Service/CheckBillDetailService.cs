@@ -27,31 +27,35 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string BillNo)
         {
             IQueryable<CheckBillDetail> checkBillDetailQuery = CheckBillDetailRepository.GetQueryable();
-            var checkBillDetail = checkBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+            if (BillNo != null && BillNo != string.Empty)
             {
-                i.ID,
-                i.BillNo,
-                i.Cell.CellCode,
-                i.Cell.CellName,
-                i.StorageCode,
-                i.Product.ProductCode,
-                i.Product.ProductName,
-                i.Unit.UnitCode,
-                i.Unit.UnitName,
-                i.Quantity,
-                RealProductCode = i.RealProduct.ProductCode,
-                RealProductName = i.RealProduct.ProductName,
-                RealUnitCode = i.RealUnit.UnitCode,
-                RealUnitName = i.RealUnit.UnitName,
-                OperatePersonCode = i.OperatePersonID == null ? string.Empty : i.OperatePerson.EmployeeCode,
-                OperatePersonName = i.OperatePersonID == null ? string.Empty : i.OperatePerson.EmployeeName,
-                StartTime = i.StartTime == null ? string.Empty : i.StartTime.ToString(),
-                FinishTime = i.FinishTime == null ? string.Empty : i.FinishTime.ToString(),
-                i.Status
-            });
-            int total = checkBillDetail.Count();
-            checkBillDetail = checkBillDetail.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = checkBillDetail.ToArray() };
+                var checkBillDetail = checkBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                {
+                    i.ID,
+                    i.BillNo,
+                    i.Cell.CellCode,
+                    i.Cell.CellName,
+                    i.StorageCode,
+                    i.Product.ProductCode,
+                    i.Product.ProductName,
+                    i.Unit.UnitCode,
+                    i.Unit.UnitName,
+                    i.Quantity,
+                    RealProductCode = i.RealProduct.ProductCode,
+                    RealProductName = i.RealProduct.ProductName,
+                    RealUnitCode = i.RealUnit.UnitCode,
+                    RealUnitName = i.RealUnit.UnitName,
+                    OperatePersonCode = i.OperatePersonID == null ? string.Empty : i.OperatePerson.EmployeeCode,
+                    OperatePersonName = i.OperatePersonID == null ? string.Empty : i.OperatePerson.EmployeeName,
+                    StartTime = i.StartTime == null ? string.Empty : i.StartTime.ToString(),
+                    FinishTime = i.FinishTime == null ? string.Empty : i.FinishTime.ToString(),
+                    i.Status
+                });
+                int total = checkBillDetail.Count();
+                checkBillDetail = checkBillDetail.Skip((page - 1) * rows).Take(rows);
+                return new { total, rows = checkBillDetail.ToArray() };
+            }
+            return "";
         }
 
         public new bool CellAdd(string BillNo, string ware, string area, string shelf, string cell)
