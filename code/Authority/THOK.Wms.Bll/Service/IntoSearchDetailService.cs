@@ -9,7 +9,7 @@ using THOK.Wms.Dal.Interfaces;
 
 namespace THOK.Wms.Bll.Service
 {
-    public class IntoSearchDetailService : ServiceBase<InBillDetail>,IIntoSearchDetailService
+    public class IntoSearchDetailService : ServiceBase<InBillAllot>,IIntoSearchDetailService
     {
         [Dependency]
         public IIntoSearchDetailRepository IntoSearchDetailRepository { get; set; }
@@ -25,12 +25,13 @@ namespace THOK.Wms.Bll.Service
         {
             if (BillNo != "" && BillNo != null)
             {
-                IQueryable<InBillDetail> inBillDetailQuery = IntoSearchDetailRepository.GetQueryable();
+                IQueryable<InBillAllot> inBillDetailQuery = IntoSearchDetailRepository.GetQueryable();
                 var inBillDetail = inBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new { 
                     i.ID, 
                     i.BillNo, 
                     i.ProductCode, 
                     i.Product.ProductName, 
+                    
                     i.UnitCode, 
                     i.Unit.UnitName, 
                     i.BillQuantity, 

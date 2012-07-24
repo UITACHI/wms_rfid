@@ -63,9 +63,11 @@
     <Compile Include="EntityRepository\OutBillAllotRepository.cs" />
     <Compile Include="EntityRepository\OutBillDetailRepository.cs" />
     <Compile Include="EntityRepository\OutBillMasterRepository.cs" />
+    <Compile Include="EntityRepository\OutSearchDetailRepository.cs" />
     <Compile Include="EntityRepository\ProductRepository.cs" />
     <Compile Include="EntityRepository\ShelfRepository.cs" />
     <Compile Include="EntityRepository\StockIntoSearchRepository.cs" />
+    <Compile Include="EntityRepository\StockOutSearchRepository.cs" />
     <Compile Include="EntityRepository\StorageRepository.cs" />
     <Compile Include="EntityRepository\SupplierRepository.cs" />
     <Compile Include="EntityRepository\UnitListRepository.cs" />
@@ -89,9 +91,11 @@
     <Compile Include="Interfaces\IOutBillAllotRepository.cs" />
     <Compile Include="Interfaces\IOutBillDetailRepository.cs" />
     <Compile Include="Interfaces\IOutBillMasterRepository.cs" />
+    <Compile Include="Interfaces\IOutSearchDetailRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IShelfRepository.cs" />
     <Compile Include="Interfaces\IStockIntoSearchRepository.cs" />
+    <Compile Include="Interfaces\IStockOutSearchRepository.cs" />
     <Compile Include="Interfaces\IStorageRepository.cs" />
     <Compile Include="Interfaces\ISupplierRepository.cs" />
     <Compile Include="Interfaces\IUnitListRepository.cs" />

@@ -4,7 +4,7 @@ using THOK.Common.Ef.EntityRepository;
 
 namespace THOK.Wms.Dal.EntityRepository
 {
-    public class IntoSearchDetailRepository : RepositoryBase<InBillAllot>, IIntoSearchDetailRepository
+    public class OutSearchDetailRepository : RepositoryBase<OutBillDetail>, IOutSearchDetailRepository
     {
 
     }

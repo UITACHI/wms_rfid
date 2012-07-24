@@ -20,21 +20,21 @@
     };
 
     function select() {
-        var queryParams = $('#masters').datagrid('options').queryParams;
-        queryParams.IntoBillNo = $('#intoBillNo').val();
+        var queryParams = $('#details').datagrid('options').queryParams;
+        queryParams.BillNo = $('#intoBillNo').val();
         queryParams.WarehouseName = $('#warehouseName').val();
-        queryParams.MakeDate = $('#makeDate').val();
-        queryParams.OperatePerson = $('#operatePerson').val();
-        queryParams.OperateStatus = $('#operateStatus').val();
+        queryParams.BillDate = $('#makeDate').val();
+        queryParams.OperatePersonName = $('#operatePerson').val();
+        queryParams.Status = $('#operateStatus').val();
         queryParams.CheckPerson = $('#checkPerson').val();
-        queryParams.CheckDate = $('#checkDate').val();
-        queryParams.Remark = $('#remark').val();
-        $('#masters').datagrid('options').queryParams = queryParams;
-        $('#masters').datagrid({
+        queryParams.VerifyPersonNAme = $('#checkDate').val();
+        queryParams.Description = $('#remark').val();
+        $('#details').datagrid('options').queryParams = queryParams;
+        $('#details').datagrid({
             pageNumber: 1,
             pageSize: 10
         });
-        $("#masters").datagrid('reload');
+        $("#details").datagrid('reload');
         $('#dlg-search').dialog('close');
     }
 

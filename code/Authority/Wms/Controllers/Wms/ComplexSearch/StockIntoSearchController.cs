@@ -38,9 +38,9 @@ namespace Authority.Controllers.Wms.ComplexSearch
             return Json(inBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
         //
-        // GET: /StockIntoSearch/InBillDetails/
+        // GET: /StockIntoSearch/InfoDetails/
 
-        public ActionResult InBillDetails(int page, int rows, string BillNo)
+        public ActionResult InfoDetails(int page, int rows, string BillNo)
         {
             var inBillDetail = IntoSearchDetailService.GetDetails(page, rows, BillNo);
             return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
