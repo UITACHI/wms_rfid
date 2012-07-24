@@ -18,6 +18,8 @@ namespace THOK.Wms.DbModel
             this.CheckBillDetails = new List<CheckBillDetail>();
             this.OperatePersonOutBillMasters = new List<OutBillMaster>();
             this.VerifyPersonOutBillMasters = new List<OutBillMaster>();
+            this.OperatePersonInBillMasters = new List<InBillMaster>();
+            this.VerifyPersonInBillMasters = new List<InBillMaster>();
         }
 
         public Guid ID { get; set; }
@@ -45,6 +47,8 @@ namespace THOK.Wms.DbModel
         public virtual ICollection<CheckBillDetail> CheckBillDetails { get; set; }
         public virtual ICollection<OutBillMaster> OperatePersonOutBillMasters { get; set; }
         public virtual ICollection<OutBillMaster> VerifyPersonOutBillMasters { get; set; }
+        public virtual ICollection<InBillMaster> OperatePersonInBillMasters { get; set; }
+        public virtual ICollection<InBillMaster> VerifyPersonInBillMasters { get; set; }
 
     }
 }

@@ -48,19 +48,18 @@
         $('#brandData').dialog('open').dialog('setTitle', '选择品牌信息');
         $('#brandDetail').datagrid({ url: '/Brand/Details/' });
         $("#brandDetail").datagrid('reload');
-        selectSupplier();
+
     }
     function unitSelect() {
         $('#unitData').dialog('open').dialog('setTitle', '选择单位信息');
         $('#unitDetail').datagrid({ url: '/Unit/Details/' });
         $("#unitDetail").datagrid('reload');
-        selectSupplier();
+
     }
     function unitlistSelect() {
         $('#unitlistData').dialog('open').dialog('setTitle', '选择单位系列信息');
         $('#unitlistDetail').datagrid({ url: '/UnitList/Details/' });
         $("#unitlistDetail").datagrid('reload');
-        selectSupplier();
     }
 </script>
 
