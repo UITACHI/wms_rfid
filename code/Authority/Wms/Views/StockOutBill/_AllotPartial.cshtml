@@ -2,12 +2,13 @@
     function allotClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
-            isInBillMasterSaved = false;
-            isInBillMasterCanEdit = true;
-            if (!row.Status == "已审核") {
+            isOutBillMasterAdd = false;
+            isShowOutBillDetail = true;
+            if (row.Status != "已审核") {
                 $.messager.confirm('错误', '该记录未审核无法进行分配！');
             } else {
-                $('#dlg-allot').dialog('open').dialog('setTitle', '入库单据分配');
+                $('#dlg-allot').dialog('open').dialog('setTitle', '出库单据分配');
+                $('#outBillDetails').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + row.BillNo });
             }
         } else {
             $.messager.confirm('错误', '没有选择行！');
@@ -20,7 +21,7 @@
         closed="true" buttons="" >
     <div class="easyui-layout" fit="true" >  
         <div region="center" split="true"  border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">   
-            <table class="easyui-datagrid" border="false" singleSelect="true" id="inBillDetails" url="" toolbar="#bar"
+            <table class="easyui-datagrid" border="false" singleSelect="true" id="outBillDetails" url="" toolbar="#bar"
                 fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
                 <thead>
                     <tr>
