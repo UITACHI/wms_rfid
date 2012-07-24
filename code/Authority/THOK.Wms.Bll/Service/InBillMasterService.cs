@@ -19,6 +19,8 @@ namespace THOK.Wms.Bll.Service
         public IWarehouseRepository WarehouseRepository { get; set; }
         [Dependency]
         public IEmployeeRepository EmployeeRepository { get; set; }
+        [Dependency]
+        public IInBillDetailRepository InBillDetailRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -135,10 +137,16 @@ namespace THOK.Wms.Bll.Service
 
         public bool Delete(string BillNo)
         {
+            bool result=false;
             var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i=>i.BillNo==BillNo&&i.Status=="1");
-            InBillMasterRepository.Delete(ibm);
-            InBillMasterRepository.SaveChanges();
-            return true;
+            if (ibm!=null)
+            {
+                Del(InBillDetailRepository,ibm.InBillDetails);
+                InBillMasterRepository.Delete(ibm);
+                InBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         public bool Save(InBillMaster inBillMaster)
