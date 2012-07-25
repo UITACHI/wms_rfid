@@ -38,6 +38,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,6 +53,7 @@
     <Compile Include="EntityRepository\CellRepository.cs" />
     <Compile Include="EntityRepository\CheckBillDetailRepository.cs" />
     <Compile Include="EntityRepository\CheckBillMasterRepository.cs" />
+    <Compile Include="EntityRepository\CheckSearchDetailRepository.cs" />
     <Compile Include="EntityRepository\CompanyRepository.cs" />
     <Compile Include="EntityRepository\DailyBalanceRepository.cs" />
     <Compile Include="EntityRepository\DepartmentRepository.cs" />
@@ -66,6 +69,7 @@
     <Compile Include="EntityRepository\OutSearchDetailRepository.cs" />
     <Compile Include="EntityRepository\ProductRepository.cs" />
     <Compile Include="EntityRepository\ShelfRepository.cs" />
+    <Compile Include="EntityRepository\StockCheckSearchRepository.cs" />
     <Compile Include="EntityRepository\StockIntoSearchRepository.cs" />
     <Compile Include="EntityRepository\StockOutSearchRepository.cs" />
     <Compile Include="EntityRepository\StorageRepository.cs" />
@@ -79,6 +83,7 @@
     <Compile Include="Interfaces\ICellRepository.cs" />
     <Compile Include="Interfaces\ICheckBillDetailRepository.cs" />
     <Compile Include="Interfaces\ICheckBillMasterRepository.cs" />
+    <Compile Include="Interfaces\ICheckSearchDetailRepository.cs" />
     <Compile Include="Interfaces\ICompanyRepository.cs" />
     <Compile Include="Interfaces\IDailyBalanceRepository.cs" />
     <Compile Include="Interfaces\IDepartmentRepository.cs" />
@@ -94,6 +99,7 @@
     <Compile Include="Interfaces\IOutSearchDetailRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IShelfRepository.cs" />
+    <Compile Include="Interfaces\IStockCheckSearchRepository.cs" />
     <Compile Include="Interfaces\IStockIntoSearchRepository.cs" />
     <Compile Include="Interfaces\IStockOutSearchRepository.cs" />
     <Compile Include="Interfaces\IStorageRepository.cs" />

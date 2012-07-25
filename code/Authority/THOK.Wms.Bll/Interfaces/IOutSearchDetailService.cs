@@ -6,7 +6,7 @@ using THOK.Wms.DbModel;
 
 namespace THOK.Wms.Bll.Interfaces
 {
-    public interface IOutSearchDetailService : IService<OutBillDetail>
+    public interface IOutSearchDetailService : IService<OutBillAllot>
     {
         object GetDetails(int page, int rows, string BillNo);
     }

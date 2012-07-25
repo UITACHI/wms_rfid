@@ -47,6 +47,7 @@
     <Compile Include="Interfaces\IBillTypeService.cs" />
     <Compile Include="Interfaces\ICheckBillDetailService.cs" />
     <Compile Include="Interfaces\ICheckBillMasterService.cs" />
+    <Compile Include="Interfaces\ICheckSearchDetailService.cs" />
     <Compile Include="Interfaces\IDailyBalanceService.cs" />
     <Compile Include="Interfaces\IInBillDetailService.cs" />
     <Compile Include="Interfaces\IInBillMasterService.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Interfaces\IJobService.cs" />
     <Compile Include="Interfaces\IProductService.cs" />
     <Compile Include="Interfaces\IShelfService.cs" />
+    <Compile Include="Interfaces\IStockCheckSearchService.cs" />
     <Compile Include="Interfaces\IStockIntoSearchService.cs" />
     <Compile Include="Interfaces\IStockOutSearchService.cs" />
     <Compile Include="Interfaces\IStorageService.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Service\BillTypeService.cs" />
     <Compile Include="Service\CheckBillDetailService.cs" />
     <Compile Include="Service\CheckBillMasterService.cs" />
+    <Compile Include="Service\CheckSearchDetailService.cs" />
     <Compile Include="Service\DailyBalanceService.cs" />
     <Compile Include="Service\InBillDetailService.cs" />
     <Compile Include="Service\InBillMasterService.cs" />
@@ -94,6 +97,7 @@
     <Compile Include="Service\JobService.cs" />
     <Compile Include="Service\ProductService.cs" />
     <Compile Include="Service\ShelfService.cs" />
+    <Compile Include="Service\StockCheckSearchService.cs" />
     <Compile Include="Service\StockIntoSearchService.cs" />
     <Compile Include="Service\StockOutSearchService.cs" />
     <Compile Include="Service\StorageService.cs" />
