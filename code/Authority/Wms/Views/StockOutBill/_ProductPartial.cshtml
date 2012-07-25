@@ -10,10 +10,19 @@
             $('#productCode').val(productRow.ProductCode);
             $('#productName').val(productRow.ProductName);
             $('#unitCode').val(productRow.UnitCode);
+            $('#unitName').val(productRow.UnitName);
             $('#price').val(productRow.BuyPrice);
             $('#productData').dialog('close');
         }
     }
+
+    $(function () {
+        $('#productDetail').datagrid({
+            onDblClickRow: function () {
+                supplierSave();
+            }
+        })
+    });
 </script>
 <div id="productData" class="easyui-dialog" modal="true" style="width: 500px; height: 500px;
     padding: 0px 0px" closed="true" buttons="#dlgProduct-buttons">

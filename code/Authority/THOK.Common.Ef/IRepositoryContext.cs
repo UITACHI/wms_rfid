@@ -12,20 +12,9 @@ namespace THOK.Common.Ef.Interfaces
     /// </summary>
     public interface IRepositoryContext
     {
-
-        DbSet<T> GetObjectSet<T>() where T : class;
-
+        DbSet<T> GetDbSet<T>() where T : class;
         DbContext DbContext { get; }
-
-        /// <summary>
-        /// Save all changes to all repositories
-        /// </summary>
-        /// <returns>Integer with number of objects affected</returns>
         int SaveChanges();
-
-        /// <summary>
-        /// Terminates the current repository context
-        /// </summary>
         void Terminate();
     }
 }

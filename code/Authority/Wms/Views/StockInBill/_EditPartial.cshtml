@@ -22,10 +22,14 @@
             }
             $('form input').removeAttr("disabled");
             $('form textarea').removeAttr("disabled");
+            $('#btnAddBillDetail').css('display', 'inline'); //设置新增明细按钮的可见性
+            $('#btnDeleteBillDetail').css('display', 'inline'); //设置删除明细按钮的可见性
+            $('#btnEditBillDetail').css('display', 'inline'); //设置修改明细按钮的可见性
             $('#cc').combo({
                 hasDownArrow: true
             });
             url = '/StockInBill/Edit/';
+            detailUrl = '/StockInBill/InBillDetailEdit/';
         }
         } else {
             $.messager.confirm('错误', '没有选择行！');

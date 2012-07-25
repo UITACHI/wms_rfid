@@ -14,8 +14,7 @@ namespace THOK.Wms.DbModel
             this.DailyBalances = new List<DailyBalance>();
             this.MoveBillDetails = new List<MoveBillDetail>();
             this.CheckBillDetailProducts = new List<CheckBillDetail>();
-            this.CheckBillDetailRealProducts = new List<CheckBillDetail>();
-            this.Storage = new List<Storage>();
+            this.CheckBillDetailRealProducts = new List<CheckBillDetail>();            
             this.ProfitLossBillDetails = new List<ProfitLossBillDetail>();
             this.SortOrderDetails = new List<SortOrderDetail>();
         }
@@ -65,7 +64,6 @@ namespace THOK.Wms.DbModel
         public virtual ICollection<MoveBillDetail> MoveBillDetails { get; set; }
         public virtual ICollection<CheckBillDetail> CheckBillDetailProducts { get; set; }
         public virtual ICollection<CheckBillDetail> CheckBillDetailRealProducts { get; set; }
-        public virtual ICollection<Storage> Storage { get; set; }
         public virtual ICollection<ProfitLossBillDetail> ProfitLossBillDetails { get; set; }
         public virtual ICollection<SortOrderDetail> SortOrderDetails { get; set; }
     }

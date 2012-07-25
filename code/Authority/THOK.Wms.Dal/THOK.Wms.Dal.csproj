@@ -38,8 +38,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,7 +61,8 @@
     <Compile Include="EntityRepository\InBillMasterRepository.cs" />
     <Compile Include="EntityRepository\IntoSearchDetailRepository.cs" />
     <Compile Include="EntityRepository\JobRepository.cs" />
-    <Compile Include="EntityRepository\MoveSearchDetailRepository.cs" />
+    <Compile Include="EntityRepository\MoveBillDetailRepository.cs" />
+    <Compile Include="EntityRepository\MoveBillMasterRepository.cs" />
     <Compile Include="EntityRepository\OutBillAllotRepository.cs" />
     <Compile Include="EntityRepository\OutBillDetailRepository.cs" />
     <Compile Include="EntityRepository\OutBillMasterRepository.cs" />
@@ -72,7 +71,6 @@
     <Compile Include="EntityRepository\ShelfRepository.cs" />
     <Compile Include="EntityRepository\StockCheckSearchRepository.cs" />
     <Compile Include="EntityRepository\StockIntoSearchRepository.cs" />
-    <Compile Include="EntityRepository\StockMoveSearchRepository.cs" />
     <Compile Include="EntityRepository\StockOutSearchRepository.cs" />
     <Compile Include="EntityRepository\StorageRepository.cs" />
     <Compile Include="EntityRepository\SupplierRepository.cs" />
@@ -95,7 +93,8 @@
     <Compile Include="Interfaces\IInBillMasterRepository.cs" />
     <Compile Include="Interfaces\IIntoSearchDetailRepository.cs" />
     <Compile Include="Interfaces\IJobRepository.cs" />
-    <Compile Include="Interfaces\IMoveSearchDetailRepository.cs" />
+    <Compile Include="Interfaces\IMoveBillDetailRepository.cs" />
+    <Compile Include="Interfaces\IMoveBillMasterRepository.cs" />
     <Compile Include="Interfaces\IOutBillAllotRepository.cs" />
     <Compile Include="Interfaces\IOutBillDetailRepository.cs" />
     <Compile Include="Interfaces\IOutBillMasterRepository.cs" />
@@ -104,7 +103,6 @@
     <Compile Include="Interfaces\IShelfRepository.cs" />
     <Compile Include="Interfaces\IStockCheckSearchRepository.cs" />
     <Compile Include="Interfaces\IStockIntoSearchRepository.cs" />
-    <Compile Include="Interfaces\IStockMoveSearchRepository.cs" />
     <Compile Include="Interfaces\IStockOutSearchRepository.cs" />
     <Compile Include="Interfaces\IStorageRepository.cs" />
     <Compile Include="Interfaces\ISupplierRepository.cs" />

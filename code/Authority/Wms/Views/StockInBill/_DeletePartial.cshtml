@@ -14,6 +14,9 @@
                 });
                 $('form input').attr("disabled", "disabled");
                 $('form textarea').attr("disabled", "disabled");
+                $('#btnAddBillDetail').css('display', 'none'); //设置新增明细按钮的可见性
+                $('#btnDeleteBillDetail').css('display', 'none'); //设置删除明细按钮的可见性
+                $('#btnEditBillDetail').css('display', 'none'); //设置修改明细按钮的可见性
                 $('#cc').combo({
                     hasDownArrow: false
                 });

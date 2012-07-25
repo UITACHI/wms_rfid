@@ -6,17 +6,17 @@ using THOK.Wms.DbModel;
 
 namespace THOK.Wms.Bll.Interfaces
 {
-    public interface IInBillMasterService:IService<InBillMaster>
+    public interface IMoveBillMasterService : IService<MoveBillMaster>
     {
         object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive);
 
-        bool Add(InBillMaster inBillMaster, string userName);
+        bool Add(MoveBillMaster moveBillMaster, string userName);
 
         bool Delete(string BillNo);
 
-        bool Save(InBillMaster inBillMaster);
+        bool Save(MoveBillMaster moveBillMaster);
 
-        object GenInBillNo(string userName);
+        object GenMoveBillNo(string userName);
 
         bool Audit(string BillNo, string userName);
 

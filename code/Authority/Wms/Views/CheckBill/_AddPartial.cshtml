@@ -1,5 +1,12 @@
 <script type="text/javascript">
     var cellParameter, ware, area, shelf, cell;
+    //新增
+    function addClick() {
+        addLoad();
+        $('#addCheck').dialog('open').dialog('setTitle', '新增');
+    }
+
+    //加载
     function addLoad() {
         $('#warehouseTree').tree({
             onClick: function (node) {
@@ -11,10 +18,7 @@
         });
     }
 
-    function addClick() {
-        addLoad();
-        $('#addCheck').dialog('open').dialog('setTitle', '新增');
-    }
+    //预览盘点数据
     function nextDivClick() {
         ware = "", area = "", shelf = "", cell = "", cellParameter = "";
         var roots = $('#warehouseTree').tree('getRoots');
@@ -52,9 +56,9 @@
         if (ware != "" || area != "" || shelf != "" || cell != "") {
             $('#nextShowTable').datagrid('options').url = '/Storage/CheckDetails/?ware=' + ware + '&area=' + area + '&shelf=' + shelf + '&cell=' + cell;
             $('#nextShowTable').datagrid('load');
-            $('#nextShowDiv').dialog('open').dialog('setTitle', '盘点数据');
+            $('#nextShowDiv').dialog('open').dialog('setTitle', '货位盘点数据预览');
         } else {
-            alert("请选择需盘点的货位！");
+            $.messager.confirm('错误', '请选择需盘点的货位！');
         }
     }
 </script>
@@ -81,18 +85,60 @@
                         </thead>
                     </table>
                </div>
-              </div>
+          </div>
         </div>
 		<div title="产品盘点">
-			<img src="images/shirt2.gif">
+			@Html.Partial("_ProductCheckPartial")
 		</div>
 		<div title="异动盘点">
-			<img src="images/shirt3.gif">
-		</div>
+			@*<div class="easyui-layout" fit="true">
+                <div id="sidebar" region="west" style="width: 300px;  padding: 1px; margin: 1px">
+                    <table id="productTable" class="easyui-datagrid" border="false" url='/Product/Details/'
+                        singleselect="true" fit="true" pagination="true" rownumbers="true">
+                        <thead>
+                            <tr>
+                                <th field="ProductCode" width="100">
+                                    产品编码
+                                </th>
+                                <th field="ProductName" width="120" formatter="formatAction">
+                                    产品名称
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="main" region="center" style="width: 80px;" fit="true">
+                <table style=" height:100%; width:100%">
+                    <tr style="height:50%;width:50%">
+                    <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok">右移==></a></td>
+                    </tr>
+                    <tr style="height:50%;width:50%">
+                    <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok"><==左移</a></td>
+                    </tr>
+                </table>
+    
+                </div>
+                <div id="main" region="east" style="width: 300px;margin: 1px">
+                    <table id="loadShow" class="easyui-datagrid" border="false" url='/Product/Details/'
+                        singleselect="true" fit="true" pagination="true" rownumbers="true">
+                        <thead>
+                            <tr>
+                                <th field="ProductCode" width="100">
+                                    产品编码
+                                </th>
+                                <th field="ProductName" width="120">
+                                    产品名称
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+		</div>*@
 </div>
     
 </div>
 <div id="dlg-buttons">
-    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="nextDivClick()">浏览</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="nextDivClick()">预览</a>
 </div>
-@Html.Partial("_NextShowPartial")
+@Html.Partial("_CheckShowPartial")

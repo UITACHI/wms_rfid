@@ -60,5 +60,13 @@ namespace Authority.Controllers.ProductInfo
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
+
+        //查询卷烟信息 2012年7月24日 16:29:25
+        // GET: /Product/FindProduct/
+        public ActionResult FindProduct()
+        {
+            var users = ProductService.FindProduct();
+            return Json(users, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

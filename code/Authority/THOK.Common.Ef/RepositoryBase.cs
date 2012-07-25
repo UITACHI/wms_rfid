@@ -6,6 +6,7 @@ using System.Data.Entity;
 using THOK.Common.Ef.Interfaces;
 using Microsoft.Practices.Unity;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 
 namespace THOK.Common.Ef.EntityRepository
 {
@@ -15,75 +16,84 @@ namespace THOK.Common.Ef.EntityRepository
         [Dependency]
         public IRepositoryContext RepositoryContext { get; set; }
 
-        public DbSet<T> ObjectSet { get { return RepositoryContext.GetObjectSet<T>(); } }
-       
-        #region IRepository Members
+        public DbSet<T> dbSet { get { return RepositoryContext.GetDbSet<T>(); } }
 
         public void Add(T entity)
         {
-            ObjectSet.Add(entity);
-            RepositoryContext.SaveChanges();
+            dbSet.Add(entity);
         }
 
         public void Delete(T entity)
         {
-            ObjectSet.Remove(entity);
-            RepositoryContext.SaveChanges();
+            dbSet.Remove(entity);
         }
 
-        public IList<T> GetAll()
+        public void Update(T entity)
         {
-            return this.ObjectSet.ToList<T>();
-        }
-
-        public IList<T> GetAll(Expression<Func<T, bool>> whereCondition)
-        {
-            return this.ObjectSet.Where(whereCondition).ToList<T>();
-        }
-
-        public T GetSingle(Expression<Func<T, bool>> whereCondition)
-        {
-            return this.ObjectSet.Where(whereCondition).FirstOrDefault<T>();
-        }
+            dbSet.Attach(entity);        }
 
         public void Attach(T entity)
-        {     
+        {
             var entry = RepositoryContext.DbContext.Entry(entity);
             if (entry.State == EntityState.Detached)
             {
                 entry.State = EntityState.Modified;
-                //ObjectSet.Attach(entity);
             }
+        }
+
+        public void Detach(T entity)
+        {
+            ((IObjectContextAdapter)RepositoryContext.DbContext).ObjectContext.Detach(entity);
         }
 
         public IQueryable<T> GetQueryable()
         {
-            return this.ObjectSet.AsQueryable<T>();
+            return this.dbSet.AsQueryable<T>();
         }
+
+        public IList<T> GetAll()
+        {
+            return this.dbSet.ToList<T>();
+        }
+
+        public IList<T> GetAll(Expression<Func<T, bool>> whereCondition)
+        {
+            return this.dbSet.Where(whereCondition).ToList<T>();
+        }
+
+        public T GetSingle()
+        {
+            return this.dbSet.FirstOrDefault<T>();
+        }
+
+        public T GetSingle(Expression<Func<T, bool>> whereCondition)
+        {
+            return this.dbSet.Where(whereCondition).FirstOrDefault<T>();
+        }              
 
         public long Count()
         {
-            return this.ObjectSet.LongCount<T>();
+            return this.dbSet.LongCount<T>();
         }
 
         public long Count(Expression<Func<T, bool>> whereCondition)
         {
-            return this.ObjectSet.Where(whereCondition).LongCount<T>();
+            return this.dbSet.Where(whereCondition).LongCount<T>();
         }
 
+        //todo
         public int SaveChanges()
         {
             return RepositoryContext.SaveChanges();
         }
-
+        //todo
         public void Delete<TSub>(TSub[] tsubs)
         {
             foreach (var tsub in tsubs)
             {
                 RepositoryContext.DbContext.Set(tsub.GetType()).Remove(tsub);
-            }           
-        }
-        #endregion
-            
+            }
+            RepositoryContext.SaveChanges();
+        }            
     }
 }

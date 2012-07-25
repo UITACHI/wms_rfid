@@ -27,30 +27,42 @@ namespace THOK.Wms.Bll.Service
 
         #region IEmployeeService 成员
 
-        public object GetDetails(int page, int rows, string EmployeeCode, string EmployeeName, string DepartmentID,string JobID, string Status, string IsActive)
+        public object GetDetails(int page, int rows, string EmployeeCode, string EmployeeName, string DepartmentID, string JobID, string Status, string IsActive)
         {
             IQueryable<Employee> employeeQuery = EmployeeRepository.GetQueryable();
             var employee = employeeQuery.Where(e => e.EmployeeCode.Contains(EmployeeCode) && e.EmployeeName.Contains(EmployeeName)
-                             && e.Status.Contains(Status)&&e.IsActive.Contains(IsActive))
-                             .OrderBy(e => e.EmployeeCode).AsEnumerable().Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, e.DepartmentID, DepartmentName = DepartmentID == null ? string.Empty : e.Department.DepartmentName, e.Description, JobID = e.Job.ID, JobName = e.Job.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+                             && e.Status.Contains(Status) && e.IsActive.Contains(IsActive));
+                            
             if (!DepartmentID.Equals(string.Empty))
             {
                 Guid departID = new Guid(DepartmentID);
-                employee = employeeQuery.Where(e => e.EmployeeCode.Contains(EmployeeCode) && e.EmployeeName.Contains(EmployeeName)
-                             && e.DepartmentID == departID && e.Status.Contains(Status) && e.IsActive.Contains(IsActive))
-                            .OrderBy(e => e.EmployeeCode).AsEnumerable().Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, e.DepartmentID, DepartmentName = DepartmentID == null ? string.Empty : e.Department.DepartmentName, e.Description, JobID = e.Job.ID, JobName = e.Job.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
+                employee = employee.Where(e => e.DepartmentID == departID);
             }
             if (!JobID.Equals(string.Empty))
             {
                 Guid jobID = new Guid(JobID);
-                employee = employee.Where(e => e.EmployeeCode.Contains(EmployeeCode) && e.EmployeeName.Contains(EmployeeName)
-                             && e.JobID==jobID && e.Status.Contains(Status) && e.IsActive.Contains(IsActive))
-                            .OrderBy(e => e.EmployeeCode).AsEnumerable().Select(e => new { e.ID, e.EmployeeCode, e.EmployeeName, e.DepartmentID, DepartmentName = DepartmentID == null ? string.Empty : e.DepartmentName, e.Description, e.JobID, e.JobName, e.Sex, e.Tel, e.Status, IsActive = e.IsActive == "1" ? "可用" : "不可用", e.UpdateTime });
+                employee = employee.Where(e => e.JobID == jobID);
             }
 
-            int total = employee.Count();
-            employee = employee.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = employee.ToArray() };
+            var temp = employee.AsEnumerable().Select(e => new
+            {
+                e.ID,
+                e.EmployeeCode,
+                e.EmployeeName,
+                DepartmentID=e.DepartmentID== null ? string.Empty :e.DepartmentID.ToString(),
+                DepartmentName =e.DepartmentID == null ? string.Empty : e.Department.DepartmentName,
+                e.Description,
+                JobID =e.Job==null?string.Empty:e.Job.ID.ToString(),
+                JobName = e.Job == null ? string.Empty : e.Job.JobName,
+                e.Sex,
+                e.Tel,
+                e.Status,
+                IsActive = e.IsActive == "1" ? "可用" : "不可用",
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+            });
+            int total = temp.Count();
+            temp = temp.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = temp.ToArray() };
         }
 
         public bool Add(Employee employee)

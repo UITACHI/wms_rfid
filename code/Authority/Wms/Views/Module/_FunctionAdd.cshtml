@@ -3,7 +3,7 @@
         if (isAdd == 1) {
             var url = "/Function/Create";
             var field = $('#ModuletID').val(); //新增，传模块ID
-            functionAddSave(url, field)
+            functionAddSave(url, moduleId)
         } else if (isAdd == 2) {
             var url = "/Function/Edit";
             var field = $('#FunctionID').val(); //修改，传功能ID
@@ -21,7 +21,7 @@
                 if (json) {
                     $.messager.show({ title: '系统提示', msg: '操作成功！' });
                     $('#function_add').window('close');
-                    $('#functiondatagrid').datagrid('options').url = '/Function/Details/?ModuleId=' + $('#ModuletID').val();
+                    $('#functiondatagrid').datagrid('options').url = '/Function/Details/?ModuleId=' + moduleId;
                     $('#functiondatagrid').datagrid('reload');
                 } else {
                     $.messager.show({ title: '系统提示', msg: '修改失败!请检查原因！' });

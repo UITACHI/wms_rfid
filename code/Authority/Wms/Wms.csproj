@@ -829,13 +829,15 @@
     <Content Include="Views\Brand\_SupplierSearchPartial.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Views\CheckBill\_CellCheckPartial.cshtml" />
     <Content Include="Views\CheckBill\_ProductCheckPartial.cshtml" />
-    <Content Include="Views\CheckBill\_RealTimeCheckPartial.cshtml" />
+    <Content Include="Views\CheckBill\_CheckShowPartial.cshtml" />
     <Content Include="Views\CheckBill\_NextShowPartial.cshtml" />
     <Content Include="Views\DailyBalance\Index.cshtml" />
     <Content Include="Views\DailyBalance\_Detail.cshtml" />
     <Content Include="Views\DailyBalance\_SearchPartial.cshtml" />
+    <Content Include="Views\CheckBill\_AntiTrialPartial.cshtml" />
+    <Content Include="Views\CheckBill\_AuditPartial.cshtml" />
+    <Content Include="Views\CheckBill\_ConfirmPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
