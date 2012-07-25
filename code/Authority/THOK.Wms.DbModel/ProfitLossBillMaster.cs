@@ -16,7 +16,7 @@ namespace THOK.Wms.DbModel
         public string BillTypeCode { get; set; }
         public string CheckBillNo { get; set; }
         public string WarehouseCode { get; set; }
-        public string OperatePersonCode { get; set; }
+        public Guid OperatePersonID { get; set; }
         public string Status { get; set; }
         public Guid? VerifyPersonID { get; set; }
         public DateTime? VerifyDate { get; set; }
@@ -25,6 +25,9 @@ namespace THOK.Wms.DbModel
         public DateTime UpdateTime { get; set; }
 
         public virtual BillType BillType { get; set; }
+        public virtual Warehouse Warehouse { get; set; }
+        public virtual Employee OperatePerson { get; set; }
+        public virtual Employee VerifyPerson { get; set; }
 
         public virtual ICollection<ProfitLossBillDetail> ProfitLossBillDetails { get; set; }
     }
