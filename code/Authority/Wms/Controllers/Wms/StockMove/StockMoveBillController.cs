@@ -49,5 +49,14 @@ namespace Authority.Controllers.Wms.StockMove
             return Json(moveBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // GET: /MoveBillDetail/MoveBillDetails/
+
+        public ActionResult MoveBillDetails(int page, int rows, string BillNo)
+        {
+            var moveBillDetail = MoveBillDetailService.GetDetails(page, rows, BillNo);
+            return Json(moveBillDetail, "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

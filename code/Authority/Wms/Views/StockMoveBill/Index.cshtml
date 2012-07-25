@@ -4,7 +4,7 @@
             onClickRow: function () {
                 var row = $('#details').datagrid('getSelected');
                 if (row) {
-                    $('#inBillDetails').datagrid({ url: '/StockMoveBill/InBillDetails/?BillNo=' + row.BillNo });
+                    $('#inBillDetails').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
                 } else {
                     $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
                 }
@@ -39,11 +39,16 @@
             <tr>
                 <th field="ProductCode" width="100">产品代码</th>
                 <th field="ProductName" width="80" align="right">产品名称</th>
+                <th field="OutCellCode" width="80" align="right">移出储位编码</th>
+                <th field="OutStorageCode" width="80" align="right">移出存储编码</th>
+                <th field="InCellCode" width="80" align="right">移入储位编码</th>
+                <th field="InStorageCode" width="80" align="right">移入存储编码</th>
                 <th field="UnitCode" width="80" align="right">单位编码</th>
                 <th field="UnitName" width="80" align="right">单位名称</th>
-                <th field="BillQuantity" width="80" align="right">数量</th>
-                <th field="AllotQuantity" width="80" align="right">已分配数量</th>
-                <th field="RealQuantity" width="80" align="right">实际入库量</th>
+                <th field="RealQuantity" width="80" align="right">数量</th>
+                <th field="OperatePersonID" width="80" align="right" hidden="true">作业人员ID</th>
+                <th field="OperatePersonName" width="80" align="right">作业人员</th>
+                <th field="Status" width="80" align="right">作业状态</th>
                 <th field="Price" width="80" align="right">单价(元)</th>
                 <th field="Description" width="80" align="right">备注</th>
             </tr>
