@@ -21,6 +21,13 @@ namespace THOK.Wms.Bll.Service
         public IEmployeeRepository EmployeeRepository { get; set; }
         [Dependency]
         public IWarehouseRepository WarehouseRepository { get; set; }
+        [Dependency]
+        public IInBillAllotRepository InBillAllotRepository { get; set; }
+        [Dependency]
+        public IOutBillAllotRepository OutBillAllotRepository { get; set; }
+        [Dependency]
+        public IMoveBillDetailRepository MoveBillDetailRepository { get; set; }
+
 
         protected override Type LogPrefix
         {
@@ -170,7 +177,75 @@ namespace THOK.Wms.Bll.Service
         }
 
         /// <summary>
-        /// 根据参数生成并保存盘点数据 --货位生成
+        /// 根据参数查询要生成的盘点数据  --货位查询预览
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="ware">仓库</param>
+        /// <param name="area">库区</param>
+        /// <param name="shelf">货架</param>
+        /// <param name="cell">货位</param>
+        /// <returns></returns>
+        public object GetCellDetails(int page, int rows, string ware, string area, string shelf, string cell)
+        {
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            var storages = storageQuery.OrderBy(s => s.StorageCode).AsEnumerable().Select(s => new
+            {
+                s.StorageCode,
+                s.Cell.CellCode,
+                s.Cell.CellName,
+                s.Product.ProductCode,
+                s.Product.ProductName,
+                s.Product.Unit.UnitCode,
+                s.Product.Unit.UnitName,
+                Quantity = s.Quantity / s.Product.Unit.Count,
+                IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+            });
+            if (ware != null && ware != string.Empty || area != null && area != string.Empty || shelf != null && shelf != string.Empty || cell != null && cell != string.Empty)
+            {
+                if (ware != string.Empty)
+                {
+                    ware = ware.Substring(0, ware.Length - 1);
+                }
+                if (area != string.Empty)
+                {
+                    area = area.Substring(0, area.Length - 1);
+                }
+                if (shelf != string.Empty)
+                {
+                    shelf = shelf.Substring(0, shelf.Length - 1);
+                }
+                if (cell != string.Empty)
+                {
+                    cell = cell.Substring(0, cell.Length - 1);
+                }
+
+                storages = storageQuery.ToList().Where(s => ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode))
+                                       .OrderBy(s => s.StorageCode).AsEnumerable()
+                                       .Select(s => new
+                                       {
+                                           s.StorageCode,
+                                           s.Cell.CellCode,
+                                           s.Cell.CellName,
+                                           s.Product.ProductCode,
+                                           s.Product.ProductName,
+                                           s.Product.Unit.UnitCode,
+                                           s.Product.Unit.UnitName,
+                                           Quantity = s.Quantity / s.Product.Unit.Count,
+                                           IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                           StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                           UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                       });
+            }
+            int total = storages.Count();
+            storages = storages.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = storages.ToArray() };
+        }
+
+        /// <summary>
+        /// 根据参数生成并保存盘点数据  --货位生成
         /// </summary>
         /// <param name="ware">仓库</param>
         /// <param name="area">库区</param>
@@ -197,7 +272,20 @@ namespace THOK.Wms.Bll.Service
                     {
                         var storages = storageQuery.Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode)
                                                    .OrderBy(s => s.StorageCode).AsEnumerable()
-                                                   .Select(s => new { s.StorageCode, s.Cell.CellCode, s.Cell.CellName, s.Product.ProductCode, s.Product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                                                   .Select(s => new
+                                                   {
+                                                       s.StorageCode,
+                                                       s.Cell.CellCode,
+                                                       s.Cell.CellName,
+                                                       s.Product.ProductCode,
+                                                       s.Product.ProductName,
+                                                       s.Product.Unit.UnitCode,
+                                                       s.Product.Unit.UnitName,
+                                                       Quantity = s.Quantity / s.Product.Unit.Count,
+                                                       IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                                       StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                                       UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                                   });
                         if (storages.Count() > 0)
                         {
                             string billNo = GetCheckBillNo().ToString();
@@ -221,10 +309,10 @@ namespace THOK.Wms.Bll.Service
                                 checkDetail.CellCode = stor.CellCode;
                                 checkDetail.StorageCode = stor.StorageCode;
                                 checkDetail.ProductCode = stor.ProductCode;
-                                checkDetail.UnitCode = "01";
+                                checkDetail.UnitCode = stor.UnitCode;
                                 checkDetail.Quantity = stor.Quantity;
                                 checkDetail.RealProductCode = stor.ProductCode;
-                                checkDetail.RealUnitCode = "01";
+                                checkDetail.RealUnitCode = stor.UnitCode;
                                 checkDetail.RealQuantity = stor.Quantity;
                                 checkDetail.Status = "1";
                                 CheckBillDetailRepository.Add(checkDetail);
@@ -254,7 +342,20 @@ namespace THOK.Wms.Bll.Service
                     {
                         var storages = storageQuery.ToList().Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && (area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)))
                                                    .OrderBy(s => s.StorageCode).AsEnumerable()
-                                                   .Select(s => new { s.StorageCode, s.Cell.CellCode, s.Cell.CellName, s.Product.ProductCode, s.Product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                                                   .Select(s => new
+                                                   {
+                                                       s.StorageCode,
+                                                       s.Cell.CellCode,
+                                                       s.Cell.CellName,
+                                                       s.Product.ProductCode,
+                                                       s.Product.ProductName,
+                                                       s.Product.Unit.UnitCode,
+                                                       s.Product.Unit.UnitName,
+                                                       Quantity = s.Quantity / s.Product.Unit.Count,
+                                                       IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                                       StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                                       UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                                   });
                         if (storages.Count() > 0)
                         {
                             string billNo = GetCheckBillNo().ToString();
@@ -278,10 +379,10 @@ namespace THOK.Wms.Bll.Service
                                 checkDetail.CellCode = stor.CellCode;
                                 checkDetail.StorageCode = stor.StorageCode;
                                 checkDetail.ProductCode = stor.ProductCode;
-                                checkDetail.UnitCode = "01";
+                                checkDetail.UnitCode = stor.UnitCode;
                                 checkDetail.Quantity = stor.Quantity;
                                 checkDetail.RealProductCode = stor.ProductCode;
-                                checkDetail.RealUnitCode = "01";
+                                checkDetail.RealUnitCode = stor.UnitCode;
                                 checkDetail.RealQuantity = stor.Quantity;
                                 checkDetail.Status = "1";
                                 CheckBillDetailRepository.Add(checkDetail);
@@ -295,6 +396,43 @@ namespace THOK.Wms.Bll.Service
                 #endregion
             }
             return result;
+        }
+
+        /// <summary>
+        /// 根据参数查询要生成的盘点数据  --产品查询预览
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="products">卷烟信息集合</param>
+        /// <returns></returns>
+        public object GetProductDetails(int page, int rows, string products)
+        {
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            if (products != string.Empty && products != null)
+            {
+                products = products.Substring(0, products.Length - 1);
+
+                var storages = storageQuery.ToList().Where(s => products.Contains(s.Product.ProductCode))
+                                      .OrderBy(s => s.StorageCode).AsEnumerable()
+                                      .Select(s => new
+                                      {
+                                          s.StorageCode,
+                                          s.Cell.CellCode,
+                                          s.Cell.CellName,
+                                          s.Product.ProductCode,
+                                          s.Product.ProductName,
+                                          s.Product.Unit.UnitCode,
+                                          s.Product.Unit.UnitName,
+                                          Quantity = s.Quantity / s.Product.Unit.Count,
+                                          IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                          StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                          UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                      });
+                int total = storages.Count();
+                storages = storages.Skip((page - 1) * rows).Take(rows);
+                return new { total, rows = storages.ToArray() };
+            }
+            return null;
         }
 
         /// <summary>
@@ -318,23 +456,24 @@ namespace THOK.Wms.Bll.Service
                     #region products 这个有值，就把这个值里面所有的卷烟信息所在的仓库的货位的储存信息生成盘点单，一个仓库一个盘点单据
 
                     var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
-
                     foreach (var item in warehouses.ToArray())
                     {
                         var storages = storageQuery.Where(s => products.Contains(s.Product.ProductCode) && s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode)
                                                    .OrderBy(s => s.StorageCode).AsEnumerable()
                                                    .Select(s => new
                                                     {
-                                                          s.StorageCode,
-                                                          s.Cell.CellCode,
-                                                          s.Cell.CellName,
-                                                          s.Product.ProductCode,
-                                                          s.Product.ProductName,
-                                                          s.Quantity,
-                                                          IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                                          StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                                          UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                                      });
+                                                        s.StorageCode,
+                                                        s.Cell.CellCode,
+                                                        s.Cell.CellName,
+                                                        s.Product.ProductCode,
+                                                        s.Product.ProductName,
+                                                        s.Product.Unit.UnitCode,
+                                                        s.Product.Unit.UnitName,
+                                                        Quantity = s.Quantity / s.Product.Unit.Count,
+                                                        IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                                        StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                                        UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                                    });
                         if (storages.Count() > 0)
                         {
                             string billNo = GetCheckBillNo().ToString();
@@ -358,10 +497,10 @@ namespace THOK.Wms.Bll.Service
                                 checkDetail.CellCode = stor.CellCode;
                                 checkDetail.StorageCode = stor.StorageCode;
                                 checkDetail.ProductCode = stor.ProductCode;
-                                checkDetail.UnitCode = "01";
+                                checkDetail.UnitCode = stor.UnitCode;
                                 checkDetail.Quantity = stor.Quantity;
                                 checkDetail.RealProductCode = stor.ProductCode;
-                                checkDetail.RealUnitCode = "01";
+                                checkDetail.RealUnitCode = stor.UnitCode;
                                 checkDetail.RealQuantity = stor.Quantity;
                                 checkDetail.Status = "1";
                                 CheckBillDetailRepository.Add(checkDetail);
@@ -373,6 +512,147 @@ namespace THOK.Wms.Bll.Service
 
                     #endregion
                 }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据参数查询要生成的盘点数据  --异动查询预览
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="beginDate">开始时间</param>
+        /// <param name="endDate">结束时间</param>
+        /// <returns></returns>
+        public object GetChangedCellDetails(int page, int rows, string beginDate, string endDate)
+        {
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            IQueryable<InBillAllot> inAllotQuery = InBillAllotRepository.GetQueryable();
+            IQueryable<OutBillAllot> outAllotQuery = OutBillAllotRepository.GetQueryable();
+            IQueryable<MoveBillDetail> moveBillQuery = MoveBillDetailRepository.GetQueryable();
+            if (beginDate == string.Empty && beginDate == null)
+            {
+                beginDate = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
+            }
+            if (endDate == string.Empty && endDate == null)
+            {
+                endDate = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+
+            var inCells = inAllotQuery.Where(i => i.FinishTime >= Convert.ToDateTime(beginDate) && i.FinishTime <= Convert.ToDateTime(endDate)).OrderBy(i => i.CellCode).Select(i => i.CellCode);
+            var outCells = outAllotQuery.Where(o => o.FinishTime >= Convert.ToDateTime(beginDate) && o.FinishTime <= Convert.ToDateTime(endDate)).OrderBy(o => o.CellCode).Select(o => o.CellCode);
+            var moveInCells = moveBillQuery.Where(m => m.FinishTime >= Convert.ToDateTime(beginDate) && m.FinishTime <= Convert.ToDateTime(endDate)).OrderBy(m => m.InCell).Select(m => m.InCell.CellCode);
+            var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= Convert.ToDateTime(beginDate) && m.FinishTime <= Convert.ToDateTime(endDate)).OrderBy(m => m.OutCell).Select(m => m.OutCell.CellCode);
+            var storages = storageQuery.ToList().Where(s => inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode))
+                                       .OrderBy(s => s.ProductCode).AsEnumerable()
+                                       .Select(s => new
+                                       {
+                                           s.StorageCode,
+                                           s.Cell.CellCode,
+                                           s.Cell.CellName,
+                                           s.Product.ProductCode,
+                                           s.Product.ProductName,
+                                           s.Product.Unit.UnitCode,
+                                           s.Product.Unit.UnitName,
+                                           Quantity = s.Quantity / s.Product.Unit.Count,
+                                           IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                           StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                           UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                       });
+            int total = storages.Count();
+            storages = storages.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = storages.ToArray() };
+        }
+
+        /// <summary>
+        /// 根据参数生成并保存盘点数据  --异动生成
+        /// </summary>
+        /// <param name="beginDate">开始时间</param>
+        /// <param name="endDate">结束时间</param>
+        /// <param name="UserName">登陆用户</param>
+        /// <returns></returns>
+        public bool ChangedAdd(string beginDate, string endDate, string UserName)
+        {
+            bool result = false;
+            IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            IQueryable<InBillAllot> inAllotQuery = InBillAllotRepository.GetQueryable();
+            IQueryable<OutBillAllot> outAllotQuery = OutBillAllotRepository.GetQueryable();
+            IQueryable<MoveBillDetail> moveBillQuery = MoveBillDetailRepository.GetQueryable();
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(e => e.UserName == UserName);
+            if (employee != null)
+            {
+                if (beginDate == string.Empty && beginDate == null)
+                {
+                    beginDate = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
+                }
+                if (endDate == string.Empty && endDate == null)
+                {
+                    endDate = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+
+                #region 循环所有仓库的订单，一个仓库一个盘点单据
+
+                var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
+                foreach (var item in warehouses.ToArray())
+                {
+                    var inCells = inAllotQuery.Where(i => i.FinishTime >= Convert.ToDateTime(beginDate) && i.FinishTime <= Convert.ToDateTime(endDate) && i.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(i => i.CellCode).Select(i => i.CellCode);
+                    var outCells = outAllotQuery.Where(o => o.FinishTime >= Convert.ToDateTime(beginDate) && o.FinishTime <= Convert.ToDateTime(endDate) && o.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(o => o.CellCode).Select(o => o.CellCode);
+                    var moveInCells = moveBillQuery.Where(m => m.FinishTime >= Convert.ToDateTime(beginDate) && m.FinishTime <= Convert.ToDateTime(endDate) && m.InCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.InCell).Select(m => m.InCell.CellCode);
+                    var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= Convert.ToDateTime(beginDate) && m.FinishTime <= Convert.ToDateTime(endDate) && m.OutCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.OutCell).Select(m => m.OutCell.CellCode);
+                    var storages = storageQuery.ToList().Where(s => inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode))
+                                       .OrderBy(s => s.ProductCode).AsEnumerable()
+                                       .Select(s => new
+                                       {
+                                           s.StorageCode,
+                                           s.Cell.CellCode,
+                                           s.Cell.CellName,
+                                           s.Product.ProductCode,
+                                           s.Product.ProductName,
+                                           s.Product.Unit.UnitCode,
+                                           s.Product.Unit.UnitName,
+                                           Quantity = s.Quantity / s.Product.Unit.Count,
+                                           IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                           StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                           UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                       });
+                    if (storages.Count() > 0)
+                    {
+                        string billNo = GetCheckBillNo().ToString();
+                        var check = new CheckBillMaster();
+                        check.BillNo = billNo;
+                        check.BillDate = DateTime.Now;
+                        check.BillTypeCode = "1";
+                        check.WarehouseCode = item.WarehouseCode;
+                        check.OperatePersonID = employee.ID;
+                        check.Status = "1";
+                        check.IsActive = "1";
+                        check.UpdateTime = DateTime.Now;
+
+                        CheckBillMasterRepository.Add(check);
+                        CheckBillMasterRepository.SaveChanges();
+
+                        foreach (var stor in storages.ToArray())
+                        {
+                            var checkDetail = new CheckBillDetail();
+                            checkDetail.BillNo = billNo;
+                            checkDetail.CellCode = stor.CellCode;
+                            checkDetail.StorageCode = stor.StorageCode;
+                            checkDetail.ProductCode = stor.ProductCode;
+                            checkDetail.UnitCode = stor.UnitCode;
+                            checkDetail.Quantity = stor.Quantity;
+                            checkDetail.RealProductCode = stor.ProductCode;
+                            checkDetail.RealUnitCode = stor.UnitCode;
+                            checkDetail.RealQuantity = stor.Quantity;
+                            checkDetail.Status = "1";
+                            CheckBillDetailRepository.Add(checkDetail);
+                            CheckBillDetailRepository.SaveChanges();
+                        }
+                        result = true;
+                    }
+                }
+
+                #endregion
             }
             return result;
         }
@@ -425,5 +705,6 @@ namespace THOK.Wms.Bll.Service
         }
 
         #endregion
+
     }
 }

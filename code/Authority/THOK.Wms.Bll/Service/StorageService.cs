@@ -69,7 +69,7 @@ namespace THOK.Wms.Bll.Service
                s.Cell.CellName,
                s.Product.ProductCode,
                s.Product.ProductName,
-               s.Quantity,
+               Quantity = s.Quantity / s.Product.Unit.Count,
                IsActive = s.IsActive == "1" ? "可用" : "不可用",
                StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
                UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")

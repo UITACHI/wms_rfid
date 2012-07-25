@@ -28,21 +28,6 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             var storage = StorageService.GetDetails(page, rows, type, id);
             return Json(storage, "text", JsonRequestBehavior.AllowGet);
         }
-
-        //查询货位要生成的盘点数据表
-        // POST: /Storage/CheckCellDetails/
-        public ActionResult CheckCellDetails(int page, int rows, string ware,string area,string shelf,string cell)
-        {
-            var storage = StorageService.GetCellDetails(page, rows, ware, area, shelf, cell);
-            return Json(storage, "text", JsonRequestBehavior.AllowGet);
-        }
-
-        //查询产品要生成的盘点数据表
-        // POST: /Storage/CheckProductDetails/        
-        public ActionResult CheckProductDetails(int page, int rows, string products)
-        {
-            var storage = StorageService.GetProductDetails(page, rows, products);
-            return Json(storage, "text", JsonRequestBehavior.AllowGet);
-        }
+        
     }
 }

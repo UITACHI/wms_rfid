@@ -63,7 +63,7 @@
                 }
             }
             if (ware != "" || area != "" || shelf != "" || cell != "") {
-                $('#nextShowTable').datagrid('options').url = '/Storage/CheckCellDetails/?ware=' + ware + '&area=' + area + '&shelf=' + shelf + '&cell=' + cell;
+                $('#nextShowTable').datagrid('options').url = '/CheckBill/CheckCellDetails/?ware=' + ware + '&area=' + area + '&shelf=' + shelf + '&cell=' + cell;
                 $('#nextShowTable').datagrid('load');
                 $('#nextShowDiv').dialog('open').dialog('setTitle', '货位盘点数据预览');
             } else {
@@ -76,14 +76,14 @@
                 productCheckParameter += checkRows[i].ProductCode + ",";
             }
             if (productCheckParameter != "") {
-                $('#nextShowTable').datagrid('options').url = '/Storage/CheckProductDetails/?products=' + productCheckParameter;
+                $('#nextShowTable').datagrid('options').url = '/CheckBill/CheckProductDetails/?products=' + productCheckParameter;
                 $('#nextShowTable').datagrid('load');
                 $('#nextShowDiv').dialog('open').dialog('setTitle', '产品盘点数据预览');
             } else {
                 $.messager.confirm('错误', '请选择需盘点的产品！');
             }
         } else if (tabsRow.panel('options').id == "transactionCheck") {//选择异动盘点
-
+            
         } else {
             $.messager.confirm('错误', '没选择盘点方式！请关闭页面从新打开！');
         }
