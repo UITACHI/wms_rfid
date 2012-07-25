@@ -36,5 +36,6 @@ namespace THOK.Wms.DbModel
         public virtual ICollection<CheckBillMaster> CheckBillMasters { get; set; }
         public virtual ICollection<OutBillMaster> OutBillMasters { get; set; }
         public virtual ICollection<InBillMaster> InBillMasters { get; set; }
+        public virtual ICollection<ProfitLossBillMaster> ProfitLossBillMasters { get; set; }
     }
 }
