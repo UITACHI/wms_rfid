@@ -160,6 +160,7 @@
             outBillMasterSave();
             $('#dlg-AddBillDetail').dialog('close');
         }
+        $('#outBillDetails').datagrid('loadData', { total: 0, rows: [] }); //清空细单
     }
 
     //新增明细

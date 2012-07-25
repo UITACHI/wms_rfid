@@ -24,5 +24,10 @@ namespace THOK.Wms.DbModel
         public string Status { get; set; }
 
         public virtual InBillMaster InBillMaster { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Storage Storage { get; set; }
+        public virtual Cell Cell { get; set; }
+        public virtual Unit Unit { get; set; }
+
     }
 }
