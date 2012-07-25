@@ -89,83 +89,57 @@
         }
     }
 </script>
-<div id="addCheck" class="easyui-dialog" modal="true" style="width: 840px; height: 460px;padding: 1px 1px" closed="true" buttons="#dlg-buttons">
+<div id="addCheck" class="easyui-dialog" modal="true" style="width: 840px; height: 460px;
+    padding: 1px 1px" closed="true" buttons="#dlg-buttons">
     <div id="checkTabs" class="easyui-tabs" fit="true">
-		<div title="货位盘点" id="cellCheck">
-            <div class="easyui-layout" fit="true"> 
-                <div id="sidebar"  region="west"  style="width:220px;overflow: scroll;padding:1px; margin: 1px">
-                    <ul id="warehouseTree"  class="easyui-tree" checkbox="true" url='/Cell/GetCheckDetails/'>
+        <div title="货位盘点" id="cellCheck">
+            <div class="easyui-layout" fit="true">
+                <div id="sidebar" region="west" style="width: 220px; overflow: scroll; padding: 1px;
+                    margin: 1px">
+                    <ul id="warehouseTree" class="easyui-tree" checkbox="true" url='/Cell/GetCheckDetails/'>
                     </ul>
                 </div>
-                <div id="main"  region="center" style="margin: 1px">
-                    <table id="loadShowTable" class="easyui-datagrid" border="false" singleSelect="true"  fit="true" pagination="true" rownumbers="true">
+                <div id="main" region="center" style="margin: 1px">
+                    <table id="loadShowTable" class="easyui-datagrid" border="false" singleselect="true"
+                        fit="true" pagination="true" rownumbers="true">
                         <thead>
                             <tr>
-                                <th field="CellCode" width="60">货位编码</th>
-                                <th field="CellName" width="80">货位名称</th>
-                                <th field="StorageCode" width="60">储存编码</th>
-                                <th field="ProductCode" width="60">产品编码</th>
-                                <th field="ProductName" width="124">产品名称</th>
-                                <th field="UnitCode" width="60">单位名称</th>
-                                <th field="Quantity" width="60">数量</th>
-                            </tr>
-                        </thead>
-                    </table>
-               </div>
-          </div>
-        </div>
-		<div title="产品盘点" id="productCheck">
-			@Html.Partial("_ProductCheckPartial")
-		</div>
-		<div title="异动盘点" id="transactionCheck">
-			<div class="easyui-layout" fit="true">
-                <div id="sidebar" region="west" style="width: 300px;  padding: 1px; margin: 1px">
-                    <table id="productTable" class="easyui-datagrid" border="false" url='/Product/Details/'
-                        singleselect="true" fit="true" pagination="true" rownumbers="true">
-                        <thead>
-                            <tr>
-                                <th field="ProductCode" width="100">
+                                <th field="CellCode" width="60">
+                                    货位编码
+                                </th>
+                                <th field="CellName" width="80">
+                                    货位名称
+                                </th>
+                                <th field="StorageCode" width="60">
+                                    储存编码
+                                </th>
+                                <th field="ProductCode" width="60">
                                     产品编码
                                 </th>
-                                <th field="ProductName" width="120" formatter="formatAction">
+                                <th field="ProductName" width="124">
                                     产品名称
                                 </th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div id="main" region="center" style="width: 80px;" fit="true">
-                <table style=" height:100%; width:100%">
-                    <tr style="height:50%;width:50%">
-                    <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok">右移==></a></td>
-                    </tr>
-                    <tr style="height:50%;width:50%">
-                    <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok"><==左移</a></td>
-                    </tr>
-                </table>
-    
-                </div>
-                <div id="main" region="east" style="width: 300px;margin: 1px">
-                    <table id="loadShow" class="easyui-datagrid" border="false" url='/Product/Details/'
-                        singleselect="true" fit="true" pagination="true" rownumbers="true">
-                        <thead>
-                            <tr>
-                                <th field="ProductCode" width="100">
-                                    产品编码
+                                <th field="UnitCode" width="60">
+                                    单位名称
                                 </th>
-                                <th field="ProductName" width="120">
-                                    产品名称
+                                <th field="Quantity" width="60">
+                                    数量
                                 </th>
                             </tr>
                         </thead>
                     </table>
                 </div>
             </div>
-		</div>
-</div>
-    
+        </div>
+        <div title="产品盘点" id="productCheck">
+            @Html.Partial("_ProductCheckPartial")
+        </div>
+        <div title="异动盘点" id="transactionCheck">
+            @Html.Partial("_ChangedCheckPartial")
+        </div>
+    </div>
 </div>
 <div id="dlg-buttons">
-    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="nextDivClick()">预览</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="nextDivClick()">预览</a>
 </div>
 @Html.Partial("_CheckShowPartial")
