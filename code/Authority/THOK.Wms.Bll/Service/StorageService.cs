@@ -17,6 +17,7 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public ICellRepository CellRepository { get; set; }
 
+
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -81,7 +82,7 @@ namespace THOK.Wms.Bll.Service
         /// <param name="shelf">货架</param>
         /// <param name="cell">货位</param>
         /// <returns></returns>
-        public object GetDetails(int page, int rows, string ware, string area, string shelf, string cell)
+        public object GetCellDetails(int page, int rows, string ware, string area, string shelf, string cell)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
@@ -134,6 +135,41 @@ namespace THOK.Wms.Bll.Service
             int total = storages.Count();
             storages = storages.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = storages.ToArray() };
+        }
+        
+        /// <summary>
+        /// 根据参数获取要生成的盘点数据
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="products">卷烟信息集合</param>
+        /// <returns></returns>
+        public object GetProductDetails(int page, int rows, string products)
+        {
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            if (products != string.Empty && products != null)
+            {
+                products = products.Substring(0, products.Length - 1);
+
+                var storages = storageQuery.ToList().Where(s => products.Contains(s.product.ProductCode))
+                                      .OrderBy(s => s.StorageCode).AsEnumerable()
+                                      .Select(s => new
+                                      {
+                                          s.StorageCode,
+                                          s.cell.CellCode,
+                                          s.cell.CellName,
+                                          s.product.ProductCode,
+                                          s.product.ProductName,
+                                          s.Quantity,
+                                          IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                          StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                          UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                      });
+                int total = storages.Count();
+                storages = storages.Skip((page - 1) * rows).Take(rows);
+                return new { total, rows = storages.ToArray() };
+            }
+            return null;
         }
 
         #endregion

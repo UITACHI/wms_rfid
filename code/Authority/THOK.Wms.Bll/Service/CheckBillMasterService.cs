@@ -170,7 +170,7 @@ namespace THOK.Wms.Bll.Service
         }
 
         /// <summary>
-        /// 根据参数生成并保存盘点数据
+        /// 根据参数生成并保存盘点数据 --货位生成
         /// </summary>
         /// <param name="ware">仓库</param>
         /// <param name="area">库区</param>
@@ -298,6 +298,86 @@ namespace THOK.Wms.Bll.Service
         }
 
         /// <summary>
+        /// 根据参数生成并保存盘点数据  --产品生成
+        /// </summary>
+        /// <param name="products">产品数据</param>
+        /// <param name="UserName">登陆用户</param>
+        /// <returns></returns>
+        public bool ProductAdd(string products, string UserName)
+        {
+            bool result = false;
+            IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(e => e.UserName == UserName);
+            if (employee != null)
+            {
+                if (products != null && products != string.Empty)
+                {
+                    products = products.Substring(0, products.Length - 1);
+
+                    #region products 这个有值，就把这个值里面所有的卷烟信息所在的仓库的货位的储存信息生成盘点单，一个仓库一个盘点单据
+
+                    var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
+
+                    foreach (var item in warehouses.ToArray())
+                    {
+                        var storages = storageQuery.Where(s => products.Contains(s.product.ProductCode) && s.cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode)
+                                                   .OrderBy(s => s.StorageCode).AsEnumerable()
+                                                   .Select(s => new
+                                                    {
+                                                          s.StorageCode,
+                                                          s.cell.CellCode,
+                                                          s.cell.CellName,
+                                                          s.product.ProductCode,
+                                                          s.product.ProductName,
+                                                          s.Quantity,
+                                                          IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                                          StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                                          UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                                      });
+                        if (storages.Count() > 0)
+                        {
+                            string billNo = GetCheckBillNo().ToString();
+                            var check = new CheckBillMaster();
+                            check.BillNo = billNo;
+                            check.BillDate = DateTime.Now;
+                            check.BillTypeCode = "1";
+                            check.WarehouseCode = item.WarehouseCode;
+                            check.OperatePersonID = employee.ID;
+                            check.Status = "1";
+                            check.IsActive = "1";
+                            check.UpdateTime = DateTime.Now;
+
+                            CheckBillMasterRepository.Add(check);
+                            CheckBillMasterRepository.SaveChanges();
+
+                            foreach (var stor in storages.ToArray())
+                            {
+                                var checkDetail = new CheckBillDetail();
+                                checkDetail.BillNo = billNo;
+                                checkDetail.CellCode = stor.CellCode;
+                                checkDetail.StorageCode = stor.StorageCode;
+                                checkDetail.ProductCode = stor.ProductCode;
+                                checkDetail.UnitCode = "01";
+                                checkDetail.Quantity = stor.Quantity;
+                                checkDetail.RealProductCode = stor.ProductCode;
+                                checkDetail.RealUnitCode = "01";
+                                checkDetail.RealQuantity = stor.Quantity;
+                                checkDetail.Status = "1";
+                                CheckBillDetailRepository.Add(checkDetail);
+                                CheckBillDetailRepository.SaveChanges();
+                            }
+                            result = true;
+                        }
+                    }
+
+                    #endregion
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// 盘点审核
         /// </summary>
         /// <param name="billNo">单据号</param>
@@ -345,6 +425,5 @@ namespace THOK.Wms.Bll.Service
         }
 
         #endregion
-     
     }
 }

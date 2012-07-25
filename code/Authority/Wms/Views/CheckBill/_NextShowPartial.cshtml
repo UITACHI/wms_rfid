@@ -5,28 +5,54 @@
 
     //生成盘点单
     function generateCheckClick() {
-        $.getJSON('/CheckBill/CheckCreate/', { wareCodes: ware, areaCodes: area, shelfCodes: shelf, cellCodes: cell }, function (json) {
-            if (json) {
-                if (json.success) {
-                    $.messager.show({
-                        title: '成功',
-                        msg: json.msg
-                    });
-                    $('#nextShowDiv').dialog('close');
-                    $('#addCheck').dialog('close');
-                    $('#details').datagrid('load');
-                } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: json.msg
-                    });
-                    $('#nextShowDiv').dialog('close');
-                    $('#details').datagrid('load');
+        var tabsRow = $('#checkTabs').tabs('getSelected');
+        if (tabsRow.panel('options').id == "cellCheck") {//生成货位盘点数据
+            $.getJSON('/CheckBill/CheckCellCreate/', { wareCodes: ware, areaCodes: area, shelfCodes: shelf, cellCodes: cell }, function (json) {
+                if (json) {
+                    if (json.success) {
+                        $.messager.show({
+                            title: '成功',
+                            msg: json.msg
+                        });
+                        $('#nextShowDiv').dialog('close');
+                        $('#addCheck').dialog('close');
+                        $('#details').datagrid('load');
+                    } else {
+                        $.messager.show({
+                            title: '错误',
+                            msg: json.msg
+                        });
+                        $('#nextShowDiv').dialog('close');
+                        $('#details').datagrid('load');
+                    }
                 }
-            } else { 
-                
-            }
-        });
+            });
+        } else if (tabsRow.panel('options').id == "productCheck") {//生成产品盘点数据
+            $.getJSON('/CheckBill/CheckProductCreate/', { products: productCheckParameter }, function (json) {
+                if (json) {
+                    if (json.success) {
+                        $.messager.show({
+                            title: '成功',
+                            msg: json.msg
+                        });
+                        $('#nextShowDiv').dialog('close');
+                        $('#addCheck').dialog('close');
+                        $('#details').datagrid('load');
+                    } else {
+                        $.messager.show({
+                            title: '错误',
+                            msg: json.msg
+                        });
+                        $('#nextShowDiv').dialog('close');
+                        $('#details').datagrid('load');
+                    }
+                }
+            });
+        } else if (tabsRow.panel('options').id == "transactionCheck") {//生成异动盘点数据
+
+        } else {
+            $.messager.confirm('错误', '没选择盘点方式！请关闭页面从新打开！');
+        }
     }
 </script>
 <div id="nextShowDiv" class="easyui-dialog" modal="true" closed="true" style="width: 620px; height: 400px; 
