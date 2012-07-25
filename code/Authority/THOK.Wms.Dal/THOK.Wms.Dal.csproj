@@ -59,6 +59,8 @@
     <Compile Include="EntityRepository\InBillDetailRepository.cs" />
     <Compile Include="EntityRepository\InBillMasterRepository.cs" />
     <Compile Include="EntityRepository\JobRepository.cs" />
+    <Compile Include="EntityRepository\MoveBillDetailRepository.cs" />
+    <Compile Include="EntityRepository\MoveBillMasterRepository.cs" />
     <Compile Include="EntityRepository\OutBillAllotRepository.cs" />
     <Compile Include="EntityRepository\OutBillDetailRepository.cs" />
     <Compile Include="EntityRepository\OutBillMasterRepository.cs" />
@@ -83,6 +85,8 @@
     <Compile Include="Interfaces\IInBillDetailRepository.cs" />
     <Compile Include="Interfaces\IInBillMasterRepository.cs" />
     <Compile Include="Interfaces\IJobRepository.cs" />
+    <Compile Include="Interfaces\IMoveBillDetailRepository.cs" />
+    <Compile Include="Interfaces\IMoveBillMasterRepository.cs" />
     <Compile Include="Interfaces\IOutBillAllotRepository.cs" />
     <Compile Include="Interfaces\IOutBillDetailRepository.cs" />
     <Compile Include="Interfaces\IOutBillMasterRepository.cs" />
