@@ -109,7 +109,7 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = inBillMaster.ToArray() };
         }
 
-        public new bool Add(InBillMaster inBillMaster, string userName)
+        public bool Add(InBillMaster inBillMaster, string userName)
         {
             bool result=false;
             var ibm = new InBillMaster();
