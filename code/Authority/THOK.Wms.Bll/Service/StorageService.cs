@@ -17,6 +17,14 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public ICellRepository CellRepository { get; set; }
 
+        [Dependency]
+        public IInBillAllotRepository InBillAllotRepository { get; set; }
+
+        [Dependency]
+        public IOutBillAllotRepository OutBillAllotRepository { get; set; }
+
+        //[Dependency]
+        //public ICellRepository CellRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -73,7 +81,7 @@ namespace THOK.Wms.Bll.Service
         }
 
         /// <summary>
-        /// 根据参数获取要生成的盘点数据
+        /// 根据参数获取要生成的盘点数据  --货位
         /// </summary>
         /// <param name="page"></param>
         /// <param name="rows"></param>
@@ -138,7 +146,7 @@ namespace THOK.Wms.Bll.Service
         }
         
         /// <summary>
-        /// 根据参数获取要生成的盘点数据
+        /// 根据参数获取要生成的盘点数据  --产品
         /// </summary>
         /// <param name="page"></param>
         /// <param name="rows"></param>
@@ -170,6 +178,26 @@ namespace THOK.Wms.Bll.Service
                 return new { total, rows = storages.ToArray() };
             }
             return null;
+        }
+
+        /// <summary>
+        /// 根据参数获取要生成的盘点数据  --货位变动
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="beginDate">开始时间</param>
+        /// <param name="endDate">结束时间</param>
+        /// <returns></returns>
+        public object GetChangedCellDetails(int page, int rows, string beginDate, string endDate)
+        {
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            IQueryable<InBillAllot> inAllotQuery = InBillAllotRepository.GetQueryable();
+            IQueryable<OutBillAllot> outAllotQuery = OutBillAllotRepository.GetQueryable();
+            if (beginDate != string.Empty && beginDate != null)
+            { 
+                
+            }
+            throw new NotImplementedException();
         }
 
         #endregion

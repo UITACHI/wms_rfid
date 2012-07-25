@@ -13,5 +13,7 @@ namespace THOK.Wms.Bll.Interfaces
         object GetCellDetails(int page, int rows, string ware, string area, string shelf, string cell);
 
         object GetProductDetails(int page, int rows, string products);
+
+        object GetChangedCellDetails(int page, int rows, string beginDate, string endDate);
     }
 }
