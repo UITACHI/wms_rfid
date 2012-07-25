@@ -1,4 +1,5 @@
 ﻿<script type="text/javascript">
+    var billNo = "";
     function allotClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
@@ -9,11 +10,38 @@
             } else {
                 $('#dlg-allot').dialog('open').dialog('setTitle', '入库单据分配');
                 $('#inAllotBillDetails').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + row.BillNo });
+                billNo = row.BillNo;
             }
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }
     };
+
+    function allot() {
+        $.getJSON("/StockInBillAllot/Allot/", { billNo: billNo, areaCode: '' }, function (result) {
+            if (result) {
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').datagrid('reload');
+                }
+            } else {
+                $.messager.show({
+                    title: '错误',
+                    msg: '返回数据格式错误！'
+                });
+            }
+        });
+    }
 </script>
 
 <div id="dlg-allot" class="easyui-dialog" modal="true"
@@ -21,7 +49,7 @@
         closed="true" buttons="" >
     <div class="easyui-layout" fit="true" >  
         <div region="center" split="true"  border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">   
-            <table class="easyui-datagrid" border="false" singleSelect="true" id="inAllotBillDetails" url="/StockInBill/InBillDetails/" toolbar="#bar"
+            <table class="easyui-datagrid" border="false" singleSelect="true" id="inAllotBillDetails" url="" toolbar="#bar"
                 fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
                 <thead>
                     <tr>

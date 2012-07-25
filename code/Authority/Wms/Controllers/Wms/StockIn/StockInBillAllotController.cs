@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using THOK.Wms.Allot.Interfaces;
+using Microsoft.Practices.Unity;
+using THOK.WebUtil;
 
 namespace Authority.Controllers.Wms.StockIn
 {
     public class StockInBillAllotController : Controller
-    {
-        //
-        // GET: /StockInBillAllot/
+    {        
+        [Dependency]
+        public IInBillAllotService InBillAllotService { get; set; }
 
-        public ActionResult Index()
+        public ActionResult Allot(string billNo, string areaCode)
         {
-            return View();
+            string[] areaCodes = new string[] { };
+            bool bResult = InBillAllotService.Allot(billNo, areaCodes);
+            string msg = bResult ? "分配成功" : "分配失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
-
     }
 }

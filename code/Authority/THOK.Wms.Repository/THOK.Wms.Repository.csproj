@@ -117,6 +117,14 @@
     <Compile Include="Migrations\201207230803026_add_cell_storage_row_version.Designer.cs">
       <DependentUpon>201207230803026_add_cell_storage_row_version.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207250619018_modify_storage_productcode.cs" />
+    <Compile Include="Migrations\201207250619018_modify_storage_productcode.Designer.cs">
+      <DependentUpon>201207250619018_modify_storage_productcode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207250650581_modify_storage_product.cs" />
+    <Compile Include="Migrations\201207250650581_modify_storage_product.Designer.cs">
+      <DependentUpon>201207250650581_modify_storage_product.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

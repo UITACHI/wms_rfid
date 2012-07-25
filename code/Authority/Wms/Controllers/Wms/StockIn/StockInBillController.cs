@@ -63,7 +63,7 @@ namespace Authority.Controllers.Wms.StockIn
 
         public ActionResult GenInBillNo()
         {
-            var inBillNo = InBillMasterService.GenInBillNo();
+            var inBillNo = InBillMasterService.GenInBillNo(this.User.Identity.Name.ToString());
             return Json(inBillNo, "text", JsonRequestBehavior.AllowGet);
         }
 
@@ -73,7 +73,7 @@ namespace Authority.Controllers.Wms.StockIn
         [HttpPost]
         public ActionResult Create(InBillMaster inBillMaster)
         {
-            bool bResult = InBillMasterService.Add(inBillMaster);
+            bool bResult = InBillMasterService.Add(inBillMaster, this.User.Identity.Name.ToString());
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
@@ -128,7 +128,7 @@ namespace Authority.Controllers.Wms.StockIn
         [HttpPost]
         public ActionResult Audit(string BillNo)
         {
-            bool bResult = InBillMasterService.Audit(BillNo);
+            bool bResult = InBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString());
             string msg = bResult ? "审核成功" : "审核失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
@@ -155,5 +155,24 @@ namespace Authority.Controllers.Wms.StockIn
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /InBillMaster/GetBillTypeDetail/
+
+        [HttpPost]
+        public ActionResult GetBillTypeDetail(string BillClass, string IsActive)
+        {
+            var billType = InBillMasterService.GetBillTypeDetail(BillClass,IsActive);
+            return Json(billType, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /InBillMaster/GetWareHouseDetail/
+
+        [HttpPost]
+        public ActionResult GetWareHouseDetail( string IsActive)
+        {
+            var wareHouse = InBillMasterService.GetWareHouseDetail(IsActive);
+            return Json(wareHouse, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

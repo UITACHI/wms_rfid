@@ -24,13 +24,9 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasMaxLength(20);
 
             this.Property(t => t.ProductCode)
-                .IsRequired()
-                .HasMaxLength(10);
+                .HasMaxLength(20);
 
             this.Property(t => t.Quantity)
-                .IsRequired();
-
-            this.Property(t => t.StorageTime)
                 .IsRequired();
 
             this.Property(t => t.Rfid)
@@ -76,12 +72,12 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.RowVersion).HasColumnName(ColumnMap.Value.To("RowVersion"));
 
             // Relationships
-            this.HasRequired(t => t.cell)
-                .WithMany(t => t.Storage)
+            this.HasRequired(t => t.Cell)
+                .WithMany(t => t.Storages)
                 .HasForeignKey(d => d.CellCode)
                 .WillCascadeOnDelete(false);
 
-            this.HasRequired(t => t.product)
+            this.HasOptional(t => t.Product)
                 .WithMany(t => t.Storages)
                 .HasForeignKey(d => d.ProductCode)
                 .WillCascadeOnDelete(false);

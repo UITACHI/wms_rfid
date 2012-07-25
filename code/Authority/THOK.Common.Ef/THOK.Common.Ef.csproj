@@ -53,7 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\ContextManager.cs" />
-    <Compile Include="Infrastructure\HttpRequestModule.cs" />
+    <Compile Include="Infrastructure\HttpRequestModule.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IRepository.cs" />
     <Compile Include="IRepositoryContext.cs" />
     <Compile Include="MappingStrategy\EntityMappingBase.cs" />

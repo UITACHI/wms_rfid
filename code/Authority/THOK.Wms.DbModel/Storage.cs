@@ -27,8 +27,8 @@ namespace THOK.Wms.DbModel
        public DateTime UpdateTime { get; set; }
        public byte[] RowVersion { get; set; }
 
-       public virtual Product product { get; set; }
-       public virtual Cell cell { get; set; }
+       public virtual Product Product { get; set; }
+       public virtual Cell Cell { get; set; }
 
        public virtual ICollection<MoveBillDetail> MoveBillDetailOutStorages { get; set; }
        public virtual ICollection<MoveBillDetail> MoveBillDetailInStorages { get; set; }

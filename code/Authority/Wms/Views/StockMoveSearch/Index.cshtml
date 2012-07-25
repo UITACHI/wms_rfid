@@ -1,24 +1,38 @@
-﻿<div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
-    <table id="masters" class="easyui-datagrid" 
-        url="/StockMoveSearch/masters/" border="false" singleSelect="true"
+﻿<script type="text/javascript">
+    $(function () {
+        $('#details').datagrid({
+            onClickRow: function () {
+                var row = $('#details').datagrid('getSelected');
+                if (row) {
+                    $('#infodetails').datagrid({ url: '/StockMoveSearch/InfoDetails/?BillNo=' + row.BillNo });
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+                }
+            }
+        })
+    });
+</script>
+<div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
+    <table id="details" class="easyui-datagrid" 
+        url="/StockMoveSearch/Details/" border="false" singleSelect="true"
         fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="MoveBillNo" width="120" align="center">移库单号</th>
+                 <th field="BillNo" width="120" align="center">移库单号</th>
                 <th field="WarehouseName" width="120" align="center">仓库名称</th>
-                <th field="MakeDate" width="120" align="center">制单日期</th>
-                <th field="OperatePerson" width="120" align="center">操作员</th>
-                <th field="OperateStatus" width="120" align="center">处理状态</th>
-                <th field="CheckPerson" width="120" align="center">审核人</th>
-                <th field="CheckDate" width="120" align="center">审核日期</th>
-                <th field="Remark" width="120" align="center">备注</th>
+                <th field="BillDate" width="120" align="center">制单日期</th>
+                <th field="OperatePersonName" width="120" align="center">操作员</th>
+                <th field="Status" width="120" align="center">处理状态</th>
+                <th field="VerifyPersonName" width="120" align="center">审核人</th>
+                <th field="VerifyDate" width="120" align="center">审核日期</th>
+                <th field="Description" width="120" align="center">备注</th>
             </tr>
         </thead>
     </table>
 </div>
 <div region="south" split="true" border="false" style="height: 250px; border-top-style: solid; border-top-width: 1px; border-top-color: 99BBE8;">
-<table id="details" class="easyui-datagrid" 
-        url="/StockMoveSearch/Details/" border="false" singleSelect="true"
+<table id="infodetails" class="easyui-datagrid" 
+        url="/StockMoveSearch/Infodetails/" border="false" singleSelect="true"
         fit="true"  pagination="true" rownumbers="true">
         <thead>
             <tr>

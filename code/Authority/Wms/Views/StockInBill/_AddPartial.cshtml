@@ -18,7 +18,7 @@
             required: true,
             width: 130,
             panelWidth: 340,
-            url: '/WareHouse/Details/?page=1&rows=10',
+            url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
             idField: 'WarehouseCode',
             textField: 'WarehouseName',
             mode: 'local',
@@ -35,7 +35,7 @@
             required: true,
             width: 130,
             panelWidth: 340,
-            url: '/StockInBillType/Details/?page=1&rows=10',
+            url: '/StockInBill/GetBillTypeDetail/?BillClass=0001&IsActive=1',
             idField: 'BillTypeCode',
             textField: 'BillTypeName',
             mode: 'local',
@@ -71,14 +71,18 @@
                 $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
                 $('#fm').form('clear');
-                $('#billNo').val(json);
-                billno = json;
+                $('#billNo').val(json.BillNo);
+                $('#operatePersonName').val(json.employeeName);
+                billno = json.BillNo;
                 $('#billDate').val(getTime());
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
                 $('form input').removeAttr("disabled");
                 $('form textarea').removeAttr("disabled");
+                $('#btnAddBillDetail').css('display', 'inline'); //设置新增明细按钮的可见性
+                $('#btnDeleteBillDetail').css('display', 'inline'); //设置删除明细按钮的可见性
+                $('#btnEditBillDetail').css('display', 'inline'); //设置修改明细按钮的可见性
                 $('#cc').combo({
                     hasDownArrow: true
                 });
@@ -96,6 +100,7 @@
         } else {
             $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增入库订单明细');
             $('#fm-inBillDetail').form('clear');
+            detailUrl = '/StockInBill/InBillDetailCreate/';
             $('#detailBillNo').val(billno);
             $('#detailBillNo').attr("readonly", true);
         }
@@ -146,6 +151,7 @@
                     isInBillMasterSaved = false;
                     $('#dlg').dialog('close');
                     $('#details').datagrid('reload');
+                    $('#inBillDetails').datagrid('load');
                 } else {
                     $.messager.show({
                         title: '错误',
@@ -159,6 +165,9 @@
     }
 
     function DetailSave() {
+        $('#fm-inBillDetail .easyui-validatebox').validatebox({
+            required: true
+        });
         $('#fm-inBillDetail').form('submit', {
             url: detailUrl,
             onSubmit: function () {
@@ -172,7 +181,8 @@
                         msg: result.msg
                     });
                     $('#dlg-AddBillDetail').dialog('close');
-                    $('#inBillDetail').datagrid('reload');
+                    //                    $('#inBillDetail').datagrid('reload');
+                    $('#inBillDetail').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + billno });
                 } else {
                     $.messager.show({
                         title: '错误',
@@ -236,17 +246,17 @@
 	<div class="easyui-layout" fit="true">
         <div region="center" border="false">
             <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="700" id="inBillDetail"
-                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="/StockInBill/InBillDetails/">
+                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="">
                 <thead>
                     <tr>
                         <th field="ID" width="100">细单ID</th>
                         <th field="ProductCode" width="100">产品代码</th>
-                        <th field="ProductName" width="80" align="right">产品名称</th>
+                        <th field="ProductName" width="120" align="right">产品名称</th>
                         <th field="UnitCode" width="80" align="right">单位编码</th>
                         <th field="UnitName" width="80" align="right">单位名称</th>
-                        <th field="BillQuantity" width="80" align="right">数量</th>
+                        <th field="BillQuantity" width="60" align="right">数量</th>
                         <th field="RealQuantity" width="80" align="right">实际入库量</th>
-                        <th field="Price" width="80" align="right">单价</th>
+                        <th field="Price" width="60" align="right">单价</th>
                         <th field="Description" width="80" align="right">备注</th>
                     </tr>
                 </thead>
@@ -271,13 +281,14 @@
                 <td width="60">仓库编码</td>
                 <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
                 <td width="60">经办人</td>
-                <td width="168"><input name="OperatePersonCode" readonly="true"></td>
+                <td width="168"><input name="OperatePersonName" readonly="true" id="operatePersonName">
+                <input name="OperatePersonID" readonly="true" id="operatePersonCode"style=" display:none"></td>
                 <td width="60">状态</td>
                 <td width="168"><input name="Status" readonly="true"></td>
                 </tr>
                 <tr>
                 <td width="60">审核人员</td>
-                <td width="168"><input name="VerifyPersonCode" readonly="true"></td>
+                <td width="168"><input name="VerifyPersonName" readonly="true"></td>
                 <td width="60">审核时间</td>
                 <td width="168"><input name="VerifyDate" readonly="true"></td>
                 <td width="60">描述</td>
@@ -295,9 +306,9 @@
 	    </form>
     </div>
     <div border="false" style="padding:4px 4px;" > 
-	    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()">添加明细</a>
-	    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteBillDetailClick()">删除明细</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBillDetailClick()">修改明细</a>
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()" id="btnAddBillDetail">添加明细</a>
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteBillDetailClick()" id="btnDeleteBillDetail">删除明细</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBillDetailClick()" id="btnEditBillDetail">修改明细</a>
     </div>
 </div>
 
@@ -328,13 +339,13 @@
   <tr>
     <td style=" text-align:right">单位编码</td>
     <td align="left"><label>
-      <input type="text" name="UnitCode" class="easyui-validatebox" required="true" id="unitCode"/>
+      <input type="text" name="UnitCode" class="easyui-validatebox" required="true" id="unitCode" readonly="true"/>
     </label></td>
     <td></td>
   </tr>
   <tr>
     <td style=" text-align:right">单位名称</td>
-    <td align="left"><input type="text" name="UnitName" class="easyui-validatebox" required="true"/></td>
+    <td align="left"><input type="text" name="UnitName" class="easyui-validatebox" required="true" id="unitName"  readonly="true" /></td>
     <td></td>
   </tr>
   <tr>
@@ -343,18 +354,13 @@
     <td></td>
   </tr>
   <tr>
-    <td style=" text-align:right">实际入库量</td>
-    <td align="left"><input type="text" name="RealQuantity"/></td>
-    <td></td>
-  </tr>
-  <tr>
     <td style=" text-align:right">单价</td>
-    <td align="left"><input type="text" name="Price"class="easyui-validatebox" required="true" id="price"/></td>
+    <td align="left"><input type="text" name="Price"class="easyui-validatebox" required="true" id="price"  readonly="true"/></td>
     <td></td>
   </tr>
   <tr>
     <td style=" text-align:right">总金额</td>
-    <td align="left"><input type="text" name="textfield6"/></td>
+    <td align="left"><input type="text" name="textfield6"  readonly="true"/></td>
     <td></td>
   </tr>
   <tr>
