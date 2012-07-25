@@ -41,8 +41,12 @@ namespace THOK.Wms.Allot.Service
             InBillMaster billMaster = inBillMasterQuery.Single(b => b.BillNo == billNo);
             var billDetails = billMaster.InBillDetails.Where(b => (b.BillQuantity - b.AllotQuantity) > 0);//选择未分配的细单；
 
-            var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode //选择当前订单操作目标仓库；
-                                    && (areaCodes == null || areaCodes.Any(a => a == c.AreaCode)));//选择指定库区；
+            var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode); //选择当前订单操作目标仓库；
+            if (areaCodes.Length > 0)
+	        {
+                cells = cells.Where(c => areaCodes.Any(a => a == c.AreaCode));//选择指定库区；
+	        }
+                                      
                                     
                                     //&& c.IsSingle == "1" //选择货位是单一存储的货位；                                 
                                     //&& c.Area.AllotInOrder > 0
@@ -56,8 +60,8 @@ namespace THOK.Wms.Allot.Service
             var cellList1 = cells.Where(c => areaTypes.All(a => a != c.Area.AreaType)
                                             && c.Area.AllotInOrder > 0
                                             && c.IsSingle == "1" //选择货位是单一存储的货位；     
-                                            && (c.Storage.Count==0
-                                                    || c.Storage.Any(s => (s.LockTag == null 
+                                            && (c.Storages.Count==0
+                                                    || c.Storages.Any(s => (s.LockTag == null 
                                                                         || s.LockTag == string.Empty)
                                                         && s.Quantity == 0
                                                         && s.InFrozenQuantity == 0
@@ -76,8 +80,8 @@ namespace THOK.Wms.Allot.Service
             var cellList3 = cells.Where(c => areaTypes.All(a => a != c.Area.AreaType)
                                             && c.Area.AllotInOrder > 0
                                             && c.IsSingle == "1" //选择货位是单一存储的货位；     
-                                            && (c.Storage.Count == 0
-                                                    || c.Storage.Any(s => (s.LockTag == null || s.LockTag == string.Empty)
+                                            && (c.Storages.Count == 0
+                                                    || c.Storages.Any(s => (s.LockTag == null || s.LockTag == string.Empty)
                                                         && s.Quantity == 0
                                                         && s.InFrozenQuantity == 0
                                                     )
@@ -102,8 +106,8 @@ namespace THOK.Wms.Allot.Service
             }
 
             //排除 条烟区，件烟区
-            var cellQueryFromList1 = cellList1.Where(c => c.Storage.Count == 0
-                                                || c.Storage.Any(s => (s.LockTag == null || s.LockTag == string.Empty) 
+            var cellQueryFromList1 = cellList1.Where(c => c.Storages.Count == 0
+                                                || c.Storages.Any(s => (s.LockTag == null || s.LockTag == string.Empty) 
                                                     && s.Quantity == 0 
                                                     && s.InFrozenQuantity == 0))
                                              .OrderBy(c=>c.Area.AllotInOrder);
@@ -111,14 +115,14 @@ namespace THOK.Wms.Allot.Service
             var cellQueryFromList2 = cellList2.OrderBy(c => c.Area.AllotInOrder);
 
             //件烟区
-            var cellQueryFromList3 = cellList3.Where(c => c.Storage.Count == 0
-                                                || c.Storage.Any(s => (s.LockTag == null || s.LockTag == string.Empty
+            var cellQueryFromList3 = cellList3.Where(c => c.Storages.Count == 0
+                                                || c.Storages.Any(s => (s.LockTag == null || s.LockTag == string.Empty
                                                     && s.Quantity == 0
                                                     && s.InFrozenQuantity == 0)))
                                              .OrderBy(c => c.Area.AllotInOrder);
             //非货位管理区
-            var cellQueryFromList4 = cellList4.Where(c => c.Storage.Count == 0
-                                    || c.Storage.Any(s => (s.LockTag == null || s.LockTag == string.Empty
+            var cellQueryFromList4 = cellList4.Where(c => c.Storages.Count == 0
+                                    || c.Storages.Any(s => (s.LockTag == null || s.LockTag == string.Empty
                                         && s.Quantity == 0
                                         && s.InFrozenQuantity == 0)))
                                  .OrderBy(c => c.Area.AllotInOrder);
@@ -194,9 +198,8 @@ namespace THOK.Wms.Allot.Service
                     if (cell != null)
                     {
                         decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
-                        decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
-                            / billDetail.Product.Unit.Count)
-                            * billDetail.Product.Unit.Count;
+                        decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;                       
+                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
                         Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity); 
                     }
                     else break;
@@ -282,7 +285,7 @@ namespace THOK.Wms.Allot.Service
             {                
                 if (cell.IsSingle == "1")
                 {
-                    if (cell.Storage.Count == 0)
+                    if (cell.Storages.Count == 0)
                     {
                         storage = new Storage()
                         {
@@ -291,19 +294,20 @@ namespace THOK.Wms.Allot.Service
                             IsLock = "0",
                             LockTag = billNo,
                             IsActive = "0",
+                            StorageTime =  DateTime.Now,
                             UpdateTime = DateTime.Now
                         };
-                        cell.Storage.Add(storage);
+                        cell.Storages.Add(storage);
                     }
-                    else if (cell.Storage.Count == 1)
+                    else if (cell.Storages.Count == 1)
                     {
-                        storage = cell.Storage.Single();
+                        storage = cell.Storages.Single();
                         storage.LockTag = billNo;
                     }
                 }
                 else
                 {
-                    storage = cell.Storage.Where(s => s.LockTag == null || s.LockTag == string.Empty
+                    storage = cell.Storages.Where(s => s.LockTag == null || s.LockTag == string.Empty
                                                 && s.Quantity == 0
                                                 && s.InFrozenQuantity == 0)
                                           .FirstOrDefault();
@@ -322,14 +326,16 @@ namespace THOK.Wms.Allot.Service
                             IsActive = "0",
                             UpdateTime = DateTime.Now
                         };
-                        cell.Storage.Add(storage);
+                        cell.Storages.Add(storage);
                     }
-                }               
+                }
                 StorageRepository.SaveChanges();
             }
             catch (Exception)
             {
-                StorageRepository.Detach(storage);                
+                StorageRepository.Detach(storage);
+                cell.Storages.Remove(storage);
+                storage = null;
             }
 
             cell.LockTag = string.Empty;

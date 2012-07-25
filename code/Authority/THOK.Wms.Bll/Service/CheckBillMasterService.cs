@@ -195,9 +195,9 @@ namespace THOK.Wms.Bll.Service
 
                     foreach (var item in wares.ToArray())
                     {
-                        var storages = storageQuery.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode)
+                        var storages = storageQuery.Where(s => s.Cells.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode)
                                                    .OrderBy(s => s.StorageCode).AsEnumerable()
-                                                   .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                                                   .Select(s => new { s.StorageCode, s.Cells.CellCode, s.Cells.CellName, s.Products.ProductCode, s.Products.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
                         if (storages.Count() > 0)
                         {
                             string billNo = GetCheckBillNo().ToString();
@@ -252,9 +252,9 @@ namespace THOK.Wms.Bll.Service
 
                     foreach (var item in warehouses.ToArray())
                     {
-                        var storages = storageQuery.ToList().Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && (area.Contains(s.cell.Shelf.Area.AreaCode) || shelf.Contains(s.cell.Shelf.ShelfCode) || cell.Contains(s.cell.CellCode)))
+                        var storages = storageQuery.ToList().Where(s => s.Cells.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && (area.Contains(s.Cells.Shelf.Area.AreaCode) || shelf.Contains(s.Cells.Shelf.ShelfCode) || cell.Contains(s.Cells.CellCode)))
                                                    .OrderBy(s => s.StorageCode).AsEnumerable()
-                                                   .Select(s => new { s.StorageCode, s.cell.CellCode, s.cell.CellName, s.product.ProductCode, s.product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                                                   .Select(s => new { s.StorageCode, s.Cells.CellCode, s.Cells.CellName, s.Products.ProductCode, s.Products.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
                         if (storages.Count() > 0)
                         {
                             string billNo = GetCheckBillNo().ToString();

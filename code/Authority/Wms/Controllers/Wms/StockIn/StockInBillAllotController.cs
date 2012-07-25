@@ -16,7 +16,8 @@ namespace Authority.Controllers.Wms.StockIn
 
         public ActionResult Allot(string billNo, string areaCode)
         {
-            bool bResult = InBillAllotService.Allot(billNo,areaCode.Split(","[0]));
+            string[] areaCodes = new string[] { };
+            bool bResult = InBillAllotService.Allot(billNo, areaCodes);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
