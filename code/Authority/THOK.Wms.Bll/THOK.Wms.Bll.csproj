@@ -54,6 +54,7 @@
     <Compile Include="Interfaces\IIntoSearchDetailService.cs" />
     <Compile Include="Interfaces\IMoveBillDetailService.cs" />
     <Compile Include="Interfaces\IMoveBillMasterService.cs" />
+    <Compile Include="Interfaces\IMoveSearchDetailService.cs" />
     <Compile Include="Interfaces\IOutBillDetailService.cs" />
     <Compile Include="Interfaces\IOutBillMasterService.cs" />
     <Compile Include="Interfaces\IOutSearchDetailService.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Interfaces\IShelfService.cs" />
     <Compile Include="Interfaces\IStockCheckSearchService.cs" />
     <Compile Include="Interfaces\IStockIntoSearchService.cs" />
+    <Compile Include="Interfaces\IStockMoveSearchService.cs" />
     <Compile Include="Interfaces\IStockOutSearchService.cs" />
     <Compile Include="Interfaces\IStorageService.cs" />
     <Compile Include="Interfaces\ISupplierService.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Service\IntoSearchDetailService.cs" />
     <Compile Include="Service\MoveBillDetailService.cs" />
     <Compile Include="Service\MoveBillMasterService.cs" />
+    <Compile Include="Service\MoveSearchDetailService.cs" />
     <Compile Include="Service\OutBillDetailService.cs" />
     <Compile Include="Service\OutBillMasterService.cs" />
     <Compile Include="Service\OutSearchDetailService.cs" />
@@ -103,6 +106,7 @@
     <Compile Include="Service\ShelfService.cs" />
     <Compile Include="Service\StockCheckSearchService.cs" />
     <Compile Include="Service\StockIntoSearchService.cs" />
+    <Compile Include="Service\StockMoveSearchService.cs" />
     <Compile Include="Service\StockOutSearchService.cs" />
     <Compile Include="Service\StorageService.cs" />
     <Compile Include="Service\SupplierService.cs" />

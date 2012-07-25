@@ -10,6 +10,8 @@ namespace THOK.Wms.Bll.Interfaces
     {
         object GetDetails(int page, int rows, string type, string id);
 
-        object GetDetails(int page, int rows, string ware, string area, string shelf, string cell);
+        object GetCellDetails(int page, int rows, string ware, string area, string shelf, string cell);
+
+        object GetProductDetails(int page, int rows, string products);
     }
 }

@@ -1,48 +1,55 @@
 ﻿<script type="text/javascript">
-    function upCheckClick() {
-        alert("生成完成了");
-    }
 
     var data = { "total": 0, "rows": [] };
-    var totalCost = 0;
-    var ydata = {"rows": [] };
+    var ydata = { "rows": [] };
     var rdata = { "rows": [] };
-    $(function () {
-        $('#details').datagrid({
-            onLoadSuccess: function (data) {
-                //alert(data.ProductCode);
-                $('#loadShow').datagrid({
-                    singleSelect: true
-                });
-                $('.item').draggable({
-                    revert: true,
-                    proxy: 'clone',
-                    onStartDrag: function () {
-                        //$(this).draggable('options').cursor = 'not-allowed';
-                        $(this).draggable('proxy').css('z-index', 10);
-                    },
-                    onStopDrag: function () {
-                        $(this).draggable('options').cursor = 'move';
-                    }
-                });
-                $('.cart').droppable({
-                    onDragEnter: function (e, source) {
-                        $(source).draggable('options').cursor = 'auto';
-                    },
-                    onDragLeave: function (e, source) {
-                        $(source).draggable('options').cursor = 'not-allowed';
-                    },
-                    onDrop: function (e, source) {
-                        var productName = $(source).find('p:eq(0)').html();
-                        var producrCode = $(source).find('p:eq(1)').html();
-                        addProduct(producrCode, productName);
-                    }
-                });
-            }
-        });
-    });
+    //    $(function () {
+    //        $.getJSON("/Product/FindProduct/", function (json) {
+    //            ydata = json;
+    //            $('#productTable').datagrid('loadData', ydata);
+    //            
+    //        });
 
-    function addProduct(producrCode, productName) {
+    //        $('#productTable').datagrid({
+    //            onLoadSuccess: function (data) {
+    //                $('#checkProductTable').datagrid({
+    //                    singleSelect: true
+    //                });
+    //                $('.item').draggable({
+    //                    revert: true,
+    //                    proxy: 'clone',
+    //                    onStartDrag: function () {
+    //                       // $(this).draggable('options').cursor = 'not-allowed';
+    //                        // $(this).draggable('proxy').css('z-index', 10);
+    //                        $(this).draggable('options').cursor = 'auto';
+    //                        $(this).draggable('proxy').addClass('dp');  
+    //                    },
+    //                    onStopDrag: function () {
+    //                        //$(this).draggable('options').cursor = 'move';
+    //                        $(this).draggable('options').cursor = 'auto';  
+    //                    }
+    //                });
+    //                $('.cart').droppable({
+    //                    onDragEnter: function (e, source) {
+    //                        $(source).draggable('options').cursor = 'auto';
+    //                        $(source).draggable('proxy').css('border', '1px solid red');  
+    //                    },
+    //                    onDragLeave: function (e, source) {
+    //                        $(source).draggable('options').cursor = 'not-allowed';
+    //                        $(source).draggable('proxy').css('border', '1px solid #ccc');  
+    //                    },
+    //                    onDrop: function (e, source) {
+    //                        var productName = $(source).find('p:eq(0)').html();
+    //                        var producrCode = $(source).find('p:eq(1)').html();
+    //                        var index = $(source).find('p:eq(2)').html();
+    //                        addProduct(producrCode, productName, index);
+    //                    }
+    //                });
+    //            }
+    //        });
+    //    });
+
+    function addProduct(producrCode, productName, index) {
         function add() {
             data.rows.push({
                 ProductCode: producrCode,
@@ -50,53 +57,87 @@
             });
         }
         add();
-        $('#loadShow').datagrid('loadData', data);       
+        $('#productTable').datagrid('deleteRow', index);
+        $('#checkProductTable').datagrid('loadData', data);
     }
 
     function formatAction(value, row, index) {
-        var s = '<div id="'+index+'" class="item"><p>' + row.ProductName + '</p><p style="display:none">' + row.ProductCode + '</p></div> ';
+        var s = '<div class="item"><p>' + row.ProductName + '</p><p style="display:none">' + row.ProductCode + '</p><p style="display:none">' + index + '</p></div> ';
         return s;
     }
-</script>
 
-<div class="easyui-layout" fit="true">
-    <div id="sidebar" region="west" style="width: 300px;  padding: 1px; margin: 1px" >
+    function rightMoveClick() {
+        var rows = $('#productTable').datagrid('getSelections');
+        if (rows.length > 0) {
+            for (var i = 0; i < rows.length; i++) {
+                var index = $('#productTable').datagrid('getRowIndex', rows[i]);
+                $('#productTable').datagrid('deleteRow', index);
+                $('#checkProductTable').datagrid('appendRow', rows[i]);
+            }
+        } else {
+            $.messager.confirm('错误', '请选择需要盘点的卷烟移向右边！');
+        }
+    }
+
+    function leftMoveClick() {
+        var rows = $('#checkProductTable').datagrid('getSelections');
+        if (rows.length > 0) {
+            for (var i = 0; i < rows.length; i++) {
+                var index = $('#checkProductTable').datagrid('getRowIndex', rows[i]);
+                $('#checkProductTable').datagrid('deleteRow', index);
+                $('#productTable').datagrid('appendRow', rows[i]);
+            }
+        } else {
+            $.messager.confirm('错误', '请选择不要盘点的卷烟移向左边！');
+        }
+    }
+</script>
+<div id="productCheckDiv" class="easyui-layout" fit="true">
+    <div id="leftDiv" border="false" region="west" style="width: 358px; border-right-style: solid;
+        border-right-width: 1px;">
         <table id="productTable" class="easyui-datagrid" border="false" url='/Product/FindProduct/'
-            singleselect="true" fit="true"  rownumbers="true">
+            singleselect="false" fit="true" rownumbers="true">
             <thead>
                 <tr>
-                    <th field="ProductCode" width="100">
-                        产品编码
-                    </th>
-                    <th field="ProductName" width="120" formatter="formatAction">
-                        产品名称
-                    </th>
+                    <th field="ck" checkbox="true">
+                        <th field="ProductCode" width="120">
+                            产品编码
+                        </th>
+                        <th field="ProductName" width="170">
+                            产品名称
+                        </th>
                 </tr>
             </thead>
         </table>
     </div>
-    <div id="main" region="center" style="width:80px;" fit="true">
-    <table style=" height:100%; width:100%">
-        <tr style="height:50%;width:50%">
-        <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok">右移==></a></td>
-        </tr>
-        <tr style="height:50%;width:50%">
-        <td><a href="#" class="easyui-linkbutton" iconCls="icon-ok"><==左移</a></td>
-        </tr>
-    </table>
+    <div id="rightMoveLeft" border="false" region="center" style="text-align: center"
+        fit="true">
+        <table fit="true">
+            <tr>
+                <td style="height: 150px; text-align: center">
+                    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="rightMoveClick()">右移==></a>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 150px; text-align: center">
+                    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="leftMoveClick()"><==左移</a>
+                </td>
+            </tr>
+        </table>
     </div>
-
-    <div id="main" class="cart" region="east" style="width: 300px;margin: 1px">
-        <table id="loadShow" class="easyui-datagrid" border="false" url=''
-            singleselect="true" fit="true"  rownumbers="true">
+    <div id="rightDiv" border="false" class="cart" region="east" style="width: 358px;
+        border-left-width: 1px;">
+        <table id="checkProductTable" class="easyui-datagrid" border="false" url='' singleselect="false"
+            fit="true" rownumbers="true">
             <thead>
                 <tr>
-                    <th field="ProductCode" width="100">
-                        产品编码
-                    </th>
-                    <th field="ProductName" width="120">
-                        产品名称
-                    </th>
+                    <th field="ck" checkbox="true">
+                        <th field="ProductCode" width="120">
+                            产品编码
+                        </th>
+                        <th field="ProductName" width="170">
+                            产品名称
+                        </th>
                 </tr>
             </thead>
         </table>

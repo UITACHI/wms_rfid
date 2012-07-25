@@ -45,15 +45,7 @@ namespace THOK.Wms.Allot.Service
             if (areaCodes.Length > 0)
 	        {
                 cells = cells.Where(c => areaCodes.Any(a => a == c.AreaCode));//选择指定库区；
-	        }
-                                      
-                                    
-                                    //&& c.IsSingle == "1" //选择货位是单一存储的货位；                                 
-                                    //&& c.Area.AllotInOrder > 0
-                                    //&& (c.Storage == null //选择未存储过的货位；
-                                    //    || c.Storage.Any(s => (s.LockTag == null || s.LockTag == string.Empty)  //选择不是被锁定状态的货位，
-                                    //        && s.Quantity == 0                //并且库存量为0，
-                                    //        && s.InFrozenQuantity == 0)));     //并且未入库量为0；
+	        }                                     
             
             //排除 条烟区，件烟区
             string [] areaTypes = new string []{};
@@ -196,11 +188,13 @@ namespace THOK.Wms.Allot.Service
                     //分配条烟到条烟区；todo
                     cell = cellQueryFromList2.FirstOrDefault();
                     if (cell != null)
-                    {
-                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
-                        decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;                       
-                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity); 
+                    {                        
+                        decimal billQuantity = (billDetail.BillQuantity - billDetail.AllotQuantity) % billDetail.Product.Unit.Count;
+                        if (billQuantity > 0)
+                        {
+                            Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), billQuantity);
+                        }
+                        else break;
                     }
                     else break;
                 }

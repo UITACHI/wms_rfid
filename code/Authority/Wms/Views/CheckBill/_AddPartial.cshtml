@@ -1,9 +1,16 @@
 <script type="text/javascript">
-    var cellParameter, ware, area, shelf, cell;
+    var cellCheckParameter, ware, area, shelf, cell, productCheckParameter;
     //新增
     function addClick() {
         addLoad();
+        productLoad();
         $('#addCheck').dialog('open').dialog('setTitle', '新增');
+    }
+
+    function productLoad() {
+        $('#productTable').datagrid('options').url = '/Product/FindProduct/';
+        $('#productTable').datagrid('load');
+        $('#checkProductTable').datagrid('loadData', { total: 0, rows: [] }); //清空盘点的卷烟
     }
 
     //加载
@@ -20,31 +27,34 @@
 
     //预览盘点数据
     function nextDivClick() {
-        ware = "", area = "", shelf = "", cell = "", cellParameter = "";
-        var roots = $('#warehouseTree').tree('getRoots');
-        var areaChildren, shelfChildren, cellChildren;
-        //仓库
-        for (i = 0; i < roots.length; i++) {
-            if (roots[i].attributes == "ware" && roots[i].checked == true) {
-                ware += roots[i].id + ",";
-            } else {
-                areaChildren = $('#warehouseTree').tree('getChildren', roots[i].target);
-                //库区
-                for (j = 0; j < areaChildren.length; j++) {
-                    if (areaChildren[j].attributes == "area" && areaChildren[j].checked == true) {
-                        area += areaChildren[j].id + ",";
-                    } else {
-                        shelfChildren = $('#warehouseTree').tree('getChildren', areaChildren[j].target);
-                        //货架
-                        for (h = 0; h < shelfChildren.length; h++) {
-                            if (shelfChildren[h].attributes == "shelf" && shelfChildren[h].checked == true) {
-                                shelf += shelfChildren[h].id + ",";
-                            } else {
-                                cellChildren = $('#warehouseTree').tree('getChildren', shelfChildren[h].target);
-                                //货位
-                                for (k = 0; k < cellChildren.length; k++) {
-                                    if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
-                                        cell += cellChildren[k].id + ",";
+        var tabsRow = $('#checkTabs').tabs('getSelected');
+        if (tabsRow.panel('options').id == "cellCheck") {//选择货位盘点
+            ware = "", area = "", shelf = "", cell = "", cellParameter = "";
+            var roots = $('#warehouseTree').tree('getRoots');
+            var areaChildren, shelfChildren, cellChildren;
+            //仓库
+            for (i = 0; i < roots.length; i++) {
+                if (roots[i].attributes == "ware" && roots[i].checked == true) {
+                    ware += roots[i].id + ",";
+                } else {
+                    areaChildren = $('#warehouseTree').tree('getChildren', roots[i].target);
+                    //库区
+                    for (j = 0; j < areaChildren.length; j++) {
+                        if (areaChildren[j].attributes == "area" && areaChildren[j].checked == true) {
+                            area += areaChildren[j].id + ",";
+                        } else {
+                            shelfChildren = $('#warehouseTree').tree('getChildren', areaChildren[j].target);
+                            //货架
+                            for (h = 0; h < shelfChildren.length; h++) {
+                                if (shelfChildren[h].attributes == "shelf" && shelfChildren[h].checked == true) {
+                                    shelf += shelfChildren[h].id + ",";
+                                } else {
+                                    cellChildren = $('#warehouseTree').tree('getChildren', shelfChildren[h].target);
+                                    //货位
+                                    for (k = 0; k < cellChildren.length; k++) {
+                                        if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
+                                            cell += cellChildren[k].id + ",";
+                                        }
                                     }
                                 }
                             }
@@ -52,19 +62,36 @@
                     }
                 }
             }
-        }
-        if (ware != "" || area != "" || shelf != "" || cell != "") {
-            $('#nextShowTable').datagrid('options').url = '/Storage/CheckDetails/?ware=' + ware + '&area=' + area + '&shelf=' + shelf + '&cell=' + cell;
-            $('#nextShowTable').datagrid('load');
-            $('#nextShowDiv').dialog('open').dialog('setTitle', '货位盘点数据预览');
+            if (ware != "" || area != "" || shelf != "" || cell != "") {
+                $('#nextShowTable').datagrid('options').url = '/Storage/CheckCellDetails/?ware=' + ware + '&area=' + area + '&shelf=' + shelf + '&cell=' + cell;
+                $('#nextShowTable').datagrid('load');
+                $('#nextShowDiv').dialog('open').dialog('setTitle', '货位盘点数据预览');
+            } else {
+                $.messager.confirm('错误', '请选择需盘点的货位！');
+            }
+        } else if (tabsRow.panel('options').id == "productCheck") {//选择产品盘点
+            productCheckParameter = "";
+            var checkRows = $('#checkProductTable').datagrid('getRows');
+            for (var i = 0; i < checkRows.length; i++) {
+                productCheckParameter += checkRows[i].ProductCode + ",";
+            }
+            if (productCheckParameter != "") {
+                $('#nextShowTable').datagrid('options').url = '/Storage/CheckProductDetails/?products=' + productCheckParameter;
+                $('#nextShowTable').datagrid('load');
+                $('#nextShowDiv').dialog('open').dialog('setTitle', '产品盘点数据预览');
+            } else {
+                $.messager.confirm('错误', '请选择需盘点的产品！');
+            }
+        } else if (tabsRow.panel('options').id == "transactionCheck") {//选择异动盘点
+
         } else {
-            $.messager.confirm('错误', '请选择需盘点的货位！');
+            $.messager.confirm('错误', '没选择盘点方式！请关闭页面从新打开！');
         }
     }
 </script>
 <div id="addCheck" class="easyui-dialog" modal="true" style="width: 840px; height: 460px;padding: 1px 1px" closed="true" buttons="#dlg-buttons">
-    <div id="tt" class="easyui-tabs" fit="true">
-		<div title="货位盘点">
+    <div id="checkTabs" class="easyui-tabs" fit="true">
+		<div title="货位盘点" id="cellCheck">
             <div class="easyui-layout" fit="true"> 
                 <div id="sidebar"  region="west"  style="width:220px;overflow: scroll;padding:1px; margin: 1px">
                     <ul id="warehouseTree"  class="easyui-tree" checkbox="true" url='/Cell/GetCheckDetails/'>
@@ -87,11 +114,11 @@
                </div>
           </div>
         </div>
-		<div title="产品盘点">
+		<div title="产品盘点" id="productCheck">
 			@Html.Partial("_ProductCheckPartial")
 		</div>
-		<div title="异动盘点">
-			@*<div class="easyui-layout" fit="true">
+		<div title="异动盘点" id="transactionCheck">
+			<div class="easyui-layout" fit="true">
                 <div id="sidebar" region="west" style="width: 300px;  padding: 1px; margin: 1px">
                     <table id="productTable" class="easyui-datagrid" border="false" url='/Product/Details/'
                         singleselect="true" fit="true" pagination="true" rownumbers="true">
@@ -134,7 +161,7 @@
                     </table>
                 </div>
             </div>
-		</div>*@
+		</div>
 </div>
     
 </div>
