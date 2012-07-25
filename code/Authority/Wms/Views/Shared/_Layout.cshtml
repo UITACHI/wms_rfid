@@ -19,15 +19,17 @@
             });
 
             $(window).resize(function () {
-                $('#centerPanel').layout('resize');
+                $('#layout-function').layout('panel', 'center').panel('resize');
             });
-            $('#centerPanel').panel({ onResize: function (width, height) {
-                    $('#layout').css('height', $('#centerPanel').height() - $('#toolbars').height() - 3);
-                    $('#layout').layout('resize');
-                }
+            $('#layout-function').layout('panel', 'center').panel({ onResize: function (width, height) {
+                $('#layout-content').css('height', $('#layout-function').height() - $('#toolbars').height() - 3);
+                $('#layout-content').layout('panel', 'south').panel({ height: $('#layout-content').height() / 2 });
+                $('#layout-content').layout('resize');
+            }
             });
-            $('#layout').css('height', $('#centerPanel').height() - $('#toolbars').height() - 3);
-            $('#layout').layout('resize');
+            $('#layout-content').css('height', $('#layout-function').height() - $('#toolbars').height() - 3);
+            $('#layout-content').layout('panel', 'south').panel({ height: $('#layout-content').height() / 2 });
+            $('#layout-content').layout('resize');
 
             $('a.easyui-linkbutton[fun="true"]').linkbutton({
                 disabled: true,
@@ -50,10 +52,10 @@
         });
     </script>
 </head>
-<body class="easyui-layout" fit="true" >
-    <div id="centerPanel" region="center" split="true" border="false"> 
+<body id="layout-function" class="easyui-layout" fit="true" >
+    <div region="center" split="true" border="false"> 
         @Html.Partial("_ToolPartial") 
-        <div id="layout" class="easyui-layout">   
+        <div id="layout-content" class="easyui-layout">   
             @RenderBody()
         </div>        
     </div>
