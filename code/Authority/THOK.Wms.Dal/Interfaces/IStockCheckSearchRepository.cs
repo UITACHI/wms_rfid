@@ -7,7 +7,7 @@ using THOK.Common.Ef.Interfaces;
 
 namespace THOK.Wms.Dal.Interfaces
 {
-    public interface IOutSearchDetailRepository : IRepository<OutBillAllot>
+    public interface IStockCheckSearchRepository : IRepository<CheckBillMaster>
     {
 
     }
