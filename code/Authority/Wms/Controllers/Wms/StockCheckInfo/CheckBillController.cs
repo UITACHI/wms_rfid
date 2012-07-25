@@ -62,6 +62,39 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //根据产品添加盘点单主表和细表数据
+        // POST: /CheckBill/CheckChangedCreate/       
+        public ActionResult CheckChangedCreate(string beginDate, string endDate)
+        {
+            bool bResult = CheckBillMasterService.ChangedAdd(beginDate,endDate,this.User.Identity.Name.ToString());
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //查询货位要生成的盘点数据表
+        // POST: /CheckBill/CheckCellDetails/
+        public ActionResult CheckCellDetails(int page, int rows, string ware, string area, string shelf, string cell)
+        {
+            var storage = CheckBillMasterService.GetCellDetails(page, rows, ware, area, shelf, cell);
+            return Json(storage, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //查询产品要生成的盘点数据表
+        // POST: /CheckBill/CheckProductDetails/        
+        public ActionResult CheckProductDetails(int page, int rows, string products)
+        {
+            var storage = CheckBillMasterService.GetProductDetails(page, rows, products);
+            return Json(storage, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //查询异动要生成的盘点数据表
+        // POST: /CheckBill/CheckChangedDetails/        
+        public ActionResult CheckChangedDetails(int page, int rows, string beginDate, string endDate)
+        {
+            var storage = CheckBillMasterService.GetChangedCellDetails(page, rows, beginDate, endDate);
+            return Json(storage, "text", JsonRequestBehavior.AllowGet);
+        }
+
         //查询主单
         // GET: /CheckBill/Details/
         public ActionResult Details(int page, int rows, FormCollection collection)
