@@ -72,12 +72,12 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.RowVersion).HasColumnName(ColumnMap.Value.To("RowVersion"));
 
             // Relationships
-            this.HasRequired(t => t.Cells)
+            this.HasRequired(t => t.Cell)
                 .WithMany(t => t.Storages)
                 .HasForeignKey(d => d.CellCode)
                 .WillCascadeOnDelete(false);
 
-            this.HasOptional(t => t.Products)
+            this.HasOptional(t => t.Product)
                 .WithMany(t => t.Storages)
                 .HasForeignKey(d => d.ProductCode)
                 .WillCascadeOnDelete(false);

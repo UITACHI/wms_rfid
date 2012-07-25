@@ -72,9 +72,9 @@ namespace THOK.Wms.Bll.Service
                 if (cell != string.Empty)
                     cell = cell.Substring(0, cell.Length - 1);
             }
-            var storages = storageQuery.Where(s => ware.Contains(s.Cells.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cells.Shelf.Area.AreaCode) || shelf.Contains(s.Cells.Shelf.ShelfCode) || cell.Contains(s.Cells.CellCode))
+            var storages = storageQuery.Where(s => ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode))
                                        .OrderBy(s => s.StorageCode).AsEnumerable()
-                                       .Select(s => new { s.StorageCode, s.Cells.CellCode, s.Cells.CellName, s.Products.ProductCode, s.Products.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
+                                       .Select(s => new { s.StorageCode, s.Cell.CellCode, s.Cell.CellName, s.Product.ProductCode, s.Product.ProductName, s.Quantity, IsActive = s.IsActive == "1" ? "可用" : "不可用", StorageTime = s.StorageTime.ToString("yyyy-MM-dd"), UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd") });
             foreach (var stor in storages)
             {
                 var checkDetail = new CheckBillDetail();
