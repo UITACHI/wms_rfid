@@ -10,7 +10,7 @@
                 $('#deleteBillDetail').attr("disabled", "disabled");
                 $('#editBillDetail').attr("disabled", "disabled");
                 $('#addBillDetail').attr("disabled", "disabled");
-                $('#dlg').dialog('open').dialog('setTitle', '删除出库主单信息');
+                $('#dlg').dialog('open').dialog('setTitle', '反审出库主单信息');
                 $('#outBillDeatil').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + row.BillNo }); //加载明细
                 $('#fm .easyui-validatebox').validatebox({
                     required: false

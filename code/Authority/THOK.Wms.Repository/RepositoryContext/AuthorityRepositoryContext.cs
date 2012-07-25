@@ -8,15 +8,12 @@ namespace THOK.Wms.Repository.RepositoryContext
     public class AuthorityRepositoryContext : IAuthorityRepositoryContext, IRepositoryContext
     {
         private const string OBJECT_CONTEXT_KEY = "THOK.Wms.Repository.AuthorizeContext,THOK.Wms.Repository.dll";
-        public DbSet<T> GetObjectSet<T>() 
+        public DbSet<T> GetDbSet<T>() 
             where T : class
         {
             return ContextManager.GetDbContext(OBJECT_CONTEXT_KEY).Set<T>();
         }
 
-        /// <summary>
-        /// Returns the active object context
-        /// </summary>
         public DbContext DbContext
         {
             get

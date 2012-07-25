@@ -12,5 +12,7 @@ namespace THOK.Wms.Bll.Interfaces
         bool Add(Product product);
         bool Delete(string ProductCode);
         bool Save(Product product);
+
+        object FindProduct();
     }
 }
