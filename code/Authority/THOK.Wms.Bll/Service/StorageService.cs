@@ -17,6 +17,14 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public ICellRepository CellRepository { get; set; }
 
+        [Dependency]
+        public IInBillAllotRepository InBillAllotRepository { get; set; }
+
+        [Dependency]
+        public IOutBillAllotRepository OutBillAllotRepository { get; set; }
+
+        [Dependency]
+        public IMoveBillDetailRepository MoveBillDetailRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -39,28 +47,28 @@ namespace THOK.Wms.Bll.Service
             var storages = storageQuery.OrderBy(s => s.StorageCode).Where(s => s.StorageCode != null);
             if (type == "ware")
             {
-                storages = storages.Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == id);
+                storages = storages.Where(s => s.cell.Shelf.Area.Warehouse.WarehouseCode == id);
             }
             else if (type == "area")
             {
-                storages = storageQuery.Where(s => s.Cell.Shelf.Area.AreaCode == id);
+                storages = storageQuery.Where(s => s.cell.Shelf.Area.AreaCode == id);
             }
             else if (type == "shelf")
             {
-                storages = storageQuery.Where(s => s.Cell.Shelf.ShelfCode == id);
+                storages = storageQuery.Where(s => s.cell.Shelf.ShelfCode == id);
             }
             else if (type == "cell")
             {
-                storages = storageQuery.Where(s => s.Cell.CellCode == id);
+                storages = storageQuery.Where(s => s.cell.CellCode == id);
             }
 
             var temp = storages.AsEnumerable().Select(s => new
            {
                s.StorageCode,
-               s.Cell.CellCode,
-               s.Cell.CellName,
-               s.Product.ProductCode,
-               s.Product.ProductName,
+               s.cell.CellCode,
+               s.cell.CellName,
+               s.product.ProductCode,
+               s.product.ProductName,
                s.Quantity,
                IsActive = s.IsActive == "1" ? "可用" : "不可用",
                StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
@@ -73,7 +81,7 @@ namespace THOK.Wms.Bll.Service
         }
 
         /// <summary>
-        /// 根据参数获取要生成的盘点数据
+        /// 根据参数获取要生成的盘点数据  --货位
         /// </summary>
         /// <param name="page"></param>
         /// <param name="rows"></param>
@@ -89,10 +97,10 @@ namespace THOK.Wms.Bll.Service
             var storages = storageQuery.OrderBy(s => s.StorageCode).AsEnumerable().Select(s => new
             {
                 s.StorageCode,
-                s.Cell.CellCode,
-                s.Cell.CellName,
-                s.Product.ProductCode,
-                s.Product.ProductName,
+                s.cell.CellCode,
+                s.cell.CellName,
+                s.product.ProductCode,
+                s.product.ProductName,
                 s.Quantity,
                 IsActive = s.IsActive == "1" ? "可用" : "不可用",
                 StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
@@ -117,15 +125,15 @@ namespace THOK.Wms.Bll.Service
                     cell = cell.Substring(0, cell.Length - 1);
                 }
 
-                storages = storageQuery.ToList().Where(s => ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode))
+                storages = storageQuery.ToList().Where(s => ware.Contains(s.cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.cell.Shelf.Area.AreaCode) || shelf.Contains(s.cell.Shelf.ShelfCode) || cell.Contains(s.cell.CellCode))
                                        .OrderBy(s => s.StorageCode).AsEnumerable()
                                        .Select(s => new
                                        {
                                            s.StorageCode,
-                                           s.Cell.CellCode,
-                                           s.Cell.CellName,
-                                           s.Product.ProductCode,
-                                           s.Product.ProductName,
+                                           s.cell.CellCode,
+                                           s.cell.CellName,
+                                           s.product.ProductCode,
+                                           s.product.ProductName,
                                            s.Quantity,
                                            IsActive = s.IsActive == "1" ? "可用" : "不可用",
                                            StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
@@ -138,7 +146,7 @@ namespace THOK.Wms.Bll.Service
         }
         
         /// <summary>
-        /// 根据参数获取要生成的盘点数据
+        /// 根据参数获取要生成的盘点数据  --产品
         /// </summary>
         /// <param name="page"></param>
         /// <param name="rows"></param>
@@ -151,15 +159,15 @@ namespace THOK.Wms.Bll.Service
             {
                 products = products.Substring(0, products.Length - 1);
 
-                var storages = storageQuery.ToList().Where(s => products.Contains(s.Product.ProductCode))
+                var storages = storageQuery.ToList().Where(s => products.Contains(s.product.ProductCode))
                                       .OrderBy(s => s.StorageCode).AsEnumerable()
                                       .Select(s => new
                                       {
                                           s.StorageCode,
-                                          s.Cell.CellCode,
-                                          s.Cell.CellName,
-                                          s.Product.ProductCode,
-                                          s.Product.ProductName,
+                                          s.cell.CellCode,
+                                          s.cell.CellName,
+                                          s.product.ProductCode,
+                                          s.product.ProductName,
                                           s.Quantity,
                                           IsActive = s.IsActive == "1" ? "可用" : "不可用",
                                           StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
@@ -170,6 +178,27 @@ namespace THOK.Wms.Bll.Service
                 return new { total, rows = storages.ToArray() };
             }
             return null;
+        }
+
+        /// <summary>
+        /// 根据参数获取要生成的盘点数据  --货位变动
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="beginDate">开始时间</param>
+        /// <param name="endDate">结束时间</param>
+        /// <returns></returns>
+        public object GetChangedCellDetails(int page, int rows, string beginDate, string endDate)
+        {
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            IQueryable<InBillAllot> inAllotQuery = InBillAllotRepository.GetQueryable();
+            IQueryable<OutBillAllot> outAllotQuery = OutBillAllotRepository.GetQueryable();
+            IQueryable<MoveBillDetail> moveBillQuery = MoveBillDetailRepository.GetQueryable();
+            if (beginDate == string.Empty && beginDate == null)
+            { 
+                
+            }
+            throw new NotImplementedException();
         }
 
         #endregion
