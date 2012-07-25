@@ -18,11 +18,27 @@
     };
 
     function allot() {
-        $.getJSON("/StockInBillAllot/Allot/",{billNo:billNo,areaCode:''},function (json) {
-            if (json) {
-
+        $.getJSON("/StockInBillAllot/Allot/", { billNo: billNo, areaCode: '' }, function (result) {
+            if (result) {
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').datagrid('reload');
+                }
             } else {
-                $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+                $.messager.show({
+                    title: '错误',
+                    msg: '返回数据格式错误！'
+                });
             }
         });
     }
