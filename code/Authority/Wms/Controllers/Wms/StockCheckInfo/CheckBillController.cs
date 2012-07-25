@@ -45,10 +45,19 @@ namespace Authority.Controllers.Wms.StockCheckInfo
         }
 
         //根据货位添加盘点单主表和细表数据
-        // POST: /CheckBill/CheckCreate/       
-        public ActionResult CheckCreate(string wareCodes, string areaCodes, string shelfCodes, string cellCodes)
+        // POST: /CheckBill/CheckCellCreate/       
+        public ActionResult CheckCellCreate(string wareCodes, string areaCodes, string shelfCodes, string cellCodes)
         {
             bool bResult = CheckBillMasterService.CellAdd(wareCodes, areaCodes, shelfCodes, cellCodes,this.User.Identity.Name.ToString());
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //根据产品添加盘点单主表和细表数据
+        // POST: /CheckBill/CheckProductCreate/       
+        public ActionResult CheckProductCreate(string products)
+        {
+            bool bResult = CheckBillMasterService.ProductAdd(products, this.User.Identity.Name.ToString());
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

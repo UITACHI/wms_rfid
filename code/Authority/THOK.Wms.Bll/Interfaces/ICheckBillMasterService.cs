@@ -14,6 +14,8 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool CellAdd(string ware, string area, string shelf, string cell, string UserName);
 
+        bool ProductAdd(string products, string UserName);
+
         bool Delete(string BillNo);
 
         bool Save(CheckBillMaster inBillMaster);
