@@ -12,6 +12,7 @@ function deleteClick() {
                                 msg: json.msg
                             });
                             $('#details').datagrid('load');
+                            $('#checkBillDetails').datagrid('loadData', { total: 0, rows: [] }); //Çå¿ÕÏ¸µ¥
                         } else {
                             $.messager.show({
                                 title: '´íÎó',

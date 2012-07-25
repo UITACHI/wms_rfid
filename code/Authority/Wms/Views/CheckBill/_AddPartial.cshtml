@@ -72,12 +72,10 @@
         } else if (tabsRow.panel('options').id == "productCheck") {//选择产品盘点
             productCheckParameter = "";
             var checkRows = $('#checkProductTable').datagrid('getRows');
-            alert(checkRows);
             for (var i = 0; i < checkRows.length; i++) {
                 productCheckParameter += checkRows[i].ProductCode + ",";
             }
             if (productCheckParameter != "") {
-                alert(productCheckParameter);
                 $('#nextShowTable').datagrid('options').url = '/Storage/CheckProductDetails/?products=' + productCheckParameter;
                 $('#nextShowTable').datagrid('load');
                 $('#nextShowDiv').dialog('open').dialog('setTitle', '产品盘点数据预览');
