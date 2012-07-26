@@ -290,7 +290,6 @@ namespace THOK.Wms.Bll.Service
                                                      .OrderBy(c => c.CellCode).Select(c => c);
             foreach (var cell in cells)//货位
             {
-                var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == cell.DefaultProductCode);
                 WareTree cellTree = new WareTree();
                 cellTree.Code = cell.CellCode;
                 cellTree.Name = "货位：" + cell.CellName;
@@ -312,8 +311,8 @@ namespace THOK.Wms.Bll.Service
                 cellTree.UpdateTime = cell.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss");
                 cellTree.ShortName = cell.ShortName;
                 cellTree.Layer = cell.Layer;
-                cellTree.MaxQuantity = cell.MaxQuantity;
-                cellTree.ProductName = product.ProductName;
+                cellTree.MaxQuantity = cell.MaxQuantity;                
+                cellTree.ProductName = cell.Product == null ? string.Empty : cell.Product.ProductName;
                 cellTree.attributes = "cell";
 
                 wareSet.Add(cellTree);

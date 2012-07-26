@@ -131,8 +131,9 @@
             panelHeight: 65,
             panelWidth: 140
         });
-        
+
         $('#company-add').combogrid({
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Company/Details/?page=1&rows=10',
@@ -150,6 +151,8 @@
         });
 
         $('#warehouse-add').combogrid({
+            required: true,
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Warehouse/Details/?page=1&rows=10&warehouseCode=' + row.WarehouseCode,
@@ -168,6 +171,8 @@
         });
 
         $('#area-add').combogrid({
+            required: true,
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Area/Details/?warehouseCode=' + row.WarehouseCode + '&areaCode=' + row.AreaCode,
@@ -186,6 +191,8 @@
         });
 
         $('#shelf-add').combogrid({
+            required: true,
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Shelf/Details/?warehouseCode=' + row.WarehouseCode + '&areaCode=' + row.AreaCode + '&shelfCode=' + row.ShelfCode,
@@ -204,6 +211,7 @@
         });
 
         $('#product-add').combogrid({
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Product/Details/?page=1&rows=10',
@@ -348,7 +356,7 @@
                         仓库名称:
                     </td>
                     <td>
-                        <input name="WarehouseCode" class="wareAreaClass" id="" style="width: 145px;"/>
+                        <input name="WarehouseCode" missingmessage="请选择仓库编码" class="wareAreaClass" id="" style="width: 145px;"/>
                     </td>
                     <td style=" text-align:right">
                         是否启用:
@@ -446,14 +454,14 @@
                         仓库名称:
                     </td>
                     <td align="left">
-                        <input name="WarehouseCode" class="wareShelfClass" id="" style="width: 140px;"/>
+                        <input name="WarehouseCode" missingmessage="请选择仓库编码" class="wareShelfClass" id="" style="width: 140px;"/>
                            
                     </td>
                     <td style=" text-align:right">
                         库区名称:
                     </td>
                     <td align="left">
-                       <input name="AreaCode" type="text" class="areaShelfClass" id="" style="width: 140px;"/>
+                       <input name="AreaCode" type="text" missingmessage="请选择库区编码" class="areaShelfClass" id="" style="width: 140px;"/>
                     </td>
                 </tr>
                 <tr>
@@ -548,14 +556,14 @@
                         仓库名称:
                     </td>
                     <td align="left">
-                        <input name="WarehouseCode" class="wareCellClass"  id="" style="width: 140px;"/>
+                        <input name="WarehouseCode" missingmessage="请选择仓库编码" class="wareCellClass"  id="" style="width: 140px;"/>
                            
                     </td>
                     <td style=" text-align:right">
                         库区名称:
                     </td>
                     <td align="left">
-                       <input name="AreaCode" type="text" class="areaCellClass" id="" style="width: 140px;"/>
+                       <input name="AreaCode" type="text" missingmessage="请选择库区编码" class="areaCellClass" id="" style="width: 140px;"/>
                     </td>
                 </tr>
                 <tr style="height: 20px">
@@ -563,7 +571,7 @@
                         货架名称:
                     </td>
                     <td align="left">
-                       <input name="ShelfCode" type="text" id="shelf-add" style="width: 140px;"/>
+                       <input name="ShelfCode" type="text" missingmessage="请选择货架编码" id="shelf-add" style="width: 140px;"/>
                     </td>
                     <td style=" text-align:right">
                         指定卷烟:

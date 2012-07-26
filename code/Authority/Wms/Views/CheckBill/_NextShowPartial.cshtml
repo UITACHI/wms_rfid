@@ -48,8 +48,27 @@
                     }
                 }
             });
-        } else if (tabsRow.panel('options').id == "transactionCheck") {//生成异动盘点数据
-
+        } else if (tabsRow.panel('options').id == "changedCheck") {//生成异动盘点数据
+            $.getJSON('/CheckBill/CheckChangedDetails/', { products: productCheckParameter }, function (json) {
+                if (json) {
+                    if (json.success) {
+                        $.messager.show({
+                            title: '成功',
+                            msg: json.msg
+                        });
+                        $('#nextShowDiv').dialog('close');
+                        $('#addCheck').dialog('close');
+                        $('#details').datagrid('load');
+                    } else {
+                        $.messager.show({
+                            title: '错误',
+                            msg: json.msg
+                        });
+                        $('#nextShowDiv').dialog('close');
+                        $('#details').datagrid('load');
+                    }
+                }
+            });
         } else {
             $.messager.confirm('错误', '没选择盘点方式！请关闭页面从新打开！');
         }
@@ -77,7 +96,7 @@
                         产品名称
                     </th>
                     <th field="UnitCode" width="60">
-                        单位名称
+                        单位编码
                     </th>
                     <th field="UnitName" width="60">
                         单位名称
