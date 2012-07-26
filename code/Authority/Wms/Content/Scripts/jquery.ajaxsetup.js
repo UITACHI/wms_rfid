@@ -1,19 +1,19 @@
 ﻿var g_MsgBoxTitle = "系统信息";
-var __waitHTML = '<div style="padding: 20px;"><span style="font-weight: bold;padding-left: 10px; color: #FF66CC;"><div id="p" class="easyui-progressbar" style="width:280px;"></div></span></div>';
+var __waitHTML = '<div style="padding: 20px;"><span style="font-weight: bold;padding-left: 10px; color: #FF66CC;"><div id="g_p" class="easyui-progressbar" style="width:280px;"></div></span></div>';
 var j_waitDialog;
 
 function progress() {
     var value;
-    if ($.isEmptyObject($('#p'))) {
-        value = $('#p').progressbar('getValue');
+    if ($('#g_p').length == 1){
+        value = $('#g_p').progressbar('getValue');
         if (value < 100) {
             value += Math.floor(Math.random() * 10);
-            $('#p').progressbar('setValue', value);
+            $('#g_p').progressbar('setValue', value);
             setTimeout(arguments.callee, 200);
         } else {
             value = 0;
             value += Math.floor(Math.random() * 10);
-            $('#p').progressbar('setValue', value);
+            $('#g_p').progressbar('setValue', value);
             setTimeout(arguments.callee, 200);
         };
     };
@@ -54,7 +54,6 @@ $(function () {
                 var end = XMLHttpRequest.responseText.indexOf("</title>");
                 if (start > 0 && end > start)
                     error += "<br /><br />" + XMLHttpRequest.responseText.substring(start + 7, end);
-
                 $.messager.alert(g_MsgBoxTitle, "调用服务器失败。<br />" + error, 'error');
             }
         }
