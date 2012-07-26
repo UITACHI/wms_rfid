@@ -33,8 +33,9 @@ namespace THOK.Wms.Allot.Service
             get { return this.GetType(); }
         }
 
-        public bool Allot(string billNo, string[] areaCodes)
+        public bool Allot(string billNo, string[] areaCodes,out string result)
         {
+            result = string.Empty;
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
 
@@ -258,7 +259,7 @@ namespace THOK.Wms.Allot.Service
                     else break;
                 }
             }
-            return true;
+            return result == string.Empty;
         }
 
         private Storage LockStorage(string billNo, Cell cell)

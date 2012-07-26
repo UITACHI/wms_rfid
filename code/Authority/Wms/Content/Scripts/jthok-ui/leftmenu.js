@@ -3,12 +3,6 @@
 (function ($) {
     var menus_root = {};
     $(function () {
-        $("#msgbox").ajaxError(function (event, XMLHttpRequest, ajaxOptions, thrownError) {
-            $.messager.show({
-                title: '错误',
-                msg: thrownError
-            });
-        });
         window.onbeforeunload = function ()  
         {
             var n = window.event.screenX - window.screenLeft;
