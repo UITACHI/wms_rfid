@@ -16,6 +16,7 @@
     function DataLoad() {
         $('#wareHouseadd').combogrid({
             required: true,
+            disabled: false,
             width: 130,
             panelWidth: 340,
             url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
@@ -33,6 +34,7 @@
 
         $('#biiTypeadd').combogrid({
             required: true,
+            disabled:false,
             width: 130,
             panelWidth: 340,
             url: '/StockInBill/GetBillTypeDetail/?BillClass=0001&IsActive=1',
@@ -234,7 +236,7 @@
 
     function productSelect() {
         $('#productData').dialog('open').dialog('setTitle', '选择产品信息');
-        $('#productDetail').datagrid({ url: '/Product/Details/' });
+        $('#productDetail').datagrid({ url: '/StockInBill/GetProductDetails/' });
         $("#productDetail").datagrid('reload');
     }
 
