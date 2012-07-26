@@ -7,9 +7,7 @@
             } else {
                 isOutBillMasterAdd = false;
                 isShowOutBillDetail = true;
-                $('#deleteBillDetail').attr("disabled", "disabled");
-                $('#editBillDetail').attr("disabled", "disabled");
-                $('#addBillDetail').attr("disabled", "disabled");
+                $('#centerShowDiv').css({ display: "none" });
                 $('#dlg').dialog('open').dialog('setTitle', '反审出库主单信息');
                 $('#outBillDeatil').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + row.BillNo }); //加载明细
                 $('#fm .easyui-validatebox').validatebox({

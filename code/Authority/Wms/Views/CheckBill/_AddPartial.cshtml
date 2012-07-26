@@ -4,13 +4,16 @@
     function addClick() {
         addLoad();
         productLoad();
-        $('#addCheck').dialog('open').dialog('setTitle', '新增');
+        $('#addCheck').dialog('open').dialog('setTitle', '新增盘点数据');
     }
 
     function productLoad() {
-        $('#productTable').datagrid('options').url = '/Product/FindProduct/';
-        $('#productTable').datagrid('load');
+        $('#warehouseTree').tree({ url: '/Cell/GetCheckDetails/' }); //加载树形数据
+        $('#productTable').datagrid({ url: '/Product/FindProduct/' }); //加载产品数据
         $('#checkProductTable').datagrid('loadData', { total: 0, rows: [] }); //清空盘点的卷烟
+        $('#chanedCheckTable').datagrid({ url: '/CheckBill/CheckChangedDetails/' }); //加载异动数据
+        $('#beginDate').datebox('setValue', '');
+        $('#endDate').datebox('setValue', '');
     }
 
     //加载
@@ -24,16 +27,13 @@
             }
         });
         $('#checkTabs').tabs({
-            border: false,
-            onSelect: function (id) {
-                if (id == "") {
-                    $('#warehouseTree').tree({ url: '/Cell/GetCheckDetails/' });//加载树形数据
-                } else if (id == "") {
-                    $('#outBillDeatil').datagrid({ url: '/Product/FindProduct/' });//加载产品数据
-                } else if (id == "") {
-                    $('#chanedCheckTable').datagrid({ url: '/CheckBill/CheckChangedDetails/' }); //加载异动数据
-                    $('#beginDate').datebox('cloer');
-                    $('#beginDate').datebox('cloer');
+            onSelect: function (title) {
+                if (title == "货位盘点") {
+                    
+                } else if (title == "产品盘点") {
+
+                } else if (title == "异动盘点") {
+                    
                 } else {
                     $.messager.confirm('错误', '请选关闭页面重新打开或重新选择类型盘点！');
                 }

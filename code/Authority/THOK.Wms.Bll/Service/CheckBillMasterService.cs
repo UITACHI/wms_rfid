@@ -530,19 +530,21 @@ namespace THOK.Wms.Bll.Service
             IQueryable<InBillAllot> inAllotQuery = InBillAllotRepository.GetQueryable();
             IQueryable<OutBillAllot> outAllotQuery = OutBillAllotRepository.GetQueryable();
             IQueryable<MoveBillDetail> moveBillQuery = MoveBillDetailRepository.GetQueryable();
-            if (beginDate == string.Empty && beginDate == null)
+            if (beginDate == string.Empty || beginDate == null)
             {
                 beginDate = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
             }
-            if (endDate == string.Empty && endDate == null)
+            if (endDate == string.Empty || endDate == null)
             {
                 endDate = DateTime.Now.ToString("yyyy-MM-dd");
             }
+            DateTime begin = Convert.ToDateTime(beginDate);
+            DateTime end = Convert.ToDateTime(endDate);
 
-            var inCells = inAllotQuery.Where(i => i.FinishTime >= Convert.ToDateTime(beginDate) && i.FinishTime <= Convert.ToDateTime(endDate)).OrderBy(i => i.CellCode).Select(i => i.CellCode);
-            var outCells = outAllotQuery.Where(o => o.FinishTime >= Convert.ToDateTime(beginDate) && o.FinishTime <= Convert.ToDateTime(endDate)).OrderBy(o => o.CellCode).Select(o => o.CellCode);
-            var moveInCells = moveBillQuery.Where(m => m.FinishTime >= Convert.ToDateTime(beginDate) && m.FinishTime <= Convert.ToDateTime(endDate)).OrderBy(m => m.InCell).Select(m => m.InCell.CellCode);
-            var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= Convert.ToDateTime(beginDate) && m.FinishTime <= Convert.ToDateTime(endDate)).OrderBy(m => m.OutCell).Select(m => m.OutCell.CellCode);
+            var inCells = inAllotQuery.Where(i => i.FinishTime >= begin && i.FinishTime <= end).OrderBy(i => i.CellCode).Select(i => i.CellCode);
+            var outCells = outAllotQuery.Where(o => o.FinishTime >= begin && o.FinishTime <= end).OrderBy(o => o.CellCode).Select(o => o.CellCode);
+            var moveInCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end).OrderBy(m => m.InCell.CellCode).Select(m => m.InCell.CellCode);
+            var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end).OrderBy(m => m.OutCell.CellCode).Select(m => m.OutCell.CellCode);
             var storages = storageQuery.ToList().Where(s => inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode))
                                        .OrderBy(s => s.ProductCode).AsEnumerable()
                                        .Select(s => new
@@ -582,24 +584,26 @@ namespace THOK.Wms.Bll.Service
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(e => e.UserName == UserName);
             if (employee != null)
             {
-                if (beginDate == string.Empty && beginDate == null)
+                if (beginDate == string.Empty || beginDate == null)
                 {
                     beginDate = DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd");
                 }
-                if (endDate == string.Empty && endDate == null)
+                if (endDate == string.Empty || endDate == null)
                 {
                     endDate = DateTime.Now.ToString("yyyy-MM-dd");
                 }
+                DateTime begin = Convert.ToDateTime(beginDate);
+                DateTime end = Convert.ToDateTime(endDate);
 
                 #region 循环所有仓库的订单，一个仓库一个盘点单据
 
                 var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
                 foreach (var item in warehouses.ToArray())
                 {
-                    var inCells = inAllotQuery.Where(i => i.FinishTime >= Convert.ToDateTime(beginDate) && i.FinishTime <= Convert.ToDateTime(endDate) && i.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(i => i.CellCode).Select(i => i.CellCode);
-                    var outCells = outAllotQuery.Where(o => o.FinishTime >= Convert.ToDateTime(beginDate) && o.FinishTime <= Convert.ToDateTime(endDate) && o.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(o => o.CellCode).Select(o => o.CellCode);
-                    var moveInCells = moveBillQuery.Where(m => m.FinishTime >= Convert.ToDateTime(beginDate) && m.FinishTime <= Convert.ToDateTime(endDate) && m.InCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.InCell).Select(m => m.InCell.CellCode);
-                    var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= Convert.ToDateTime(beginDate) && m.FinishTime <= Convert.ToDateTime(endDate) && m.OutCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.OutCell).Select(m => m.OutCell.CellCode);
+                    var inCells = inAllotQuery.Where(i => i.FinishTime >= begin && i.FinishTime <= end && i.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(i => i.CellCode).Select(i => i.CellCode);
+                    var outCells = outAllotQuery.Where(o => o.FinishTime >= begin && o.FinishTime <= end && o.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(o => o.CellCode).Select(o => o.CellCode);
+                    var moveInCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end && m.InCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.InCell.CellCode).Select(m => m.InCell.CellCode);
+                    var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end && m.OutCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.OutCell.CellCode).Select(m => m.OutCell.CellCode);
                     var storages = storageQuery.ToList().Where(s => inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode))
                                        .OrderBy(s => s.ProductCode).AsEnumerable()
                                        .Select(s => new
