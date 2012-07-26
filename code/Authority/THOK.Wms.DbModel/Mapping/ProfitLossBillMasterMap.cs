@@ -33,17 +33,13 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsRequired()
                 .HasMaxLength(20);
 
-            this.Property(t => t.OperatePersonCode)
-                .IsRequired()
-                .HasMaxLength(20);
+            this.Property(t => t.OperatePersonID)
+                .IsRequired();
 
             this.Property(t => t.Status)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(1);
-
-            this.Property(t => t.VerifyPersonID)
-                 .IsRequired();
 
             this.Property(t => t.Description)
                 .HasMaxLength(100);
@@ -62,9 +58,9 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.BillTypeCode).HasColumnName(ColumnMap.Value.To("BillTypeCode"));
             this.Property(t => t.CheckBillNo).HasColumnName(ColumnMap.Value.To("CheckBillNo"));
             this.Property(t => t.WarehouseCode).HasColumnName(ColumnMap.Value.To("WarehouseCode"));
-            this.Property(t => t.OperatePersonCode).HasColumnName(ColumnMap.Value.To("OperatePersonCode"));
+            this.Property(t => t.OperatePersonID).HasColumnName(ColumnMap.Value.To("OperatePersonID"));
             this.Property(t => t.Status).HasColumnName(ColumnMap.Value.To("Status"));
-            this.Property(t => t.VerifyPersonID).HasColumnName(ColumnMap.Value.To("VerifyPersonCode"));
+            this.Property(t => t.VerifyPersonID).HasColumnName(ColumnMap.Value.To("VerifyPersonID"));
             this.Property(t => t.VerifyDate).HasColumnName(ColumnMap.Value.To("VerifyDate"));
             this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
@@ -74,6 +70,20 @@ namespace THOK.Wms.DbModel.Mapping
             this.HasRequired(t => t.BillType)
                 .WithMany(t => t.ProfitLossBillMasters)
                 .HasForeignKey(d => d.BillTypeCode)
+                .WillCascadeOnDelete(false);
+            this.HasRequired(t => t.Warehouse)
+                .WithMany(t => t.ProfitLossBillMasters)
+                .HasForeignKey(d => d.WarehouseCode)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.OperatePerson)
+                .WithMany(t => t.OperatePersonProfitLossBillMasters)
+                .HasForeignKey(d => d.OperatePersonID)
+                .WillCascadeOnDelete(false);
+
+            this.HasOptional(t => t.VerifyPerson)
+                .WithMany(t => t.VerifyPersonProfitLossBillMasters)
+                .HasForeignKey(d => d.VerifyPersonID)
                 .WillCascadeOnDelete(false);
         }
     }
