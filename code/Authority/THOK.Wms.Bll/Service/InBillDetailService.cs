@@ -13,6 +13,8 @@ namespace THOK.Wms.Bll.Service
     {
         [Dependency]
         public IInBillDetailRepository InBillDetailRepository { get; set; }
+        [Dependency]
+        public IProductRepository ProductRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -96,6 +98,68 @@ namespace THOK.Wms.Bll.Service
             ibd.Description = inBillDetail.Description;
             InBillDetailRepository.SaveChanges();
             return true;
+        }
+
+        #endregion
+
+        #region IInBillDetailService 成员
+
+
+        public object GetProductDetails(int page, int rows, string QueryString, string Value)
+        {
+            string ProductName = "";
+            string ProductCode = "";
+            if (QueryString == "ProductCode")
+            {
+                ProductCode = Value;
+            }
+            else
+            {
+                ProductName = Value;
+            }
+            IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
+            var product = ProductQuery.Where(c => c.ProductName.Contains(ProductName) && c.ProductCode.Contains(ProductCode)&& c.IsActive=="1")
+                .OrderBy(c => c.ProductCode).AsEnumerable()
+                .Select(c => new
+                {
+                    c.AbcTypeCode,
+                    c.BarBarcode,
+                    c.BelongRegion,
+                    c.BrandCode,
+                    c.BuyPrice,
+                    c.CostPrice,
+                    c.CustomCode,
+                    c.Description,
+                    IsAbnormity = c.IsAbnormity == "1" ? "是" : "不是",
+                    IsActive = c.IsActive == "1" ? "可用" : "不可用",
+                    c.IsConfiscate,
+                    c.IsFamous,
+                    c.IsFilterTip,
+                    c.IsMainProduct,
+                    c.IsNew,
+                    c.IsProvinceMainProduct,
+                    c.OneProjectBarcode,
+                    c.PackageBarcode,
+                    c.PackTypeCode,
+                    c.PieceBarcode,
+                    c.PriceLevelCode,
+                    c.ProductCode,
+                    c.ProductName,
+                    c.ProductTypeCode,
+                    c.RetailPrice,
+                    c.ShortCode,
+                    c.StatisticType,
+                    c.SupplierCode,
+                    c.TradePrice,
+                    c.UniformCode,
+                    c.UnitCode,
+                    c.Unit.UnitName,
+                    c.UnitListCode,
+                    UpdateTime = c.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+                });
+            int total = product.Count();
+            product = product.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = product.ToArray() };
         }
 
         #endregion

@@ -15,5 +15,7 @@ namespace THOK.Wms.Bll.Interfaces
         bool Delete(string ID);
 
         bool Save(InBillDetail inBillDetail);
+
+        object GetProductDetails(int page, int rows,string QueryString, string Value);
     }
 }
