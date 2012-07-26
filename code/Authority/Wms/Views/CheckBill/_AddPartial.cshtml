@@ -26,19 +26,19 @@
                 }
             }
         });
-        $('#checkTabs').tabs({
-            onSelect: function (title) {
-                if (title == "货位盘点") {
-                    
-                } else if (title == "产品盘点") {
+//        $('#checkTabs').tabs({
+//            onSelect: function (title) {
+//                if (title == "货位盘点") {
+//                    
+//                } else if (title == "产品盘点") {
 
-                } else if (title == "异动盘点") {
-                    
-                } else {
-                    $.messager.confirm('错误', '请选关闭页面重新打开或重新选择类型盘点！');
-                }
-            }
-        });
+//                } else if (title == "异动盘点") {
+//                    
+//                } else {
+//                    $.messager.confirm('错误', '请选关闭页面重新打开或重新选择类型盘点！');
+//                }
+//            }
+//        });
     }
 
     //预览盘点数据
@@ -78,6 +78,7 @@
                     }
                 }
             }
+
             if (ware != "" || area != "" || shelf != "" || cell != "") {
                 $('#nextShowTable').datagrid('options').url = '/CheckBill/CheckCellDetails/?ware=' + ware + '&area=' + area + '&shelf=' + shelf + '&cell=' + cell;
                 $('#nextShowTable').datagrid('load');
@@ -164,3 +165,4 @@
     <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="nextDivClick()">预览</a>
 </div>
 @Html.Partial("_CheckShowPartial")
+@Html.Partial("_NextShowPartial")
