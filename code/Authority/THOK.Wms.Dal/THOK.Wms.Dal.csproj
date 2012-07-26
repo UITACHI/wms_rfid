@@ -55,6 +55,7 @@
     <Compile Include="EntityRepository\CompanyRepository.cs" />
     <Compile Include="EntityRepository\DailyBalanceRepository.cs" />
     <Compile Include="EntityRepository\DepartmentRepository.cs" />
+    <Compile Include="EntityRepository\DifferSearchDetailRepository.cs" />
     <Compile Include="EntityRepository\EmployeeRepository.cs" />
     <Compile Include="EntityRepository\InBillAllotRepository.cs" />
     <Compile Include="EntityRepository\InBillDetailRepository.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="EntityRepository\ProductRepository.cs" />
     <Compile Include="EntityRepository\ShelfRepository.cs" />
     <Compile Include="EntityRepository\StockCheckSearchRepository.cs" />
+    <Compile Include="EntityRepository\StockDifferSearchRepository.cs" />
     <Compile Include="EntityRepository\StockIntoSearchRepository.cs" />
     <Compile Include="EntityRepository\StockMoveSearchRepository.cs" />
     <Compile Include="EntityRepository\StockOutSearchRepository.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Interfaces\ICompanyRepository.cs" />
     <Compile Include="Interfaces\IDailyBalanceRepository.cs" />
     <Compile Include="Interfaces\IDepartmentRepository.cs" />
+    <Compile Include="Interfaces\IDifferSearchDetailRepository.cs" />
     <Compile Include="Interfaces\IEmployeeRepository.cs" />
     <Compile Include="Interfaces\IInBillAllotRepository.cs" />
     <Compile Include="Interfaces\IInBillDetailRepository.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IShelfRepository.cs" />
     <Compile Include="Interfaces\IStockCheckSearchRepository.cs" />
+    <Compile Include="Interfaces\IStockDifferSearchRepository.cs" />
     <Compile Include="Interfaces\IStockIntoSearchRepository.cs" />
     <Compile Include="Interfaces\IStockMoveSearchRepository.cs" />
     <Compile Include="Interfaces\IStockOutSearchRepository.cs" />
