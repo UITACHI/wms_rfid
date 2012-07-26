@@ -1,28 +1,42 @@
-﻿<div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
-    <table id="masters" class="easyui-datagrid" 
-        url="/StockCheckSearch/Masters/" border="false" singleSelect="true"
+﻿<script type="text/javascript">
+    $(function () {
+        $('#details').datagrid({
+            onClickRow: function () {
+                var row = $('#details').datagrid('getSelected');
+                if (row) {
+                    $('#infodetails').datagrid({ url: '/SortOrderSearch/InfoDetails/?OrderID=' + row.OrderID });
+                } else {
+                    $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+                }
+            }
+        })
+    });
+</script>
+<div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
+    <table id="details" class="easyui-datagrid" 
+        url="/SortOrderSearch/Details/" border="false" singleSelect="true"
         fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="SortOrderNo" width="120" align="center">订单单号</th>
-                <th field="SortOrderDate" width="120" align="center">订单日期</th>
-                <th field="SortOrderType" width="120" align="center">订单类型</th>
+                <th field="OrderID" width="120" align="center">订单单号</th>
+                <th field="OrderDate" width="120" align="center">订单日期</th>
+                <th field="OrderType" width="120" align="center">订单类型</th>
                 <th field="CustomerCode" width="120" align="center">客户编号</th>
                 <th field="CustomerName" width="120" align="center">客户名称</th>
-                <th field="TotalQuantity" width="120" align="center">总数量</th>
-                <th field="DetailsQuantity" width="120" align="center">明细数</th>
-                <th field="DeliverRoute" width="120" align="center">送货路线</th>
+                <th field="QuantitySum" width="120" align="center">总数量</th>
+                <th field="DetailNum" width="120" align="center">明细数</th>
+                @*<th field="DeliverRoute" width="120" align="center">送货路线</th>*@
             </tr>
         </thead>
     </table>
 </div>
 <div region="south" split="true" border="false" style="height: 250px; border-top-style: solid; border-top-width: 1px; border-top-color: 99BBE8;">
-<table id="details" class="easyui-datagrid" 
-        url="/StockCheckSearch/Details/" border="false" singleSelect="true"
+<table id="infoDetails" class="easyui-datagrid" 
+        url="/SortOrderSearch/InfoDetails/" border="false" singleSelect="true"
         fit="true"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="IdNo" width="140" align="center">序号</th>
+                <th field="OrderID" width="140" align="center">序号</th>
                 <th field="ProduceCode" width="140" align="center">商品代码</th>
                 <th field="ProduceName" width="140" align="center">商品名称</th>         
                 <th field="Quantity" width="140" align="center">数量</th>
