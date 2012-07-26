@@ -708,7 +708,26 @@ namespace THOK.Wms.Bll.Service
             return result;
         }
 
-        #endregion
+        /// <summary>
+        /// 盘点确认
+        /// </summary>
+        /// <param name="billNo">单据号</param>
+        /// <returns></returns>
+        public bool confirmCheck(string billNo)
+        {
+            bool result = false;
+            var checkbm = CheckBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
+            if (checkbm != null && checkbm.Status == "4")
+            {
+                checkbm.Status = "5";
+                checkbm.VerifyDate = DateTime.Now;
+                checkbm.UpdateTime = DateTime.Now;
+                CheckBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
+        }
 
+        #endregion
     }
 }

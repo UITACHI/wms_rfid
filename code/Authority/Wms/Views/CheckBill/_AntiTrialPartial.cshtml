@@ -12,14 +12,14 @@
                 });
                 $('form input').attr("disabled", "disabled");
                 $('form textarea').attr("disabled", "disabled");
-                $('#cc').combo({
+                $('#checkcc').combo({
                     hasDownArrow: false
                 });
                 $('#checkfm').form('load', row);
                 if (row.IsActive == '可用') {
-                    $('#cc').combo('setValue', true).combo('setText', row.IsActive);
+                    $('#checkcc').combo('setValue', true).combo('setText', row.IsActive);
                 } else {
-                    $('#cc').combo('setValue', false).combo('setText', row.IsActive);
+                    $('#checkcc').combo('setValue', false).combo('setText', row.IsActive);
                 }
                 url = '/CheckBill/checkBillMasterAntiTrial/?BillNo=' + row.BillNo;
             }
