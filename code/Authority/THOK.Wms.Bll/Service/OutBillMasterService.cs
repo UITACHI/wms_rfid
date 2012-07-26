@@ -82,7 +82,7 @@ namespace THOK.Wms.Bll.Service
             var temp = outBillMaster.AsEnumerable().OrderBy(t => t.BillNo).Select(i => new
                {
                    i.BillNo,
-                   BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
+                   BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
                    i.Warehouse.WarehouseCode,
                    i.Warehouse.WarehouseName,
                    i.OperatePersonID,
@@ -93,11 +93,11 @@ namespace THOK.Wms.Bll.Service
                    VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
                    BillTypeCode = i.BillType.BillTypeCode,
                    BillTypeName = i.BillType.BillTypeName,
-                   VerifyDate = i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss"),
+                   VerifyDate = i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss"),
                    Status = WhatStatus(i.Status),
                    IsActive = i.IsActive == "1" ? "可用" : "不可用",
                    Description = i.Description,
-                   UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                   UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
                });
 
             int total = temp.Count();

@@ -44,7 +44,7 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             return Json(area, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //根据货位添加盘点单主表和细表数据
+        //根据货位生成盘点单主表和细表数据
         // POST: /CheckBill/CheckCellCreate/       
         public ActionResult CheckCellCreate(string wareCodes, string areaCodes, string shelfCodes, string cellCodes)
         {
@@ -53,7 +53,7 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //根据产品添加盘点单主表和细表数据
+        //根据产品生成盘点单主表和细表数据
         // POST: /CheckBill/CheckProductCreate/       
         public ActionResult CheckProductCreate(string products)
         {
@@ -62,7 +62,7 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //根据产品添加盘点单主表和细表数据
+        //根据产品生成盘点单主表和细表数据
         // POST: /CheckBill/CheckChangedCreate/       
         public ActionResult CheckChangedCreate(string beginDate, string endDate)
         {
@@ -71,7 +71,7 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //查询货位要生成的盘点数据表
+        //查询货位要预览的盘点数据表
         // POST: /CheckBill/CheckCellDetails/
         public ActionResult CheckCellDetails(int page, int rows, string ware, string area, string shelf, string cell)
         {
@@ -79,7 +79,7 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             return Json(storage, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //查询产品要生成的盘点数据表
+        //查询产品要预览的盘点数据表
         // POST: /CheckBill/CheckProductDetails/        
         public ActionResult CheckProductDetails(int page, int rows, string products)
         {
@@ -87,8 +87,8 @@ namespace Authority.Controllers.Wms.StockCheckInfo
             return Json(storage, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //查询异动要生成的盘点数据表
-        // POST: /CheckBill/CheckChangedDetails/        
+        //查询异动要预览的盘点数据表
+        // POST: /CheckBill/CheckChangedDetails/
         public ActionResult CheckChangedDetails(int page, int rows, string beginDate, string endDate)
         {
             var storage = CheckBillMasterService.GetChangedCellDetails(page, rows, beginDate, endDate);
