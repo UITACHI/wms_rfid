@@ -9,6 +9,7 @@
         });
 
         $('#employee-add').combogrid({
+            disabled: false,            
             width: 130,
             panelWidth: 340,
             url: '/Employee/Details/?page=1&rows=10',
@@ -26,6 +27,8 @@
         });
 
         $('#company-add').combogrid({
+            required: true,
+            disabled: false,
             width: 130,
             panelWidth: 340,
             url: '/Company/Details/?page=1&rows=10',
@@ -43,6 +46,7 @@
         });
 
         $('#depart-add').combogrid({
+            disabled: false,
             width: 130,
             panelWidth: 340,
             url: '/Department/Details/?page=1&rows=10',

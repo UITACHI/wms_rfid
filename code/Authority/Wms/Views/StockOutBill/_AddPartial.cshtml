@@ -14,9 +14,10 @@
 
         $('#wareHouseadd').combogrid({
             required: true,
+            disabled:false,
             width: 130,
             panelWidth: 340,
-            url: '/WareHouse/Details/?page=1&rows=10',
+            url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
             idField: 'WarehouseCode',
             textField: 'WarehouseName',
             mode: 'local',
@@ -29,11 +30,13 @@
                 ]]
         });
 
+        
         $('#biiTypeadd').combogrid({
             required: true,
+            disabled: false,
             width: 130,
             panelWidth: 340,
-            url: '/StockOutBillType/Details/?page=1&rows=10',
+            url: '/StockInBill/GetBillTypeDetail/?BillClass=0001&IsActive=1',
             idField: 'BillTypeCode',
             textField: 'BillTypeName',
             mode: 'local',
@@ -81,7 +84,7 @@
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
-                $('form input').removeAttr("disabled");
+                $('form input').removeAttr("disabled");                
                 $('form textarea').removeAttr("disabled");
                 $('#cc').combo({
                     hasDownArrow: true
@@ -344,7 +347,7 @@
               </tr>
               <tr>
                 <td style=" text-align:right">产品代码</td>
-                <td><input name="ProductCode" id="productCode" />
+                <td><input name="ProductCode" id="productCode"  type="text"/>
                 <a href="#" onclick="productSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true" ></a></td>
               </tr>
               <tr>

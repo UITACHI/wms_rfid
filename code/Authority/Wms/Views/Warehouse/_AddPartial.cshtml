@@ -131,8 +131,9 @@
             panelHeight: 65,
             panelWidth: 140
         });
-        
+
         $('#company-add').combogrid({
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Company/Details/?page=1&rows=10',
@@ -151,6 +152,7 @@
 
         $('#warehouse-add').combogrid({
             required: true,
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Warehouse/Details/?page=1&rows=10&warehouseCode=' + row.WarehouseCode,
@@ -170,6 +172,7 @@
 
         $('#area-add').combogrid({
             required: true,
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Area/Details/?warehouseCode=' + row.WarehouseCode + '&areaCode=' + row.AreaCode,
@@ -189,6 +192,7 @@
 
         $('#shelf-add').combogrid({
             required: true,
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Shelf/Details/?warehouseCode=' + row.WarehouseCode + '&areaCode=' + row.AreaCode + '&shelfCode=' + row.ShelfCode,
@@ -207,6 +211,7 @@
         });
 
         $('#product-add').combogrid({
+            disabled: false,
             width: 140,
             panelWidth: 340,
             url: '/Product/Details/?page=1&rows=10',

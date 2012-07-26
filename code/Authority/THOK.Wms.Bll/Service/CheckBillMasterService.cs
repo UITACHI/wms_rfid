@@ -34,7 +34,7 @@ namespace THOK.Wms.Bll.Service
             get { return this.GetType(); }
         }
 
-        #region ICheckBillMasterService 成员
+        #region 盘点单基础信息
 
         public string WhatStatus(string status)
         {
@@ -149,6 +149,10 @@ namespace THOK.Wms.Bll.Service
             throw new NotImplementedException();
         }
 
+         #endregion
+
+        #region 生成盘点单信息方法
+
         /// <summary>
         /// 生成盘点的主表ID
         /// </summary>
@@ -222,7 +226,7 @@ namespace THOK.Wms.Bll.Service
                     cell = cell.Substring(0, cell.Length - 1);
                 }
 
-                storages = storageQuery.ToList().Where(s => ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode))
+                storages = storageQuery.ToList().Where(s => (ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)) && s.Quantity > 0 &&s.IsLock=="0")
                                        .OrderBy(s => s.StorageCode).AsEnumerable()
                                        .Select(s => new
                                        {
@@ -270,7 +274,7 @@ namespace THOK.Wms.Bll.Service
 
                     foreach (var item in wares.ToArray())
                     {
-                        var storages = storageQuery.Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode)
+                        var storages = storageQuery.Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
                                                    .OrderBy(s => s.StorageCode).AsEnumerable()
                                                    .Select(s => new
                                                    {
@@ -340,7 +344,7 @@ namespace THOK.Wms.Bll.Service
 
                     foreach (var item in warehouses.ToArray())
                     {
-                        var storages = storageQuery.ToList().Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && (area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)))
+                        var storages = storageQuery.ToList().Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && (area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)) && s.Quantity > 0 && s.IsLock == "0")
                                                    .OrderBy(s => s.StorageCode).AsEnumerable()
                                                    .Select(s => new
                                                    {
@@ -412,7 +416,7 @@ namespace THOK.Wms.Bll.Service
             {
                 products = products.Substring(0, products.Length - 1);
 
-                var storages = storageQuery.ToList().Where(s => products.Contains(s.Product.ProductCode))
+                var storages = storageQuery.ToList().Where(s => products.Contains(s.Product.ProductCode) && s.Quantity > 0 && s.IsLock == "0")
                                       .OrderBy(s => s.StorageCode).AsEnumerable()
                                       .Select(s => new
                                       {
@@ -458,7 +462,7 @@ namespace THOK.Wms.Bll.Service
                     var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
                     foreach (var item in warehouses.ToArray())
                     {
-                        var storages = storageQuery.Where(s => products.Contains(s.Product.ProductCode) && s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode)
+                        var storages = storageQuery.Where(s => products.Contains(s.Product.ProductCode) && s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
                                                    .OrderBy(s => s.StorageCode).AsEnumerable()
                                                    .Select(s => new
                                                     {
@@ -545,7 +549,7 @@ namespace THOK.Wms.Bll.Service
             var outCells = outAllotQuery.Where(o => o.FinishTime >= begin && o.FinishTime <= end).OrderBy(o => o.CellCode).Select(o => o.CellCode);
             var moveInCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end).OrderBy(m => m.InCell.CellCode).Select(m => m.InCell.CellCode);
             var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end).OrderBy(m => m.OutCell.CellCode).Select(m => m.OutCell.CellCode);
-            var storages = storageQuery.ToList().Where(s => inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode))
+            var storages = storageQuery.ToList().Where(s => s.Quantity > 0 && s.IsLock == "0" && (inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode)))
                                        .OrderBy(s => s.ProductCode).AsEnumerable()
                                        .Select(s => new
                                        {
@@ -604,22 +608,22 @@ namespace THOK.Wms.Bll.Service
                     var outCells = outAllotQuery.Where(o => o.FinishTime >= begin && o.FinishTime <= end && o.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(o => o.CellCode).Select(o => o.CellCode);
                     var moveInCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end && m.InCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.InCell.CellCode).Select(m => m.InCell.CellCode);
                     var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end && m.OutCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.OutCell.CellCode).Select(m => m.OutCell.CellCode);
-                    var storages = storageQuery.ToList().Where(s => inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode))
-                                       .OrderBy(s => s.ProductCode).AsEnumerable()
-                                       .Select(s => new
-                                       {
-                                           s.StorageCode,
-                                           s.Cell.CellCode,
-                                           s.Cell.CellName,
-                                           s.Product.ProductCode,
-                                           s.Product.ProductName,
-                                           s.Product.Unit.UnitCode,
-                                           s.Product.Unit.UnitName,
-                                           Quantity = s.Quantity / s.Product.Unit.Count,
-                                           IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                           StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                           UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                       });
+                    var storages = storageQuery.ToList().Where(s => s.Quantity > 0 && s.IsLock == "0" && (inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode)))
+                                               .OrderBy(s => s.ProductCode).AsEnumerable()
+                                               .Select(s => new
+                                               {
+                                                   s.StorageCode,
+                                                   s.Cell.CellCode,
+                                                   s.Cell.CellName,
+                                                   s.Product.ProductCode,
+                                                   s.Product.ProductName,
+                                                   s.Product.Unit.UnitCode,
+                                                   s.Product.Unit.UnitName,
+                                                   Quantity = s.Quantity / s.Product.Unit.Count,
+                                                   IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                                   StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                                   UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                               });
                     if (storages.Count() > 0)
                     {
                         string billNo = GetCheckBillNo().ToString();
@@ -660,6 +664,10 @@ namespace THOK.Wms.Bll.Service
             }
             return result;
         }
+
+        #endregion
+
+        #region 盘点审核、反审、确认
 
         /// <summary>
         /// 盘点审核

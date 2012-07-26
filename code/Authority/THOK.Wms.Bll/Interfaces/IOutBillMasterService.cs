@@ -18,8 +18,6 @@ namespace THOK.Wms.Bll.Interfaces
 
         object GenInBillNo(string userName);
 
-        bool UpdateBillMasterStatus(string billNo, string status);
-
         bool Audit(string billNo, string userName);
 
         bool AntiTrial(string billNo);

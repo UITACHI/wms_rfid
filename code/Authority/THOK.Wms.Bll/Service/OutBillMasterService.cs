@@ -206,20 +206,6 @@ namespace THOK.Wms.Bll.Service
             return findBillInfo;
         }
         
-        public bool UpdateBillMasterStatus(string billNo,string status)
-        {
-            bool result = false;
-            IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable();
-            var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
-            if (outbm != null)
-            {
-                outbm.Status = status;
-                OutBillMasterRepository.SaveChanges();
-                result = true;
-            }
-            return result;
-        }
-
         /// <summary>
         /// 出库审核
         /// </summary>

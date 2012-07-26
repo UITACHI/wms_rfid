@@ -97,15 +97,6 @@ namespace Authority.Controllers.Wms.StockOut
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //修改主单状态
-        // POST: /StockOutBill/editoutBillMasterStatus/
-        public ActionResult editoutBillMasterStatus(string BillNo, string status)
-        {
-            bool bResult = OutBillMasterService.UpdateBillMasterStatus(BillNo, status);
-            string msg = bResult ? "删除成功" : "删除失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
-        }
-
         //新增细单
         // POST: /StockOutBill/OutBillDetailCreate/
         [HttpPost]
