@@ -281,6 +281,7 @@ namespace THOK.Wms.Bll.Service
                                                        s.StorageCode,
                                                        s.Cell.CellCode,
                                                        s.Cell.CellName,
+                                                       s.IsLock,
                                                        s.Product.ProductCode,
                                                        s.Product.ProductName,
                                                        s.Product.Unit.UnitCode,
@@ -297,7 +298,7 @@ namespace THOK.Wms.Bll.Service
                             check.BillNo = billNo;
                             check.BillDate = DateTime.Now;
                             check.BillTypeCode = "1";
-                            check.WarehouseCode = ware;
+                            check.WarehouseCode =item.WarehouseCode;
                             check.OperatePersonID = employee.ID;
                             check.Status = "1";
                             check.IsActive = "1";
@@ -319,8 +320,13 @@ namespace THOK.Wms.Bll.Service
                                 checkDetail.RealUnitCode = stor.UnitCode;
                                 checkDetail.RealQuantity = stor.Quantity;
                                 checkDetail.Status = "1";
+
                                 CheckBillDetailRepository.Add(checkDetail);
                                 CheckBillDetailRepository.SaveChanges();
+
+                                var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
+                                storage.IsLock = "1";
+                                StorageRepository.SaveChanges();                                
                             }
                             result = true;
                         }
