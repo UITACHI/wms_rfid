@@ -28,6 +28,11 @@ namespace THOK.Wms.DbModel
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
 
+        public virtual Unit Unit01 { get; set; }
+        public virtual Unit Unit02 { get; set; }
+        public virtual Unit Unit03 { get; set; }
+        public virtual Unit Unit04 { get; set; }
+
         public virtual ICollection<Product> Products { get; set; }
     }
 }
