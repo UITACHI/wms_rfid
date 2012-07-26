@@ -61,12 +61,14 @@ namespace THOK.Wms.Bll.Service
             var outBillMaster = OutBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode));
             if (!beginDate.Equals(string.Empty))
             {
-                outBillMaster = outBillMaster.Where(i => i.BillDate > Convert.ToDateTime(beginDate));
+                DateTime begin = Convert.ToDateTime(beginDate);
+                outBillMaster = outBillMaster.Where(i => i.BillDate >= begin);
             }
 
             if (!endDate.Equals(string.Empty))
             {
-                outBillMaster = outBillMaster.Where(i => i.BillDate < Convert.ToDateTime(endDate));
+                DateTime end = Convert.ToDateTime(endDate).AddDays(+1);
+                outBillMaster = outBillMaster.Where(i => i.BillDate <= end);
             }
 
             if (!Status.Equals(string.Empty))

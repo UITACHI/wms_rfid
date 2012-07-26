@@ -1,20 +1,36 @@
 ﻿<script type="text/javascript">
-    $(function () {
-        $('#status').combo({
+    function searchLoad() {
+        $('#OperatePersonCode').combogrid({
+            disabled: false,
+            width: 130,
+            panelWidth: 340,
+            url: '/Employee/Details/?page=1&rows=10',
+            idField: 'ID',
+            textField: 'EmployeeName',
+            mode: 'local',
             editable: false,
-            panelHeight: 45
+            fitColumns: true,
+            columns: [[
+					{ field: 'ID', title: '员工ID', hidden: true, width: 30 },
+					{ field: 'EmployeeCode', title: '员工编码', align: 'left', width: 40 },
+					{ field: 'EmployeeName', title: '员工名称', align: 'left', width: 30 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+				]]
         });
-    })
+    }
 
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+        $("input[type=text]").attr("value", "");
     };
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.SystemName = $('#systemname').val();
-        queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.BillNo = $('#checkBillNo').val();
+        queryParams.beginDate = $('#beginDate').datebox('getValue');
+        queryParams.endDate = $('#endDate').datebox('getValue');
+        queryParams.OperatePersonCode = $('#OperatePersonCode').val();
+        queryParams.Status = $('#operateStatus').val();
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -25,50 +41,39 @@
     }
 
 </script>
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width: 300px; height: 240px;
-    padding: 2px 2px" closed="true" buttons="#dlg-buttons-search">
+
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:280px;height:240px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
-        <div region="center" border="false" style="padding: 10px 10px; background: #fff;
-            border: 1px solid #ccc;">
-            <table width="250">
-                <tr>
-                    <td width="60">
-                        盘点单号:
-                    </td>
-                    <td width="168">
-                        <input name="SystemName" class="easyui-validatebox" required="true" />
-                    </td>
-                </tr>
-                <tr>
-                    <td width="60">
-                        制单日期:
-                    </td>
-                    <td width="168">
-                        <input name="SystemName" class="easyui-validatebox" required="true" />
-                    </td>
-                </tr>
-                <tr>
-                    <td width="60">
-                        操作员:
-                    </td>
-                    <td width="168">
-                        <input name="SystemName" class="easyui-validatebox" required="true" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        备注:
-                    </td>
-                    <td>
-                        <textarea name="Description" style="width: 180px; height: 50px"></textarea>
-                    </td>
-                </tr>
+		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <table align="left" width="240">
+              <tr>
+                <td width="60" style="text-align:right">盘点单号:</td>
+                <td><input id="checkBillNo" type="text" style="width: 140px" /></td>
+              </tr>
+              <tr>
+                <td width="60" style="text-align:right">制单日期:</td>
+                <td><input id="beginDate" class="easyui-datebox" type="text" style="width: 140px" /></td>
+              </tr>
+               <tr>
+                <td width="60" style="text-align:right">至:</td>
+                <td><input id="endDate" class="easyui-datebox" style="width: 140px"/></td>
+              </tr>
+              <tr>
+                <td width="60" style="text-align:right">操 作 员:</td>
+                <td><input id="OperatePersonCode" type="text" style="width: 140px" /></td>
+              </tr>
+              <tr>
+                <td   width="60" style="text-align:right">处理状态:</td>
+                <td><input id="operateStatus" type="text" style="width: 140px" /></td>
+              </tr>
             </table>
         </div>
     </div>
 </div>
 <div id="dlg-buttons-search">
-    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="select()">查询</a>
-    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">
-        取消</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
 </div>
+
+
