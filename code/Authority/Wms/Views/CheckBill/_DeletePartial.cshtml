@@ -2,30 +2,18 @@
 function deleteClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
-        $.messager.confirm('删除', '是否确认要删除?', function (r) {
-            if (r) {
-                $.getJSON('/CheckBill/Delete/', { BillNo: row.BillNo }, function (json) {
-                    if (json) {
-                        if (json.success) {
-                            $.messager.show({
-                                title: '成功',
-                                msg: json.msg
-                            });
-                            $('#details').datagrid('load');
-                            $('#checkBillDetails').datagrid('loadData', { total: 0, rows: [] }); //清空细单
-                        } else {
-                            $.messager.show({
-                                title: '错误',
-                                msg: json.msg
-                            });
-                            $('#details').datagrid('load');
-                        }
-                    }
-                });
-            }
-        });
+        if (row.Status != "已录入") {
+            $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
+        } else {
+            $('#checkdlg').dialog('open').dialog('setTitle', '删除盘点主单信息');
+            $('#checkBillDeatilShow').datagrid({ url: '/CheckBill/CheckBillDetails/?BillNo=' + row.BillNo }); //加载明细                
+            $('form input').attr("disabled", "disabled");
+            $('form select').attr("disabled", "disabled");
+            $('#checkfm').form('load', row);
+            url = '/CheckBill/Delete/?BillNo=' + row.BillNo;
+        }
     } else {
-        $.messager.confirm('错误', '没有选择行！');
+        $.messager.confirm('错误', '没有选择行，无法删除！');
     }
-};
+}
 </script>

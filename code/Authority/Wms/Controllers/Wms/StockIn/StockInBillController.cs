@@ -174,5 +174,23 @@ namespace Authority.Controllers.Wms.StockIn
             var wareHouse = InBillMasterService.GetWareHouseDetail(IsActive);
             return Json(wareHouse, "text", JsonRequestBehavior.AllowGet);
         }
+
+        //
+        // POST: /InBillDetail/GetProductDetails/
+
+        [HttpPost]
+        public ActionResult GetProductDetails(int page, int rows, string QueryString, string Value)
+        {
+            if (QueryString==null)
+            {
+                QueryString = "ProductCode";
+            }
+            if (Value==null)
+            {
+                Value = "";
+            }
+            var product = InBillDetailService.GetProductDetails(page,rows,QueryString,Value);
+            return Json(product, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

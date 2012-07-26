@@ -1,8 +1,17 @@
 ﻿<script type="text/javascript">
     function ProductQueryClick() {
-        $('#dlg-Productsearch').dialog('open').dialog('setTitle', '查询厂商信息');
-        $("input[type=text]").attr("value", "");
+        $('#productDetail').datagrid({ url: '/StockInBill/GetProductDetails/?QueryString=' + $('#queryType').combobox('getValue') + '&Value=' + $('#ProductInfo').val() });
+        $("#productDetail").datagrid('reload');
     };
+
+    $(function () {
+        $('#queryType').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 100
+        });
+    })
 
     function productSave() {
         var productRow = $('#productDetail').datagrid('getSelected');
@@ -69,5 +78,10 @@
         取消</a>
 </div>
 <div id="btn-query">
- <a href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="ProductQueryClick()" id="ProductQuery">查询</a> 
+<select id="queryType" name="QueryString" class="easyui-combobox" style="width: 100px;" readonly="true">
+		                <option value="ProductCode">产品代码</option>
+		                <option value="ProductName">产品名称</option>
+	                </select>
+                    <input id="ProductInfo">
+ <a href="#" class="easyui-linkbutton" iconcls="icon-search" plain="true" onclick="ProductQueryClick()" id="ProductQuery">查询</a>
 </div>

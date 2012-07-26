@@ -20,8 +20,9 @@
             panelHeight: 45,
             panelWidth: 130
         });
-        
+
         $('#depar-add').combogrid({
+            disabled: false,
             width: 130,
             panelWidth: 340,
             url: '/Department/Details/?page=1&rows=10',
@@ -39,6 +40,7 @@
         });
 
         $('#user-add').combogrid({
+            disabled: false,
             width: 130,
             panelWidth: 340,
             url: '/User/Details/?page=1&rows=10',
@@ -56,6 +58,8 @@
         });
 
         $('#job-add').combogrid({
+            required: true,
+            disabled: false,
             width: 130,
             panelWidth: 340,
             url: '/Job/Details/?page=1&rows=10',

@@ -129,6 +129,10 @@
     <Compile Include="Migrations\201207251254230_modify_allot_base.Designer.cs">
       <DependentUpon>201207251254230_modify_allot_base.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207260207528_modify_profit_loss_uint.cs" />
+    <Compile Include="Migrations\201207260207528_modify_profit_loss_uint.Designer.cs">
+      <DependentUpon>201207260207528_modify_profit_loss_uint.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

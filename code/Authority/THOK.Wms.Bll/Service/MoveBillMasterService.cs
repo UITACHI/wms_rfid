@@ -57,7 +57,7 @@ namespace THOK.Wms.Bll.Service
                 && i.Status != "4").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
                 {
                     i.BillNo,
-                    BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
+                    BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
                     i.OperatePersonID,
                     i.WarehouseCode,
                     i.BillTypeCode,
@@ -67,11 +67,11 @@ namespace THOK.Wms.Bll.Service
                     OperatePersonName = i.OperatePerson.EmployeeName,
                     VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
                     VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                    VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss")),
+                    VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
                     Status = WhatStatus(i.Status),
                     IsActive = i.IsActive == "1" ? "可用" : "不可用",
                     Description = i.Description,
-                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
                 });
             if (!IsActive.Equals(""))
             {
@@ -105,17 +105,65 @@ namespace THOK.Wms.Bll.Service
 
         public bool Add(MoveBillMaster moveBillMaster, string userName)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var mbm = new MoveBillMaster();
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            if (employee != null)
+            {
+                mbm.BillNo = moveBillMaster.BillNo;
+                mbm.BillDate = moveBillMaster.BillDate;
+                mbm.BillTypeCode = moveBillMaster.BillTypeCode;
+                mbm.WarehouseCode = moveBillMaster.WarehouseCode;
+                mbm.OperatePersonID = employee.ID;
+                mbm.Status = "1";
+                mbm.VerifyPersonID = moveBillMaster.VerifyPersonID;
+                mbm.VerifyDate = moveBillMaster.VerifyDate;
+                mbm.Description = moveBillMaster.Description;
+                mbm.IsActive = moveBillMaster.IsActive;
+                mbm.UpdateTime = DateTime.Now;
+
+                MoveBillMasterRepository.Add(mbm);
+                MoveBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         public bool Delete(string BillNo)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var mbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
+            if (mbm != null)
+            {
+                Del(MoveBillDetailRepository, mbm.MoveBillDetails);
+                MoveBillMasterRepository.Delete(mbm);
+                MoveBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         public bool Save(MoveBillMaster moveBillMaster)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var mbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == moveBillMaster.BillNo && i.Status == "1");
+            if (mbm != null)
+            {
+                mbm.BillDate = moveBillMaster.BillDate;
+                mbm.BillTypeCode = moveBillMaster.BillTypeCode;
+                mbm.WarehouseCode = moveBillMaster.WarehouseCode;
+                mbm.OperatePersonID = moveBillMaster.OperatePersonID;
+                mbm.Status = "1";
+                mbm.VerifyPersonID = moveBillMaster.VerifyPersonID;
+                mbm.VerifyDate = moveBillMaster.VerifyDate;
+                mbm.Description = moveBillMaster.Description;
+                mbm.IsActive = moveBillMaster.IsActive;
+                mbm.UpdateTime = DateTime.Now;
+
+                MoveBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         public object GenMoveBillNo(string userName)
@@ -154,12 +202,35 @@ namespace THOK.Wms.Bll.Service
 
         public bool Audit(string BillNo, string userName)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var mbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            if (mbm != null)
+            {
+                mbm.Status = "2";
+                mbm.VerifyDate = DateTime.Now;
+                mbm.UpdateTime = DateTime.Now;
+                mbm.VerifyPersonID = employee.ID;
+                MoveBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         public bool AntiTrial(string BillNo)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var mbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "2");
+            if (mbm != null)
+            {
+                mbm.Status = "1";
+                mbm.VerifyDate = null;
+                mbm.UpdateTime = DateTime.Now;
+                mbm.VerifyPersonID = null;
+                MoveBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         public object GetBillTypeDetail(string BillClass, string IsActive)

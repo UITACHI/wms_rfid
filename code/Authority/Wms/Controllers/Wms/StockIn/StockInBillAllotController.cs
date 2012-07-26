@@ -17,9 +17,10 @@ namespace Authority.Controllers.Wms.StockIn
         public ActionResult Allot(string billNo, string areaCode)
         {
             string[] areaCodes = new string[] { };
-            bool bResult = InBillAllotService.Allot(billNo, areaCodes);
-            string msg = bResult ? "分配成功" : "分配失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            string result = string.Empty;
+            bool bResult = InBillAllotService.Allot(billNo, areaCodes,out result);
+            string msg = bResult ? "分配成功,确认后生效！" : "分配过程因异常错误中止，请处理后继续分配.";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, result), "text", JsonRequestBehavior.AllowGet);
         }
     }
 }
