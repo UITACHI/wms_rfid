@@ -93,6 +93,25 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
             // Relationships
+            this.HasRequired(t => t.Unit01)
+                .WithMany()
+                .HasForeignKey(d=>d.UnitCode01)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.Unit02)
+                .WithMany()
+                .HasForeignKey(d => d.UnitCode02)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.Unit03)
+                .WithMany()
+                .HasForeignKey(d => d.UnitCode03)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.Unit04)
+                .WithMany()
+                .HasForeignKey(d => d.UnitCode04)
+                .WillCascadeOnDelete(false);
         }
     }
 }
