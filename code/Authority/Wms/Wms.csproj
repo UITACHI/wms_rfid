@@ -900,8 +900,6 @@
     <Content Include="Views\ProfitLossBill\Index.cshtml" />
     <Content Include="Views\SortingOrder\_DownLoadPartial.cshtml" />
     <Content Include="Views\SortingOrder\_AddPartial.cshtml" />
-    <Content Include="Views\SortingOrder\_DeletePartial.cshtml" />
-    <Content Include="Views\SortingOrder\_EditPartial.cshtml" />
     <Content Include="Views\SortingOrder\_SearchPartial.cshtml" />
     <Content Include="Views\SortingOrderOptimize\Index.cshtml" />
     <Content Include="Views\ProfitLossBillVerify\Index.cshtml" />
