@@ -5,7 +5,7 @@
         if (row) {
             isInBillMasterSaved = false;
             isInBillMasterCanEdit = true;
-            if (row.Status != "已审核") {
+            if (row.Status == "已录入") {
                 $.messager.confirm('错误', '该记录未审核无法进行分配！');
             } else {
                 $('#dlg-allot').dialog('open').dialog('setTitle', '入库单据分配');
@@ -61,7 +61,7 @@
                 </thead>
             </table>
         </div>
-        <div region="south" split="true" border="false" style=" height:250px; border-top-style: solid; border-top-width: 1px; border-top-color: 99BBE8;">
+        <div region="south" split="true" border="false" style=" height:250px; border-top-style: solid; border-top-width: 1px; border-top-color: #99BBE8;">
             <table class="easyui-datagrid" border="false" singleSelect="true" id="allotBillDetails" url=""
                 fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
                 <thead>

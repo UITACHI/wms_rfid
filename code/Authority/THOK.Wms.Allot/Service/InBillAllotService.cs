@@ -40,6 +40,11 @@ namespace THOK.Wms.Allot.Service
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
 
             InBillMaster billMaster = inBillMasterQuery.Single(b => b.BillNo == billNo);
+            if ((new string [] {"4","5","6"}).Any(s=>s == billMaster.Status))
+            {
+                result = "分配已确认生效不能再分配！";
+                return false;
+            }
             var billDetails = billMaster.InBillDetails.Where(b => (b.BillQuantity - b.AllotQuantity) > 0);//选择未分配的细单；
 
             var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode); //选择当前订单操作目标仓库；
@@ -251,6 +256,11 @@ namespace THOK.Wms.Allot.Service
                     else break;
                 }
             }
+
+            billMaster.Status = "3";
+            cellQuery.Select(c => c.Storages.Where(s => s.LockTag == billNo).Select(s => s))
+                     .AsParallel().ForAll(s=>s.AsParallel().ForAll(i=>i.LockTag = string.Empty));
+            CellRepository.SaveChanges(); 
 
             if (billMaster.InBillDetails.Any(i=>i.BillQuantity - i.AllotQuantity > 0))
             {

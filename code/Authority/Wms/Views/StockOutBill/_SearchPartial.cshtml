@@ -1,58 +1,6 @@
 ﻿<script type="text/javascript">
-    $(function () {
-        
-    })
-
     function searchLoad() {
-        $('#makeDate_before').datebox({
-            required: false
-        });
-        $('#makeDate_later').datebox({
-            required: false
-        });
-        $('#checkDate_before').datebox({
-            required: false
-        });
-        $('#checkDate_later').datebox({
-            required: false
-        });
-
-        $('#wareHouseadd').combogrid({            
-            disabled: false,
-            width: 130,
-            panelWidth: 340,
-            url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
-            idField: 'WarehouseCode',
-            textField: 'WarehouseName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-                    { field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
-                    { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 30 },
-                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
-                ]]
-        });
-
-        $('#OperatePerson-add').combogrid({
-            disabled: false,
-            width: 130,
-            panelWidth: 340,
-            url: '/Employee/Details/?page=1&rows=10',
-            idField: 'ID',
-            textField: 'EmployeeName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-					{ field: 'ID', title: '员工ID', hidden: true, width: 30 },
-					{ field: 'EmployeeCode', title: '员工编码', align: 'left', width: 40 },
-					{ field: 'EmployeeName', title: '员工名称', align: 'left', width: 30 },
-					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
-				]]
-        });
-
-        $('#VerifyPerson-add').combogrid({
+        $('#OperatePersonCode').combogrid({
             disabled: false,
             width: 130,
             panelWidth: 340,
@@ -72,67 +20,52 @@
     }
 
     function searchClick() {
-        $('#dlg-search').dialog('open').dialog('setTitle', '出库单查询');
+        $('#dlg-search').dialog('open').dialog('setTitle', '查询');
         $("input[type=text]").attr("value", "");
     };
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.BillNo = $('#outBillNo').val();
-        queryParams.WarehouseName = $('#warehouseName').val();
-        queryParams.BillDate = $('#makeDate').val();
-        queryParams.OperatePersonName = $('#operatePerson').val();
+        queryParams.beginDate = $('#beginDate').datebox('getValue');
+        queryParams.endDate = $('#endDate').datebox('getValue');
+        queryParams.OperatePersonCode = $('#OperatePersonCode').val();
         queryParams.Status = $('#operateStatus').val();
-        queryParams.VerifyPersonName = $('#checkPerson').val();
-        queryParams.VerifyDate = $('#checkDate').val();
-        queryParams.Description = $('#masterRemark').val();
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
             pageSize: 10
-        });
+        }); 
         $("#details").datagrid('reload');
         $('#dlg-search').dialog('close');
     }
 
 </script>
 
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width:350px;height:380px;padding:2px 2px"
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:280px;height:240px;padding:2px 2px"
 		closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
 		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
-            <table align="left" width="300">
+            <table align="left" width="240">
               <tr>
-                <td width="60">出库单号:</td>
+                <td width="60" style="text-align:right">出库单号:</td>
                 <td><input id="outBillNo" type="text" style="width: 140px" /></td>
               </tr>
               <tr>
-                <td width="60">仓库名称:</td>
-                <td><input id="warehouseAdd" type="text" style="width: 140px" /></td>  
+                <td width="60" style="text-align:right">制单日期:</td>
+                <td><input id="beginDate" class="easyui-datebox" type="text" style="width: 140px" /></td>
+              </tr>
+               <tr>
+                <td width="60" style="text-align:right">至:</td>
+                <td><input id="endDate" class="easyui-datebox" style="width: 140px"/></td>
               </tr>
               <tr>
-                <td width="60">制单日期:</td>
-                <td><input id="makeDate_before" type="text" style="width: 90px" />&nbsp;至&nbsp;<input id="makeDate_later" style="width: 90px"/></td>
+                <td width="60" style="text-align:right">操 作 员:</td>
+                <td><input id="OperatePersonCode" type="text" style="width: 140px" /></td>
               </tr>
               <tr>
-                <td width="60">操 作 员:</td>
-                <td><input id="OperatePerson-add" type="text" style="width: 140px" /></td>
-              </tr>
-              <tr>
-                <td   width="60">处理状态:</td>
+                <td   width="60" style="text-align:right">处理状态:</td>
                 <td><input id="operateStatus" type="text" style="width: 140px" /></td>
-              </tr>
-              <tr>
-                <td   width="60">审 核 人:</td>
-                <td><input id="VerifyPerson-add" type="text" style="width: 140px"/></td>                
-              </tr>
-              <tr>
-                <td   width="60">审核日期:</td>
-                <td><input id="checkDate_before" type="text" style="width: 90px"/>&nbsp;至&nbsp;<input id="checkDate_later" style="width: 90px"/></td>
-              </tr>
-              <tr>
-                <td   width="60">№ 备 注:</td>
-                <td><textarea id="masterRemark" type="text" style="width: 160px; height: 40px"></textarea></td>
               </tr>
             </table>
         </div>

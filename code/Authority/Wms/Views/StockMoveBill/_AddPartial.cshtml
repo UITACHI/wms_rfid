@@ -1,0 +1,169 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $('#cc').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 100
+        });
+    })
+
+    function DataLoad() {
+        $('#wareHouseadd').combogrid({
+            required: true,
+            disabled: false,
+            width: 130,
+            panelWidth: 340,
+            url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
+            idField: 'WarehouseCode',
+            textField: 'WarehouseName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+                    { field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
+                    { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 30 },
+                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+                ]]
+        });
+
+        $('#biiTypeadd').combogrid({
+            required: true,
+            disabled: false,
+            width: 130,
+            panelWidth: 340,
+            url: '/StockInBill/GetBillTypeDetail/?BillClass=0003&IsActive=1',
+            idField: 'BillTypeCode',
+            textField: 'BillTypeName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+                    { field: 'BillTypeCode', title: '订单类型编码', align: 'left', width: 40 },
+                    { field: 'BillTypeName', title: '订单类型名称', align: 'left', width: 30 },
+                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+                ]]
+        });
+    }
+
+    function getTime() {
+        var d = new Date();
+        var vYear = d.getFullYear();
+        var vMon = d.getMonth() + 1;
+        var vDay = d.getDate();
+        var h = d.getHours();
+        var m = d.getMinutes();
+        t = vYear + "-" + (vMon < 10 ? "0" + vMon : vMon) + "-" + (vDay < 10 ? "0" + vDay : vDay) + " " + (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m);
+        return t;
+    }
+
+    function addClick() {
+        $('#billNo').attr("readonly", true);
+        $('#billDate').attr("readonly", true);
+        DataLoad();
+        $.getJSON("/StockMoveBill/GenMoveBillNo/", function (json) {
+            if (json) {
+                $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
+                $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
+                $('#fm').form('clear');
+                $('#billNo').val(json.BillNo);
+                $('#operatePersonName').val(json.employeeName);
+                billno = json.BillNo;
+                $('#billDate').val(getTime());
+                $('#fm .easyui-validatebox').validatebox({
+                    required: true
+                });
+                $('form input').removeAttr("disabled");
+                $('form textarea').removeAttr("disabled");
+                $('#btnAddBillDetail').css('display', 'inline'); //设置新增明细按钮的可见性
+                $('#btnDeleteBillDetail').css('display', 'inline'); //设置删除明细按钮的可见性
+                $('#btnEditBillDetail').css('display', 'inline'); //设置修改明细按钮的可见性
+                $('#cc').combo({
+                    hasDownArrow: true
+                });
+                url = '/StockInBill/Create/';
+                detailUrl = '/StockInBill/InBillDetailCreate/';
+            } else {
+                $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+            }
+        });
+    };
+
+</script>
+
+<div id="dlg" class="easyui-dialog" modal="true"
+        style="width:700px;height:500px;padding:0px 0px"
+        closed="true" buttons="#dlg-buttons">
+	<div class="easyui-layout" fit="true">
+        <div region="center" border="false">
+            <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="700" id="inBillDetail"
+                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="">
+                <thead>
+                    <tr>
+                        <th field="ID" width="100">细单ID</th>
+                        <th field="ProductCode" width="100">产品代码</th>
+                        <th field="ProductName" width="120" align="right">产品名称</th>
+                        <th field="UnitCode" width="80" align="right">单位编码</th>
+                        <th field="UnitName" width="80" align="right">单位名称</th>
+                        <th field="BillQuantity" width="60" align="right">数量</th>
+                        <th field="RealQuantity" width="80" align="right">实际入库量</th>
+                        <th field="Price" width="60" align="right">单价</th>
+                        <th field="Description" width="80" align="right">备注</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="dlg-detailButtons" style="width: auto; height: auto; background-color: #FFFFFF;">
+	<div border="false" style="padding:4px 4px;" >     
+	    <form id="fm" method="post" novalidate>
+            <table height="100px">
+                <tr>
+                <td width="60">订单号</td>
+                <td width="168"><input name="BillNo" id="billNo" readonly="true"></td>
+                <td width="60">制单日期</td>
+                <td width="168"><input name="BillDate" id="billDate" readonly="true"></td>
+                <td width="60">单据类型</td>
+                <td width="168"><input name="BillTypeCode" id="biiTypeadd" missingmessage="请选择订单类型"></td>
+                </tr>
+                <tr>
+                <td width="60">仓库编码</td>
+                <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
+                <td width="60">经办人</td>
+                <td width="168"><input name="OperatePersonName" readonly="true" id="operatePersonName">
+                <input name="OperatePersonID" readonly="true" id="operatePersonCode"style=" display:none"></td>
+                <td width="60">状态</td>
+                <td width="168"><input name="Status" readonly="true"></td>
+                </tr>
+                <tr>
+                <td width="60">审核人员</td>
+                <td width="168"><input name="VerifyPersonName" readonly="true"></td>
+                <td width="60">审核时间</td>
+                <td width="168"><input name="VerifyDate" readonly="true"></td>
+                <td width="60">描述</td>
+                <td width="168"><input name="Description"></td>
+                </tr>
+                <tr>
+                <td>状态:</td>
+                <td><select id="cc" name="IsActive" class="easyui-combobox" style="width: 100px">
+		                <option value="1">可用</option>
+		                <option value="0">不可用</option>
+	                </select>
+	            </td>
+                </tr>
+            </table>
+	    </form>
+    </div>
+    <div border="false" style="padding:4px 4px;" > 
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()" id="btnAddBillDetail">添加明细</a>
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteBillDetailClick()" id="btnDeleteBillDetail">删除明细</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBillDetailClick()" id="btnEditBillDetail">修改明细</a>
+    </div>
+</div>
+
+<div id="dlg-buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>

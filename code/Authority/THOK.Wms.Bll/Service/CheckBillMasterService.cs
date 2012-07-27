@@ -6,6 +6,7 @@ using THOK.Wms.DbModel;
 using THOK.Wms.Bll.Interfaces;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
+using System.Transactions;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -69,12 +70,14 @@ namespace THOK.Wms.Bll.Service
             var checkBillMasters = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode));
             if (!beginDate.Equals(string.Empty))
             {
-                checkBillMasters = checkBillMasters.Where(i => i.BillDate > Convert.ToDateTime(beginDate));
+                DateTime begin = Convert.ToDateTime(beginDate);
+                checkBillMasters = checkBillMasters.Where(i => i.BillDate >= begin);
             }
 
             if (!endDate.Equals(string.Empty))
             {
-                checkBillMasters = checkBillMasters.Where(i => i.BillDate < Convert.ToDateTime(endDate));
+                DateTime end = Convert.ToDateTime(endDate).AddDays(+1);
+                checkBillMasters = checkBillMasters.Where(i => i.BillDate <= end);
             }
 
             if (!Status.Equals(string.Empty))
@@ -257,154 +260,178 @@ namespace THOK.Wms.Bll.Service
         /// <param name="cell">货位</param>
         /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
-        public bool CellAdd(string ware, string area, string shelf, string cell, string UserName)
+        public bool CellAdd(string ware, string area, string shelf, string cell, string UserName, out string info)
         {
             bool result = false;
+            info = string.Empty;
             IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(e => e.UserName == UserName);
             if (employee != null)
             {
-                #region ware 这个有值，就把这个值里面所有的仓库的货位的储存信息生成盘点单，一个仓库一个盘点单据
-
-                if (ware != null && ware != string.Empty)
+                try
                 {
-                    ware = ware.Substring(0, ware.Length - 1);
-                    var wares = wareQuery.Where(w => ware.Contains(w.WarehouseCode));
-
-                    foreach (var item in wares.ToArray())
+                    using (var scope = new TransactionScope())
                     {
-                        var storages = storageQuery.Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
-                                                   .OrderBy(s => s.StorageCode).AsEnumerable()
-                                                   .Select(s => new
-                                                   {
-                                                       s.StorageCode,
-                                                       s.Cell.CellCode,
-                                                       s.Cell.CellName,
-                                                       s.IsLock,
-                                                       s.Product.ProductCode,
-                                                       s.Product.ProductName,
-                                                       s.Product.Unit.UnitCode,
-                                                       s.Product.Unit.UnitName,
-                                                       Quantity = s.Quantity / s.Product.Unit.Count,
-                                                       IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                                       StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                                       UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                                   });
-                        if (storages.Count() > 0)
+                        #region ware 这个有值，就把这个值里面所有的仓库的货位的储存信息生成盘点单，一个仓库一个盘点单据
+
+                        if (ware != null && ware != string.Empty)
                         {
-                            string billNo = GetCheckBillNo().ToString();
-                            var check = new CheckBillMaster();
-                            check.BillNo = billNo;
-                            check.BillDate = DateTime.Now;
-                            check.BillTypeCode = "1";
-                            check.WarehouseCode =item.WarehouseCode;
-                            check.OperatePersonID = employee.ID;
-                            check.Status = "1";
-                            check.IsActive = "1";
-                            check.UpdateTime = DateTime.Now;
+                            ware = ware.Substring(0, ware.Length - 1);
+                            var wares = wareQuery.Where(w => ware.Contains(w.WarehouseCode));
 
-                            CheckBillMasterRepository.Add(check);
-                            CheckBillMasterRepository.SaveChanges();
-
-                            foreach (var stor in storages.ToArray())
+                            foreach (var item in wares.ToArray())
                             {
-                                var checkDetail = new CheckBillDetail();
-                                checkDetail.BillNo = billNo;
-                                checkDetail.CellCode = stor.CellCode;
-                                checkDetail.StorageCode = stor.StorageCode;
-                                checkDetail.ProductCode = stor.ProductCode;
-                                checkDetail.UnitCode = stor.UnitCode;
-                                checkDetail.Quantity = stor.Quantity;
-                                checkDetail.RealProductCode = stor.ProductCode;
-                                checkDetail.RealUnitCode = stor.UnitCode;
-                                checkDetail.RealQuantity = stor.Quantity;
-                                checkDetail.Status = "1";
+                                var storages = storageQuery.Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
+                                                           .OrderBy(s => s.StorageCode).AsEnumerable()
+                                                           .Select(s => new
+                                                           {
+                                                               s.StorageCode,
+                                                               s.Cell.CellCode,
+                                                               s.Cell.CellName,
+                                                               s.IsLock,
+                                                               s.Product.ProductCode,
+                                                               s.Product.ProductName,
+                                                               s.Product.Unit.UnitCode,
+                                                               s.Product.Unit.UnitName,
+                                                               Quantity = s.Quantity / s.Product.Unit.Count,
+                                                               IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                                               StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                                               UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                                           });
+                                if (storages.Count() > 0)
+                                {
+                                    string billNo = GetCheckBillNo().ToString();
+                                    var check = new CheckBillMaster();
+                                    check.BillNo = billNo;
+                                    check.BillDate = DateTime.Now;
+                                    check.BillTypeCode = "1";
+                                    check.WarehouseCode = item.WarehouseCode;
+                                    check.OperatePersonID = employee.ID;
+                                    check.Status = "1";
+                                    check.IsActive = "1";
+                                    check.UpdateTime = DateTime.Now;
 
-                                CheckBillDetailRepository.Add(checkDetail);
-                                CheckBillDetailRepository.SaveChanges();
+                                    CheckBillMasterRepository.Add(check);
+                                    CheckBillMasterRepository.SaveChanges();
 
-                                var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
-                                storage.IsLock = "1";
-                                StorageRepository.SaveChanges();                                
+                                    foreach (var stor in storages.ToArray())
+                                    {
+                                        var checkDetail = new CheckBillDetail();
+                                        checkDetail.BillNo = billNo;
+                                        checkDetail.CellCode = stor.CellCode;
+                                        checkDetail.StorageCode = stor.StorageCode;
+                                        checkDetail.ProductCode = stor.ProductCode;
+                                        checkDetail.UnitCode = stor.UnitCode;
+                                        checkDetail.Quantity = stor.Quantity;
+                                        checkDetail.RealProductCode = stor.ProductCode;
+                                        checkDetail.RealUnitCode = stor.UnitCode;
+                                        checkDetail.RealQuantity = stor.Quantity;
+                                        checkDetail.Status = "1";
+
+                                        CheckBillDetailRepository.Add(checkDetail);
+                                        CheckBillDetailRepository.SaveChanges();
+
+                                        var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
+                                        storage.IsLock = "1";
+                                        StorageRepository.SaveChanges();
+                                    }
+                                    result = true;
+                                }
+                                else
+                                {
+                                    info = "所选择的货位无数据！";
+                                }
                             }
-                            result = true;
                         }
+                        #endregion
+
+                        #region ware 这个无值，把全部仓库里面包含area，shelf，cell的数据生成盘点单，一个仓库一个盘点单据
+
+                        if (area != null && area != string.Empty || shelf != null && shelf != string.Empty || cell != null && cell != string.Empty)
+                        {
+                            if (area != string.Empty)
+                                area = area.Substring(0, area.Length - 1);
+                            if (shelf != string.Empty)
+                                shelf = shelf.Substring(0, shelf.Length - 1);
+                            if (cell != string.Empty)
+                                cell = cell.Substring(0, cell.Length - 1);
+
+                            var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
+
+                            foreach (var item in warehouses.ToArray())
+                            {
+                                var storages = storageQuery.ToList().Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && (area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)) && s.Quantity > 0 && s.IsLock == "0")
+                                                           .OrderBy(s => s.StorageCode).AsEnumerable()
+                                                           .Select(s => new
+                                                           {
+                                                               s.StorageCode,
+                                                               s.Cell.CellCode,
+                                                               s.Cell.CellName,
+                                                               s.Product.ProductCode,
+                                                               s.Product.ProductName,
+                                                               s.Product.Unit.UnitCode,
+                                                               s.Product.Unit.UnitName,
+                                                               Quantity = s.Quantity / s.Product.Unit.Count,
+                                                               IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                                               StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                                               UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                                           });
+                                if (storages.Count() > 0)
+                                {
+                                    string billNo = GetCheckBillNo().ToString();
+                                    var check = new CheckBillMaster();
+                                    check.BillNo = billNo;
+                                    check.BillDate = DateTime.Now;
+                                    check.BillTypeCode = "1";
+                                    check.WarehouseCode = item.WarehouseCode;
+                                    check.OperatePersonID = employee.ID;
+                                    check.Status = "1";
+                                    check.IsActive = "1";
+                                    check.UpdateTime = DateTime.Now;
+
+                                    CheckBillMasterRepository.Add(check);
+                                    CheckBillMasterRepository.SaveChanges();
+
+                                    foreach (var stor in storages.ToArray())
+                                    {
+                                        var checkDetail = new CheckBillDetail();
+                                        checkDetail.BillNo = billNo;
+                                        checkDetail.CellCode = stor.CellCode;
+                                        checkDetail.StorageCode = stor.StorageCode;
+                                        checkDetail.ProductCode = stor.ProductCode;
+                                        checkDetail.UnitCode = stor.UnitCode;
+                                        checkDetail.Quantity = stor.Quantity;
+                                        checkDetail.RealProductCode = stor.ProductCode;
+                                        checkDetail.RealUnitCode = stor.UnitCode;
+                                        checkDetail.RealQuantity = stor.Quantity;
+                                        checkDetail.Status = "1";
+                                        CheckBillDetailRepository.Add(checkDetail);
+                                        CheckBillDetailRepository.SaveChanges();
+
+                                        var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
+                                        storage.IsLock = "1";
+                                        StorageRepository.SaveChanges();
+                                    }
+                                    result = true;
+                                }
+                            }
+
+                        }
+                        #endregion
+
+                        scope.Complete();
                     }
                 }
-
-                #endregion
-
-                #region ware 这个无值，把全部仓库里面包含area，shelf，cell的数据生成盘点单，一个仓库一个盘点单据
-
-                if (area != null && area != string.Empty || shelf != null && shelf != string.Empty || cell != null && cell != string.Empty)
+                catch (Exception e)
                 {
-                    if (area != string.Empty)
-                        area = area.Substring(0, area.Length - 1);
-                    if (shelf != string.Empty)
-                        shelf = shelf.Substring(0, shelf.Length - 1);
-                    if (cell != string.Empty)
-                        cell = cell.Substring(0, cell.Length - 1);
-
-                    var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
-
-                    foreach (var item in warehouses.ToArray())
-                    {
-                        var storages = storageQuery.ToList().Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && (area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)) && s.Quantity > 0 && s.IsLock == "0")
-                                                   .OrderBy(s => s.StorageCode).AsEnumerable()
-                                                   .Select(s => new
-                                                   {
-                                                       s.StorageCode,
-                                                       s.Cell.CellCode,
-                                                       s.Cell.CellName,
-                                                       s.Product.ProductCode,
-                                                       s.Product.ProductName,
-                                                       s.Product.Unit.UnitCode,
-                                                       s.Product.Unit.UnitName,
-                                                       Quantity = s.Quantity / s.Product.Unit.Count,
-                                                       IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                                       StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                                       UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                                   });
-                        if (storages.Count() > 0)
-                        {
-                            string billNo = GetCheckBillNo().ToString();
-                            var check = new CheckBillMaster();
-                            check.BillNo = billNo;
-                            check.BillDate = DateTime.Now;
-                            check.BillTypeCode = "1";
-                            check.WarehouseCode = item.WarehouseCode;
-                            check.OperatePersonID = employee.ID;
-                            check.Status = "1";
-                            check.IsActive = "1";
-                            check.UpdateTime = DateTime.Now;
-
-                            CheckBillMasterRepository.Add(check);
-                            CheckBillMasterRepository.SaveChanges();
-
-                            foreach (var stor in storages.ToArray())
-                            {
-                                var checkDetail = new CheckBillDetail();
-                                checkDetail.BillNo = billNo;
-                                checkDetail.CellCode = stor.CellCode;
-                                checkDetail.StorageCode = stor.StorageCode;
-                                checkDetail.ProductCode = stor.ProductCode;
-                                checkDetail.UnitCode = stor.UnitCode;
-                                checkDetail.Quantity = stor.Quantity;
-                                checkDetail.RealProductCode = stor.ProductCode;
-                                checkDetail.RealUnitCode = stor.UnitCode;
-                                checkDetail.RealQuantity = stor.Quantity;
-                                checkDetail.Status = "1";
-                                CheckBillDetailRepository.Add(checkDetail);
-                                CheckBillDetailRepository.SaveChanges();
-                            }
-                            result = true;
-                        }
-                    }
+                    info = e.Message;
                 }
-
-                #endregion
             }
+            else
+            {
+                info = "当前登陆用户为空！请重新登陆！";
+            } 
             return result;
         }
 
@@ -451,9 +478,10 @@ namespace THOK.Wms.Bll.Service
         /// <param name="products">产品数据</param>
         /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
-        public bool ProductAdd(string products, string UserName)
+        public bool ProductAdd(string products, string UserName, out string info)
         {
             bool result = false;
+            info = string.Empty;
             IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(e => e.UserName == UserName);
@@ -462,66 +490,89 @@ namespace THOK.Wms.Bll.Service
                 if (products != null && products != string.Empty)
                 {
                     products = products.Substring(0, products.Length - 1);
-
-                    #region products 这个有值，就把这个值里面所有的卷烟信息所在的仓库的货位的储存信息生成盘点单，一个仓库一个盘点单据
-
-                    var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
-                    foreach (var item in warehouses.ToArray())
+                    try
                     {
-                        var storages = storageQuery.Where(s => products.Contains(s.Product.ProductCode) && s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
-                                                   .OrderBy(s => s.StorageCode).AsEnumerable()
-                                                   .Select(s => new
-                                                    {
-                                                        s.StorageCode,
-                                                        s.Cell.CellCode,
-                                                        s.Cell.CellName,
-                                                        s.Product.ProductCode,
-                                                        s.Product.ProductName,
-                                                        s.Product.Unit.UnitCode,
-                                                        s.Product.Unit.UnitName,
-                                                        Quantity = s.Quantity / s.Product.Unit.Count,
-                                                        IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                                        StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                                        UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                                    });
-                        if (storages.Count() > 0)
+                        #region products 这个有值，就把这个值里面所有的卷烟信息所在的仓库的货位的储存信息生成盘点单，一个仓库一个盘点单据
+                        using (var scope = new TransactionScope())
                         {
-                            string billNo = GetCheckBillNo().ToString();
-                            var check = new CheckBillMaster();
-                            check.BillNo = billNo;
-                            check.BillDate = DateTime.Now;
-                            check.BillTypeCode = "1";
-                            check.WarehouseCode = item.WarehouseCode;
-                            check.OperatePersonID = employee.ID;
-                            check.Status = "1";
-                            check.IsActive = "1";
-                            check.UpdateTime = DateTime.Now;
-
-                            CheckBillMasterRepository.Add(check);
-                            CheckBillMasterRepository.SaveChanges();
-
-                            foreach (var stor in storages.ToArray())
+                            var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
+                            foreach (var item in warehouses.ToArray())
                             {
-                                var checkDetail = new CheckBillDetail();
-                                checkDetail.BillNo = billNo;
-                                checkDetail.CellCode = stor.CellCode;
-                                checkDetail.StorageCode = stor.StorageCode;
-                                checkDetail.ProductCode = stor.ProductCode;
-                                checkDetail.UnitCode = stor.UnitCode;
-                                checkDetail.Quantity = stor.Quantity;
-                                checkDetail.RealProductCode = stor.ProductCode;
-                                checkDetail.RealUnitCode = stor.UnitCode;
-                                checkDetail.RealQuantity = stor.Quantity;
-                                checkDetail.Status = "1";
-                                CheckBillDetailRepository.Add(checkDetail);
-                                CheckBillDetailRepository.SaveChanges();
-                            }
-                            result = true;
-                        }
-                    }
+                                var storages = storageQuery.Where(s => products.Contains(s.Product.ProductCode) && s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
+                                                           .OrderBy(s => s.StorageCode).AsEnumerable()
+                                                           .Select(s => new
+                                                            {
+                                                                s.StorageCode,
+                                                                s.Cell.CellCode,
+                                                                s.Cell.CellName,
+                                                                s.Product.ProductCode,
+                                                                s.Product.ProductName,
+                                                                s.Product.Unit.UnitCode,
+                                                                s.Product.Unit.UnitName,
+                                                                Quantity = s.Quantity / s.Product.Unit.Count,
+                                                                IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                                                StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                                                UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                                            });
+                                if (storages.Count() > 0)
+                                {
+                                    string billNo = GetCheckBillNo().ToString();
+                                    var check = new CheckBillMaster();
+                                    check.BillNo = billNo;
+                                    check.BillDate = DateTime.Now;
+                                    check.BillTypeCode = "1";
+                                    check.WarehouseCode = item.WarehouseCode;
+                                    check.OperatePersonID = employee.ID;
+                                    check.Status = "1";
+                                    check.IsActive = "1";
+                                    check.UpdateTime = DateTime.Now;
 
-                    #endregion
+                                    CheckBillMasterRepository.Add(check);
+                                    CheckBillMasterRepository.SaveChanges();
+
+                                    foreach (var stor in storages.ToArray())
+                                    {
+                                        var checkDetail = new CheckBillDetail();
+                                        checkDetail.BillNo = billNo;
+                                        checkDetail.CellCode = stor.CellCode;
+                                        checkDetail.StorageCode = stor.StorageCode;
+                                        checkDetail.ProductCode = stor.ProductCode;
+                                        checkDetail.UnitCode = stor.UnitCode;
+                                        checkDetail.Quantity = stor.Quantity;
+                                        checkDetail.RealProductCode = stor.ProductCode;
+                                        checkDetail.RealUnitCode = stor.UnitCode;
+                                        checkDetail.RealQuantity = stor.Quantity;
+                                        checkDetail.Status = "1";
+                                        CheckBillDetailRepository.Add(checkDetail);
+                                        CheckBillDetailRepository.SaveChanges();
+
+                                        var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
+                                        storage.IsLock = "1";
+                                        StorageRepository.SaveChanges();
+                                    }
+                                    result = true;
+                                }
+                                else {
+                                    info = "所选择的产品无数据！";
+                                }
+                            }
+                            scope.Complete();
+                        }
+                        #endregion
+                    }
+                    catch (Exception e)
+                    {
+                        info = e.Message;
+                    }
                 }
+                else
+                {
+                    info = "产品信息为空！无法生成！";
+                }
+            }
+            else
+            {
+                info = "当前登陆用户为空！请重新登陆！";
             }
             return result;
         }
@@ -583,9 +634,10 @@ namespace THOK.Wms.Bll.Service
         /// <param name="endDate">结束时间</param>
         /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
-        public bool ChangedAdd(string beginDate, string endDate, string UserName)
+        public bool ChangedAdd(string beginDate, string endDate, string UserName, out string info)
         {
             bool result = false;
+            info = string.Empty;
             IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
             IQueryable<InBillAllot> inAllotQuery = InBillAllotRepository.GetQueryable();
@@ -604,69 +656,84 @@ namespace THOK.Wms.Bll.Service
                 }
                 DateTime begin = Convert.ToDateTime(beginDate);
                 DateTime end = Convert.ToDateTime(endDate);
-
-                #region 循环所有仓库的订单，一个仓库一个盘点单据
-
-                var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
-                foreach (var item in warehouses.ToArray())
+                try
                 {
-                    var inCells = inAllotQuery.Where(i => i.FinishTime >= begin && i.FinishTime <= end && i.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(i => i.CellCode).Select(i => i.CellCode);
-                    var outCells = outAllotQuery.Where(o => o.FinishTime >= begin && o.FinishTime <= end && o.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(o => o.CellCode).Select(o => o.CellCode);
-                    var moveInCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end && m.InCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.InCell.CellCode).Select(m => m.InCell.CellCode);
-                    var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end && m.OutCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.OutCell.CellCode).Select(m => m.OutCell.CellCode);
-                    var storages = storageQuery.ToList().Where(s => s.Quantity > 0 && s.IsLock == "0" && (inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode)))
-                                               .OrderBy(s => s.ProductCode).AsEnumerable()
-                                               .Select(s => new
-                                               {
-                                                   s.StorageCode,
-                                                   s.Cell.CellCode,
-                                                   s.Cell.CellName,
-                                                   s.Product.ProductCode,
-                                                   s.Product.ProductName,
-                                                   s.Product.Unit.UnitCode,
-                                                   s.Product.Unit.UnitName,
-                                                   Quantity = s.Quantity / s.Product.Unit.Count,
-                                                   IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                                   StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                                   UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                               });
-                    if (storages.Count() > 0)
+                    #region 循环所有仓库的订单，一个仓库一个盘点单据
+                    using (var scope = new TransactionScope())
                     {
-                        string billNo = GetCheckBillNo().ToString();
-                        var check = new CheckBillMaster();
-                        check.BillNo = billNo;
-                        check.BillDate = DateTime.Now;
-                        check.BillTypeCode = "1";
-                        check.WarehouseCode = item.WarehouseCode;
-                        check.OperatePersonID = employee.ID;
-                        check.Status = "1";
-                        check.IsActive = "1";
-                        check.UpdateTime = DateTime.Now;
-
-                        CheckBillMasterRepository.Add(check);
-                        CheckBillMasterRepository.SaveChanges();
-
-                        foreach (var stor in storages.ToArray())
+                        var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
+                        foreach (var item in warehouses.ToArray())
                         {
-                            var checkDetail = new CheckBillDetail();
-                            checkDetail.BillNo = billNo;
-                            checkDetail.CellCode = stor.CellCode;
-                            checkDetail.StorageCode = stor.StorageCode;
-                            checkDetail.ProductCode = stor.ProductCode;
-                            checkDetail.UnitCode = stor.UnitCode;
-                            checkDetail.Quantity = stor.Quantity;
-                            checkDetail.RealProductCode = stor.ProductCode;
-                            checkDetail.RealUnitCode = stor.UnitCode;
-                            checkDetail.RealQuantity = stor.Quantity;
-                            checkDetail.Status = "1";
-                            CheckBillDetailRepository.Add(checkDetail);
-                            CheckBillDetailRepository.SaveChanges();
-                        }
-                        result = true;
-                    }
-                }
+                            var inCells = inAllotQuery.Where(i => i.FinishTime >= begin && i.FinishTime <= end && i.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(i => i.CellCode).Select(i => i.CellCode);
+                            var outCells = outAllotQuery.Where(o => o.FinishTime >= begin && o.FinishTime <= end && o.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(o => o.CellCode).Select(o => o.CellCode);
+                            var moveInCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end && m.InCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.InCell.CellCode).Select(m => m.InCell.CellCode);
+                            var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end && m.OutCell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode).OrderBy(m => m.OutCell.CellCode).Select(m => m.OutCell.CellCode);
+                            var storages = storageQuery.ToList().Where(s => s.Quantity > 0 && s.IsLock == "0" && (inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode)))
+                                                       .OrderBy(s => s.ProductCode).AsEnumerable()
+                                                       .Select(s => new
+                                                       {
+                                                           s.StorageCode,
+                                                           s.Cell.CellCode,
+                                                           s.Cell.CellName,
+                                                           s.Product.ProductCode,
+                                                           s.Product.ProductName,
+                                                           s.Product.Unit.UnitCode,
+                                                           s.Product.Unit.UnitName,
+                                                           Quantity = s.Quantity / s.Product.Unit.Count,
+                                                           IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                                                           StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                                                           UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                                                       });
+                            if (storages.Count() > 0)
+                            {
+                                string billNo = GetCheckBillNo().ToString();
+                                var check = new CheckBillMaster();
+                                check.BillNo = billNo;
+                                check.BillDate = DateTime.Now;
+                                check.BillTypeCode = "1";
+                                check.WarehouseCode = item.WarehouseCode;
+                                check.OperatePersonID = employee.ID;
+                                check.Status = "1";
+                                check.IsActive = "1";
+                                check.UpdateTime = DateTime.Now;
 
-                #endregion
+                                CheckBillMasterRepository.Add(check);
+                                CheckBillMasterRepository.SaveChanges();
+
+                                foreach (var stor in storages.ToArray())
+                                {
+                                    var checkDetail = new CheckBillDetail();
+                                    checkDetail.BillNo = billNo;
+                                    checkDetail.CellCode = stor.CellCode;
+                                    checkDetail.StorageCode = stor.StorageCode;
+                                    checkDetail.ProductCode = stor.ProductCode;
+                                    checkDetail.UnitCode = stor.UnitCode;
+                                    checkDetail.Quantity = stor.Quantity;
+                                    checkDetail.RealProductCode = stor.ProductCode;
+                                    checkDetail.RealUnitCode = stor.UnitCode;
+                                    checkDetail.RealQuantity = stor.Quantity;
+                                    checkDetail.Status = "1";
+                                    CheckBillDetailRepository.Add(checkDetail);
+                                    CheckBillDetailRepository.SaveChanges();
+
+                                    var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
+                                    storage.IsLock = "1";
+                                    StorageRepository.SaveChanges();
+                                }
+                                result = true;
+                            }
+                            else {
+                                info = "所选择查询的时间无数据！";
+                            }
+                        }
+                        scope.Complete();
+                    }
+                    #endregion
+                }
+                catch (Exception e)
+                {
+                    info = e.Message;
+                }
             }
             return result;
         }
