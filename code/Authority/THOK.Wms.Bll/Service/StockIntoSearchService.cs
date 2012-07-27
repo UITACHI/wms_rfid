@@ -28,10 +28,10 @@ namespace THOK.Wms.Bll.Service
                 i.BillNo, 
                 i.Warehouse.WarehouseName,
                 BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
-                OperatePersonName = i.OperatePerson.EmployeeName, 
+                OperatePersonName = i.OperatePerson.EmployeeName,
                 i.OperatePersonID,
                 Status = i.Status == "1" ? "可用" : "不可用",
-                VerifyPersonName = i.VerifyPerson.EmployeeName,
+                VerifyPersonName = i.VerifyPerson.EmployeeName == "" ? " " :i.VerifyPerson.EmployeeName ,
                 i.VerifyDate,
                 Description = i.Description, 
                 UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
