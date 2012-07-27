@@ -1,6 +1,9 @@
 ﻿<script type="text/javascript">
-    function changedChecckSearch() { 
-        
+    function changedChecckSearch() {
+        begin = $('#beginDate').datebox('getValue');
+        end = $('#endDate').datebox('getValue');
+        $('#chanedCheckTable').datagrid('options').url = '/CheckBill/CheckChangedDetails/?beginDate=' + begin + '&endDate=' + end;
+        $('#chanedCheckTable').datagrid('load');
     }
     
 </script>
@@ -39,7 +42,7 @@
             </thead>
         </table>
 <div id="bar" style="width: auto; height: auto; background-color: #FFFFFF;">时间：
-    <input id="beginDate" class="easyui-datebox" />至时间：
-    <input id="endDate" class="easyui-datebox" />
+    <input id="beginDate" class="easyui-datebox" style="width:120px" />至时间：
+    <input id="endDate" class="easyui-datebox" style="width:120px"/>
     <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="changedChecckSearch()">查询</a>
 </div>

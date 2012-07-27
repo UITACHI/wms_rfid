@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    var cellCheckParameter, ware, area, shelf, cell, productCheckParameter, beginDate, endDate;
+    var cellCheckParameter, ware, area, shelf, cell, productCheckParameter, begin, end;
     //新增
     function addClick() {
         addLoad();
@@ -12,8 +12,6 @@
         $('#productTable').datagrid({ url: '/Product/FindProduct/' }); //加载产品数据
         $('#checkProductTable').datagrid('loadData', { total: 0, rows: [] }); //清空盘点的卷烟
         $('#chanedCheckTable').datagrid({ url: '/CheckBill/CheckChangedDetails/' }); //加载异动数据
-        $('#beginDate').datebox('setValue', '');
-        $('#endDate').datebox('setValue', '');
     }
 
     function DataLoad() {
@@ -64,19 +62,23 @@
                 }
             }
         });
-//        $('#checkTabs').tabs({
-//            onSelect: function (title) {
-//                if (title == "货位盘点") {
-//                    
-//                } else if (title == "产品盘点") {
+        $('#checkTabs').tabs({
+            onSelect: function (title) {
+                if (title == "货位盘点") {
 
-//                } else if (title == "异动盘点") {
-//                    
-//                } else {
-//                    $.messager.confirm('错误', '请选关闭页面重新打开或重新选择类型盘点！');
-//                }
-//            }
-//        });
+                } else if (title == "产品盘点") {
+
+                } else if (title == "异动盘点") {
+                    $('#beginDate').datebox('setValue', "");
+                    $('#endDate').datebox('setValue', "");
+                    $('#beginDate').datebox({ editable: false });
+                    $('#endDate').datebox({ editable: false });
+                    alert(1);
+                } else {
+                    $.messager.confirm('错误', '请选关闭页面重新打开或重新选择类型盘点！');
+                }
+            }
+        });
     }
 
     //预览盘点数据
@@ -138,10 +140,10 @@
                 $.messager.confirm('错误', '请选择需盘点的产品！');
             }
         } else if (tabsRow.panel('options').id == "changedCheck") {//选择异动盘点
-            beginDate = $('#beginDate').datebox('getValue');
-            endDate = $('#endDate').datebox('getValue');
+            begin = $('#beginDate').datebox('getValue');
+            end = $('#endDate').datebox('getValue');
 
-            $('#nextShowTable').datagrid('options').url = '/CheckBill/CheckChangedDetails/?beginDate=' + beginDate + '&endDate=' + endDate;
+            $('#nextShowTable').datagrid('options').url = '/CheckBill/CheckChangedDetails/?beginDate=' + begin + '&endDate=' + end;
             $('#nextShowTable').datagrid('load');
             $('#nextShowDiv').dialog('open').dialog('setTitle', '产品盘点数据预览');
         } else {
