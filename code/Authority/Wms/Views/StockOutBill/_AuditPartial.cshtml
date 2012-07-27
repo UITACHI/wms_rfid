@@ -5,6 +5,7 @@
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法审核！');
             } else {
+                DataLoad();
                 isOutBillMasterAdd = false;
                 isShowOutBillDetail = true;
                 $('#centerShowDiv').css({ display: "none" });

@@ -305,7 +305,7 @@ namespace THOK.Wms.Bll.Service
                                     var check = new CheckBillMaster();
                                     check.BillNo = billNo;
                                     check.BillDate = DateTime.Now;
-                                    check.BillTypeCode = "1";
+                                    check.BillTypeCode = "4001";
                                     check.WarehouseCode = item.WarehouseCode;
                                     check.OperatePersonID = employee.ID;
                                     check.Status = "1";
@@ -383,7 +383,7 @@ namespace THOK.Wms.Bll.Service
                                     var check = new CheckBillMaster();
                                     check.BillNo = billNo;
                                     check.BillDate = DateTime.Now;
-                                    check.BillTypeCode = "1";
+                                    check.BillTypeCode = "4001";
                                     check.WarehouseCode = item.WarehouseCode;
                                     check.OperatePersonID = employee.ID;
                                     check.Status = "1";
@@ -520,7 +520,7 @@ namespace THOK.Wms.Bll.Service
                                     var check = new CheckBillMaster();
                                     check.BillNo = billNo;
                                     check.BillDate = DateTime.Now;
-                                    check.BillTypeCode = "1";
+                                    check.BillTypeCode = "4001";
                                     check.WarehouseCode = item.WarehouseCode;
                                     check.OperatePersonID = employee.ID;
                                     check.Status = "1";
@@ -690,7 +690,7 @@ namespace THOK.Wms.Bll.Service
                                 var check = new CheckBillMaster();
                                 check.BillNo = billNo;
                                 check.BillDate = DateTime.Now;
-                                check.BillTypeCode = "1";
+                                check.BillTypeCode = "4001";
                                 check.WarehouseCode = item.WarehouseCode;
                                 check.OperatePersonID = employee.ID;
                                 check.Status = "1";

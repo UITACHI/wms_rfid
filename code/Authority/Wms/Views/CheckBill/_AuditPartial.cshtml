@@ -5,6 +5,7 @@
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法审核！');
             } else {
+                DataLoad();
                 $('#checkdlg').dialog('open').dialog('setTitle', '审核盘点主单信息');
                 $('#checkBillDeatilShow').datagrid({ url: '/CheckBill/CheckBillDetails/?BillNo=' + row.BillNo }); //加载明细                
                 $('form input').attr("disabled", "disabled");

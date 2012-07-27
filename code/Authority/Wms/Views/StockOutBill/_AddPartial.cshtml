@@ -29,14 +29,13 @@
                     { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
                 ]]
         });
-
         
         $('#biiTypeadd').combogrid({
             required: true,
             disabled: false,
             width: 130,
             panelWidth: 340,
-            url: '/StockInBill/GetBillTypeDetail/?BillClass=0001&IsActive=1',
+            url: '/StockInBill/GetBillTypeDetail/?BillClass=0002&IsActive=1',
             idField: 'BillTypeCode',
             textField: 'BillTypeName',
             mode: 'local',
@@ -264,15 +263,15 @@
                 <thead>
                     <tr>
                         <th field="ID"  hidden="true" width="100">细表ID</th>
-                        <th field="BillNo"  width="120" align="right">单据号</th>
-                        <th field="ProductCode" width="100">产品代码</th>
-                        <th field="ProductName" width="80" align="right">产品名称</th>
-                        <th field="UnitCode" width="80" align="right">单位编码</th>
-                        <th field="UnitName" width="80" align="right">单位名称</th>
-                        <th field="BillQuantity" width="80" align="right">数量</th>
-                        <th field="RealQuantity" width="80" align="right">实际出库量</th>
-                        <th field="Price" width="80" align="right">单价</th>
-                        <th field="Description" width="80" align="right">备注</th>
+                        <th field="BillNo"  width="120" align="left">单据号</th>
+                        <th field="ProductCode" width="100" align="left">产品代码</th>
+                        <th field="ProductName" width="80" align="left">产品名称</th>
+                        <th field="UnitCode" width="80" align="left">单位编码</th>
+                        <th field="UnitName" width="80" align="left">单位名称</th>
+                        <th field="BillQuantity" width="80" align="left">数量</th>
+                        <th field="RealQuantity" width="80" align="left">实际出库量</th>
+                        <th field="Price" width="80" align="left">单价</th>
+                        <th field="Description" width="80" align="left">备注</th>
                     </tr>
                 </thead>
             </table>
