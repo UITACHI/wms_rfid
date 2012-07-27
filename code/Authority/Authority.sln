@@ -25,6 +25,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wms", "Wms\Wms.csproj", "{B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THOK.Wms.Allot", "THOK.Wms.Allot\THOK.Wms.Allot.csproj", "{330D59D0-3B57-4F12-BB7D-49AF46DCD46D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{47999AD9-AB42-4E2D-8C04-E10117107561}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\doc\Cshap.doc = ..\..\doc\Cshap.doc
+		..\..\doc\Hardware.doc = ..\..\doc\Hardware.doc
+		..\..\doc\menu.txt = ..\..\doc\menu.txt
+		..\..\doc\new_data.doc = ..\..\doc\new_data.doc
+		..\..\doc\old_data.vsd = ..\..\doc\old_data.vsd
+		..\..\doc\zyxxb.xls = ..\..\doc\zyxxb.xls
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
