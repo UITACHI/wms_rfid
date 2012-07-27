@@ -37,7 +37,7 @@ namespace THOK.Wms.Bll.Service
         public bool Add(OutBillDetail outBillDetail)
         {
             IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
-            var isExistProduct = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode);
+            var isExistProduct = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode&&i.UnitCode==outBillDetail.UnitCode);
             if (isExistProduct == null)
             {
                 var ibd = new OutBillDetail();
@@ -55,8 +55,7 @@ namespace THOK.Wms.Bll.Service
             }
             else
             {
-                var ibd = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode);
-                ibd.BillQuantity = ibd.BillQuantity + outBillDetail.BillQuantity;
+                isExistProduct.BillQuantity = isExistProduct.BillQuantity + outBillDetail.BillQuantity;
                 OutBillDetailRepository.SaveChanges();
             }
             return true;
