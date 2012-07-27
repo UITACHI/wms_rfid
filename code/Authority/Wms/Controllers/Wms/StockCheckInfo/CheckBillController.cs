@@ -48,27 +48,30 @@ namespace Authority.Controllers.Wms.StockCheckInfo
         // POST: /CheckBill/CheckCellCreate/       
         public ActionResult CheckCellCreate(string wareCodes, string areaCodes, string shelfCodes, string cellCodes)
         {
-            bool bResult = CheckBillMasterService.CellAdd(wareCodes, areaCodes, shelfCodes, cellCodes,this.User.Identity.Name.ToString());
-            string msg = bResult ? "新增成功" : "新增失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            string info = string.Empty;
+            bool bResult = CheckBillMasterService.CellAdd(wareCodes, areaCodes, shelfCodes, cellCodes,this.User.Identity.Name.ToString(),out info);
+            string msg = bResult ? "新增成功" : "新增失败";            
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, info), "text", JsonRequestBehavior.AllowGet);
         }
 
         //根据产品生成盘点单主表和细表数据
         // POST: /CheckBill/CheckProductCreate/       
         public ActionResult CheckProductCreate(string products)
         {
-            bool bResult = CheckBillMasterService.ProductAdd(products, this.User.Identity.Name.ToString());
+            string info = string.Empty;
+            bool bResult = CheckBillMasterService.ProductAdd(products, this.User.Identity.Name.ToString(), out info);
             string msg = bResult ? "新增成功" : "新增失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, info), "text", JsonRequestBehavior.AllowGet);
         }
 
         //根据产品生成盘点单主表和细表数据
         // POST: /CheckBill/CheckChangedCreate/       
         public ActionResult CheckChangedCreate(string beginDate, string endDate)
         {
-            bool bResult = CheckBillMasterService.ChangedAdd(beginDate,endDate,this.User.Identity.Name.ToString());
+            string info = string.Empty;
+            bool bResult = CheckBillMasterService.ChangedAdd(beginDate, endDate, this.User.Identity.Name.ToString(), out info);
             string msg = bResult ? "新增成功" : "新增失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, info), "text", JsonRequestBehavior.AllowGet);
         }
 
         //查询货位要预览的盘点数据表
@@ -100,8 +103,8 @@ namespace Authority.Controllers.Wms.StockCheckInfo
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string BillNo = collection["BillNo"] ?? "";
-            string beginDate = collection["BillDate"] ?? "";
-            string endDate = collection["BillDate"] ?? "";
+            string beginDate = collection["beginDate"] ?? "";
+            string endDate = collection["endDate"] ?? "";
             string OperatePersonCode = collection["OperatePersonCode"] ?? "";
             string Status = collection["Status"] ?? "";
             string IsActive = collection["IsActive"] ?? "";

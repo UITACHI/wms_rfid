@@ -35,12 +35,11 @@
       <HintPath>..\Libraries\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +55,7 @@
     <Compile Include="Interfaces\IMoveBillDetailService.cs" />
     <Compile Include="Interfaces\IMoveBillMasterService.cs" />
     <Compile Include="Interfaces\IMoveSearchDetailService.cs" />
+    <Compile Include="Interfaces\IOrderSearchDetailService.cs" />
     <Compile Include="Interfaces\IOutBillDetailService.cs" />
     <Compile Include="Interfaces\IOutBillMasterService.cs" />
     <Compile Include="Interfaces\IOutSearchDetailService.cs" />
@@ -69,6 +69,7 @@
     <Compile Include="Interfaces\IJobService.cs" />
     <Compile Include="Interfaces\IProductService.cs" />
     <Compile Include="Interfaces\IShelfService.cs" />
+    <Compile Include="Interfaces\ISortOrderSearchService.cs" />
     <Compile Include="Interfaces\IStockCheckSearchService.cs" />
     <Compile Include="Interfaces\IStockDifferSearchService.cs" />
     <Compile Include="Interfaces\IStockIntoSearchService.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Service\MoveBillDetailService.cs" />
     <Compile Include="Service\MoveBillMasterService.cs" />
     <Compile Include="Service\MoveSearchDetailService.cs" />
+    <Compile Include="Service\OrderSearchDetailService.cs" />
     <Compile Include="Service\OutBillDetailService.cs" />
     <Compile Include="Service\OutBillMasterService.cs" />
     <Compile Include="Service\OutSearchDetailService.cs" />
@@ -107,6 +109,7 @@
     <Compile Include="Service\JobService.cs" />
     <Compile Include="Service\ProductService.cs" />
     <Compile Include="Service\ShelfService.cs" />
+    <Compile Include="Service\SortOrderSearchService.cs" />
     <Compile Include="Service\StockCheckSearchService.cs" />
     <Compile Include="Service\StockDifferSearchService.cs" />
     <Compile Include="Service\StockIntoSearchService.cs" />
