@@ -61,10 +61,10 @@ namespace Authority.Controllers.Wms.StockMove
         //
         // GET: /MoveBillMaster/GenMoveBillNo/
 
-        public ActionResult GenInBillNo()
+        public ActionResult GenMoveBillNo()
         {
-            var inBillNo = MoveBillMasterService.GenMoveBillNo(this.User.Identity.Name.ToString());
-            return Json(inBillNo, "text", JsonRequestBehavior.AllowGet);
+            var moveBillNo = MoveBillMasterService.GenMoveBillNo(this.User.Identity.Name.ToString());
+            return Json(moveBillNo, "text", JsonRequestBehavior.AllowGet);
         }
 
         //
