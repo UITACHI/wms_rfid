@@ -39,7 +39,7 @@ namespace Authority.Controllers.Wms.SortingInfo
         }
 
         //查询细单
-        // GET: /SortingOrder/CheckBillDetails/
+        // GET: /SortingOrder/sortOrderDetails/
         public ActionResult sortOrderDetails(int page, int rows, string OrderID)
         {
             var SortOrderDetail = SortOrderDetailService.GetDetails(page, rows, OrderID);

@@ -38,6 +38,7 @@ namespace THOK.Wms.Bll.Service
                 s.CustomerCode,
                 s.CustomerName,
                 s.QuantitySum,
+                s.DeliverLineCode,
                 s.AmountSum,
                 s.DetailNum,
                 s.DeliverOrder,
