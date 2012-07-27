@@ -64,7 +64,7 @@
         $.getJSON("/StockMoveBill/GenMoveBillNo/", function (json) {
             if (json) {
                 $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
-                $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
+                $('#dlg').dialog('open').dialog('setTitle', '新增移库单');
                 $('#fm').form('clear');
                 $('#billNo').val(json.BillNo);
                 $('#operatePersonName').val(json.employeeName);
