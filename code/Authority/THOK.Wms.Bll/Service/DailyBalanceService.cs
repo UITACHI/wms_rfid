@@ -42,7 +42,7 @@ namespace THOK.Wms.Bll.Service
             DateTime dt = DateTime.Parse(date);
             var mxdailyBalance = mxdailyBalanceQuery.Where(b => dt.Equals(b.SettleDate))
                 .OrderBy(b => b.ID).AsEnumerable()
-                .Select(b => new { b.ID, SettleDate = b.SettleDate.ToString("yyyy-MM-dd hh:mm:ss"), b.WarehouseCode, b.ProductCode, b.UnitCode, b.Beginning, b.EntryAmount, b.DeliveryAmount, b.ProfitAmount, b.LossAmount, b.Ending });
+                .Select(b => new { b.ID, SettleDate = b.SettleDate.ToString("yyyy-MM-dd HH:mm:ss"), b.WarehouseCode, b.ProductCode, b.UnitCode, b.Beginning, b.EntryAmount, b.DeliveryAmount, b.ProfitAmount, b.LossAmount, b.Ending });
             int total = mxdailyBalance.Count();
             mxdailyBalance = mxdailyBalance.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = mxdailyBalance.ToArray() };

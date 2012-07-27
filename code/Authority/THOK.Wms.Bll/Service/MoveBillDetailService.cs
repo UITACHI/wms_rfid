@@ -41,8 +41,8 @@ namespace THOK.Wms.Bll.Service
                     i.RealQuantity,
                     i.OperatePersonID,
                     i.OperatePerson.EmployeeName,
-                    StartTime=((DateTime)i.StartTime).ToString("yyyy-MM-dd hh:mm:ss"),
-                    FinishTime=((DateTime)i.FinishTime).ToString("yyyy-MM-dd hh:mm:ss"),
+                    StartTime=((DateTime)i.StartTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                    FinishTime=((DateTime)i.FinishTime).ToString("yyyy-MM-dd HH:mm:ss"),
                     i.Status
                 });
                 int total = moveBillDetail.Count();

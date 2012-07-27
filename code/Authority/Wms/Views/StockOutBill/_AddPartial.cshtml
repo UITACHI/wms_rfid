@@ -14,9 +14,10 @@
 
         $('#wareHouseadd').combogrid({
             required: true,
+            disabled:false,
             width: 130,
             panelWidth: 340,
-            url: '/WareHouse/Details/?page=1&rows=10',
+            url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
             idField: 'WarehouseCode',
             textField: 'WarehouseName',
             mode: 'local',
@@ -29,11 +30,13 @@
                 ]]
         });
 
+        
         $('#biiTypeadd').combogrid({
             required: true,
+            disabled: false,
             width: 130,
             panelWidth: 340,
-            url: '/StockOutBillType/Details/?page=1&rows=10',
+            url: '/StockInBill/GetBillTypeDetail/?BillClass=0001&IsActive=1',
             idField: 'BillTypeCode',
             textField: 'BillTypeName',
             mode: 'local',
@@ -72,6 +75,7 @@
                 $('#outBillDeatil').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增出库订单');
                 $('#fm').form('clear');
+                $('#centerShowDiv').css({ display: "block" });
                 $('#billNo').val(json.BillNo);
                 billno = json.BillNo;
                 $('#OperatePersonID').val(json.employeeID);
@@ -80,10 +84,7 @@
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
-                $('#deleteBillDetail').removeAttr("disabled");
-                $('#editBillDetail').removeAttr("disabled");
-                $('#addBillDetail').removeAttr("disabled");
-                $('form input').removeAttr("disabled");
+                $('form input').removeAttr("disabled");                
                 $('form textarea').removeAttr("disabled");
                 $('#cc').combo({
                     hasDownArrow: true
@@ -177,7 +178,6 @@
             required: true
         });
         $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增出库订单明细');
-
         $('input[type=text]', '#fm-inBillDetail').attr("value", "");
         $('#detailBillNo').val(billno);
         $('form input').removeAttr("disabled");
@@ -194,7 +194,7 @@
             $('#fm-inBillDetail .easyui-validatebox').validatebox({
                 required: false
             });
-            $('form input').attr("disabled", "disabled");
+            $('input[type=text]', '#fm-inBillDetail').attr("disabled", "disabled");
             $('form textarea').attr("disabled", "disabled");
             $('#fm-inBillDetail').form('load', detailRow);
             detailUrl = '/StockOutBill/outBillDelete/?BillNo=' + detailRow.BillNo + '&ID=' + detailRow.ID;
@@ -322,7 +322,7 @@
             </table>
 	    </form>
     </div>
-    <div border="false" style="padding:4px 4px;" > 
+    <div id="centerShowDiv" border="false" style="padding:4px 4px;display:block;" > 
 	    <a href="#" id="addBillDetail" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()">添加明细</a>
 	    <a href="#" id="deleteBillDetail" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteBillDetailClick()">删除明细</a>
         <a href="#" id="editBillDetail" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBillDetailClick()">修改明细</a>
@@ -347,7 +347,7 @@
               </tr>
               <tr>
                 <td style=" text-align:right">产品代码</td>
-                <td><input name="ProductCode" id="productCode" />
+                <td><input name="ProductCode" id="productCode"  type="text"/>
                 <a href="#" onclick="productSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true" ></a></td>
               </tr>
               <tr>

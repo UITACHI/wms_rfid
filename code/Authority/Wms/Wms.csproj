@@ -161,6 +161,7 @@
     <Content Include="Content\Images\banner.jpg" />
     <Content Include="Content\Images\login_bg.jpg" />
     <Content Include="Content\Images\noscript.gif" />
+    <Content Include="Content\Scripts\jquery.ajaxsetup.js" />
     <Content Include="Content\Scripts\jquery.json.js" />
     <Content Include="Content\Scripts\jthok-ui\JDiv.js" />
     <Content Include="Content\Scripts\jquery.fullscreen.js" />
@@ -792,7 +793,6 @@
     <Content Include="Views\CheckBillVerify\_AuditPartial.cshtml" />
     <Content Include="Views\CheckBill\_AddPartial.cshtml" />
     <Content Include="Views\CheckBill\_DeletePartial.cshtml" />
-    <Content Include="Views\CheckBill\_EditPartial.cshtml" />
     <Content Include="Views\CheckBill\_SearchPartial.cshtml" />
     <Content Include="Views\CheckBillVerify\_AddPartial.cshtml" />
     <Content Include="Views\CheckBillVerify\_DeletePartial.cshtml" />
