@@ -49,7 +49,7 @@
                 }
             });
         } else if (tabsRow.panel('options').id == "changedCheck") {//生成异动盘点数据
-            $.getJSON('/CheckBill/CheckChangedDetails/', { products: productCheckParameter }, function (json) {
+            $.getJSON('/CheckBill/CheckChangedCreate/', { products: productCheckParameter }, function (json) {
                 if (json) {
                     if (json.success) {
                         $.messager.show({

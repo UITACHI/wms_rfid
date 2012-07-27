@@ -5,6 +5,7 @@
             if (row.Status != "已审核") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法反审！');
             } else {
+                DataLoad();
                 isOutBillMasterAdd = false;
                 isShowOutBillDetail = true;
                 $('#centerShowDiv').css({ display: "none" });

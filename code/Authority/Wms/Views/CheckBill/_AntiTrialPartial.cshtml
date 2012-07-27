@@ -5,11 +5,12 @@
             if (row.Status != "已审核") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法反审！');
             } else {
+                DataLoad();
                 $('#checkdlg').dialog('open').dialog('setTitle', '反审盘点主单信息');
                 $('#checkBillDeatilShow').datagrid({ url: '/CheckBill/CheckBillDetails/?BillNo=' + row.BillNo }); //加载明细               
                 $('form input').attr("disabled", "disabled");
                 $('form select').attr("disabled", "disabled");
-                $('#checkfm').form('load', row);               
+                $('#checkfm').form('load', row);
                 url = '/CheckBill/checkBillMasterAntiTrial/?BillNo=' + row.BillNo;
             }
         } else {
