@@ -137,6 +137,10 @@
     <Compile Include="Migrations\201207270928380_modify_sort_order_deliverlinecode.Designer.cs">
       <DependentUpon>201207270928380_modify_sort_order_deliverlinecode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207271214442_modify_BillMaster_Lock.cs" />
+    <Compile Include="Migrations\201207271214442_modify_BillMaster_Lock.Designer.cs">
+      <DependentUpon>201207271214442_modify_BillMaster_Lock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
