@@ -41,10 +41,10 @@ namespace THOK.Wms.Bll.Service
                     i.UnitCode,
                     i.Unit.UnitName,
                     i.RealQuantity,
-                    i.OperatePersonID,
-                    i.OperatePerson.EmployeeName,
-                    StartTime=((DateTime)i.StartTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                    FinishTime=((DateTime)i.FinishTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                    OperatePersonID=i.OperatePersonID == null ? string.Empty : i.OperatePersonID.ToString(),
+                    EmployeeName=i.OperatePerson==null?string.Empty:i.OperatePerson.EmployeeName,
+                    StartTime=i.StartTime==null?null:((DateTime)i.StartTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                    FinishTime=i.FinishTime==null?null:((DateTime)i.FinishTime).ToString("yyyy-MM-dd HH:mm:ss"),
                     i.Status
                 });
                 int total = moveBillDetail.Count();
@@ -61,7 +61,12 @@ namespace THOK.Wms.Bll.Service
 
         public bool Delete(string ID)
         {
-            throw new NotImplementedException();
+            IQueryable<MoveBillDetail> moveBillDetailQuery = MoveBillDetailRepository.GetQueryable();
+            int intID = Convert.ToInt32(ID);
+            var mbd = moveBillDetailQuery.FirstOrDefault(i => i.ID == intID);
+            MoveBillDetailRepository.Delete(mbd);
+            MoveBillDetailRepository.SaveChanges();
+            return true;
         }
 
         public bool Save(MoveBillDetail moveBillDetail)

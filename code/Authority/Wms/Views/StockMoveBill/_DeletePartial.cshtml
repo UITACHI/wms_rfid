@@ -7,7 +7,7 @@
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
             } else {
                 $('#dlg').dialog('open').dialog('setTitle', '删除移库主单信息');
-                $('#moveBillDetails').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
+                $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
                 $('#fm .easyui-validatebox').validatebox({
                     required: false
                 });

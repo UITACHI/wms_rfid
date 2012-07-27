@@ -119,5 +119,15 @@ namespace Authority.Controllers.Wms.StockMove
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /MoveBillDetail/MoveBillDetailDelete/
+
+        public ActionResult MoveBillDetailDelete(string ID)
+        {
+            bool bResult = MoveBillDetailService.Delete(ID);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
