@@ -1,20 +1,17 @@
 ﻿<script type="text/javascript">
-    $(function () {
-        $('#status').combo({
-            editable: false,
-            panelHeight: 45
-        });
-    })
-
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
-    };
+        $("input[type=text]").attr("value", "");
+        $('#OrderDate').datebox({ editable: false });
+        $('#OrderDate').datebox('setValue', "");
+    }
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.SystemName = $('#systemname').val();
-        queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.BillNo = $('#OrderID').val();
+        queryParams.beginDate = $('#OrderDate').datebox('getValue');
+        queryParams.OperatePersonCode = $('#CustomerCode').val();
+        queryParams.Status = $('#CustomerName').val();
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -26,50 +23,34 @@
 
 </script>
 
-<div id="dlg-search" class="easyui-dialog" modal="true"  style="width:360px;height:240px;padding:2px 2px"
-        closed="true" buttons="#dlg-buttons">
-		<div class="easyui-layout" fit="true">
-			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
-	            <form id="sortingfm" method="post" novalidate>
-                          <table width="360">
-                     <tr>
-                        <td width="60">订单号：</td>
-                        <td width="168"><input name="sortingLineId" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                      <tr>
-                        <td width="60">订单日期：</td>
-                        <td width="168"><input name="sortingLineName" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                      <tr>
-                        <td width="60">客户名称：</td>
-                        <td width="168"><input name="productCode" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                      @*<tr>
-                        <td width="60">卷烟名称：</td>
-                        <td width="168"><input name="productName" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                      <tr>
-                        <td width="60">卷烟单位：</td>
-                        <td width="168"><input name="productUnit" class="easyui-validatebox" required="true"/></td>
-                      </tr>                     
-                      <tr>
-                        <td>是否启用：</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width:80px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
-	                        </select>
-	                    </td>
-                      </tr>
-                      <tr>
-                        <td width="60">备注：</td>
-                        <td width="168"><input name="Remarks" class="easyui-validatebox" required="true"/></td>
-                      </tr>*@
-                    </table>
-	            </form>
-            </div>
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:280px;height:220px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-search">
+    <div class="easyui-layout" fit="true">
+		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
+            <table align="left" width="240">
+              <tr>
+                <td width="60" style="text-align:right">订单编号:</td>
+                <td><input id="OrderID" type="text" style="width: 140px" /></td>
+              </tr>
+              <tr>
+                <td width="60" style="text-align:right">订单日期:</td>
+                <td><input id="OrderDate" class="easyui-datebox" type="text" style="width: 140px"/></td>
+              </tr>               
+              <tr>
+                <td width="60" style="text-align:right">客户编码:</td>
+                <td><input id="CustomerCode" type="text" style="width: 140px" /></td>
+              </tr>
+              <tr>
+                <td   width="60" style="text-align:right">客户名称:</td>
+                <td><input id="CustomerName" type="text" style="width: 140px" /></td>
+              </tr>
+            </table>
         </div>
     </div>
-<div id="dlg-buttons">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">确定</a>
+</div>
+<div id="dlg-buttons-search">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
 </div>
+
+

@@ -99,5 +99,24 @@ namespace Authority.Controllers
             return View();
         }
 
+        public ActionResult AjaxPageNotFound()
+        {
+            return Json(JsonMessageHelper.getJsonMessage(false, "当前访问的服务不存在！", this.HttpContext.Request.RawUrl), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AjaxServerError()
+        {
+            return Json(JsonMessageHelper.getJsonMessage(false, "当前访问的服务发生未处理的服务器错误！", this.HttpContext.Request.RawUrl), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AjaxError()
+        {
+            return Json(JsonMessageHelper.getJsonMessage(false, "当前访问的服务发生未知的服务器错误！", this.HttpContext.Request.RawUrl), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AjaxUnauthorized()
+        {
+            return Json(JsonMessageHelper.getJsonMessage(false, "当前访问的服务验证失败，没有相应的权限！", this.HttpContext.Request.RawUrl), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -133,6 +133,10 @@
     <Compile Include="Migrations\201207260207528_modify_profit_loss_uint.Designer.cs">
       <DependentUpon>201207260207528_modify_profit_loss_uint.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207270928380_modify_sort_order_deliverlinecode.cs" />
+    <Compile Include="Migrations\201207270928380_modify_sort_order_deliverlinecode.Designer.cs">
+      <DependentUpon>201207270928380_modify_sort_order_deliverlinecode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
