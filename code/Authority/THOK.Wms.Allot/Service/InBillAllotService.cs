@@ -5,7 +5,6 @@ using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.Allot.Interfaces;
 using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace THOK.Wms.Allot.Service
 {
