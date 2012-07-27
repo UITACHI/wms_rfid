@@ -9,6 +9,7 @@
     })
 
     function DataLoad() {
+        //获取仓库信息IsActive=1筛选出可用的仓库
         $('#wareHouseadd').combogrid({
             required: true,
             disabled: false,
@@ -27,6 +28,7 @@
                 ]]
         });
 
+        //获取单据类型单据类别BillClass=0003为移库单IsActive=1为可用
         $('#biiTypeadd').combogrid({
             required: true,
             disabled: false,
@@ -46,6 +48,7 @@
         });
     }
 
+    //获取当前时间
     function getTime() {
         var d = new Date();
         var vYear = d.getFullYear();
@@ -57,6 +60,7 @@
         return t;
     }
 
+    //新增移库单按钮
     function addClick() {
         $('#billNo').attr("readonly", true);
         $('#billDate').attr("readonly", true);
@@ -81,13 +85,42 @@
                 $('#cc').combo({
                     hasDownArrow: true
                 });
-                url = '/StockInBill/Create/';
+                url = '/StockMoveBill/Create/';
                 detailUrl = '/StockInBill/InBillDetailCreate/';
             } else {
                 $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
             }
         });
     };
+
+    //保存移库主单
+    function save() {
+        //if (isInBillMasterCanEdit == true) {
+        $('#fm').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').datagrid('reload');
+                }
+            }
+        });
+        //  }
+    }
 
 </script>
 

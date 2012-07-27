@@ -1,0 +1,25 @@
+﻿<script type="text/javascript">
+    function antitrialClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            isInBillMasterSaved = false;
+            isInBillMasterCanEdit = true;
+            if (row.Status != "已审核") {
+                $.messager.confirm('错误', '该记录的状态不是已审核无法反审！');
+            } else {
+                $('#dlg').dialog('open').dialog('setTitle', '反审移库单据信息');
+                $('#fm').form('load', row);
+                $('#moveBillDetails').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
+                $('#btnAddBillDetail').css('display', 'none'); //设置新增明细按钮的可见性
+                $('#btnDeleteBillDetail').css('display', 'none'); //设置删除明细按钮的可见性
+                $('#btnEditBillDetail').css('display', 'none'); //设置修改明细按钮的可见性
+                $('form input').attr("disabled", "disabled");
+                $('form textarea').attr("disabled", "disabled");
+                url = '/StockInBill/AntiTrial/?BillNo=' + row.BillNo;
+            }
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>
+
