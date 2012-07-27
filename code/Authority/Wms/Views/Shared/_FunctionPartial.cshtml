@@ -1,5 +1,7 @@
 ﻿@if (ViewBag.hasSearch != null && ViewBag.hasSearch)
 {    @Html.Partial("_SearchPartial")}
+@if (ViewBag.hasBalance != null && ViewBag.hasBalance)
+{    @Html.Partial("_BalancePartial")}
 @if (ViewBag.hasAdd != null && ViewBag.hasAdd)
 {    @Html.Partial("_AddPartial")}
 @if (ViewBag.hasEdit != null && ViewBag.hasEdit)
