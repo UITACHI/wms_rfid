@@ -1030,6 +1030,7 @@
     <Content Include="Views\StockMoveBill\_DeletePartial.cshtml" />
     <Content Include="Views\StockMoveBill\_AuditPartial.cshtml" />
     <Content Include="Views\StockMoveBill\_AntiTrialPartial.cshtml" />
+    <Content Include="Views\Shared\_BalancePartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

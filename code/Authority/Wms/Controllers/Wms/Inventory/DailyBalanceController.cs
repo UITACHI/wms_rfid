@@ -19,6 +19,7 @@ namespace Wms.Controllers.Wms.Inventory
         public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
+            ViewBag.hasBalance = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;

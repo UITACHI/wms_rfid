@@ -14,7 +14,6 @@ namespace Authority.Controllers.Wms.SortingInfo
         public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
-            ViewBag.hasEdit = true;
             ViewBag.hasDownload = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
