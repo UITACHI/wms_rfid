@@ -141,6 +141,14 @@
     <Compile Include="Migrations\201207271214442_modify_BillMaster_Lock.Designer.cs">
       <DependentUpon>201207271214442_modify_BillMaster_Lock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207271228177_modify_inBillAllot_UnitCode.cs" />
+    <Compile Include="Migrations\201207271228177_modify_inBillAllot_UnitCode.Designer.cs">
+      <DependentUpon>201207271228177_modify_inBillAllot_UnitCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207271230497_modify_outBillAllot_UnitCode.cs" />
+    <Compile Include="Migrations\201207271230497_modify_outBillAllot_UnitCode.Designer.cs">
+      <DependentUpon>201207271230497_modify_outBillAllot_UnitCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

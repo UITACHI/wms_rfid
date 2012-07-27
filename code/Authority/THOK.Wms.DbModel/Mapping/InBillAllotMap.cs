@@ -61,6 +61,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.ProductCode).HasColumnName(ColumnMap.Value.To("ProductCode"));
             this.Property(t => t.CellCode).HasColumnName(ColumnMap.Value.To("CellCode"));
             this.Property(t => t.StorageCode).HasColumnName(ColumnMap.Value.To("StorageCode"));
+            this.Property(t => t.UnitCode).HasColumnName(ColumnMap.Value.To("UnitCode"));
             this.Property(t => t.AllotQuantity).HasColumnName(ColumnMap.Value.To("AllotQuantity"));
             this.Property(t => t.RealQuantity).HasColumnName(ColumnMap.Value.To("RealQuantity"));
             this.Property(t => t.OperatePersonID).HasColumnName(ColumnMap.Value.To("OperatePersonID"));
