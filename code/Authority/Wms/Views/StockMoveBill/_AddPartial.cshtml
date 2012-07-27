@@ -67,7 +67,7 @@
         DataLoad();
         $.getJSON("/StockMoveBill/GenMoveBillNo/", function (json) {
             if (json) {
-                $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
+                $('#moveBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增移库单');
                 $('#fm').form('clear');
                 $('#billNo').val(json.BillNo);
@@ -86,7 +86,6 @@
                     hasDownArrow: true
                 });
                 url = '/StockMoveBill/Create/';
-                detailUrl = '/StockInBill/InBillDetailCreate/';
             } else {
                 $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
             }
@@ -120,26 +119,120 @@
         });
     }
 
+    //删除移库细单
+    function deleteMoveBillDetail(id) {
+        $.getJSON('/StockMoveBill/MoveBillDetailDelete/', { ID: id }, function (json) {
+            if (json.success) {
+                $.messager.show({
+                    title: '成功',
+                    msg: json.msg
+                });
+                $('#moveBillDetail').datagrid('reload');
+            }
+        });
+    }
+
+    //datagrid行编辑方法
+    $.extend($.fn.datagrid.defaults.editors, {
+        numberspinner: {
+            init: function (container, options) {
+                var input = $('<input type="text">').appendTo(container);
+                return input.numberspinner(options);
+            },
+            destroy: function (target) {
+                $(target).numberspinner('destroy');
+            },
+            getValue: function (target) {
+                return $(target).numberspinner('getValue');
+            },
+            setValue: function (target, value) {
+                $(target).numberspinner('setValue', value);
+            },
+            resize: function (target, width) {
+                $(target).numberspinner('resize', width);
+            }
+        }
+    });
+    $(function () {
+        $('#moveBillDetail').datagrid({
+            onBeforeEdit: function (index, row) {
+                row.editing = true;
+                updateActions();
+            },
+            onAfterEdit: function (index, row) {
+                row.editing = false;
+                updateActions();
+            },
+            onCancelEdit: function (index, row) {
+                row.editing = false;
+                updateActions();
+            }
+        });
+    });
+    function updateActions() {
+        var rowcount = $('#moveBillDetail').datagrid('getRows').length;
+        for (var i = 0; i < rowcount; i++) {
+            $('#moveBillDetail').datagrid('updateRow', {
+                index: i,
+                row: { action: '' }
+            });
+        }
+    }
+    function editrow(index) {
+        $('#moveBillDetail').datagrid('beginEdit', index);
+    }
+    function deleterow(index) {
+        $.messager.confirm('确认', '您确认删除吗?', function (r) {
+            if (r) {
+//                $('#moveBillDetail').datagrid('deleteRow', index);
+                var row = $('#moveBillDetail').datagrid('getSelected');
+                if (row) {
+                deleteMoveBillDetail(row.ID);
+                }
+                updateActions();
+            }
+        });
+    }
+    function saverow(index) {
+        $('#moveBillDetail').datagrid('endEdit', index);
+    }
+    function cancelrow(index) {
+        $('#moveBillDetail').datagrid('cancelEdit', index);
+    }
+
+    function formatAction(value, row, index) {
+        if (row.editing) {
+            var s = '<a href="#" onclick="saverow(' + index + ')">保存</a> ';
+            var c = '<a href="#" onclick="cancelrow(' + index + ')">取消</a>';
+            return s + c;
+        } else {
+            var e = '<a href="#" onclick="editrow(' + index + ')">编辑</a> ';
+            var d = '<a href="#" onclick="deleterow(' + index + ')">删除</a>';
+            return e + d;
+        }
+    }
 </script>
 
 <div id="dlg" class="easyui-dialog" modal="true"
-        style="width:700px;height:500px;padding:0px 0px"
+        style="width:900px;height:500px;padding:0px 0px"
         closed="true" buttons="#dlg-buttons">
 	<div class="easyui-layout" fit="true">
         <div region="center" border="false">
-            <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="700" id="inBillDetail"
-                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="">
+            <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="900" id="moveBillDetail"
+                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="" idField="ID">
                 <thead>
                     <tr>
-                        <th field="ID" width="100">细单ID</th>
-                        <th field="ProductCode" width="100">产品代码</th>
-                        <th field="ProductName" width="120" align="right">产品名称</th>
-                        <th field="UnitCode" width="80" align="right">单位编码</th>
-                        <th field="UnitName" width="80" align="right">单位名称</th>
-                        <th field="BillQuantity" width="60" align="right">数量</th>
-                        <th field="RealQuantity" width="80" align="right">实际入库量</th>
-                        <th field="Price" width="60" align="right">单价</th>
-                        <th field="Description" width="80" align="right">备注</th>
+                        <th field="ID" width="100" hidden="true">细单ID</th>
+                        <th field="OutCellCode" width="100" align="right">货位编码(出)</th>
+                        <th field="OutCellName" width="100" align="right">货位名称(出)</th>
+                        <th field="InCellCode" width="80" align="right">货位编码(入)</th>
+                        <th field="InCellName" width="80" align="right">货位名称(入)</th>
+                        <th field="ProductCode" width="60" align="right">产品代码</th>
+                        <th field="ProductName" width="90" align="right">产品名称</th>
+                        <th field="UnitCode" width="60" align="right">单位编码</th>
+                        <th field="UnitName" width="50" align="right">单位名称</th>
+                        <th field="RealQuantity" width="70" align="right" editor="numberspinner">数量</th>
+                        <th field="action" width="50" align="center" formatter="formatAction">操作</th>
                     </tr>
                 </thead>
             </table>

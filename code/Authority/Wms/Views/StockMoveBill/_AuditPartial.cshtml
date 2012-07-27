@@ -7,7 +7,7 @@
             } else {
                 $('#dlg').dialog('open').dialog('setTitle', '审核移库单据信息');
                 $('#fm').form('load', row);
-                $('#moveBillDetails').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
+                $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
                 $('#btnAddBillDetail').css('display', 'none'); //设置新增明细按钮的可见性
                 $('#btnDeleteBillDetail').css('display', 'none'); //设置删除明细按钮的可见性
                 $('#btnEditBillDetail').css('display', 'none'); //设置修改明细按钮的可见性

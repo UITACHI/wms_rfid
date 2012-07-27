@@ -9,7 +9,7 @@
             } else {
                 $('#dlg').dialog('open').dialog('setTitle', '编辑移库主单信息');
                 $('#fm').form('load', row);
-                $('#moveBillDetails').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
+                $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
