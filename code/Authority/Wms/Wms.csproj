@@ -161,6 +161,7 @@
     <Content Include="Content\Images\banner.jpg" />
     <Content Include="Content\Images\login_bg.jpg" />
     <Content Include="Content\Images\noscript.gif" />
+    <Content Include="Content\Scripts\jquery.ajaxsetup.js" />
     <Content Include="Content\Scripts\jquery.json.js" />
     <Content Include="Content\Scripts\jthok-ui\JDiv.js" />
     <Content Include="Content\Scripts\jquery.fullscreen.js" />
@@ -693,7 +694,6 @@
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="menu.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\App_Data\" />
@@ -1024,6 +1024,7 @@
     <Content Include="Views\StockOutBill\_AuditPartial.cshtml" />
     <Content Include="Views\StockInBill\_AuditPartial.cshtml" />
     <Content Include="Views\StockInBill\_AntiTrialPartial.cshtml" />
+    <Content Include="Views\StockMoveBill\_AddPartial.cshtml" />
     <Content Include="Views\StockOutBill\_SearchPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
