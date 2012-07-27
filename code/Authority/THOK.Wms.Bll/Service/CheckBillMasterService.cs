@@ -271,8 +271,8 @@ namespace THOK.Wms.Bll.Service
             {
                 try
                 {
-                    using (var scope = new TransactionScope())
-                    {
+                    //using (var scope = new TransactionScope())
+                    //{
                         #region ware 这个有值，就把这个值里面所有的仓库的货位的储存信息生成盘点单，一个仓库一个盘点单据
 
                         if (ware != null && ware != string.Empty)
@@ -420,8 +420,8 @@ namespace THOK.Wms.Bll.Service
                         }
                         #endregion
 
-                        scope.Complete();
-                    }
+                    //    scope.Complete();
+                    //}
                 }
                 catch (Exception e)
                 {

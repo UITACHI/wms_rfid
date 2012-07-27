@@ -1,0 +1,8 @@
+Microsoft ASP.NET MVC3 Framework, 
+Microsoft Entity Framework, 
+Linq,Linq to Entity,...
+Lambda ±Ì¥Ô Ω
+Ajax, 
+JQuery, JQuery EasyUI
+AutoMapper, 
+Log4Net. 

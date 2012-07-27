@@ -116,7 +116,7 @@ namespace THOK.Wms.Allot.Service
                                              .OrderBy(c => c.Area.AllotInOrder);
             //非货位管理区
             var cellQueryFromList4 = cellList4.OrderBy(c => c.Area.AllotInOrder);
-
+            
             foreach (var billDetail in billDetails.ToArray())
             {
                 Cell cell;

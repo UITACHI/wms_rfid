@@ -100,5 +100,27 @@ namespace Authority.Controllers.Wms.StockMove
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /MoveBillMaster/Audit/
+
+        [HttpPost]
+        public ActionResult Audit(string BillNo)
+        {
+            bool bResult = MoveBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString());
+            string msg = bResult ? "审核成功" : "审核失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /MoveBillMaster/AntiTria/
+
+        [HttpPost]
+        public ActionResult AntiTrial(string BillNo)
+        {
+            bool bResult = MoveBillMasterService.AntiTrial(BillNo);
+            string msg = bResult ? "反审成功" : "反审失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

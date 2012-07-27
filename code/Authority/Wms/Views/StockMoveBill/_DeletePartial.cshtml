@@ -1,0 +1,37 @@
+﻿
+<script type="text/javascript">
+    function deleteClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            if (row.Status != "已录入") {
+                $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
+            } else {
+                $('#dlg').dialog('open').dialog('setTitle', '删除移库主单信息');
+                $('#moveBillDetails').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
+                $('#fm .easyui-validatebox').validatebox({
+                    required: false
+                });
+                $('form input').attr("disabled", "disabled");
+                $('form textarea').attr("disabled", "disabled");
+                $('#btnAddBillDetail').css('display', 'none'); //设置新增明细按钮的可见性
+                $('#btnDeleteBillDetail').css('display', 'none'); //设置删除明细按钮的可见性
+                $('#btnEditBillDetail').css('display', 'none'); //设置修改明细按钮的可见性
+                $('#cc').combo({
+                    hasDownArrow: false
+                });
+                $('#fm').form('load', row);
+                if (row.IsActive == '可用') {
+                    $('#cc').combo('setValue', true).combo('setText', row.IsActive);
+                } else {
+                    $('#cc').combo('setValue', false).combo('setText', row.IsActive);
+                }
+                url = '/StockMoveBill/Delete/?BillNo=' + row.BillNo;
+            }
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    };
+</script>
+
+
+
