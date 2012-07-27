@@ -838,6 +838,9 @@
     <Content Include="Views\CheckBill\_AuditPartial.cshtml" />
     <Content Include="Views\CheckBill\_ConfirmPartial.cshtml" />
     <Content Include="Views\CheckBill\_ChangedCheckPartial.cshtml" />
+    <Content Include="Views\Home\PageNotFound.cshtml" />
+    <Content Include="Views\Home\ServerError.cshtml" />
+    <Content Include="Views\Home\Unauthorized.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
