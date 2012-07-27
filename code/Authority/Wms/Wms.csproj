@@ -694,7 +694,6 @@
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="menu.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\App_Data\" />

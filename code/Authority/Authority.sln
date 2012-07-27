@@ -25,6 +25,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wms", "Wms\Wms.csproj", "{B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THOK.Wms.Allot", "THOK.Wms.Allot\THOK.Wms.Allot.csproj", "{330D59D0-3B57-4F12-BB7D-49AF46DCD46D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{47999AD9-AB42-4E2D-8C04-E10117107561}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\doc\Cshap.doc = ..\..\doc\Cshap.doc
+		..\..\doc\旧仓储管理系统V2.0数据字典.vsd = ..\..\doc\旧仓储管理系统V2.0数据字典.vsd
+		..\..\doc\烟草商业企业RFID综合管理系统.doc = ..\..\doc\烟草商业企业RFID综合管理系统.doc
+		..\..\doc\硬件设备及应用说明.doc = ..\..\doc\硬件设备及应用说明.doc
+		..\..\doc\系统菜单树结构.txt = ..\..\doc\系统菜单树结构.txt
+		..\..\doc\视图(模式3接口表——国家局统一版本).xls = ..\..\doc\视图(模式3接口表——国家局统一版本).xls
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
