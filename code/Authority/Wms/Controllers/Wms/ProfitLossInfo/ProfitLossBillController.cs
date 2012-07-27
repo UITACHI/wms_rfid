@@ -17,6 +17,7 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.hasAudit = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;

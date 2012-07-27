@@ -58,7 +58,7 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string BillNo, string beginDate, string endDate, string OperatePersonCode, string Status, string IsActive)
         {
             IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable();
-            var outBillMaster = OutBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode));
+            var outBillMaster = OutBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeName.Contains(OperatePersonCode));
             if (!beginDate.Equals(string.Empty))
             {
                 DateTime begin = Convert.ToDateTime(beginDate);
