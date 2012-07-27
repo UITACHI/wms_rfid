@@ -22,11 +22,11 @@
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
         $("input[type=text]").attr("value", "");
-        $('#beginDate').datebox({ editable: false, setValue: "" });
-        $('#endDate').datebox({ editable: false, setValue: "" });
-
-
-    };
+        $('#beginDate').datebox({ editable: false });
+        $('#endDate').datebox({ editable: false });
+        $('#beginDate').datebox('setValue', "");
+        $('#endDate').datebox('setValue', "");
+    }
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;

@@ -475,7 +475,7 @@
                         是否可用:
                     </td>
                     <td align="left" style="text-align: left" colspan="3">
-                        <select name="IsActive" id="shelfIsActive" class="easyui-combobox" style="width: 140px">
+                        <select name="IsActive" id="shelfIsActive" class="easyui-combobox" required="true" style="width: 140px">
                             <option selected="selected" value="1">可用</option>
                             <option value="0">不可用</option>
                         </select>
@@ -519,7 +519,7 @@
                         货位简称:
                     </td>
                     <td align="left">
-                        <input name="ShortName" type="text"class="easyui-validatebox" ShelfType style="width: 140px;"/>
+                        <input name="ShortName" type="text"class="easyui-validatebox" style="width: 140px;"/>
                     </td>
                     <td style=" text-align:right">
                         RFID:
@@ -533,7 +533,7 @@
                         预设最大储量:
                     </td>
                     <td align="left">
-                        <input name="MaxQuantity" type="text" id="txtUnitCode" class="easyui-numberbox" missingmessage="请输入最大值（必须为数字）"style="width: 140px;"/>
+                        <input name="MaxQuantity" type="text" required="true" id="txtUnitCode" class="easyui-numberbox" missingmessage="请输入最大值（必须为数字）"style="width: 140px;"/>
                     </td>
                      <td style=" text-align:right">
                         储位列号:
@@ -591,7 +591,7 @@
                         货层位置:
                     </td>
                     <td align="left">
-                        <select name="Layer" id="isLayer" class="easyui-combobox" style="width: 140px">
+                        <select name="Layer" id="isLayer" class="easyui-combobox" required="true" style="width: 140px">
                             <option value="1">一层</option>
                             <option value="2">二层</option>
                             <option value="3">三层</option>
@@ -601,7 +601,7 @@
                         是否单一货位:
                     </td>
                     <td align="left">
-                        <select name="IsSingle" id="isVirtual" class="easyui-combobox" style="width: 140px">
+                        <select name="IsSingle" id="isVirtual" class="easyui-combobox" required="true" style="width: 140px">
                             <option value="1">是</option>
                             <option value="0">否</option>
                         </select>
@@ -612,8 +612,8 @@
                         货位类别:
                     </td>
                     <td align="left">
-                        <select name="CellType" id="isCellType" style="width: 140px;" class="easyui-combobox">
-                            <option selected="selected" value="0">标准货位</option>
+                        <select name="CellType" id="isCellType" style="width: 140px;" class="easyui-combobox" required="true">
+                            <option value="0">标准货位</option>
                             <option value="1">异型货位</option>
                         </select>
                     </td>
@@ -621,7 +621,7 @@
                         是否可用:
                     </td>
                     <td align="left"  colspan="3">
-                        <select name="IsActive" id="cellIsActive" class="easyui-combobox" style="width: 140px">
+                        <select name="IsActive" id="cellIsActive" class="easyui-combobox" required="true" style="width: 140px">
                             <option selected="selected" value="1">可用</option>
                             <option value="0">不可用</option>
                         </select>

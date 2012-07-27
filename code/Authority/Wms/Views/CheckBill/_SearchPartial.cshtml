@@ -22,15 +22,17 @@
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
         $("input[type=text]").attr("value", "");
-        $('#beginDate').datebox({ editable: false, setValue: "" });
-        $('#endDate').datebox({ editable: false, setValue: "" });
-    };
+        $('#billBeginDate').datebox({ editable: false });
+        $('#billEndDate').datebox({ editable: false });
+        $('#billBeginDate').datebox('setValue', "");
+        $('#billEndDate').datebox('setValue', "");
+    }
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.BillNo = $('#checkBillNo').val();
-        queryParams.beginDate = $('#beginDate').datebox('getValue');
-        queryParams.endDate = $('#endDate').datebox('getValue');
+        queryParams.beginDate = $('#billBeginDate').datebox('getValue');
+        queryParams.endDate = $('#billEndDate').datebox('getValue');
         queryParams.OperatePersonCode = $('#OperatePersonCode').val();
         queryParams.Status = $('#operateStatus').val();
         $('#details').datagrid('options').queryParams = queryParams;
@@ -55,11 +57,11 @@
               </tr>
               <tr>
                 <td width="60" style="text-align:right">制单日期:</td>
-                <td><input readonly="readonly" id="beginDate" class="easyui-datebox" type="text" style="width: 140px" /></td>
+                <td><input readonly="readonly" id="billBeginDate" class="easyui-datebox" type="text" style="width: 140px" /></td>
               </tr>
                <tr>
                 <td width="60" style="text-align:right">至:</td>
-                <td><input readonly="readonly" id="endDate" class="easyui-datebox" style="width: 140px"/></td>
+                <td><input readonly="readonly" id="billEndDate" class="easyui-datebox" style="width: 140px"/></td>
               </tr>
               <tr>
                 <td width="60" style="text-align:right">操 作 员:</td>
