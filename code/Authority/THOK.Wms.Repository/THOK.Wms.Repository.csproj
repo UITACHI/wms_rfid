@@ -149,6 +149,10 @@
     <Compile Include="Migrations\201207271230497_modify_outBillAllot_UnitCode.Designer.cs">
       <DependentUpon>201207271230497_modify_outBillAllot_UnitCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207280241303_add_deliver.cs" />
+    <Compile Include="Migrations\201207280241303_add_deliver.Designer.cs">
+      <DependentUpon>201207280241303_add_deliver.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
