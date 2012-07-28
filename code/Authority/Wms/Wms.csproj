@@ -842,6 +842,7 @@
     <Content Include="Views\Home\PageNotFound.cshtml" />
     <Content Include="Views\Home\ServerError.cshtml" />
     <Content Include="Views\Home\Unauthorized.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
