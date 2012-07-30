@@ -137,6 +137,28 @@
             }
         });
     }
+
+    //新增移库细单按钮
+    function addBillDetailClick() {
+        $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增移库订单明细');
+        $('#fm-moveBillDetail').form('clear');
+        detailUrl = '/StockInBill/InBillDetailCreate/';
+        $('#detailBillNo').val(billno);
+        $('#detailBillNo').attr("readonly", true);
+    };
+
+    //选择移出货位编码
+    function outCellSelect() {
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        loadData("out");
+    }
+
+    //选择移入货位编码
+    function inCellSelect() {
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        loadData("in");
+    }
+
 </script>
 
 <div id="dlg" class="easyui-dialog" modal="true"
@@ -216,3 +238,74 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
+
+<div  id="dlg-AddBillDetail" class="easyui-dialog" modal="true"
+        style="width:280px;height:350px;padding:0px 0px"
+        closed="true" buttons="#dlg-AddBillDetailbuttons">
+        <form id="fm-moveBillDetail" method="post" novalidate>
+<table style="padding:10px 10px 0px 5px">
+  <tr>
+    <td style=" text-align:right">移库单号</td>
+    <td align="left"><input type="text" name="BillNo" id="detailBillNo" /></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">货位编码(出)</td>
+    <td align="left"><input type="text" name="OutCellCode" class="easyui-validatebox" required="true" readonly="true" id="outCellCode" missingmessage="请选择要移出的货位"/> 
+    <a href="#" onclick="outCellSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">货位名称(出)</td>
+    <td align="left"><input type="text" name="OutCellName" class="easyui-validatebox" required="true" readonly="true" id="outCellName"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">货位编码(入)</td>
+    <td align="left"><label>
+      <input type="text" name="InCellCode" class="easyui-validatebox" required="true" readonly="true" id="inCellCode" missingmessage="请选择要移入的货位"/>
+      <a href="#" onclick="inCellSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+    </label></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">货位名称(入)</td>
+    <td align="left"><input type="text" name="InCellName" class="easyui-validatebox" required="true" readonly="true" id="inCellName"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">产品代码</td>
+    <td align="left"><input type="text" name="ProductCode" class="easyui-validatebox" required="true" id="productCode" readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">产品名称</td>
+    <td align="left"><input type="text" name="ProductName"class="easyui-validatebox" required="true"  id="productName"   readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">单位编码</td>
+    <td align="left"><input type="text" name="UnitCode" class="easyui-validatebox" required="true"  readonly="true" id="unitCode" readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">单位名称</td>
+    <td align="left"><input type="text" name="UnitName"  readonly="true" id="unitName" class="easyui-validatebox" required="true" readonly="true"/></td>
+    <td>
+    </td>
+  </tr>
+    <tr>
+    <td style=" text-align:right">数量</td>
+    <td align="left"><input type="text" name="RealQuantity"class="easyui-numberbox" required="true" missingmessage="请输入要移库的数量"/></td>
+    <td>
+    </td>
+  </tr>
+</table>
+</form>
+</div>
+
+<div id="dlg-AddBillDetailbuttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="DetailSave()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-AddBillDetail').dialog('close')">取消</a>
+</div>
+
+@Html.Partial("_CellPartial")

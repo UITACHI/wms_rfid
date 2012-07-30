@@ -26,6 +26,7 @@ namespace Authority.Controllers.Wms.StockMove
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
             ViewBag.hasAudit = true;
+            ViewBag.hasAntiTrial = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;
