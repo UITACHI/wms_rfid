@@ -39,22 +39,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SignalR">
-      <HintPath>..\packages\SignalR.Server.0.5.2\lib\net40\SignalR.dll</HintPath>
-    </Reference>
-    <Reference Include="SignalR.Hosting.AspNet">
-      <HintPath>..\packages\SignalR.Hosting.AspNet.0.5.2\lib\net40\SignalR.Hosting.AspNet.dll</HintPath>
-    </Reference>
-    <Reference Include="SignalR.Hosting.Common">
-      <HintPath>..\packages\SignalR.Hosting.Common.0.5.2\lib\net40\SignalR.Hosting.Common.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages" />
@@ -102,7 +86,10 @@
     <Compile Include="Controllers\Wms\InterfaceInfo\BasisUploadController.cs" />
     <Compile Include="Controllers\Wms\InterfaceInfo\SortingRealTimeController.cs" />
     <Compile Include="Controllers\Wms\Inventory\CargospaceController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\CurrentStockController.cs" />
     <Compile Include="Controllers\Wms\Inventory\DailyBalanceController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\DistributionController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\HistoricalDetailController.cs" />
     <Compile Include="Controllers\Wms\Inventory\StockledgerController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillCheckController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillController.cs" />
@@ -143,7 +130,6 @@
     <Compile Include="Controllers\Wms\StockOut\StockOutBillTypeController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\AreaController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\CellController.cs" />
-    <Compile Include="Controllers\Wms\WarehouseInfo\DefaultProductSetController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\ShelfController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\StorageController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\WarehouseController.cs" />
@@ -681,11 +667,6 @@
     <Content Include="obj\Debug\Authority.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\Authority.dll" />
     <Content Include="obj\Debug\Authority.pdb" />
-    <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.6.4.js" />
-    <Content Include="Scripts\jquery-1.6.4.min.js" />
-    <Content Include="Scripts\jquery.signalR-0.5.2.js" />
-    <Content Include="Scripts\jquery.signalR-0.5.2.min.js" />
     <Content Include="Views\Module\_DeletePartial.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -716,7 +697,6 @@
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Wms.Publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\App_Data\" />
@@ -755,10 +735,6 @@
     <ProjectReference Include="..\THOK.Wms.Repository\THOK.Wms.Repository.csproj">
       <Project>{259E5E16-41D8-420F-A11C-72BEE784B5CB}</Project>
       <Name>THOK.Wms.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\THOK.Wms.SignalR\THOK.Wms.SignalR.csproj">
-      <Project>{04A2C9B1-0F35-42CF-A6A7-4319D7C6E95F}</Project>
-      <Name>THOK.Wms.SignalR</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -865,14 +841,13 @@
     <Content Include="Views\CheckBill\_AuditPartial.cshtml" />
     <Content Include="Views\CheckBill\_ConfirmPartial.cshtml" />
     <Content Include="Views\CheckBill\_ChangedCheckPartial.cshtml" />
-    <Content Include="Views\Home\PageNotFound.cshtml" />
-    <Content Include="Views\Home\ServerError.cshtml" />
-    <Content Include="Views\Home\Unauthorized.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="packages.config" />
-    <Content Include="Views\DefaultProductSet\Index.cshtml" />
-    <Content Include="Views\DefaultProductSet\_AddPartial.cshtml" />
-    <Content Include="Views\DefaultProductSet\_SelectPartial.cshtml" />
+    <Content Include="Views\DailyBalance\DailyBalance.cshtml" />
+    <Content Include="Views\Distribution\Index.cshtml" />
+    <Content Include="Views\CurrentStock\Index.cshtml" />
+    <Content Include="Views\CurrentStock\_SearchPartial.cshtml" />
+    <Content Include="Views\CurrentStock\_Detail.cshtml" />
+    <Content Include="Views\HistoricalDetail\Index.cshtml" />
+    <Content Include="Views\HistoricalDetail\_SearchPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
@@ -934,6 +909,8 @@
     <Content Include="Views\ProfitLossBill\Index.cshtml" />
     <Content Include="Views\SortingOrder\_DownLoadPartial.cshtml" />
     <Content Include="Views\SortingOrder\_AddPartial.cshtml" />
+    <Content Include="Views\SortingOrder\_DeletePartial.cshtml" />
+    <Content Include="Views\SortingOrder\_EditPartial.cshtml" />
     <Content Include="Views\SortingOrder\_SearchPartial.cshtml" />
     <Content Include="Views\SortingOrderOptimize\Index.cshtml" />
     <Content Include="Views\ProfitLossBillVerify\Index.cshtml" />
@@ -1063,7 +1040,6 @@
     <Content Include="Views\StockMoveBill\_DeletePartial.cshtml" />
     <Content Include="Views\StockMoveBill\_AuditPartial.cshtml" />
     <Content Include="Views\StockMoveBill\_AntiTrialPartial.cshtml" />
-    <Content Include="Views\Shared\_BalancePartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

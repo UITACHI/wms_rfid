@@ -25,15 +25,16 @@ namespace Wms.Controllers.Wms.Inventory
             ViewBag.ModuleID = moduleID;
             return View();
         }
-        public ActionResult Details(int page, int rows, FormCollection collection)
-        {
-            var brand = DailyBalanceService.GetDetails(page, rows);
-            return Json(brand, "text", JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult MXDetails(int page, int rows, string date)
-        {
-            var brand = DailyBalanceService.MXGetDetails(page, rows, date);
-            return Json(brand, "text", JsonRequestBehavior.AllowGet);
-        }
+        //public ActionResult Details(int page, int rows, FormCollection collection)
+        //{
+        //    var brand = DailyBalanceService.GetDetails(page, rows);
+        //    return Json(brand, "text", JsonRequestBehavior.AllowGet);
+        //}
+        //public ActionResult InfoDetails(int page, int rows, string date)
+        //{
+        //    var brand = DailyBalanceService.MXGetDetails(page, rows, date);
+        //    return Json(brand, "text", JsonRequestBehavior.AllowGet);
+        //}
+
     }
 }
