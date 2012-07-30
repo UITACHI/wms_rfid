@@ -47,11 +47,11 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.QuantitySum)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.AmountSum)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.DetailNum)
                 .IsRequired();
@@ -92,7 +92,12 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
 
-            //// Relationships
+            // Relationships
+            this.HasRequired(t => t.DeliverLine)
+                .WithMany(t => t.SortOrders)
+                .HasForeignKey(d => d.DeliverLineCode)
+                .WillCascadeOnDelete(false);
+
             //this.HasRequired(t => t.Company)
             //    .WithMany(t => t.SortOrders)
             //    .HasForeignKey(d => d.CompanyCode)

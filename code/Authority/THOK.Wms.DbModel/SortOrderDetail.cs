@@ -9,6 +9,7 @@ namespace THOK.Wms.DbModel
     {
         public SortOrderDetail()
         {
+
         }
         public string OrderDetailID { get; set; }
         public string OrderID { get; set; }

@@ -19,6 +19,7 @@ namespace THOK.Wms.DbModel
             this.SortOrderDetails = new List<SortOrderDetail>();
             this.InBillAllots = new List<InBillAllot>();
             this.OutBillAllots = new List<OutBillAllot>();
+            this.SortingLowerlimits = new List<SortingLowerlimit>();
         }
         public string UnitCode { get; set; }
         public string UnitName { get; set; }
@@ -36,5 +37,6 @@ namespace THOK.Wms.DbModel
         public virtual ICollection<SortOrderDetail> SortOrderDetails { get; set; }
         public virtual ICollection<InBillAllot> InBillAllots { get; set; }
         public virtual ICollection<OutBillAllot> OutBillAllots { get; set; }
+        public virtual ICollection<SortingLowerlimit> SortingLowerlimits { get; set; }
     }
 }

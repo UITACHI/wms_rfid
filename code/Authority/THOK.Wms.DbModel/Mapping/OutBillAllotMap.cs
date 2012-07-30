@@ -42,11 +42,11 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.AllotQuantity)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.RealQuantity)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.OperatePersonID);
 
