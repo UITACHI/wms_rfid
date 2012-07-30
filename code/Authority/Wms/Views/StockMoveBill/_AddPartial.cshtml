@@ -137,86 +137,6 @@
             }
         });
     }
-
-    //datagrid行编辑方法
-    $.extend($.fn.datagrid.defaults.editors, {
-        numberspinner: {
-            init: function (container, options) {
-                var input = $('<input type="text">').appendTo(container);
-                return input.numberspinner(options);
-            },
-            destroy: function (target) {
-                $(target).numberspinner('destroy');
-            },
-            getValue: function (target) {
-                return $(target).numberspinner('getValue');
-            },
-            setValue: function (target, value) {
-                $(target).numberspinner('setValue', value);
-            },
-            resize: function (target, width) {
-                $(target).numberspinner('resize', width);
-            }
-        }
-    });
-    $(function () {
-        $('#moveBillDetail').datagrid({
-            onBeforeEdit: function (index, row) {
-                row.editing = true;
-                updateActions();
-            },
-            onAfterEdit: function (index, row) {
-                row.editing = false;
-                updateActions();
-            },
-            onCancelEdit: function (index, row) {
-                row.editing = false;
-                updateActions();
-            }
-        });
-    });
-    function updateActions() {
-        var rowcount = $('#moveBillDetail').datagrid('getRows').length;
-        for (var i = 0; i < rowcount; i++) {
-            $('#moveBillDetail').datagrid('updateRow', {
-                index: i,
-                row: { action: '' }
-            });
-        }
-    }
-    function editrow(index) {
-        $('#moveBillDetail').datagrid('beginEdit', index);
-    }
-    function deleterow(index) {
-        $.messager.confirm('确认', '您确认删除吗?', function (r) {
-            if (r) {
-//                $('#moveBillDetail').datagrid('deleteRow', index);
-                var row = $('#moveBillDetail').datagrid('getSelected');
-                if (row) {
-                deleteMoveBillDetail(row.ID);
-                }
-                updateActions();
-            }
-        });
-    }
-    function saverow(index) {
-        $('#moveBillDetail').datagrid('endEdit', index);
-    }
-    function cancelrow(index) {
-        $('#moveBillDetail').datagrid('cancelEdit', index);
-    }
-
-    function formatAction(value, row, index) {
-        if (row.editing) {
-            var s = '<a href="#" onclick="saverow(' + index + ')">保存</a> ';
-            var c = '<a href="#" onclick="cancelrow(' + index + ')">取消</a>';
-            return s + c;
-        } else {
-            var e = '<a href="#" onclick="editrow(' + index + ')">编辑</a> ';
-            var d = '<a href="#" onclick="deleterow(' + index + ')">删除</a>';
-            return e + d;
-        }
-    }
 </script>
 
 <div id="dlg" class="easyui-dialog" modal="true"
@@ -237,8 +157,7 @@
                         <th field="ProductName" width="90" align="right">产品名称</th>
                         <th field="UnitCode" width="60" align="right">单位编码</th>
                         <th field="UnitName" width="50" align="right">单位名称</th>
-                        <th field="RealQuantity" width="70" align="right" editor="numberspinner">数量</th>
-                        <th field="action" width="50" align="center" formatter="formatAction">操作</th>
+                        <th field="RealQuantity" width="70" align="right">数量</th>
                     </tr>
                 </thead>
             </table>
