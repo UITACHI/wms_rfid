@@ -40,23 +40,23 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.DemandQuantity)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.RealQuantity)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.Price)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.Amount)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.UnitQuantity)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
 
             // Table & Column Mappings

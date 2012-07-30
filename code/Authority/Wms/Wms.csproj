@@ -39,6 +39,22 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR">
+      <HintPath>..\packages\SignalR.Server.0.5.2\lib\net40\SignalR.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.AspNet">
+      <HintPath>..\packages\SignalR.Hosting.AspNet.0.5.2\lib\net40\SignalR.Hosting.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.Common">
+      <HintPath>..\packages\SignalR.Hosting.Common.0.5.2\lib\net40\SignalR.Hosting.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages" />
@@ -664,6 +680,11 @@
     <Content Include="obj\Debug\Authority.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\Authority.dll" />
     <Content Include="obj\Debug\Authority.pdb" />
+    <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="Scripts\jquery.signalR-0.5.2.js" />
+    <Content Include="Scripts\jquery.signalR-0.5.2.min.js" />
     <Content Include="Views\Module\_DeletePartial.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -733,6 +754,10 @@
     <ProjectReference Include="..\THOK.Wms.Repository\THOK.Wms.Repository.csproj">
       <Project>{259E5E16-41D8-420F-A11C-72BEE784B5CB}</Project>
       <Name>THOK.Wms.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THOK.Wms.SignalR\THOK.Wms.SignalR.csproj">
+      <Project>{04A2C9B1-0F35-42CF-A6A7-4319D7C6E95F}</Project>
+      <Name>THOK.Wms.SignalR</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -842,6 +867,8 @@
     <Content Include="Views\Home\PageNotFound.cshtml" />
     <Content Include="Views\Home\ServerError.cshtml" />
     <Content Include="Views\Home\Unauthorized.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="packages.config" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />

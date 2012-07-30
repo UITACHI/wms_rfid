@@ -29,6 +29,7 @@ namespace THOK.Wms.DbModel
         public DateTime UpdateTime { get; set; }
 
         //public virtual Company Company { get; set; }
+        public virtual DeliverLine DeliverLine { get; set; }
 
         public virtual ICollection<SortOrderDetail> SortOrderDetails { get; set; }
 

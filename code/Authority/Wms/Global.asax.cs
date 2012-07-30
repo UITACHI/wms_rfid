@@ -7,6 +7,9 @@ using System.Security.Principal;
 using System.Diagnostics;
 using Authority.Controllers;
 using THOK.Common;
+using SignalR;
+using THOK.Wms.SignalR;
+using THOK.Wms.SignalR.Connection;
 
 namespace Wms
 {
@@ -24,11 +27,13 @@ namespace Wms
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapConnection<AllotStockInConnection>("echo", "echo/{*operation}");
+
             routes.MapRoute(
                 "Default", // 路由名称
                 "{controller}/{action}/{SystemID}", // 带有参数的 URL
                 new { controller = "Home", action = "Index", SystemID = UrlParameter.Optional } // 参数默认值
-            );
+            );            
         }
 
         public static void RegisterIocUnityControllerFactory()
@@ -36,15 +41,15 @@ namespace Wms
             //Set for Controller Factory
             IControllerFactory controllerFactory = new UnityControllerFactory();
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
+            GlobalHost.DependencyResolver = new UnityConnectionDependencyResolver();
         }
 
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
-
-            RegisterGlobalFilters(GlobalFilters.Filters);
-            RegisterRoutes(RouteTable.Routes);
             RegisterIocUnityControllerFactory();
+            AreaRegistration.RegisterAllAreas();
+            RegisterGlobalFilters(GlobalFilters.Filters);           
+            RegisterRoutes(RouteTable.Routes);
         }
 
         public void Session_OnEnd()

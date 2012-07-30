@@ -1567,7 +1567,7 @@ namespace THOK.Wms.Repository.Migrations
                     new Module()
                     {
                         ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101"),
-                        ModuleName = "入库订单管理",
+                        ModuleName = "入库单据管理",
                         ShowOrder = 4,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_StockInto",
@@ -1743,7 +1743,7 @@ namespace THOK.Wms.Repository.Migrations
                     new Module()
                     {
                         ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471101"),
-                        ModuleName = "出库订单管理",
+                        ModuleName = "出库单据管理",
                         ShowOrder = 5,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_StockOut",

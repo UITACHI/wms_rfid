@@ -1,5 +1,16 @@
 ﻿<script type="text/javascript">
     var billNo = "";
+    var connection = $.connection('/echo');
+    $(function () {        
+        connection.received(function (data) {
+            $('#g_p').progressbar('setValue', data);
+            if (data == "success") {
+                HideWaitMessageDialog(j_waitDialog);
+            }
+        });
+        connection.start();
+    });
+    
     function allotClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
@@ -18,24 +29,8 @@
     };
 
     function allot() {
-        var j_waitDialog = ShowWaitMessageDialog();
-        $.ajax({
-            url: "/StockInBillAllot/Allot/", type: "GET", dataType: "text",
-            data: { billNo: billNo, areaCode: '' },
-            complete: function () { HideWaitMessageDialog(j_waitDialog); },
-            success: function (responseText) {
-                var result = $.evalJSON(responseText);
-                if (result.success) {
-                    $.messager.alert(g_MsgBoxTitle, result.msg,"info");
-                    $('#inAllotBillDetails').datagrid('load');
-                    $('#allotBillDetails').datagrid('load');
-                } else {
-                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
-                    $('#inAllotBillDetails').datagrid('load');
-                    $('#allotBillDetails').datagrid('load');
-                }
-            }
-        });
+        j_waitDialog = ShowWaitMessageDialog();
+        connection.send(billNo);
     }
 </script>
 
