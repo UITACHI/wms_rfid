@@ -1,7 +1,25 @@
-﻿@{
-    ViewBag.Title = "404 页面未找到";
-}
+﻿  <script type="text/javascript">
+      $(function () {
+          var connection = $.connection('/echo');
 
-<h2>404 页面未找到</h2>
-<p>您试图查看的页面没有找到，请重试或联系系统管理员。</p>
+          connection.received(function (data) {
+              $('#messages').append('<li>' + data + '</li>');
+          });
 
+          connection.start();
+         
+          $("#broadcast").off();
+          $("#broadcast").click(function () {
+              connection.send($('#msg').val());
+          });
+      });
+  </script>
+
+<div region="center" style="text-align: center;" fit="true" border="false" >
+    <h2>404 页面未找到</h2>
+    <p>您试图查看的页面没有找到，请重试或联系系统管理员。</p>
+    <input type="text" id="msg" />
+    <a id="broadcast" href="#" class="easyui-linkbutton" iconcls="icon-ok" >预览</a>
+    <ul id="messages">
+    </ul>
+</div>
