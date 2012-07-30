@@ -32,6 +32,7 @@ namespace THOK.Wms.SignalR.Allot.Service
         public bool Allot(string connectionId,string billNo, string[] areaCodes,out string result)
         {
             ConnectionId = connectionId;
+            NotifyConnection("start");
             result = string.Empty;
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
@@ -367,6 +368,10 @@ namespace THOK.Wms.SignalR.Allot.Service
                 };
                 billMaster.InBillAllots.Add(billAllot);
                 StorageRepository.SaveChanges();
+                decimal sumBillQuantity = billMaster.InBillDetails.Sum(d => d.BillQuantity);
+                decimal sumAllotQuantity = billMaster.InBillDetails.Sum(d => d.AllotQuantity);
+                string p = ((long)(sumAllotQuantity / sumBillQuantity * 100)).ToString();
+                NotifyConnection(p);
             }
         }
     }
