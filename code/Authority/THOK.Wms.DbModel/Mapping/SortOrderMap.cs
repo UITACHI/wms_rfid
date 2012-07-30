@@ -20,6 +20,9 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.CompanyCode)
                 .HasMaxLength(20);
+            this.Property(t => t.DeliverLineCode)
+                .IsRequired()
+                .HasMaxLength(50);
 
             this.Property(t => t.SaleRegionCode)
                 .IsRequired()
@@ -44,11 +47,11 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.QuantitySum)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.AmountSum)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.DetailNum)
                 .IsRequired();
@@ -79,6 +82,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.OrderType).HasColumnName(ColumnMap.Value.To("OrderType"));
             this.Property(t => t.CustomerCode).HasColumnName(ColumnMap.Value.To("CustomerCode"));
             this.Property(t => t.CustomerName).HasColumnName(ColumnMap.Value.To("CustomerName"));
+            this.Property(t => t.DeliverLineCode).HasColumnName(ColumnMap.Value.To("DeliverLineCode"));
             this.Property(t => t.QuantitySum).HasColumnName(ColumnMap.Value.To("QuantitySum"));
             this.Property(t => t.AmountSum).HasColumnName(ColumnMap.Value.To("AmountSum"));
             this.Property(t => t.DetailNum).HasColumnName(ColumnMap.Value.To("DetailNum"));
@@ -88,7 +92,12 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
 
-            //// Relationships
+            // Relationships
+            this.HasRequired(t => t.DeliverLine)
+                .WithMany(t => t.SortOrders)
+                .HasForeignKey(d => d.DeliverLineCode)
+                .WillCascadeOnDelete(false);
+
             //this.HasRequired(t => t.Company)
             //    .WithMany(t => t.SortOrders)
             //    .HasForeignKey(d => d.CompanyCode)

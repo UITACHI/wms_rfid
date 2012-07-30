@@ -7,6 +7,9 @@ using System.Security.Principal;
 using System.Diagnostics;
 using Authority.Controllers;
 using THOK.Common;
+using SignalR;
+using THOK.Wms.SignalR;
+using THOK.Wms.SignalR.Connection;
 
 namespace Wms
 {
@@ -24,11 +27,13 @@ namespace Wms
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapConnection<AllotStockInConnection>("echo", "echo/{*operation}");
+
             routes.MapRoute(
                 "Default", // 路由名称
                 "{controller}/{action}/{SystemID}", // 带有参数的 URL
                 new { controller = "Home", action = "Index", SystemID = UrlParameter.Optional } // 参数默认值
-            );
+            );            
         }
 
         public static void RegisterIocUnityControllerFactory()
@@ -36,15 +41,15 @@ namespace Wms
             //Set for Controller Factory
             IControllerFactory controllerFactory = new UnityControllerFactory();
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
+            GlobalHost.DependencyResolver = new UnityConnectionDependencyResolver();
         }
 
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
-
-            RegisterGlobalFilters(GlobalFilters.Filters);
-            RegisterRoutes(RouteTable.Routes);
             RegisterIocUnityControllerFactory();
+            AreaRegistration.RegisterAllAreas();
+            RegisterGlobalFilters(GlobalFilters.Filters);           
+            RegisterRoutes(RouteTable.Routes);
         }
 
         public void Session_OnEnd()
@@ -52,47 +57,77 @@ namespace Wms
             int i = 0;
             i++;
         }
-        //protected void Application_Error(object sender, EventArgs e)
-        //{
-        //    Exception exception = Server.GetLastError();
-        //    if (exception != null)
-        //    {
-        //        Response.Clear();
-        //        HttpException httpException = exception as HttpException;
 
-        //        RouteData routeData = new RouteData();
-        //        routeData.Values.Add("controller", "Home");
-        //        if (httpException == null)
-        //        {
-        //            routeData.Values.Add("action", "Error");
-        //            if (exception != null)
-        //            {
-        //                Trace.TraceError("Error occured and caught in Global.asax - {0}", exception.ToString());
-        //            }
-        //        }
-        //        else
-        //        {
-        //            switch (httpException.GetHttpCode())
-        //            {
-        //                case 404:
-        //                    routeData.Values.Add("action", "PageNotFound");
-        //                    break;
-        //                case 500:
-        //                    routeData.Values.Add("action", "ServerError");
-        //                    Trace.TraceError("Server Error occured and caught in Global.asax - {0}", exception.ToString());
-        //                    break;
-        //                default:
-        //                    routeData.Values.Add("action", "Error");
-        //                    Trace.TraceError("Error occured and caught in Global.asax - {0}", exception.ToString());
-        //                    break;
-        //            }
-        //        }
-        //        Server.ClearError();
-        //        Response.TrySkipIisCustomErrors = true;
-        //        IController errorController = new HomeController();
-        //        errorController.Execute(new RequestContext(new HttpContextWrapper(Context), routeData));
-        //    }
-        //}
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception exception = Server.GetLastError();
+            if (exception != null)
+            {
+                Response.Clear();
+                HttpException httpException = exception as HttpException;
+
+                RouteData routeData = new RouteData();
+                routeData.Values.Add("controller", "Home");
+                if (httpException == null)
+                {
+
+                    if (Context.Request.RequestContext.RouteData.Values["action"] == "Index")
+                    {
+                        routeData.Values.Add("action", "Error");
+                    }
+                    else
+                    {
+                        routeData.Values.Add("action", "AjaxError");
+                    }
+                    if (exception != null)
+                    {
+                        Trace.TraceError("Error occured and caught in Global.asax - {0}", exception.ToString());
+                    }
+                }
+                else
+                {
+                    switch (httpException.GetHttpCode())
+                    {
+                        case 404:                            
+                            if (Context.Request.RequestContext.RouteData.Values["action"] == "Index")
+                            {
+                                routeData.Values.Add("action", "PageNotFound");
+                            }
+                            else
+                            {
+                                routeData.Values.Add("action", "AjaxPageNotFound");
+                            }
+                            break;
+                        case 500:                            
+                            if (Context.Request.RequestContext.RouteData.Values["action"] == "Index")
+                            {
+                                routeData.Values.Add("action", "ServerError");
+                            }
+                            else
+                            {
+                                routeData.Values.Add("action", "AjaxServerError");
+                            }
+                            Trace.TraceError("Server Error occured and caught in Global.asax - {0}", exception.ToString());
+                            break;
+                        default:
+                            if (Context.Request.RequestContext.RouteData.Values["action"] == "Index")
+                            {
+                                routeData.Values.Add("action", "Error");
+                            }
+                            else
+                            {
+                                routeData.Values.Add("action", "AjaxError");
+                            }
+                            Trace.TraceError("Error occured and caught in Global.asax - {0}", exception.ToString());
+                            break;
+                    }
+                }
+                Server.ClearError();
+                Response.TrySkipIisCustomErrors = true;
+                IController errorController = new HomeController();
+                errorController.Execute(new RequestContext(new HttpContextWrapper(Context), routeData));
+            }
+        }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {

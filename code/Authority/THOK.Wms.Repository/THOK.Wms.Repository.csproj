@@ -133,6 +133,34 @@
     <Compile Include="Migrations\201207260207528_modify_profit_loss_uint.Designer.cs">
       <DependentUpon>201207260207528_modify_profit_loss_uint.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207270928380_modify_sort_order_deliverlinecode.cs" />
+    <Compile Include="Migrations\201207270928380_modify_sort_order_deliverlinecode.Designer.cs">
+      <DependentUpon>201207270928380_modify_sort_order_deliverlinecode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207271214442_modify_BillMaster_Lock.cs" />
+    <Compile Include="Migrations\201207271214442_modify_BillMaster_Lock.Designer.cs">
+      <DependentUpon>201207271214442_modify_BillMaster_Lock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207271228177_modify_inBillAllot_UnitCode.cs" />
+    <Compile Include="Migrations\201207271228177_modify_inBillAllot_UnitCode.Designer.cs">
+      <DependentUpon>201207271228177_modify_inBillAllot_UnitCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207271230497_modify_outBillAllot_UnitCode.cs" />
+    <Compile Include="Migrations\201207271230497_modify_outBillAllot_UnitCode.Designer.cs">
+      <DependentUpon>201207271230497_modify_outBillAllot_UnitCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207280241303_add_deliver.cs" />
+    <Compile Include="Migrations\201207280241303_add_deliver.Designer.cs">
+      <DependentUpon>201207280241303_add_deliver.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207300251573_add_sort_table.cs" />
+    <Compile Include="Migrations\201207300251573_add_sort_table.Designer.cs">
+      <DependentUpon>201207300251573_add_sort_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207300902560_modify_data_length.cs" />
+    <Compile Include="Migrations\201207300902560_modify_data_length.Designer.cs">
+      <DependentUpon>201207300902560_modify_data_length.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1147,9 +1147,34 @@ namespace THOK.Wms.Repository.Migrations
                     new Module()
                     {
                         ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471102"),
-                        ModuleName = "仓库设置",
+                        ModuleName = "仓库信息设置",
                         ShowOrder = 1,
                         ModuleURL = "/Warehouse/",
+                        IndicateImage = "icon-son_Warehouse",
+                        DeskTopImage = "image-son_Warehouse",
+                        System = system,
+                        System_SystemID = system.SystemID,
+                        ParentModule_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471101")
+                    }
+                    ,
+                    new Module()
+                    {
+                        ModuleID = new Guid("D3344F88-08AD-4FDA-8F45-EAD3BB471102"),
+                        ModuleName = "储位卷烟预设",
+                        ShowOrder = 2,
+                        ModuleURL = "/DefaultProductSet/",
+                        IndicateImage = "icon-son_Warehouse",
+                        DeskTopImage = "image-son_Warehouse",
+                        System = system,
+                        System_SystemID = system.SystemID,
+                        ParentModule_ModuleID = new Guid("B8344F88-08AD-4FDA-8F45-EAD3BB471101")
+                    },
+                    new Module()
+                    {
+                        ModuleID = new Guid("D4344F88-08AD-4FDA-8F45-EAD3BB471102"),
+                        ModuleName = "数据接口参数",
+                        ShowOrder = 3,
+                        ModuleURL = "/DataInterfaceSet/",
                         IndicateImage = "icon-son_Warehouse",
                         DeskTopImage = "image-son_Warehouse",
                         System = system,
@@ -1542,7 +1567,7 @@ namespace THOK.Wms.Repository.Migrations
                     new Module()
                     {
                         ModuleID = new Guid("D8344F88-08AD-4FDA-8F45-EAD3BB471101"),
-                        ModuleName = "入库订单管理",
+                        ModuleName = "入库单据管理",
                         ShowOrder = 4,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_StockInto",
@@ -1718,7 +1743,7 @@ namespace THOK.Wms.Repository.Migrations
                     new Module()
                     {
                         ModuleID = new Guid("E8344F88-08AD-4FDA-8F45-EAD3BB471101"),
-                        ModuleName = "出库订单管理",
+                        ModuleName = "出库单据管理",
                         ShowOrder = 5,
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_StockOut",
@@ -2012,6 +2037,14 @@ namespace THOK.Wms.Repository.Migrations
                 },
                 new Function()
                 {
+                    FunctionID = new Guid("37565519-A56F-44e2-856D-24C2868142D1"),
+                    FunctionName = "审核",
+                    ControlName = "audit",
+                    IndicateImage = "icon-ok",
+                    Module_ModuleID = new Guid("F8344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
                     FunctionID = new Guid("8B214732-8B57-4026-A89B-93BC125D2362"),
                     FunctionName = "打印",
                     ControlName = "print",
@@ -2152,6 +2185,30 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionName = "删除",
                     ControlName = "delete",
                     IndicateImage = "icon-remove",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("F7565519-A56F-44e2-856D-24C2868142D1"),
+                    FunctionName = "审核",
+                    ControlName = "audit",
+                    IndicateImage = "icon-ok",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("F7565519-A56F-44e2-856D-24C2868142D2"),
+                    FunctionName = "反审",
+                    ControlName = "antitrial",
+                    IndicateImage = "icon-undo",
+                    Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("F6E6597A-64A9-4eb2-9C72-9C24C39F5652"),
+                    FunctionName = "确认",
+                    ControlName = "confirm",
+                    IndicateImage = "icon-tip",
                     Module_ModuleID = new Guid("FA344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
                 new Function()
@@ -2300,6 +2357,14 @@ namespace THOK.Wms.Repository.Migrations
                 },
                 new Function()
                 {
+                    FunctionID = new Guid("D7565519-A56F-44e2-856D-24C2868142D1"),
+                    FunctionName = "审核",
+                    ControlName = "audit",
+                    IndicateImage = "icon-ok",
+                    Module_ModuleID = new Guid("FB344F88-08AD-4FDA-8F45-EAD3BB471103")
+                },
+                new Function()
+                {
                     FunctionID = new Guid("C3C1362E-2946-46f4-8939-40ADD4A275DE"),
                     FunctionName = "打印",
                     ControlName = "print",
@@ -2337,7 +2402,7 @@ namespace THOK.Wms.Repository.Migrations
                     new Module()
                     {
                         ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471102"),
-                        ModuleName = "库存日结",
+                        ModuleName = "仓库库存日结",
                         ShowOrder = 1,
                         ModuleURL = "/DailyBalance/",
                         IndicateImage = "icon-son_StockDayBill",
@@ -2417,6 +2482,14 @@ namespace THOK.Wms.Repository.Migrations
                     FunctionName = "查询",
                     ControlName = "search",
                     IndicateImage = "icon-search",
+                    Module_ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471102")
+                },
+                new Function()
+                {
+                    FunctionID = new Guid("F4D23A0C-DE19-4cb3-9501-B270AE8790A6"),
+                    FunctionName = "日结",
+                    ControlName = "balance",
+                    IndicateImage = "icon-son_StockDayBill",
                     Module_ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471102")
                 },
                 new Function()
@@ -2753,17 +2826,9 @@ namespace THOK.Wms.Repository.Migrations
                 },
                 new Function()
                 {
-                    FunctionID = new Guid("C1712662-B353-4cda-B8BA-D4F03222C9F4"),
-                    FunctionName = "编辑",
-                    ControlName = "edit",
-                    IndicateImage = "icon-edit",
-                    Module_ModuleID = new Guid("FD344F88-08AD-4FDA-8F45-EAD3BB471104")
-                },
-                new Function()
-                {
                     FunctionID = new Guid("135E3A1B-E86A-4a3a-AB2E-DA02AE9DF5B4"),
                     FunctionName = "下载",
-                    ControlName = "Download",
+                    ControlName = "download",
                     IndicateImage = "icon-reload",
                     Module_ModuleID = new Guid("FD344F88-08AD-4FDA-8F45-EAD3BB471104")
                 },
@@ -2895,18 +2960,6 @@ namespace THOK.Wms.Repository.Migrations
                         ModuleURL = "",
                         IndicateImage = "icon-Menu_Research",
                         DeskTopImage = "image-Menu_Research",
-                        System = system,
-                        System_SystemID = system.SystemID,
-                        ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")
-                    },
-                    new Module()
-                    {
-                        ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB571101"),
-                        ModuleName = "积压产品清单查询",
-                        ShowOrder = 1,
-                        ModuleURL = "/OverStockProductSearch/",
-                        IndicateImage = "icon-son_StockPlace",
-                        DeskTopImage = "image-son_StockPlace",
                         System = system,
                         System_SystemID = system.SystemID,
                         ParentModule_ModuleID = new Guid("FE344F88-08AD-4FDA-8F45-EAD3BB471101")

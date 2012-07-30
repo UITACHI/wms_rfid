@@ -17,8 +17,8 @@ namespace THOK.Wms.DbModel.Mapping
 
             // Properties
             this.Property(t => t.ID)
-               .IsRequired()
-               .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity); 
+                .IsRequired()
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity); 
 
             this.Property(t => t.BillNo)
                 .IsRequired()
@@ -34,19 +34,19 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.Price)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.BillQuantity)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.AllotQuantity)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.RealQuantity)
                 .IsRequired()
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.Description)
                 .HasMaxLength(100);

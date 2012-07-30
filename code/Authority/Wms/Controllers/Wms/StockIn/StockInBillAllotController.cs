@@ -19,7 +19,7 @@ namespace Authority.Controllers.Wms.StockIn
             string[] areaCodes = new string[] { };
             string result = string.Empty;
             bool bResult = InBillAllotService.Allot(billNo, areaCodes,out result);
-            string msg = bResult ? "分配成功,确认后生效！" : "分配过程因异常错误中止，请处理后继续分配.";
+            string msg = bResult ? "分配成功,确认后生效！" : "分配过程因异常错误中止.";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, result), "text", JsonRequestBehavior.AllowGet);
         }
     }

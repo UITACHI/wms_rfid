@@ -27,16 +27,19 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasMaxLength(20);
 
             this.Property(t => t.Quantity)
-                .IsRequired();
+                .IsRequired()
+                .HasPrecision(18, 0);
 
             this.Property(t => t.Rfid)
                 .HasMaxLength(100);
 
             this.Property(t => t.InFrozenQuantity)
-                .IsRequired();
+                .IsRequired()
+                .HasPrecision(18,0);
 
             this.Property(t => t.OutFrozenQuantity)
-                .IsRequired();
+                .IsRequired()
+                .HasPrecision(18, 0);
 
             this.Property(t => t.IsLock)
                 .IsRequired()

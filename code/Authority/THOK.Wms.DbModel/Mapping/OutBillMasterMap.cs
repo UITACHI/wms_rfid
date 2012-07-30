@@ -43,6 +43,9 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.Description)
                 .HasMaxLength(100);
 
+            this.Property(t => t.LockTag)
+                .HasMaxLength(50);
+
             this.Property(t => t.IsActive)
                 .IsRequired()
                 .IsFixedLength()
@@ -50,6 +53,8 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.UpdateTime)
                 .IsRequired();
+
+            this.Property(t => t.RowVersion).IsRowVersion();
 
             // Table & Column Mappings
             this.Property(t => t.BillNo).HasColumnName(ColumnMap.Value.To("BillNo"));
@@ -61,8 +66,10 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.VerifyPersonID).HasColumnName(ColumnMap.Value.To("VerifyPersonID"));
             this.Property(t => t.VerifyDate).HasColumnName(ColumnMap.Value.To("VerifyDate"));
             this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
+            this.Property(t => t.LockTag).HasColumnName(ColumnMap.Value.To("LockTag")); 
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
+            this.Property(t => t.RowVersion).HasColumnName(ColumnMap.Value.To("RowVersion"));
 
             // Relationships
             this.HasRequired(t => t.BillType)

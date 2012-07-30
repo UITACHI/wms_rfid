@@ -67,7 +67,7 @@
         DataLoad();
         $.getJSON("/StockMoveBill/GenMoveBillNo/", function (json) {
             if (json) {
-                $('#inBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
+                $('#moveBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增移库单');
                 $('#fm').form('clear');
                 $('#billNo').val(json.BillNo);
@@ -86,7 +86,6 @@
                     hasDownArrow: true
                 });
                 url = '/StockMoveBill/Create/';
-                detailUrl = '/StockInBill/InBillDetailCreate/';
             } else {
                 $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
             }
@@ -95,7 +94,6 @@
 
     //保存移库主单
     function save() {
-        //if (isInBillMasterCanEdit == true) {
         $('#fm').form('submit', {
             url: url,
             onSubmit: function () {
@@ -119,29 +117,47 @@
                 }
             }
         });
-        //  }
     }
 
+    //删除移库细单
+    function deleteMoveBillDetail(id) {
+        $.getJSON('/StockMoveBill/MoveBillDetailDelete/', { ID: id }, function (json) {
+            if (json.success) {
+                $.messager.show({
+                    title: '成功',
+                    msg: json.msg
+                });
+                $('#moveBillDetail').datagrid('reload');
+            }
+            else {
+                $.messager.show({
+                    title: '失败',
+                    msg: json.msg
+                });
+            }
+        });
+    }
 </script>
 
 <div id="dlg" class="easyui-dialog" modal="true"
-        style="width:700px;height:500px;padding:0px 0px"
+        style="width:900px;height:500px;padding:0px 0px"
         closed="true" buttons="#dlg-buttons">
 	<div class="easyui-layout" fit="true">
         <div region="center" border="false">
-            <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="700" id="inBillDetail"
-                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="">
+            <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="900" id="moveBillDetail"
+                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="" idField="ID">
                 <thead>
                     <tr>
-                        <th field="ID" width="100">细单ID</th>
-                        <th field="ProductCode" width="100">产品代码</th>
-                        <th field="ProductName" width="120" align="right">产品名称</th>
-                        <th field="UnitCode" width="80" align="right">单位编码</th>
-                        <th field="UnitName" width="80" align="right">单位名称</th>
-                        <th field="BillQuantity" width="60" align="right">数量</th>
-                        <th field="RealQuantity" width="80" align="right">实际入库量</th>
-                        <th field="Price" width="60" align="right">单价</th>
-                        <th field="Description" width="80" align="right">备注</th>
+                        <th field="ID" width="100" hidden="true">细单ID</th>
+                        <th field="OutCellCode" width="100" align="right">货位编码(出)</th>
+                        <th field="OutCellName" width="100" align="right">货位名称(出)</th>
+                        <th field="InCellCode" width="80" align="right">货位编码(入)</th>
+                        <th field="InCellName" width="80" align="right">货位名称(入)</th>
+                        <th field="ProductCode" width="60" align="right">产品代码</th>
+                        <th field="ProductName" width="90" align="right">产品名称</th>
+                        <th field="UnitCode" width="60" align="right">单位编码</th>
+                        <th field="UnitName" width="50" align="right">单位名称</th>
+                        <th field="RealQuantity" width="70" align="right">数量</th>
                     </tr>
                 </thead>
             </table>

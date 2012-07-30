@@ -25,10 +25,7 @@ namespace Authority.Controllers.Wms.StockMove
             ViewBag.hasAdd = true;
             ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
-            ViewBag.hasDownload = true;
             ViewBag.hasAudit = true;
-            ViewBag.hasAntiTrial = true;
-            ViewBag.hasAllot = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;
@@ -119,6 +116,16 @@ namespace Authority.Controllers.Wms.StockMove
         {
             bool bResult = MoveBillMasterService.AntiTrial(BillNo);
             string msg = bResult ? "反审成功" : "反审失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /MoveBillDetail/MoveBillDetailDelete/
+
+        public ActionResult MoveBillDetailDelete(string ID)
+        {
+            bool bResult = MoveBillDetailService.Delete(ID);
+            string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 

@@ -92,50 +92,43 @@
         }
     }
 </script>
-<div id="productCheckDiv" class="easyui-layout" fit="true">
-    <div id="leftDiv" border="false" region="west" style="width: 358px; border-right-style: solid;
-        border-right-width: 1px;">
+<div class="easyui-layout" fit="true">
+    <div region="west" style="width: 380px; border-right-style: solid; border-right-width: 1px; border-right-color: #99BBE8;" border="false">
         <table id="productTable" class="easyui-datagrid" border="false" url=''
             singleselect="false" fit="true" rownumbers="true">
             <thead>
                 <tr>
                     <th field="ck" checkbox="true">
-                        <th field="ProductCode" width="120">
+                        <th field="ProductCode" width="100">
                             产品编码
                         </th>
-                        <th field="ProductName" width="170">
+                        <th field="ProductName" width="140">
                             产品名称
                         </th>
                 </tr>
             </thead>
         </table>
     </div>
-    <div id="rightMoveLeft" border="false" region="center" style="text-align: center"
-        fit="true">
-        <table fit="true">
+    <div region="center" style="text-align: center;" fit="true" border="false" >
+        <table style="width:auto;height: 100%; text-align: center">
             <tr>
-                <td style="height: 150px; text-align: center">
-                    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="rightMoveClick()">右移==></a>
-                </td>
-            </tr>
-            <tr>
-                <td style="height: 150px; text-align: center">
-                    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="leftMoveClick()"><==左移</a>
+                <td style="height: auto; text-align: center">
+                    <div style="height: 50px;"><a href="#" class="easyui-linkbutton" onclick="rightMoveClick()">>>></a></div>                  
+                    <div style="height: 50px;"><a href="#" class="easyui-linkbutton" onclick="leftMoveClick()"><<<</a></div>
                 </td>
             </tr>
         </table>
     </div>
-    <div id="rightDiv" border="false" class="cart" region="east" style="width: 358px;
-        border-left-width: 1px;">
+    <div class="cart" region="east" style="width: 380px; border-left-style: solid; border-left-width: 1px; border-left-color: #99BBE8;" border="false">
         <table id="checkProductTable" class="easyui-datagrid" border="false" url='' singleselect="false"
             fit="true" rownumbers="true">
             <thead>
                 <tr>
                     <th field="ck" checkbox="true">
-                        <th field="ProductCode" width="120">
+                        <th field="ProductCode" width="100">
                             产品编码
                         </th>
-                        <th field="ProductName" width="170">
+                        <th field="ProductName" width="140">
                             产品名称
                         </th>
                 </tr>
