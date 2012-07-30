@@ -86,7 +86,10 @@
     <Compile Include="Controllers\Wms\InterfaceInfo\BasisUploadController.cs" />
     <Compile Include="Controllers\Wms\InterfaceInfo\SortingRealTimeController.cs" />
     <Compile Include="Controllers\Wms\Inventory\CargospaceController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\CurrentStockController.cs" />
     <Compile Include="Controllers\Wms\Inventory\DailyBalanceController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\DistributionController.cs" />
+    <Compile Include="Controllers\Wms\Inventory\HistoricalDetailController.cs" />
     <Compile Include="Controllers\Wms\Inventory\StockledgerController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillCheckController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillController.cs" />
@@ -838,6 +841,13 @@
     <Content Include="Views\CheckBill\_AuditPartial.cshtml" />
     <Content Include="Views\CheckBill\_ConfirmPartial.cshtml" />
     <Content Include="Views\CheckBill\_ChangedCheckPartial.cshtml" />
+    <Content Include="Views\DailyBalance\DailyBalance.cshtml" />
+    <Content Include="Views\Distribution\Index.cshtml" />
+    <Content Include="Views\CurrentStock\Index.cshtml" />
+    <Content Include="Views\CurrentStock\_SearchPartial.cshtml" />
+    <Content Include="Views\CurrentStock\_Detail.cshtml" />
+    <Content Include="Views\HistoricalDetail\Index.cshtml" />
+    <Content Include="Views\HistoricalDetail\_SearchPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
