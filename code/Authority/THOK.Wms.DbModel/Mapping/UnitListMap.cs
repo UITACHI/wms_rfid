@@ -34,7 +34,7 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasMaxLength(50);
 
             this.Property(t => t.Quantity01)
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.UnitCode02)
                 .IsRequired()
@@ -45,7 +45,7 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasMaxLength(50);
 
             this.Property(t => t.Quantity02)
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.UnitCode03)
                 .IsRequired()
@@ -56,7 +56,7 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasMaxLength(50);
 
             this.Property(t => t.Quantity03)
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.UnitCode04)
                 .IsRequired()

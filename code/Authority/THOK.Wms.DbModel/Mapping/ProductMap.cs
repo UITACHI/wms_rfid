@@ -79,16 +79,16 @@ namespace THOK.Wms.DbModel.Mapping
                 .HasMaxLength(30);
 
             this.Property(t => t.BuyPrice)
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.TradePrice)
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.RetailPrice)
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.CostPrice)
-                .HasPrecision(9, 2);
+                .HasPrecision(18, 2);
 
             this.Property(t => t.IsFilterTip)
                 .IsRequired()

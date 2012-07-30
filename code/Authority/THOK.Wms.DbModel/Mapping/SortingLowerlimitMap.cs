@@ -7,10 +7,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace THOK.Wms.DbModel.Mapping
 {
-    public class ProfitLossBillDetailMap : EntityMappingBase<ProfitLossBillDetail>
+    public class SortingLowerlimitMap : EntityMappingBase<SortingLowerlimit>
     {
-        public ProfitLossBillDetailMap()
-            :base("Wms")
+        public SortingLowerlimitMap()
+            : base("Wms")
         {
             // Primary Key
             this.HasKey(t => t.ID);
@@ -20,17 +20,9 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsRequired()
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            this.Property(t => t.BillNo)
+            this.Property(t => t.SortingLineCode)
                 .IsRequired()
                 .HasMaxLength(20);
-
-            this.Property(t => t.CellCode)
-                .IsRequired()
-                .HasMaxLength(20);
-
-            this.Property(t => t.StorageCode)
-                .IsRequired()
-                .HasMaxLength(50);
 
             this.Property(t => t.ProductCode)
                 .IsRequired()
@@ -40,41 +32,40 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsRequired()
                 .HasMaxLength(20);
 
-            this.Property(t => t.Price)
-                .IsRequired()
-                .HasPrecision(18, 2);
-
             this.Property(t => t.Quantity)
                 .IsRequired()
                 .HasPrecision(18, 2);
 
-            this.Property(t => t.Description)
-                .HasMaxLength(100);
+            this.Property(t => t.IsActive)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
+
+            this.Property(t => t.UpdateTime)
+                .IsRequired();
 
             // Table & Column Mappings
             this.Property(t => t.ID).HasColumnName(ColumnMap.Value.To("ID"));
-            this.Property(t => t.BillNo).HasColumnName(ColumnMap.Value.To("BillNo"));
-            this.Property(t => t.CellCode).HasColumnName(ColumnMap.Value.To("CellCode"));
-            this.Property(t => t.StorageCode).HasColumnName(ColumnMap.Value.To("StorageCode"));
+            this.Property(t => t.SortingLineCode).HasColumnName(ColumnMap.Value.To("SortingLineCode"));
             this.Property(t => t.ProductCode).HasColumnName(ColumnMap.Value.To("ProductCode"));
             this.Property(t => t.UnitCode).HasColumnName(ColumnMap.Value.To("UnitCode"));
-            this.Property(t => t.Price).HasColumnName(ColumnMap.Value.To("Price"));
             this.Property(t => t.Quantity).HasColumnName(ColumnMap.Value.To("Quantity"));
-            this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
+            this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
+            this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
             // Relationships
-            this.HasRequired(t => t.ProfitLossBillMaster)
-                .WithMany(t => t.ProfitLossBillDetails)
-                .HasForeignKey(d => d.BillNo)
+            this.HasRequired(t => t.SortingLine)
+                .WithMany(t => t.SortingLowerlimits)
+                .HasForeignKey(d => d.SortingLineCode)
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.Product)
-                .WithMany(t => t.ProfitLossBillDetails)
+                .WithMany(t => t.SortingLowerlimits)
                 .HasForeignKey(d => d.ProductCode)
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.Unit)
-                .WithMany(t => t.ProfitLossBillDetails)
+                .WithMany(t => t.SortingLowerlimits)
                 .HasForeignKey(d => d.UnitCode)
                 .WillCascadeOnDelete(false);
         }

@@ -13,12 +13,10 @@ namespace THOK.Wms.DbModel.Mapping
                     // Primary Key
                   this.HasKey(t => t.DeliverLineCode);
 
-
                   // Properties
-
                   this.Property(t => t.DeliverLineCode)
-                        .IsRequired()
-                        .HasMaxLength(50);
+                      .IsRequired()
+                      .HasMaxLength(50);
 
                   this.Property(t => t.CustomCode)
                       .HasMaxLength(50);
@@ -31,7 +29,7 @@ namespace THOK.Wms.DbModel.Mapping
                       .HasMaxLength(50);
 
                   this.Property(t => t.DeliverOrder)
-                       .IsRequired();
+                      .IsRequired();
 
                   this.Property(t => t.Description)
                       .HasMaxLength(100);
