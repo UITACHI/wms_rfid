@@ -85,6 +85,10 @@ namespace THOK.Wms.Repository
             modelBuilder.Configurations.Add(new DeliverLineMap());
             modelBuilder.Configurations.Add(new CustomerMap());
 
+            modelBuilder.Configurations.Add(new SortingLineMap());
+            modelBuilder.Configurations.Add(new SortingLowerlimitMap());
+            modelBuilder.Configurations.Add(new SortOrderDispatchMap());
+
             #endregion
         }
     }

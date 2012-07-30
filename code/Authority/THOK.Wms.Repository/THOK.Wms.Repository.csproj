@@ -153,6 +153,10 @@
     <Compile Include="Migrations\201207280241303_add_deliver.Designer.cs">
       <DependentUpon>201207280241303_add_deliver.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207300251573_add_sort_table.cs" />
+    <Compile Include="Migrations\201207300251573_add_sort_table.Designer.cs">
+      <DependentUpon>201207300251573_add_sort_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
