@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var url;
     $(function () {
-        $('#cc').combo({
+        $('#IsActiveCc').combo({
             required: true,
             editable: false,
             panelHeight: 45
@@ -10,19 +10,20 @@
 
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
-        $('#fm').form('clear');
-        $('#fm .easyui-validatebox').validatebox({
+        $('#LowerLimitfm').form('clear');
+        $('#LowerLimitfm .easyui-validatebox').validatebox({
             required: true
         });
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
-        $('#cc').combo({
+        $('#IsActiveCc').combo({
             hasDownArrow: true
         });
+        url = '/SortingLowerLimit/Create/';
     };
 
     function save() {
-        $('#fm').form('submit', {
+        $('#LowerLimitfm').form('submit', {
             url: url,
             onSubmit: function () {
                 return $(this).form('validate');
@@ -46,46 +47,63 @@
             }
         });
     }
+    function productSelect() {
+        $('#productInfoShowDiv').dialog('open').dialog('setTitle', '选择产品信息');
+        $('#productDetail').datagrid({ url: '/Product/FindProduct/' });
+        $("#productDetail").datagrid('reload');
+    }
+
+    function sortLineSelect() {
+        $('#sortLineShowDiv').dialog('open').dialog('setTitle', '选择分拣线信息');
+    }
 </script>
 
-    <div id="dlg" class="easyui-dialog" modal="true"  style="width:360px;height:320px;padding:2px 2px"
+    <div id="dlg" class="easyui-dialog" modal="true"  style="width:320px;height:320px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
-	            <form id="sortingfm" method="post" novalidate>
-                    <table width="360">
+	            <form id="LowerLimitfm" method="post" novalidate>
+                    <table width="280">
                      <tr>
-                        <td width="60">分拣线编码：</td>
-                        <td width="168"><input name="sortingLineId" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" style="text-align:right">分拣线编码：</td>
+                        <td width="168"><input name="SortingLineCode" id="sortingLineCode" class="easyui-validatebox"/>
+                        <a href="#" onclick="sortLineSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
                       </tr>
                       <tr>
-                        <td width="60">分拣线名称：</td>
-                        <td width="168"><input name="sortingLineName" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" style="text-align:right">分拣线名称：</td>
+                        <td width="168"><input name="SortingLineName" id="sortingLineName" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
-                        <td width="60">卷烟编码：</td>
-                        <td width="168"><input name="productCode" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" style="text-align:right">卷烟编码：</td>
+                        <td width="168"><input name="ProductCode" id="productCode" class="easyui-validatebox" />
+                        <a href="#" onclick="productSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
                       </tr>
                       <tr>
-                        <td width="60">卷烟名称：</td>
-                        <td width="168"><input name="productName" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" style="text-align:right">卷烟名称：</td>
+                        <td width="168"><input name="ProductName" id="productName" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
-                        <td width="60">卷烟单位：</td>
-                        <td width="168"><input name="productUnit" class="easyui-validatebox" required="true"/></td>
-                      </tr>                     
+                        <td width="60" style="text-align:right">单位编码：</td>
+                        <td width="168"><input name="UnitCode" id="unitCode" class="easyui-validatebox" /></td>
+                      </tr>
                       <tr>
-                        <td>是否启用：</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width:80px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
+                        <td width="60" style="text-align:right">单位名称：</td>
+                        <td width="168"><input name="UnitName" id="unitName" class="easyui-validatebox" /></td>
+                      </tr>
+                       <tr>
+                        <td width="60" style="text-align:right">下限数量：</td>
+                        <td width="168"><input name="Quantity" class="easyui-validatebox" /></td>
+                      </tr>                 
+                      <tr>
+                        <td style="text-align:right">是否可用：</td>
+                        <td><select id="IsActiveCc" name="IsActive" class="easyui-combobox" style="width:80px">
+		                        <option value="1">可用</option>
+		                        <option value="0">不可用</option>
 	                        </select>
 	                    </td>
-                      </tr>
-                      <tr>
-                        <td width="60">备注：</td>
-                        <td width="168"><input name="Remarks" class="easyui-validatebox" required="true"/></td>
-                      </tr>
+                      </tr>                      
                     </table>
 	            </form>
             </div>
@@ -95,3 +113,5 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
+@Html.Partial("_ProductPartial")
+@Html.Partial("_SortLinePartial")

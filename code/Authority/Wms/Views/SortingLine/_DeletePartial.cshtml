@@ -3,21 +3,29 @@ function deleteClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
         $('#dlg').dialog('open').dialog('setTitle', '删除');
-        $('#fm .easyui-validatebox').validatebox({
+        $('#sortingLinefm .easyui-validatebox').validatebox({
             required: false
         });
         $('form input').attr("disabled", "disabled");
         $('form textarea').attr("disabled", "disabled");
-        $('#cc').combo({
+        $('#IsActivecc').combo({
             hasDownArrow: false
         });
-        $('#fm').form('load', row);
-        if (row.Status == '启用') {
-            $('#cc').combo('setValue', true).combo('setText', row.Status);
+        $('#isSortingLineType').combo({
+            hasDownArrow: false
+        });
+        $('#sortingLinefm').form('load', row);
+        if (row.IsActive == '可用') {
+            $('#IsActivecc').combo('setValue', 1).combo('setText', row.IsActive);
         } else {
-            $('#cc').combo('setValue', false).combo('setText', row.Status);
+            $('#IsActivecc').combo('setValue', 0).combo('setText', row.IsActive);
         }
-        url = '/System/Delete/?SystemID=' + row.SystemID;
+        if (row.SortingLineType == '半自动分拣线') {
+            $('#isSortingLineType').combo('setValue', 1).combo('setText', row.SortingLineType);
+        } else {
+            $('#isSortingLineType').combo('setValue', 2).combo('setText', row.SortingLineType);
+        }
+        url = '/SortingLine/Delete/?sortLineCode=' + row.SortingLineCode;
     } else {
         $.messager.confirm('错误', '没有选择行！');
     }

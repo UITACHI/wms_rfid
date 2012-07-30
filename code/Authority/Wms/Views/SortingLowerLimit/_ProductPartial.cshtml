@@ -1,0 +1,77 @@
+﻿<script type="text/javascript">
+    function ProductQueryClick() {
+        $('#productDetail').datagrid({ url: '/Product/FindProduct/?QueryString=' + $('#queryType').combobox('getValue') + '&Value=' + $('#ProductInfo').val() });
+        $("#productDetail").datagrid('reload');
+    };
+
+    $(function () {
+        $('#queryType').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 100
+        });
+    })
+
+    function productSave() {
+        var productRow = $('#productDetail').datagrid('getSelected');
+        if (productRow) {
+            $('#productCode').val(productRow.ProductCode);
+            $('#productName').val(productRow.ProductName);
+            $('#unitCode').val(productRow.UnitCode);
+            $('#unitName').val(productRow.UnitName);
+            $('#productInfoShowDiv').dialog('close');
+        }
+    }
+
+    $(function () {
+        $('#productDetail').datagrid({
+            onDblClickRow: function () {
+                productSave();
+            }
+        })
+    });
+</script>
+<div id="productInfoShowDiv" class="easyui-dialog" modal="true" style="width: 500px; height: 440px;
+    padding: 0px 0px" closed="true" buttons="#dlgProduct-buttons">
+    <div split="true" border="false" style="width: 486px; height: 370px">
+        <table id="productDetail" class="easyui-datagrid" border="false" toolbar="#btn-query"
+            singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true">
+            <thead>
+                <tr>
+                    <th field="ProductCode" width="80">
+                        商品编码
+                    </th>
+                    <th field="ProductName" width="150">
+                        商品名称
+                    </th>
+                    <th field="UnitCode" width="80">
+                        单位编码
+                    </th>
+                      <th field="UnitName" width="80">
+                        单位名称
+                    </th>                                      
+                    <th field="IsActive" width="80">
+                        是否可用
+                    </th>
+                    <th field="UpdateTime" width="80">
+                        更新时间
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="dlgProduct-buttons">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="productSave()">确定</a> <a
+        href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#productData').dialog('close')">
+        取消</a>
+</div>
+<div id="btn-query">
+<select id="queryType" name="QueryString" class="easyui-combobox" style="width: 100px;" readonly="true">
+		                <option value="ProductCode">产品代码</option>
+		                <option value="ProductName">产品名称</option>
+	                </select>
+                    <input id="ProductInfo">
+ <a href="#" class="easyui-linkbutton" iconcls="icon-search" plain="true" onclick="ProductQueryClick()" id="ProductQuery">查询</a>
+</div>

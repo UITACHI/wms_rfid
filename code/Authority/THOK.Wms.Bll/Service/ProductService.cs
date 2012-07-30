@@ -14,6 +14,8 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public IProductRepository ProductRepository { get; set; }
 
+        [Dependency]
+        public IStorageRepository StorageRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -176,11 +178,66 @@ namespace THOK.Wms.Bll.Service
         /// 查询卷烟信息 zxl 2012年7月24日 16:26:24
         /// </summary>
         /// <returns></returns>
-        public object FindProduct()
+        public object FindProduct(int page, int rows, string QueryString, string value)
         {
             IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
-            var product = ProductQuery.OrderBy(p => p.ProductCode).Select(p => new { p.ProductCode, p.ProductName });
-            return product.ToArray();
+            var product = ProductQuery.OrderBy(p => p.ProductCode).Where(p => p.ProductCode == p.ProductCode);
+
+            if (QueryString == "ProductCode")
+            {
+                var storages = StorageRepository.GetQueryable().OrderBy(s => s.ProductCode).Where(s => s.ProductCode == value && s.IsActive=="1").Select(s => s.ProductCode);
+                product = product.Where(p => storages.Any(s => s == p.ProductCode));
+            }
+            else if (QueryString == "ProductName")
+            {
+                var storages = StorageRepository.GetQueryable().OrderBy(s => s.ProductCode).Where(s => s.Product.ProductName == value && s.IsActive == "1").Select(s => s.Product.ProductName);
+                product = product.Where(p => storages.Any(s => s == p.ProductName));
+            }
+            else if (QueryString == string.Empty || QueryString ==null)
+            {
+                var storages = StorageRepository.GetQueryable().OrderBy(s => s.ProductCode).Select(s => s.ProductCode);
+                product = product.Where(p => storages.Any(s => s == p.ProductCode));
+            }
+            var temp = product.AsEnumerable().OrderBy(p => p.ProductCode).Select(c => new
+            {
+                c.AbcTypeCode,
+                c.BarBarcode,
+                c.BelongRegion,
+                c.BrandCode,
+                c.BuyPrice,
+                c.CostPrice,
+                c.CustomCode,
+                c.Description,
+                IsAbnormity = c.IsAbnormity == "1" ? "是" : "不是",
+                IsActive = c.IsActive == "1" ? "可用" : "不可用",
+                c.IsConfiscate,
+                c.IsFamous,
+                c.IsFilterTip,
+                c.IsMainProduct,
+                c.IsNew,
+                c.IsProvinceMainProduct,
+                c.OneProjectBarcode,
+                c.PackageBarcode,
+                c.PackTypeCode,
+                c.PieceBarcode,
+                c.PriceLevelCode,
+                c.ProductCode,
+                c.ProductName,
+                c.ProductTypeCode,
+                c.RetailPrice,
+                c.ShortCode,
+                c.StatisticType,
+                c.SupplierCode,
+                c.TradePrice,
+                c.UniformCode,
+                c.UnitCode,
+                c.Unit.UnitName,
+                c.UnitListCode,
+                UpdateTime = c.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+            });
+            int total = temp.Count();
+            temp = temp.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = temp.ToArray() };
         }
 
         #endregion

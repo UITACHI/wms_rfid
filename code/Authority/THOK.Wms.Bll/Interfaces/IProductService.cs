@@ -13,6 +13,6 @@ namespace THOK.Wms.Bll.Interfaces
         bool Delete(string ProductCode);
         bool Save(Product product);
 
-        object FindProduct();
+        object FindProduct(int page, int rows, string QueryString, string value);
     }
 }
