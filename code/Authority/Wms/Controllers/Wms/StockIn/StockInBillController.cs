@@ -37,7 +37,6 @@ namespace Authority.Controllers.Wms.StockIn
 
         //
         // GET: /InBillMaster/Details/
-
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string BillNo = collection["BillNo"] ?? "";

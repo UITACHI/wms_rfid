@@ -12,9 +12,12 @@
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.SystemName = $('#systemname').val();
-        queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.SortingLineCode = $('#SortingLineCode').val();
+        queryParams.SortingLineName = $('#SortingLineName').val();
+        queryParams.ProductCode = $('#ProductCode').val();
+        queryParams.ProductName = $('#ProductName').val();
+        queryParams.Quantity = $('#Quantity').val();
+        queryParams.IsActiveCc = $('#IsActiveCc').val();
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -26,44 +29,40 @@
 
 </script>
 
-<div id="dlg-search" class="easyui-dialog" modal="true"  style="width:360px;height:320px;padding:2px 2px"
+<div id="dlg-search" class="easyui-dialog" modal="true"  style="width:360px;height:260px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
-	            <form id="sortingfm" method="post" novalidate>
-                          <table width="360">
+	            <form id="searchfm" method="post" novalidate>
+                   <table width="280">
                      <tr>
-                        <td width="60">分拣线编码：</td>
-                        <td width="168"><input name="sortingLineId" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" style="text-align:right">分拣线编码：</td>
+                        <td width="168"><input id="SortingLineCode" class="easyui-validatebox"/></td>
                       </tr>
                       <tr>
-                        <td width="60">分拣线名称：</td>
-                        <td width="168"><input name="sortingLineName" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" style="text-align:right">分拣线名称：</td>
+                        <td width="168"><input id="SortingLineName" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
-                        <td width="60">卷烟编码：</td>
-                        <td width="168"><input name="productCode" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" style="text-align:right">卷烟编码：</td>
+                        <td width="168"><input id="ProductCode" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
-                        <td width="60">卷烟名称：</td>
-                        <td width="168"><input name="productName" class="easyui-validatebox" required="true"/></td>
+                        <td width="60" style="text-align:right">卷烟名称：</td>
+                        <td width="168"><input id="ProductName" class="easyui-validatebox" /></td>
                       </tr>
+                       <tr>
+                        <td width="60" style="text-align:right">下限数量：</td>
+                        <td width="168"><input id="Quantity" class="easyui-validatebox" /></td>
+                      </tr>                 
                       <tr>
-                        <td width="60">卷烟单位：</td>
-                        <td width="168"><input name="productUnit" class="easyui-validatebox" required="true"/></td>
-                      </tr>                     
-                      <tr>
-                        <td>是否启用：</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width:80px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
+                        <td style="text-align:right">是否可用：</td>
+                        <td><select id="IsActiveCc" class="easyui-combobox" style="width:80px">
+		                        <option value="1">可用</option>
+		                        <option value="0">不可用</option>
 	                        </select>
 	                    </td>
-                      </tr>
-                      <tr>
-                        <td width="60">备注：</td>
-                        <td width="168"><input name="Remarks" class="easyui-validatebox" required="true"/></td>
-                      </tr>
+                      </tr>                      
                     </table>
 	            </form>
             </div>

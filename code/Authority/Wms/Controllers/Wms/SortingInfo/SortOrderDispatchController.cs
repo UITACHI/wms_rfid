@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using THOK.WebUtil;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Bll.Interfaces;
 using THOK.Wms.DbModel;
-using THOK.WebUtil;
 
-namespace Authority.Controllers.Wms.SortingInfo
+namespace Wms.Controllers.Wms.SortingInfo
 {
-    public class SortingLineController : Controller
+    public class SortOrderDispatchController : Controller
     {
         [Dependency]
-        public ISortingLineService SortingLineService { get; set; }
+        public ISortOrderDispatchService SortOrderDispatchService { get; set; }
         //
-        // GET: /SortingLine/
+        // GET: /SortOrderDispatch/
+
         public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
-            ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
@@ -29,40 +29,40 @@ namespace Authority.Controllers.Wms.SortingInfo
         }
 
         //
-        // GET: /SortingLine/Details/
+        // GET: /SortOrderDispatch/Details/
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
-            string sortingLineCode = collection["sortingLineCode"] ?? "";
-            string sortingLineName = collection["sortingLineName"] ?? "";
-            string SortingLineType = collection["SortingLineType"] ?? "";
+            string SortingLineCode = collection["SortingLineCode"] ?? "";
+            string OrderDate = collection["OrderDate"] ?? "";
+            string DeliverLineCode = collection["DeliverLineCode"] ?? "";
             string IsActive = collection["IsActive"] ?? "";
-            var sortOrder = SortingLineService.GetDetails(page, rows, sortingLineCode, sortingLineName, SortingLineType, IsActive);
+            var sortOrder = SortOrderDispatchService.GetDetails(page, rows, SortingLineCode, OrderDate, DeliverLineCode);
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 
         //
-        // POST: /SortingLine/Create/
-        public ActionResult Create(SortingLine sortLine)
+        // POST: /SortOrderDispatch/Create/
+        public ActionResult Create(SortOrderDispatch sortDisoatch)
         {
-            bool bResult = SortingLineService.Add(sortLine);
+            bool bResult = SortOrderDispatchService.Add(sortDisoatch);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
-        // POST: /SortingLine/Edit/
-        public ActionResult Edit(SortingLine sortLine)
+        // POST: /SortOrderDispatch/Edit/
+        public ActionResult Edit(SortOrderDispatch sortDisoatch)
         {
-            bool bResult = SortingLineService.Save(sortLine);
+            bool bResult = SortOrderDispatchService.Save(sortDisoatch);
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
-        // POST: /SortingLine/Delete/
-        public ActionResult Delete(string sortLineCode)
+        // POST: /SortOrderDispatch/Delete/
+        public ActionResult Delete(string id)
         {
-            bool bResult = SortingLineService.Delete(sortLineCode);
+            bool bResult = SortOrderDispatchService.Delete(id);
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

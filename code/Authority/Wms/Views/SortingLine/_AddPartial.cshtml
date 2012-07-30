@@ -1,7 +1,12 @@
 <script type="text/javascript">
     var url;
     $(function () {
-        $('#cc').combo({
+        $('#IsActivecc').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45
+        });
+        $('#isSortingLineType').combo({
             required: true,
             editable: false,
             panelHeight: 45
@@ -10,19 +15,23 @@
 
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
-        $('#fm').form('clear');
-        $('#fm .easyui-validatebox').validatebox({
+        $('#sortingLinefm').form('clear');
+        $('#sortingLinefm .easyui-validatebox').validatebox({
             required: true
         });
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
-        $('#cc').combo({
+        $('#IsActivecc').combo({
             hasDownArrow: true
         });
+        $('#isSortingLineType').combo({
+            hasDownArrow: true
+        });
+        url = '/SortingLine/Create/';
     };
 
     function save() {
-        $('#fm').form('submit', {
+        $('#sortingLinefm').form('submit', {
             url: url,
             onSubmit: function () {
                 return $(this).form('validate');
@@ -34,8 +43,8 @@
                         title: '成功',
                         msg: result.msg
                     });
-                    $('#dlg').dialog('close'); 
-                    $('#details').datagrid('reload'); 
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
                 } else {
                     $.messager.show({
                         title: '错误',
@@ -47,34 +56,33 @@
         });
     }
 </script>
-
-    <div id="dlg" class="easyui-dialog" modal="true"  style="width:360px;height:260px;padding:2px 2px"
+    <div id="dlg" class="easyui-dialog" modal="true"  style="width:300px;height:220px;"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
-			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
-	            <form id="sortingfm" method="post" novalidate>
-                    <table width="360">
+			<div region="center" border="false" style="padding:10px 10px;border:1px solid #ccc; " >     
+	            <form id="sortingLinefm" method="post" novalidate>
+                    <table width="260">
                      <tr>
-                        <td width="60">分拣线编码：</td>
-                        <td width="168"><input name="sortingLineId" class="easyui-validatebox" required="true"></td>
+                        <td width="80" style="text-align:right">分拣线编码：</td>
+                        <td width="160"><input name="SortingLineCode" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
-                        <td width="60">分拣线名称：</td>
-                        <td width="168"><input name="sortingLineName" class="easyui-validatebox" required="true"></td>
+                        <td width="80" style="text-align:right">分拣线名称：</td>
+                        <td width="160"><input name="SortingLineName" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
-                        <td>分拣线类型：</td>
-                         <td><select id="sortingLineType" name="Status" class="easyui-combobox" style="width: 130px">
-		                        <option value="true">半自动分拣线</option>
-		                        <option value="false">全自动分拣线</option>
+                        <td width="80" style="text-align:right">分拣线类型：</td>
+                         <td><select id="isSortingLineType" name="SortingLineType" class="easyui-combobox" style="width: 130px">
+		                        <option value="1">半自动分拣线</option>
+		                        <option value="2">全自动分拣线</option>
 	                        </select>
 	                    </td>
                       </tr>
                       <tr>
-                        <td>是否启用：</td>
-                        <td><select id="cc" name="Status" class="easyui-combobox" style="width:80px">
-		                        <option value="true">启用</option>
-		                        <option value="false">禁用</option>
+                        <td width="80" style="text-align:right">是否启用：</td>
+                        <td><select id="IsActivecc" name="IsActive" class="easyui-combobox" style="width:80px">
+		                        <option value="1">可用</option>
+		                        <option value="0">不可用</option>
 	                        </select>
 	                    </td>
                       </tr>

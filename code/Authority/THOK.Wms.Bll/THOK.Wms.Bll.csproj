@@ -69,7 +69,10 @@
     <Compile Include="Interfaces\IJobService.cs" />
     <Compile Include="Interfaces\IProductService.cs" />
     <Compile Include="Interfaces\IShelfService.cs" />
+    <Compile Include="Interfaces\ISortingLineService.cs" />
+    <Compile Include="Interfaces\ISortingLowerlimitService.cs" />
     <Compile Include="Interfaces\ISortOrderDetailService.cs" />
+    <Compile Include="Interfaces\ISortOrderDispatchService.cs" />
     <Compile Include="Interfaces\ISortOrderSearchService.cs" />
     <Compile Include="Interfaces\ISortOrderService.cs" />
     <Compile Include="Interfaces\IStockCheckSearchService.cs" />
@@ -111,8 +114,11 @@
     <Compile Include="Service\JobService.cs" />
     <Compile Include="Service\ProductService.cs" />
     <Compile Include="Service\ShelfService.cs" />
+    <Compile Include="Service\SortingLineService.cs" />
+    <Compile Include="Service\SortingLowerlimitService.cs" />
     <Compile Include="Service\SortOrder.cs" />
     <Compile Include="Service\SortOrderDetail.cs" />
+    <Compile Include="Service\SortOrderDispatchService.cs" />
     <Compile Include="Service\SortOrderSearchService.cs" />
     <Compile Include="Service\StockCheckSearchService.cs" />
     <Compile Include="Service\StockDifferSearchService.cs" />
