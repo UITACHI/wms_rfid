@@ -1,55 +1,105 @@
 ﻿<script type="text/javascript">
+    var url;
+    var fm
     function addClick() {
-        $('#dlg').dialog('open').dialog('setTitle', '新增');        
+        url = '/DefaultProductSet/ProductCreate/';
+        $('#dlg').dialog('open').dialog('setTitle', '新增');
+        $('#productFm').form('clear');
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
+        $('#productCode').attr("readonly", true);
+        $('#productName').attr("readonly", true);
     }
-</script>
+    function productSearchClick() {
+        $('#productSearch').datagrid({
+            url: '/DefaultProductSet/FindProduct/ '
+        });
+        $("#productSearch").datagrid('reload');
+    }
 
+    function save() {
+        $('#productFm').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg').dialog('close');
+                    $('#details').treegrid('reload');
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#details').treegrid('reload');
+                }
+            }
+        });
+    }
+    function productSearchClick() {
+        $('#productData').dialog('open').dialog('setTitle', '选择卷烟信息');
+        $('#productDetail').datagrid({ url: '/DefaultProductSet/LoadProduct/' });
+        $("#productDetail").datagrid('reload');
+    }
+    function searchQuntityClick() {
+        $('#productTree').dialog('open').dialog('setTitle', '货位信息');
+        $('#goodscountTree').tree({ url: '/Cell/GetCheckDetails/' }); //加载树形数据
+    }
+
+</script>
 <div id="dlg" class="easyui-dialog" modal="true" style="width: 500px; height: 360px;
     padding: 1px 1px" closed="true" buttons="#dlg-buttons">
-    <div id="ware" class="easyui-layout" fit="true" >
-        <div region="center" border="false" style="padding: 10px 10px; background: #fff; border: 1px solid #ccc;">
-            <form id="warefm"  method="post">
+    <div id="product" class="easyui-layout" fit="true">
+        <div region="center" border="false" style="padding: 10px 10px; background: #fff;
+            border: 1px solid #ccc;">
+            <form id="productFm" method="post">
             <label>
                 当前新增页面：卷烟</label>
-            <table>
-                <tr style="height:30px;">
-                    <td style=" text-align:right">
+            <div style="margin-top: 10px;">
+                <div style="padding: 10px 10px 10px 10px;">
+                    <div style="float: left; margin-top: 5px; margin-right: 2px;">
                         卷烟编码:
-                    </td>
-                    <td>
-                        <input name="ProductCode" type="text" id="wareID"  class="easyui-validatebox" style="width: 140px;" />
-                    </td>
-                    <td style=" text-align:right">
+                    </div>
+                    <div>
+                        <input id="productCode" name="ProductCode" type="text" class="easyui-validatebox"
+                            style="width: 140px;" />
+                        <a href="#" id="productSearch" class="easyui-linkbutton" iconcls="icon-search" plain="true"
+                            onclick="productSearchClick()">浏览</a>
+                    </div>
+                </div>
+                <div style="padding: 10px 10px 10px 10px;">
+                    <div style="float: left; margin-top: 5px; margin-right: 2px;">
                         卷烟名称:
-                    </td>
-                    <td>
-                        <input name="ProductName" type="text"  class="easyui-validatebox" style="width: 140px;" />
-                    </td>
-                </tr>
-                <tr style="height:30px;">
-                    <td style=" text-align:right">
+                    </div>
+                    <div>
+                        <input id="productName" type="text" class="easyui-validatebox" style="width: 140px;" />
+                    </div>
+                </div>
+                <div style="padding: 10px 10px 10px 10px;">
+                    <div style="float: left; margin-top: 5px; margin-right: 2px;">
                         货位数量:
-                    </td>
-                    <td>
-                         <input name="ProductQuantity" type="text"  class="easyui-validatebox" style="width: 140px;" />
-                    </td>
-                </tr>               
-                <tr style="height:30px;">
-                     <td style=" text-align:right">                        
-                    </td>
-                    <td colspan="3">
-                        <div style="width: 340px; height: 80px"></div>
-                    </td>
-                </tr>               
-            </table>
+                    </div>
+                    <div>
+                        <input id="productQuantity" type="text" class="easyui-validatebox" style="width: 140px;" />
+                        <a href="#" id="searchQuntity" class="easyui-linkbutton" iconcls="icon-search" plain="true"
+                            onclick="searchQuntityClick()">浏览</a>
+                    </div>
+                </div>
+            </div>
             </form>
         </div>
     </div>
-    
 </div>
-
 <div id="dlg-buttons">
     <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">确定</a>
     <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">
         取消</a>
 </div>
+@Html.Partial("_ProductPartial")
+@Html.Partial("_GoodsCount")
