@@ -39,6 +39,7 @@ namespace THOK.Wms.Bll.Service
             }
             var temp = sortDispatch.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
            {
+               b.ID,
                b.SortingLineCode,
                b.SortingLine.SortingLineName,
                b.OrderDate,

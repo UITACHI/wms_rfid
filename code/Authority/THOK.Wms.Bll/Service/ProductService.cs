@@ -186,17 +186,17 @@ namespace THOK.Wms.Bll.Service
             if (QueryString == "ProductCode")
             {
                 var storages = StorageRepository.GetQueryable().OrderBy(s => s.ProductCode).Where(s => s.ProductCode == value && s.IsActive=="1").Select(s => s.ProductCode);
-                product = product.Where(p => storages.Any(s => s == p.ProductCode));
+                product = product.Where(p => storages.Any(s => s == p.ProductCode) && !p.SortingLowerlimits.Any(l => l.ProductCode == p.ProductCode));
             }
             else if (QueryString == "ProductName")
             {
                 var storages = StorageRepository.GetQueryable().OrderBy(s => s.ProductCode).Where(s => s.Product.ProductName == value && s.IsActive == "1").Select(s => s.Product.ProductName);
-                product = product.Where(p => storages.Any(s => s == p.ProductName));
+                product = product.Where(p => storages.Any(s => s == p.ProductName) && !p.SortingLowerlimits.Any(l => l.ProductCode == p.ProductCode));
             }
             else if (QueryString == string.Empty || QueryString ==null)
             {
                 var storages = StorageRepository.GetQueryable().OrderBy(s => s.ProductCode).Select(s => s.ProductCode);
-                product = product.Where(p => storages.Any(s => s == p.ProductCode));
+                product = product.Where(p => storages.Any(s => s == p.ProductCode)&& !p.SortingLowerlimits.Any(l=>l.ProductCode==p.ProductCode));
             }
             var temp = product.AsEnumerable().OrderBy(p => p.ProductCode).Select(c => new
             {
@@ -238,6 +238,17 @@ namespace THOK.Wms.Bll.Service
             int total = temp.Count();
             temp = temp.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = temp.ToArray() };
+        }
+
+        /// <summary>
+        /// 产品盘点显示卷烟信息
+        /// </summary>
+        /// <returns></returns>
+        public object checkFindProduct()
+        {
+            IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
+            var product = ProductQuery.OrderBy(p => p.ProductCode).Where(p => p.Storages.Any(s => s.ProductCode == p.ProductCode));
+            return product.ToArray();
         }
 
         #endregion

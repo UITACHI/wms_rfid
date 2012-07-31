@@ -48,14 +48,14 @@ namespace THOK.Wms.Bll.Service
                 b.Product.ProductName,
                 b.UnitCode,
                 b.Unit.UnitName,
-                b.Quantity,
+                Quantity=b.Quantity/b.Unit.Count,
                 IsActive = b.IsActive == "1" ? "可用" : "不可用",
                 UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
             });
 
-            int total = lowerLimit.Count();
-            lowerLimit = lowerLimit.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = lowerLimit.ToArray() };
+            int total = temp.Count();
+            temp = temp.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = temp.ToArray() };
         }
 
         public new bool Add(SortingLowerlimit sortLowerLimit)
@@ -91,11 +91,12 @@ namespace THOK.Wms.Bll.Service
 
         public bool Save(SortingLowerlimit sortLowerLimit)
         {
-            var lowerLimitSave = SortingLowerlimitRepository.GetQueryable().FirstOrDefault(s => s.ID == sortLowerLimit.ID);           
+            var lowerLimitSave = SortingLowerlimitRepository.GetQueryable().FirstOrDefault(s => s.ID == sortLowerLimit.ID);
+            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == sortLowerLimit.UnitCode);
             lowerLimitSave.SortingLineCode = sortLowerLimit.SortingLineCode;
             lowerLimitSave.ProductCode = sortLowerLimit.ProductCode;
             lowerLimitSave.UnitCode = sortLowerLimit.UnitCode;
-            lowerLimitSave.Quantity = sortLowerLimit.Quantity;
+            lowerLimitSave.Quantity = sortLowerLimit.Quantity * unit.Count;
             lowerLimitSave.IsActive = sortLowerLimit.IsActive;
             lowerLimitSave.UpdateTime = DateTime.Now;
 
