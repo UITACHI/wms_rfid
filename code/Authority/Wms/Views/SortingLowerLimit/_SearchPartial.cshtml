@@ -17,8 +17,7 @@
         queryParams.SortingLineName = $('#SortingLineName').val();
         queryParams.ProductCode = $('#ProductCode').val();
         queryParams.ProductName = $('#ProductName').val();
-        queryParams.Quantity = $('#Quantity').val();
-        queryParams.IsActiveCc = $('#IsActiveCc').val();
+        queryParams.IsActive = $('#status').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -55,6 +54,7 @@
                       <tr>
                         <td style="text-align:right">是否可用：</td>
                         <td><select id="status" class="easyui-combobox" style="width:80px">
+                                <option value="">请选择</option>
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>

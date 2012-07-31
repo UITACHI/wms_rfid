@@ -23,7 +23,7 @@ namespace THOK.Wms.Bll.Service
 
         #region ISortingLowerlimitService 成员
 
-        public object GetDetails(int page, int rows, string sortingLineCode, string productCode, string IsActive)
+        public object GetDetails(int page, int rows, string sortingLineCode, string sortingLineName, string productName, string productCode, string IsActive)
         {
             IQueryable<SortingLowerlimit> lowerLimitQuery = SortingLowerlimitRepository.GetQueryable();
             var lowerLimit = lowerLimitQuery.Where(s => s.SortingLineCode == s.SortingLineCode);
@@ -31,9 +31,17 @@ namespace THOK.Wms.Bll.Service
             {
                 lowerLimit = lowerLimit.Where(l => l.SortingLineCode.Contains(sortingLineCode));
             }
+            if (sortingLineName != string.Empty && sortingLineName != null)
+            {
+                lowerLimit = lowerLimit.Where(l => l.SortingLine.SortingLineName.Contains(sortingLineName));
+            }
             if (productCode != string.Empty && productCode != null)
             {
                 lowerLimit = lowerLimit.Where(l => l.ProductCode.Contains(productCode));
+            }
+            if (productName != string.Empty && productName != null)
+            {
+                lowerLimit = lowerLimit.Where(l => l.Product.ProductName.Contains(productName));
             }
             if (IsActive != string.Empty && IsActive != null)
             {
@@ -48,7 +56,7 @@ namespace THOK.Wms.Bll.Service
                 b.Product.ProductName,
                 b.UnitCode,
                 b.Unit.UnitName,
-                Quantity=b.Quantity/b.Unit.Count,
+                Quantity = b.Quantity / b.Unit.Count,
                 IsActive = b.IsActive == "1" ? "可用" : "不可用",
                 UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
             });

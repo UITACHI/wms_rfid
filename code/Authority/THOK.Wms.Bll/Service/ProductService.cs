@@ -27,9 +27,9 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string ProductName, string ProductCode, string CustomCode, string BrandCode, string UniformCode, string AbcTypeCode, string ShortCode, string PriceLevelCode, string SupplierCode)
         {
             IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
-            var product = ProductQuery.Where(c => c.ProductName.Contains(ProductName) && c.ProductCode.Contains(ProductCode)
-                && c.CustomCode.Contains(CustomCode) && c.BrandCode.Contains(BrandCode) && c.UniformCode.Contains(UniformCode)
-                && c.AbcTypeCode.Contains(AbcTypeCode) && c.ShortCode.Contains(ShortCode) && c.PriceLevelCode.Contains(PriceLevelCode) && c.SupplierCode.Contains(SupplierCode))
+            var product = ProductQuery.Where(c => c.ProductName.Contains(ProductName) || c.ProductCode.Contains(ProductCode)
+                || c.CustomCode.Contains(CustomCode) || c.BrandCode.Contains(BrandCode) || c.UniformCode.Contains(UniformCode)
+               || c.AbcTypeCode.Contains(AbcTypeCode) || c.ShortCode.Contains(ShortCode) || c.PriceLevelCode.Contains(PriceLevelCode) || c.SupplierCode.Contains(SupplierCode))
                 .OrderBy(c => c.ProductCode).AsEnumerable()
                 .Select(c => new
                 {

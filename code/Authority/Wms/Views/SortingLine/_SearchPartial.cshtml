@@ -20,7 +20,7 @@
         queryParams.sortingLineCode = $('#SortingLineCode').val();
         queryParams.sortingLineName = $('#SortingLineName').val();
         queryParams.SortingLineType = $('#SortingLineType').val();
-        queryParams.IsActive = $('#IsActive').val();
+        queryParams.IsActive = $('#IsActive').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -56,6 +56,7 @@
                       <tr>
                         <td width="80" style="text-align:right">是否启用：</td>
                         <td><select  id="IsActive" class="easyui-combobox" style="width:80px">
+                                <option value="">请选择</option>
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>
