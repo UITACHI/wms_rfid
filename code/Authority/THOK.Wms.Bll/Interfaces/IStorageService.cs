@@ -8,6 +8,8 @@ namespace THOK.Wms.Bll.Interfaces
 {
     public interface IStorageService : IService<Storage>
     {
-        object GetDetails(int page, int rows, string type, string id);       
+        object GetDetails(int page, int rows, string type, string id);
+
+        object GetMoveStorgeDetails(int page, int rows, string type, string id, string inOrOut, string productCode);
     }
 }
