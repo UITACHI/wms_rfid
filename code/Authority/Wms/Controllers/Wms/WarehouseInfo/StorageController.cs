@@ -29,5 +29,12 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return Json(storage, "text", JsonRequestBehavior.AllowGet);
         }
         
+        //查询库存信息用于移库根据inOrOut判断是移出还是移入-移库用
+        // POST: /Storage/Details/
+        public ActionResult GetMoveStorgeDetails(int page, int rows, string type, string id, string inOrOut, string productCode)
+        {
+            var storage = StorageService.GetMoveStorgeDetails(page, rows, type, id,inOrOut,productCode);
+            return Json(storage, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

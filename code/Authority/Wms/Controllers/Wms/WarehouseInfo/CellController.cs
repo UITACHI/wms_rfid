@@ -93,5 +93,13 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             var wareCell = CellService.GetCell(shelfCode); ;
             return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
         }
+
+        //根据条件查询仓库数据tree结构,用于移库
+        // GET: /Cell/GetMoveCellDetails/
+        public ActionResult GetMoveCellDetails(string id, string inOrOut, string productCode)
+        {
+            var wareCell = CellService.GetMoveCellDetails(id,inOrOut,productCode);
+            return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

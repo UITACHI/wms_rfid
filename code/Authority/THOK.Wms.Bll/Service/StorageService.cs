@@ -201,6 +201,66 @@ namespace THOK.Wms.Bll.Service
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 根据类型、id、inOrOut获取存储表的数据,-移库单使用
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="type">类型</param>
+        /// <param name="id">ID</param>
+        /// <param name="inOrOut">移入还是移出</param>
+        /// <param name="productCode">产品代码</param>
+        /// <returns></returns>
+        public object GetMoveStorgeDetails(int page, int rows, string type, string id,string inOrOut,string productCode)
+        {
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            var storages = storageQuery.OrderBy(s => s.StorageCode).Where(s => s.StorageCode != null);
+            if (type == "ware")
+            {
+                storages = storages.Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == id);
+            }
+            else if (type == "area")
+            {
+                storages = storageQuery.Where(s => s.Cell.Shelf.Area.AreaCode == id);
+            }
+            else if (type == "shelf")
+            {
+                storages = storageQuery.Where(s => s.Cell.Shelf.ShelfCode == id);
+            }
+            else if (type == "cell")
+            {
+                storages = storageQuery.Where(s => s.Cell.CellCode == id);
+            }
+            //传入的参数为out时查询的是移出货位的存储信息
+            if (inOrOut == "out")
+            {
+                storages = storages.Where(s => s.Quantity > 0&&s.LockTag==string.Empty);
+            }
+            else//传入的参数为in时查询的是移入货位的存储信息
+            {
+                storages = storages.Where(s=>s.Quantity==0
+                    ||(s.Cell.IsSingle=="1"&&s.ProductCode==productCode&&s.Quantity<s.Cell.MaxQuantity)
+                    ||s.Cell.IsSingle=="0"&&s.LockTag==string.Empty);
+            }
+            var temp = storages.AsEnumerable().Select(s => new
+            {
+                s.StorageCode,
+                s.Cell.CellCode,
+                s.Cell.CellName,
+                s.Product.ProductCode,
+                s.Product.ProductName,
+                s.Product.Unit.UnitCode,
+                s.Product.Unit.UnitName,
+                Quantity = s.Quantity / s.Product.Unit.Count,
+                IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+            });
+
+            int total = temp.Count();
+            temp = temp.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = temp.ToArray() };
+        }
         #endregion
     }
 }

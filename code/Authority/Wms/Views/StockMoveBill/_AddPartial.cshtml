@@ -155,8 +155,13 @@
 
     //选择移入货位编码
     function inCellSelect() {
-        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
-        loadData("in");
+        if ($('#outCellCode').val()!="") {
+            $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+            loadData("in",$('#productCode').val());
+        }
+        else {
+            $.messager.alert('系统提示', '请先选择要移出的货位！');
+        }
     }
 
 </script>
