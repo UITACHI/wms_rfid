@@ -251,6 +251,21 @@ namespace THOK.Wms.Bll.Service
             return product.ToArray();
         }
 
+        /// <summary>
+        /// 浏览加载卷烟信息 git_jun 12-07-31
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <returns></returns>
+        public object LoadProduct(int page, int rows)
+        {
+            IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
+            var product = ProductQuery.OrderBy(p => p.ProductCode).Select(p => new { p.ProductCode, p.ProductName });
+            int total = product.Count();
+            product = product.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = product.ToArray() };
+        }
+
         #endregion
     }
 }

@@ -1,0 +1,20 @@
+﻿<script>
+    function productLoad() {
+        $('#warehouseTree').tree({ url: '/Cell/GetCheckDetails/' }); //加载树形数据
+    }
+</script>
+<div id="productTree" class="easyui-dialog" modal="true" style="width: 300px; height: 500px;
+    padding: 0px 0px" closed="true" buttons="#dlgProduct-buttons">
+    <div class="easyui-layout" fit="true">
+        <div id="sidebar" region="center" border="false" style="width: 300px; border-right-style: solid;
+            border-right-width: 1px; border-right-color: #99BBE8;">
+            <ul id="goodscountTree" class="easyui-tree" checkbox="true" url=''>
+            </ul>
+        </div>
+    </div>
+<div id="dlgProduct-buttons">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="productSave()">确定</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#productData').dialog('close')">
+        取消</a>
+</div>
+</div> 
