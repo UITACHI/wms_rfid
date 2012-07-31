@@ -21,8 +21,8 @@ namespace THOK.Wms.SignalR.Model
     public class ProgressState
     {
         public StateType State { get; set; }
-        public IList<string> Messages { get; set; }
-        public IList<string> Errors { get; set; }
+        public IList<string> Messages = new List<string>();
+        public IList<string> Errors = new List<string>();
         public string TotalProgressName { get; set; }
         public int TotalProgressValue { get; set; }
         public string CurrentProgressName { get; set; }

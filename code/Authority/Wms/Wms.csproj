@@ -186,6 +186,7 @@
     <Content Include="Content\Scripts\jquery.json.js" />
     <Content Include="Content\Scripts\jthok-ui\JDiv.js" />
     <Content Include="Content\Scripts\jquery.fullscreen.js" />
+    <Content Include="Content\Scripts\jquery.progressDialog.js" />
     <Content Include="Content\themes\base\css\css.css" />
     <Content Include="Content\themes\base\icons\2Menu_Help.png" />
     <Content Include="Content\themes\base\icons\2Menu_Jurisdiction.png" />
@@ -874,6 +875,10 @@
     <Content Include="Views\DefaultProductSet\Index.cshtml" />
     <Content Include="Views\DefaultProductSet\_AddPartial.cshtml" />
     <Content Include="Views\DefaultProductSet\_SelectPartial.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\PageNotFound.cshtml" />
+    <Content Include="Views\Home\ServerError.cshtml" />
+    <Content Include="Views\Home\Unauthorized.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
