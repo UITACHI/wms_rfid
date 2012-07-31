@@ -13,7 +13,6 @@ namespace Authority.Controllers.Wms.Inventory
 
         public ActionResult Index(string moduleID)
         {
-            ViewBag.hasSearch = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;

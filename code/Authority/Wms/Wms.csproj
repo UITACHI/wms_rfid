@@ -862,7 +862,7 @@
     <Content Include="Views\CheckBill\_AuditPartial.cshtml" />
     <Content Include="Views\CheckBill\_ConfirmPartial.cshtml" />
     <Content Include="Views\CheckBill\_ChangedCheckPartial.cshtml" />
-    <Content Include="Views\DailyBalance\DailyBalance.cshtml" />
+    <Content Include="Views\DailyBalance\_BalancePartial.cshtml" />
     <Content Include="Views\Distribution\Index.cshtml" />
     <Content Include="Views\CurrentStock\Index.cshtml" />
     <Content Include="Views\CurrentStock\_SearchPartial.cshtml" />
@@ -870,6 +870,7 @@
     <Content Include="Views\HistoricalDetail\Index.cshtml" />
     <Content Include="Views\HistoricalDetail\_SearchPartial.cshtml" />
     <Content Include="packages.config" />
+    <Content Include="Views\Distribution\_SearchPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
