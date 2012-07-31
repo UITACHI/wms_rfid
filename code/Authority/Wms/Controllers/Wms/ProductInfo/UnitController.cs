@@ -64,13 +64,20 @@ namespace Authority.Controllers.ProductInfo
 
         //
         // POST: /Unit/Delete/
-
         [HttpPost]
         public ActionResult Delete(string unitCode)
         {
             bool bResult = UnitService.Delete(unitCode);
             string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //根据卷烟编码查询单位系列
+        // POST: /Unit/FindUnit/
+        public ActionResult FindUnit(string productCode)
+        {
+            var unit = UnitService.FindUnit(productCode);
+            return Json(unit, "text", JsonRequestBehavior.AllowGet);
         }
     }
 }

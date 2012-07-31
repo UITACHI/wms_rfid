@@ -20,14 +20,23 @@ namespace THOK.Wms.Bll.Service
 
         #region ISortOrderService 成员
 
-        public object GetDetails(int page, int rows, string OrderID, string orderDate, string CustomerCode, string CustomerName)
+        public object GetDetails(int page, int rows, string OrderID, string orderDate)
         {
-            IQueryable<SortOrder> sortOrderQuery = SortOrderRepository.GetQueryable();
-            var sortOrder = sortOrderQuery.Where(s => s.OrderID.Contains(OrderID) && s.CustomerCode.Contains(CustomerCode) && s.CustomerName.Contains(CustomerName));
-            if (!orderDate.Equals(string.Empty) || orderDate!=null)
+            if (orderDate == string.Empty || orderDate == null)
             {
-                sortOrder = sortOrder.Where(i => i.OrderDate == orderDate);
+                orderDate = DateTime.Now.ToString("yyyyMMdd");
             }
+            else
+            {
+                orderDate = Convert.ToDateTime(orderDate).ToString("yyyyMMdd");
+            }
+            IQueryable<SortOrder> sortOrderQuery = SortOrderRepository.GetQueryable();
+            var sortOrder = sortOrderQuery.Where(s => s.OrderDate.Contains(orderDate));
+            if (OrderID != string.Empty && OrderID != null)
+            {
+                sortOrder = sortOrder.Where(s => s.OrderID.Contains(OrderID));
+            }
+
             var temp = sortOrder.AsEnumerable().OrderBy(t => t.OrderID).Select(s => new
             {
                 s.OrderID,

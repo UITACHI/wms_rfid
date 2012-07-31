@@ -14,6 +14,11 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public IUnitRepository UnitRepository { get; set; }
 
+        [Dependency]
+        public IUnitListRepository UnitListRepository { get; set; }
+
+        [Dependency]
+        public IProductRepository ProductRepository { get; set; }
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -73,6 +78,20 @@ namespace THOK.Wms.Bll.Service
             UnitRepository.SaveChanges();
             return true;
         }
+
+        /// <summary>
+        /// 根据卷烟编码查询系列单位
+        /// </summary>
+        /// <param name="productCode">卷烟编码</param>
+        /// <returns></returns>
+        public object FindUnit(string productCode)
+        {
+            IQueryable<Unit> unitQuery = UnitRepository.GetQueryable();
+            var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == productCode);
+            var unitList = product.UnitList;
+            var r = (new Unit[] { unitList.Unit01, unitList.Unit02, unitList.Unit03, unitList.Unit04 }).Select(u => new { UnitCode = u.UnitCode, UnitName = u.UnitName });
+            return r; 
+       }
 
         #endregion
     }

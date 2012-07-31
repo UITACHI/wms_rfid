@@ -24,20 +24,34 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string OrderDate, string SortingLineCode, string DeliverLineCode)
         {
             IQueryable<SortOrderDispatch> sortDispatchQuery = SortOrderDispatchRepository.GetQueryable();
-            var sortDispatch = sortDispatchQuery.Where(s => s.SortingLineCode.Contains(SortingLineCode) && s.DeliverLineCode.Contains(DeliverLineCode) && s.OrderDate.Contains(OrderDate)).OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
+            var sortDispatch = sortDispatchQuery.Where(s => s.SortingLineCode == s.SortingLineCode);
+            if (OrderDate != string.Empty && OrderDate != null)
             {
-                b.SortingLineCode,
-                b.SortingLine.SortingLineName,
-                b.OrderDate,
-                b.DeliverLineCode,
-                b.DeliverLine.DeliverLineName,
-                IsActive = b.IsActive == "1" ? "可用" : "不可用",
-                UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
-            });
+                sortDispatch = sortDispatch.Where(s => s.OrderDate.Contains(OrderDate));
+            }
+            if (SortingLineCode != string.Empty && SortingLineCode != null)
+            {
+                sortDispatch = sortDispatch.Where(s => s.SortingLineCode.Contains(SortingLineCode));
+            }
+            if (DeliverLineCode != string.Empty && DeliverLineCode != null)
+            {
+                sortDispatch = sortDispatch.Where(s => s.DeliverLineCode.Contains(DeliverLineCode));
+            }
+            var temp = sortDispatch.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
+           {
+               b.ID,
+               b.SortingLineCode,
+               b.SortingLine.SortingLineName,
+               b.OrderDate,
+               b.DeliverLineCode,
+               b.DeliverLine.DeliverLineName,
+               IsActive = b.IsActive == "1" ? "可用" : "不可用",
+               UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+           });
 
-            int total = sortDispatch.Count();
-            sortDispatch = sortDispatch.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = sortDispatch.ToArray() };
+            int total = temp.Count();
+            temp = temp.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = temp.ToArray() };
         }
 
         public new bool Add(SortOrderDispatch sortDispatch)

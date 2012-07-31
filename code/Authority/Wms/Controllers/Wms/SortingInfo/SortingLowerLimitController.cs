@@ -35,8 +35,10 @@ namespace Authority.Controllers.Wms.SortingInfo
         {
             string sortingLineCode = collection["sortingLineCode"] ?? "";
             string productCode = collection["productCode"] ?? "";
+            string sortingLineName = collection["sortingLineName"] ?? "";
+            string productName = collection["productName"] ?? "";
             string IsActive = collection["IsActive"] ?? "";
-            var sortOrder = SortingLowerlimitService.GetDetails(page, rows, sortingLineCode, productCode, IsActive);
+            var sortOrder = SortingLowerlimitService.GetDetails(page, rows, sortingLineCode, sortingLineName, productName, productCode, IsActive);
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 

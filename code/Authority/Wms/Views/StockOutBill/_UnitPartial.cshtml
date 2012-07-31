@@ -1,0 +1,37 @@
+﻿<script type="text/javascript">
+    function unitSave() {
+        var unitRow = $('#unitDetail').datagrid('getSelected');
+        if (unitRow) {
+            $('#unitCode').val(unitRow.UnitCode);
+            $('#unitName').val(unitRow.UnitName);
+            $('#unitData').dialog('close');
+        }
+    }
+
+    $(function () {
+        $('#unitDetail').datagrid({
+            onDblClickRow: function () {
+                unitSave();
+            }
+        })
+    });
+</script>
+<div id="unitData" class="easyui-dialog" modal="true" style="width: 500px; height: 440px;
+    padding: 0px 0px" closed="true" buttons="#dlgUnit-buttons">
+    <div split="true" border="false" style="width: 486px; height: 370px">
+        <table id="unitDetail" class="easyui-datagrid" border="false" 
+            singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true">
+            <thead>
+                <tr>
+                <th field="UnitCode" width="80">计量单位编码</th>
+                <th field="UnitName" width="100">计量单位名称</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="dlgUnit-buttons">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="unitSave()">确定</a> <a
+        href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#unitData').dialog('close')">
+        取消</a>
+</div>
