@@ -26,7 +26,20 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string sortingLineCode, string productCode, string IsActive)
         {
             IQueryable<SortingLowerlimit> lowerLimitQuery = SortingLowerlimitRepository.GetQueryable();
-            var lowerLimit = lowerLimitQuery.Where(s => s.SortingLineCode.Contains(sortingLineCode) && s.ProductCode.Contains(productCode) && s.IsActive.Contains(IsActive)).OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
+            var lowerLimit = lowerLimitQuery.Where(s => s.SortingLineCode == s.SortingLineCode);
+            if (sortingLineCode != string.Empty && sortingLineCode != null)
+            {
+                lowerLimit = lowerLimit.Where(l => l.SortingLineCode.Contains(sortingLineCode));
+            }
+            if (productCode != string.Empty && productCode != null)
+            {
+                lowerLimit = lowerLimit.Where(l => l.ProductCode.Contains(productCode));
+            }
+            if (IsActive != string.Empty && IsActive != null)
+            {
+                lowerLimit = lowerLimit.Where(l => l.IsActive == IsActive);
+            }
+            var temp = lowerLimit.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
             {
                 b.ID,
                 b.SortingLineCode,
@@ -75,6 +88,7 @@ namespace THOK.Wms.Bll.Service
                 return false;
             return true;
         }
+
         public bool Save(SortingLowerlimit sortLowerLimit)
         {
             var lowerLimitSave = SortingLowerlimitRepository.GetQueryable().FirstOrDefault(s => s.ID == sortLowerLimit.ID);           

@@ -53,7 +53,7 @@ namespace THOK.Wms.Bll.Service
                 storages = storageQuery.Where(s => s.Cell.CellCode == id);
             }
 
-            var temp = storages.AsEnumerable().Select(s => new
+            var temp = storages.AsEnumerable().Where(s=>s.Quantity>0).Select(s => new
            {
                s.StorageCode,
                s.Cell.CellCode,
