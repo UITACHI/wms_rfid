@@ -18,11 +18,11 @@ namespace THOK.Wms.DbModel
        public string StorageCode { get; set; }
        public string CellCode { get; set; }
        public string ProductCode { get; set; }
-       public int Quantity { get; set; }
+       public decimal Quantity { get; set; }
        public DateTime StorageTime { get; set; }
        public string Rfid { get; set; }
-       public int InFrozenQuantity { get; set; }
-       public int OutFrozenQuantity { get; set; }
+       public decimal InFrozenQuantity { get; set; }
+       public decimal OutFrozenQuantity { get; set; }
        public string IsLock { get; set; }
        public string LockTag { get; set; }
        public string IsActive { get; set; }

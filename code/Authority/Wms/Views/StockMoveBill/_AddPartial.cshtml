@@ -138,85 +138,27 @@
         });
     }
 
-    //datagrid行编辑方法
-    $.extend($.fn.datagrid.defaults.editors, {
-        numberspinner: {
-            init: function (container, options) {
-                var input = $('<input type="text">').appendTo(container);
-                return input.numberspinner(options);
-            },
-            destroy: function (target) {
-                $(target).numberspinner('destroy');
-            },
-            getValue: function (target) {
-                return $(target).numberspinner('getValue');
-            },
-            setValue: function (target, value) {
-                $(target).numberspinner('setValue', value);
-            },
-            resize: function (target, width) {
-                $(target).numberspinner('resize', width);
-            }
-        }
-    });
-    $(function () {
-        $('#moveBillDetail').datagrid({
-            onBeforeEdit: function (index, row) {
-                row.editing = true;
-                updateActions();
-            },
-            onAfterEdit: function (index, row) {
-                row.editing = false;
-                updateActions();
-            },
-            onCancelEdit: function (index, row) {
-                row.editing = false;
-                updateActions();
-            }
-        });
-    });
-    function updateActions() {
-        var rowcount = $('#moveBillDetail').datagrid('getRows').length;
-        for (var i = 0; i < rowcount; i++) {
-            $('#moveBillDetail').datagrid('updateRow', {
-                index: i,
-                row: { action: '' }
-            });
-        }
-    }
-    function editrow(index) {
-        $('#moveBillDetail').datagrid('beginEdit', index);
-    }
-    function deleterow(index) {
-        $.messager.confirm('确认', '您确认删除吗?', function (r) {
-            if (r) {
-//                $('#moveBillDetail').datagrid('deleteRow', index);
-                var row = $('#moveBillDetail').datagrid('getSelected');
-                if (row) {
-                deleteMoveBillDetail(row.ID);
-                }
-                updateActions();
-            }
-        });
-    }
-    function saverow(index) {
-        $('#moveBillDetail').datagrid('endEdit', index);
-    }
-    function cancelrow(index) {
-        $('#moveBillDetail').datagrid('cancelEdit', index);
+    //新增移库细单按钮
+    function addBillDetailClick() {
+        $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增移库订单明细');
+        $('#fm-moveBillDetail').form('clear');
+        detailUrl = '/StockInBill/InBillDetailCreate/';
+        $('#detailBillNo').val(billno);
+        $('#detailBillNo').attr("readonly", true);
+    };
+
+    //选择移出货位编码
+    function outCellSelect() {
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        loadData("out");
     }
 
-    function formatAction(value, row, index) {
-        if (row.editing) {
-            var s = '<a href="#" onclick="saverow(' + index + ')">保存</a> ';
-            var c = '<a href="#" onclick="cancelrow(' + index + ')">取消</a>';
-            return s + c;
-        } else {
-            var e = '<a href="#" onclick="editrow(' + index + ')">编辑</a> ';
-            var d = '<a href="#" onclick="deleterow(' + index + ')">删除</a>';
-            return e + d;
-        }
+    //选择移入货位编码
+    function inCellSelect() {
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        loadData("in");
     }
+
 </script>
 
 <div id="dlg" class="easyui-dialog" modal="true"
@@ -237,8 +179,7 @@
                         <th field="ProductName" width="90" align="right">产品名称</th>
                         <th field="UnitCode" width="60" align="right">单位编码</th>
                         <th field="UnitName" width="50" align="right">单位名称</th>
-                        <th field="RealQuantity" width="70" align="right" editor="numberspinner">数量</th>
-                        <th field="action" width="50" align="center" formatter="formatAction">操作</th>
+                        <th field="RealQuantity" width="70" align="right">数量</th>
                     </tr>
                 </thead>
             </table>
@@ -297,3 +238,74 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
+
+<div  id="dlg-AddBillDetail" class="easyui-dialog" modal="true"
+        style="width:280px;height:350px;padding:0px 0px"
+        closed="true" buttons="#dlg-AddBillDetailbuttons">
+        <form id="fm-moveBillDetail" method="post" novalidate>
+<table style="padding:10px 10px 0px 5px">
+  <tr>
+    <td style=" text-align:right">移库单号</td>
+    <td align="left"><input type="text" name="BillNo" id="detailBillNo" /></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">货位编码(出)</td>
+    <td align="left"><input type="text" name="OutCellCode" class="easyui-validatebox" required="true" readonly="true" id="outCellCode" missingmessage="请选择要移出的货位"/> 
+    <a href="#" onclick="outCellSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">货位名称(出)</td>
+    <td align="left"><input type="text" name="OutCellName" class="easyui-validatebox" required="true" readonly="true" id="outCellName"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">货位编码(入)</td>
+    <td align="left"><label>
+      <input type="text" name="InCellCode" class="easyui-validatebox" required="true" readonly="true" id="inCellCode" missingmessage="请选择要移入的货位"/>
+      <a href="#" onclick="inCellSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+    </label></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">货位名称(入)</td>
+    <td align="left"><input type="text" name="InCellName" class="easyui-validatebox" required="true" readonly="true" id="inCellName"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">产品代码</td>
+    <td align="left"><input type="text" name="ProductCode" class="easyui-validatebox" required="true" id="productCode" readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">产品名称</td>
+    <td align="left"><input type="text" name="ProductName"class="easyui-validatebox" required="true"  id="productName"   readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">单位编码</td>
+    <td align="left"><input type="text" name="UnitCode" class="easyui-validatebox" required="true"  readonly="true" id="unitCode" readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">单位名称</td>
+    <td align="left"><input type="text" name="UnitName"  readonly="true" id="unitName" class="easyui-validatebox" required="true" readonly="true"/></td>
+    <td>
+    </td>
+  </tr>
+    <tr>
+    <td style=" text-align:right">数量</td>
+    <td align="left"><input type="text" name="RealQuantity"class="easyui-numberbox" required="true" missingmessage="请输入要移库的数量"/></td>
+    <td>
+    </td>
+  </tr>
+</table>
+</form>
+</div>
+
+<div id="dlg-AddBillDetailbuttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="DetailSave()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-AddBillDetail').dialog('close')">取消</a>
+</div>
+
+@Html.Partial("_CellPartial")

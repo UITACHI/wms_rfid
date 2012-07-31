@@ -347,7 +347,7 @@ namespace THOK.Wms.SignalR.Allot.Service
 
         private void Allot(InBillMaster billMaster, InBillDetail billDetail, Cell cell, Storage storage, decimal allotQuantity)
         {
-            if (storage != null)
+            if (storage != null && allotQuantity > 0)
             {
                 InBillAllot billAllot = null;
                 billDetail.AllotQuantity += allotQuantity;                
