@@ -1,0 +1,37 @@
+﻿<script type="text/javascript">
+    function formatAction(value, row, index) {
+        var e = '<a href="#" onclick="detail()">查询明细</a> ';
+        return e
+    }
+    function detail() {
+        alert("查看选中库存的明细");
+        $('#InfoDetails').dialog('open').dialog('setTitle', '明细');
+    }
+</script>
+
+    <div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">  
+    <table id="details" class="easyui-datagrid"
+        url="/CurrentStock/Details/" border="false" singleSelect="true"
+        fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
+        <thead>
+            <tr>
+                <th field="detail" width="80" align="center" formatter="formatAction">库存明细</th>
+                <th field="SettleDate" width="100">日期</th>
+                <th field="ProductCode" width="100">产品代码</th>
+                <th field="SettleDate" width="140">产品名称</th>
+                <th field="Beginning" width="100">期初量(件)</th>
+                <th field="Beginning" width="100">期初量(条)</th>
+                <th field="EntryAmount" width="100">入库量(件)</th>
+                <th field="EntryAmount" width="100">入库量(条)</th>
+                <th field="DeliveryAmount" width="100">出库量(件)</th>
+                <th field="DeliveryAmount" width="100">出库量(条)</th>
+                <th field="ProfitLossAmount" width="100">盈亏量(件)</th>
+                <th field="ProfitLossAmount" width="100">盈亏量(条)</th>
+            </tr>
+        </thead>
+    </table>
+  </div>
+   @Html.Partial("_Detail")
+
+
+ 
