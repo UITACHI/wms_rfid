@@ -1,17 +1,18 @@
 ﻿<div region="center" split="true" border="false">    
-    <table id="details" class="easyui-datagrid" border="false" singleSelect="true"
+    <table id="details" class="easyui-datagrid" border="false" singleSelect="true" url='/SortingLowerLimit/Details/'
         fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="SystemID" width="80" hidden="true">分拣线ID</th>
-                <th field="sortingCode" width="160" >分拣线编码</th>
-                <th field="sortingName" width="160" >分拣线名称</th>
-                <th field="productCode" width="160">卷烟编码</th>
-                <th field="productName" width="160">卷烟名称</th>
-                <th field="productUtin" width="160">卷烟单位</th>
-                <th field="lowerLimitNumber" width="160">下限量</th>
-                <th field="Status" width="160">是否可用</th>
-                <th field="Remarks" width="160">备注</th>
+                <th field="ID" width="80" hidden="true">ID</th>
+                <th field="SortingLineCode" width="100" >分拣线编码</th>
+                <th field="SortingLineName" width="160" >分拣线名称</th>
+                <th field="ProductCode" width="100">卷烟编码</th>
+                <th field="ProductName" width="160">卷烟名称</th>
+                <th field="UnitCode" width="80">单位编码</th>
+                <th field="UnitName" width="100">单位名称</th>
+                <th field="Quantity" width="120">下限数量</th>
+                <th field="IsActive" width="100">是否可用</th>
+                 <th field="UpdateTime" width="120">修改时间</th>
             </tr>
         </thead>
     </table>

@@ -3,21 +3,21 @@ function editClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
         $('#dlg').dialog('open').dialog('setTitle', '编辑');
-        $('#fm').form('load', row);
-        $('#fm .easyui-validatebox').validatebox({
+        $('#LowerLimitfm').form('load', row);
+        $('#LowerLimitfm .easyui-validatebox').validatebox({
             required: true
         });
-        if (row.Status == '启用') {
-            $('#cc').combo('setValue', true).combo('setText', row.Status);
+        if (row.IsActive == '启用') {
+            $('#IsActiveCc').combo('setValue', 1).combo('setText', row.IsActive);
         } else {
-            $('#cc').combo('setValue', false).combo('setText', row.Status);
+            $('#IsActiveCc').combo('setValue', 0).combo('setText', row.IsActive);
         }
         $('form input').removeAttr("disabled");
         $('form textarea').removeAttr("disabled");
-        $('#cc').combo({
+        $('#IsActiveCc').combo({
             hasDownArrow: true
         });
-        url = '/System/Edit/?SystemID=' + row.SystemID;
+        url = '/SortingLowerLimit/Edit/';
     } else {
         $.messager.confirm('错误', '没有选择行！');
     }

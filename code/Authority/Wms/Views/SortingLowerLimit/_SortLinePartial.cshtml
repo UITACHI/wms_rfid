@@ -1,0 +1,40 @@
+﻿<script type="text/javascript">
+    function sortLineSave() {
+        var productRow = $('#sortLineDetail').datagrid('getSelected');
+        if (productRow) {
+            $('#sortingLineCode').val(productRow.SortingLineCode);
+            $('#sortingLineName').val(productRow.SortingLineName);
+            $('#sortLineShowDiv').dialog('close');
+        }
+    }
+
+    $(function () {
+        $('#sortLineDetail').datagrid({
+            onDblClickRow: function () {
+                sortLineSave();
+            }
+        })
+    });
+</script>
+<div id="sortLineShowDiv" class="easyui-dialog" modal="true" style="width: 500px; height: 440;
+    padding: 0px 0px" closed="true" buttons="#dlgProduct-buttons">
+    <div split="true" border="false" style="width: 486px; height: 370px">
+        <table id="sortLineDetail" class="easyui-datagrid" border="false" url='/SortingLine/Details/'
+            singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true">
+            <thead>
+                <tr>
+                <th field="SortingLineCode" width="120" >分拣线编码</th>
+                <th field="SortingLineName" width="160" >分拣线名称</th>
+                <th field="SortingLineType" width="160" >分拣线类型</th>
+                <th field="IsActive" width="160">是否可用</th>
+                <th field="UpdateTime" width="160">修改时间</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="dlgProduct-buttons">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="sortLineSave()">确定</a> <a
+        href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#productData').dialog('close')">
+        取消</a>
+</div>

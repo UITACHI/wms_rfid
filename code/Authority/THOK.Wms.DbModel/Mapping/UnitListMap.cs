@@ -27,7 +27,7 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.UnitCode01)
                 .IsRequired()
-                .HasMaxLength(8);
+                .HasMaxLength(20);
 
             this.Property(t => t.UnitName01)
                 .IsRequired()
@@ -38,7 +38,7 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.UnitCode02)
                 .IsRequired()
-                .HasMaxLength(8);
+                .HasMaxLength(20);
 
             this.Property(t => t.UnitName02)
                 .IsRequired()
@@ -49,7 +49,7 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.UnitCode03)
                 .IsRequired()
-                .HasMaxLength(8);
+                .HasMaxLength(20);
 
             this.Property(t => t.UnitName03)
                 .IsRequired()
@@ -60,7 +60,7 @@ namespace THOK.Wms.DbModel.Mapping
 
             this.Property(t => t.UnitCode04)
                 .IsRequired()
-                .HasMaxLength(8);
+                .HasMaxLength(20);
 
             this.Property(t => t.UnitName04)
                .IsRequired()

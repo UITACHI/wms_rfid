@@ -11,9 +11,11 @@ namespace THOK.Wms.SignalR.Connection
         [Dependency]
         public IInBillAllotService InBillAllotService { get; set; }
 
+        public Func<string, string, string[],string,bool> Fun = null;
         protected override Task OnReceivedAsync(IRequest request, string connectionId, string data)
         {
             InBillAllotService.Allot(connectionId, data, new string[] { }, out data);
+            Task.Factory.CancellationToken.ThrowIfCancellationRequested();
             return Connection.Send(connectionId, "success");
         }
     }

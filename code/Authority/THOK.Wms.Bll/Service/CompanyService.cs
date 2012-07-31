@@ -33,7 +33,7 @@ namespace THOK.Wms.Bll.Service
                     c.CompanyType,
                     c.WarehouseCapacity,c.WarehouseCount,c.WarehouseSpace,c.SortingCount,ParentCompanyName=c.ParentCompany.CompanyName,c.ParentCompanyID,
                     IsActive = c.IsActive == "1" ? "可用" : "不可用",
-                    UpdateTime = c.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                    UpdateTime = c.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
                 });
             if (!IsActive.Equals(""))
             {
@@ -54,7 +54,7 @@ namespace THOK.Wms.Bll.Service
                     ParentCompanyName = c.ParentCompany.CompanyName,
                     c.ParentCompanyID,
                     IsActive = c.IsActive == "1" ? "可用" : "不可用",
-                    UpdateTime=c.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                    UpdateTime=c.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
                 });
             }
             int total = company.Count();

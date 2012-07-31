@@ -6,7 +6,7 @@
                     $.post("/Cell/GetCell/", { shelfCode: row.ShelfCode }, function (json) {
                         if (json) {
                             var dd = eval(json);
-                            var children = $('#details').treegrid('getChildren', row.ShelfCode);                          
+                            var children = $('#details').treegrid('getChildren', row.ShelfCode);
                             var callbacks = $.Callbacks();
                             $.each(children, function (c, p) {
                                 callbacks.add(function () {

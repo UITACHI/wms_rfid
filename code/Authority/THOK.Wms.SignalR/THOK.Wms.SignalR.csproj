@@ -74,6 +74,7 @@
     <Compile Include="Allot\Interfaces\IOutBillAllotService.cs" />
     <Compile Include="Allot\Service\InBillAllotService.cs" />
     <Compile Include="Allot\Service\OutBillAllotService.cs" />
+    <Compile Include="Model\ProgressState.cs" />
     <Compile Include="Notifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Connection\AllotStockInConnection.cs" />
@@ -96,6 +97,7 @@
       <Name>THOK.Wms.DbModel</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
