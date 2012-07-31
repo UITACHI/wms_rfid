@@ -147,7 +147,6 @@
     <Compile Include="Controllers\Wms\StockOut\StockOutBillTypeController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\AreaController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\CellController.cs" />
-    <Compile Include="Controllers\Wms\WarehouseInfo\DefaultProductSetController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\ShelfController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\StorageController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\WarehouseController.cs" />
@@ -864,7 +863,7 @@
     <Content Include="Views\CheckBill\_AuditPartial.cshtml" />
     <Content Include="Views\CheckBill\_ConfirmPartial.cshtml" />
     <Content Include="Views\CheckBill\_ChangedCheckPartial.cshtml" />
-    <Content Include="Views\DailyBalance\DailyBalance.cshtml" />
+    <Content Include="Views\DailyBalance\_BalancePartial.cshtml" />
     <Content Include="Views\Distribution\Index.cshtml" />
     <Content Include="Views\CurrentStock\Index.cshtml" />
     <Content Include="Views\CurrentStock\_SearchPartial.cshtml" />
@@ -879,6 +878,7 @@
     <Content Include="Views\Home\PageNotFound.cshtml" />
     <Content Include="Views\Home\ServerError.cshtml" />
     <Content Include="Views\Home\Unauthorized.cshtml" />
+    <Content Include="Views\Distribution\_SearchPartial.cshtml" />
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
