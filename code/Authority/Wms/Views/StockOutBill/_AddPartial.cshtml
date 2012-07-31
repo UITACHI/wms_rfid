@@ -254,6 +254,7 @@
     function unitSelect() {
         var productCode = $('#productCode').val();
         if (productCode != "" && productCode != null) {
+            $('#billQuantity').attr("value", '')
             $('#unitData').dialog('open').dialog('setTitle', '选择单位信息');
             $('#unitDetail').datagrid({ url: '/Unit/FindUnit/?productCode=' + productCode });
             $("#unitDetail").datagrid('reload');
@@ -378,7 +379,7 @@
               </tr>
               <tr>
                 <td style=" text-align:right">数量</td>
-                <td align="left"><input type="text" name="BillQuantity" class="easyui-numberbox" required="true" missingMessage="请填写数字！" /></td>
+                <td align="left"><input type="text" id="billQuantity" name="BillQuantity" class="easyui-numberbox" required="true" missingMessage="请填写数字！" /></td>
                 <td></td>
               </tr>
               <tr style="display:none">

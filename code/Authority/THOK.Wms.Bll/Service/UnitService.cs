@@ -88,9 +88,9 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<Unit> unitQuery = UnitRepository.GetQueryable();
             var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == productCode);
-            var unitList = UnitListRepository.GetQueryable().FirstOrDefault(u => u.UnitListCode == product.UnitListCode);
-
-            return new { rows = new Unit[] { unitList.Unit01, unitList.Unit02, unitList.Unit03, unitList.Unit04 }.ToArray() };
+            var unitList = product.UnitList;
+            var r = (new Unit[] { unitList.Unit01, unitList.Unit02, unitList.Unit03, unitList.Unit04 }).Select(u => new { UnitCode = u.UnitCode, UnitName = u.UnitName });
+            return r; 
        }
 
         #endregion

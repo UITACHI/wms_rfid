@@ -18,8 +18,6 @@
         if (productRow) {
             $('#productCode').val(productRow.ProductCode);
             $('#productName').val(productRow.ProductName);
-            $('#unitCode').val(productRow.UnitCode);
-            $('#unitName').val(productRow.UnitName);
             $('#price').val(productRow.BuyPrice);
             $('#productData').dialog('close');
         }
@@ -46,20 +44,14 @@
                     <th field="ProductName" width="100">
                         商品名称
                     </th>
-                    <th field="UniformCode" width="100">
-                        统一编码
-                    </th>
                     <th field="UnitCode" width="80">
-                        缺省单位编码
+                        单位编码
                     </th>
                       <th field="UnitName" width="80">
-                        缺省单位名称
+                        单位名称
                     </th>
                     <th field="BuyPrice" width="80">
                         购入价
-                    </th>
-                    <th field="SupplierCode" width="80">
-                        厂商编码
                     </th>
                     <th field="IsActive" width="80">
                         是否可用
