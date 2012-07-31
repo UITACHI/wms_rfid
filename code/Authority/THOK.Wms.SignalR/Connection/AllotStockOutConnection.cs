@@ -9,7 +9,7 @@ using THOK.Wms.SignalR.Model;
 
 namespace THOK.Wms.SignalR.Connection
 {
-    public class AllotStockInConnection : ConnectionBase
+    public class AllotStockOutConnection : ConnectionBase
     {
         class ActionData
         {
@@ -19,12 +19,12 @@ namespace THOK.Wms.SignalR.Connection
         }
 
         [Dependency]
-        public IInBillAllotService InBillAllotService { get; set; }
+        public IOutBillAllotService OutBillAllotService { get; set; }
 
         protected override void Execute(string connectionId, string data, ProgressState ps, CancellationToken cancellationToken)
         {
             ActionData ad = jns.Parse<ActionData>(data);
-            InBillAllotService.Allot(connectionId, ps, cancellationToken, ad.BillNo, ad.AreaCodes);
+            OutBillAllotService.Allot(connectionId, ps, cancellationToken, ad.BillNo, ad.AreaCodes);
         }                     
     }
 }

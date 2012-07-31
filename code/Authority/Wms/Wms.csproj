@@ -186,7 +186,7 @@
     <Content Include="Content\Scripts\jquery.json.js" />
     <Content Include="Content\Scripts\jthok-ui\JDiv.js" />
     <Content Include="Content\Scripts\jquery.fullscreen.js" />
-    <Content Include="Content\Scripts\jquery.progressDialog.js" />
+    <Content Include="Content\Scripts\jquery.asyncProcessing.js" />
     <Content Include="Content\themes\base\css\css.css" />
     <Content Include="Content\themes\base\icons\2Menu_Help.png" />
     <Content Include="Content\themes\base\icons\2Menu_Jurisdiction.png" />

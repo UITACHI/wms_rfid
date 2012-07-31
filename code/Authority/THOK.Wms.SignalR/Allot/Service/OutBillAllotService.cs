@@ -23,9 +23,9 @@ namespace THOK.Wms.SignalR.Allot.Service
         [Dependency]
         public ICellRepository CellRepository { get; set; }
 
-        public bool Allot(string billNo, string[] areaCode)
+        public void Allot(string connectionId, Model.ProgressState ps, System.Threading.CancellationToken cancellationToken, string billNo, string[] areaCodes)
         {
-            return true;
+            throw new System.NotImplementedException();
         }
     }
 }

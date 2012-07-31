@@ -1,17 +1,6 @@
-﻿<script src="/Content/Scripts/jquery.progressDialog.js" type="text/javascript"></script>
+﻿<script src="/Content/Scripts/jquery.asyncProcessing.js" type="text/javascript"></script>
 <script type="text/javascript">
-    var billNo = "";
-//    var connection = $.connection('/echo');
-//    $(function () {
-//        connection.received(function (data) {            
-//            $('#g_p').progressbar('setValue', data);
-//            if (data == "success") {
-//                HideWaitMessageDialog(j_waitDialog);
-//            }
-//        });
-//        connection.start();
-//    });
-    
+    var billNo = "";    
     function allotClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
@@ -30,10 +19,32 @@
     };
 
     function allot() {
-        $.OnProgressComplete = function myfunction() {
-            alert('Complete');
+        $.asyncProcessing.OnProgressComplete = function() {
+            $('#inAllotBillDetails').datagrid('load');
+            $('#allotBillDetails').datagrid('load');
         }
-        $.ProgressStart('/echo', $.toJSON({ ActionType: 'start', BillNo: billNo, AreaCodes: [] }, { ActionType: 'start', BillNo: billNo, AreaCodes: ['1', '2'] }));
+        $.asyncProcessing.Start('/allotStockIn', $.toJSON({ ActionType: 'start', BillNo: billNo, AreaCodes: [] }, { ActionType: 'start', BillNo: billNo, AreaCodes: ['1', '2'] }));
+    }
+
+    function allotConfirm() {
+        var j_waitDialog = ShowWaitMessageDialog();
+        $.ajax({
+            url: "/StockInBillAllot/AllotConfirm/", type: "GET", dataType: "text",
+            data: { billNo: billNo},
+            complete: function () { HideWaitMessageDialog(j_waitDialog); },
+            success: function (responseText) {
+                var result = $.evalJSON(responseText);
+                if (result.success) {
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#inAllotBillDetails').datagrid('load');
+                    $('#allotBillDetails').datagrid('load');
+                } else {
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                    $('#inAllotBillDetails').datagrid('load');
+                    $('#allotBillDetails').datagrid('load');
+                }
+            }
+        });
     }
 </script>
 

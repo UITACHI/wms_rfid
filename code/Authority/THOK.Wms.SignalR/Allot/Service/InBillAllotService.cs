@@ -34,7 +34,8 @@ namespace THOK.Wms.SignalR.Allot.Service
         public void Allot(string connectionId,ProgressState ps, CancellationToken cancellationToken,string billNo, string[] areaCodes)
         {
             ConnectionId = connectionId;
-            NotifyConnection(ps.State = StateType.Start);
+            ps.State = StateType.Start;
+            NotifyConnection(ps.Clone());
 
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
@@ -44,7 +45,7 @@ namespace THOK.Wms.SignalR.Allot.Service
             {
                 ps.State = StateType.Info;
                 ps.Messages.Add("分配已确认生效不能再分配！");
-                NotifyConnection(ps);
+                NotifyConnection(ps.Clone());
                 return;
             }
 
@@ -52,7 +53,7 @@ namespace THOK.Wms.SignalR.Allot.Service
             {
                 ps.State = StateType.Error;
                 ps.Errors.Add("当前订单被锁定不可以进行分配！");
-                NotifyConnection(ps);
+                NotifyConnection(ps.Clone());
                 return;
             }
             else
@@ -62,12 +63,13 @@ namespace THOK.Wms.SignalR.Allot.Service
                     billMaster.LockTag = connectionId;
                     InBillMasterRepository.SaveChanges();
                     ps.Messages.Add("完成锁定当前订单");
+                    NotifyConnection(ps.Clone());
                 }
                 catch (Exception)
                 {
                     ps.State = StateType.Error;
                     ps.Errors.Add("锁定当前订单失败不可以进行分配！");
-                    NotifyConnection(ps);
+                    NotifyConnection(ps.Clone());
                     return;
                 }
             }
@@ -288,13 +290,19 @@ namespace THOK.Wms.SignalR.Allot.Service
             cellQuery.Select(c => c.Storages.Where(s => s.LockTag == billNo).Select(s => s))
                      .AsParallel().ForAll(s=>s.AsParallel().ForAll(i=>i.LockTag = string.Empty));
             billMaster.LockTag = string.Empty;
-            CellRepository.SaveChanges(); 
+            CellRepository.SaveChanges();
 
-            if (billMaster.InBillDetails.Any(i=>i.BillQuantity - i.AllotQuantity > 0))
+            if (billMaster.InBillDetails.Any(i => i.BillQuantity - i.AllotQuantity > 0))
             {
                 ps.State = StateType.Warning;
                 ps.Errors.Add("分配未全部完成，没有储位可分配！");
-                NotifyConnection(ps);
+                NotifyConnection(ps.Clone());
+            }
+            else
+            {
+                ps.State = StateType.Info;
+                ps.Messages.Add("分配完成!");
+                NotifyConnection(ps.Clone());
             }
         }
 
@@ -412,7 +420,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                 ps.TotalProgressValue = (int)(sumAllotQuantity / sumBillQuantity * 100);
                 ps.CurrentProgressName = "分配卷烟：" + billDetail.Product.ProductName;
                 ps.CurrentProgressValue = (int)(sumAllotProductQuantity / sumBillProductQuantity * 100);
-                NotifyConnection(ps);
+                NotifyConnection(ps.Clone());
             }
         }
     }

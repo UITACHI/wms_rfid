@@ -27,7 +27,8 @@ namespace Wms
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapConnection<AllotStockInConnection>("echo", "echo/{*operation}");
+            routes.MapConnection<AllotStockInConnection>("allotStockIn", "allotStockIn/{*operation}");
+            routes.MapConnection<AllotStockOutConnection>("allotStockOut", "allotStockOut/{*operation}");
 
             routes.MapRoute(
                 "Default", // 路由名称
