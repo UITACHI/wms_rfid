@@ -234,13 +234,13 @@ namespace THOK.Wms.Bll.Service
             //传入的参数为out时查询的是移出货位的存储信息
             if (inOrOut == "out")
             {
-                storages = storages.Where(s => s.Quantity > 0&&s.LockTag==string.Empty);
+                storages = storages.Where(s => s.Quantity > 0 && string.IsNullOrEmpty(s.Cell.LockTag));
             }
             else//传入的参数为in时查询的是移入货位的存储信息
             {
                 storages = storages.Where(s=>s.Quantity==0
-                    ||(s.Cell.IsSingle=="1"&&s.ProductCode==productCode&&s.Quantity<s.Cell.MaxQuantity)
-                    ||s.Cell.IsSingle=="0"&&s.LockTag==string.Empty);
+                    ||(s.Cell.IsSingle=="1"&&s.ProductCode==productCode&&s.Quantity<s.Cell.MaxQuantity*s.Product.Unit.Count)
+                    ||(s.Cell.IsSingle == "0" && string.IsNullOrEmpty(s.Cell.LockTag)));
             }
             var temp = storages.AsEnumerable().Select(s => new
             {
