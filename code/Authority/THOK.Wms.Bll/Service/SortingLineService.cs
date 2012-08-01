@@ -25,18 +25,36 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string sortingLineCode, string sortingLineName, string SortingLineType, string IsActive)
         {
             IQueryable<SortingLine> sortLineQuery = SortingLineRepository.GetQueryable();
-            var sortLine = sortLineQuery.Where(s => s.SortingLineCode.Contains(sortingLineCode) || s.SortingLineName.Contains(sortingLineName)|| s.SortingLineType.Contains(SortingLineType) || s.IsActive.Contains(IsActive)).OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
+            var sortLine = sortLineQuery.Where(s => s.SortingLineCode == s.SortingLineCode);
+            if (sortingLineCode != string.Empty && sortingLineCode != null)
+            {
+                sortLine = sortLine.Where(s => s.SortingLineCode.Contains(sortingLineCode));
+            }
+            if (sortingLineName != string.Empty && sortingLineName != null)
+            {
+                sortLine = sortLine.Where(s => s.SortingLineName.Contains(sortingLineName));
+            }
+            if (SortingLineType != string.Empty && SortingLineType != null)
+            {
+                sortLine = sortLine.Where(s => s.SortingLineType.Contains(SortingLineType));
+            }
+            if (IsActive != string.Empty && IsActive != null)
+            {
+                sortLine = sortLine.Where(s => s.IsActive == IsActive);
+            }
+
+            var temp = sortLine.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
             {
                 b.SortingLineCode,
                 b.SortingLineName,
-                SortingLineType=b.SortingLineType=="1"?"半自动分拣线":"全自动分拣线",
+                SortingLineType = b.SortingLineType == "1" ? "半自动分拣线" : "全自动分拣线",
                 IsActive = b.IsActive == "1" ? "可用" : "不可用",
                 UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
             });
 
-            int total = sortLine.Count();
-            sortLine = sortLine.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = sortLine.ToArray() };
+            int total = temp.Count();
+            temp = temp.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = temp.ToArray() };
         }
 
         public new bool Add(SortingLine sortingLine)

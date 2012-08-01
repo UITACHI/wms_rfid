@@ -1,50 +1,39 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#details').datagrid({ url: '/SortingOrder/Details/?orderDate=' + getTime() }); //查询主单，根据当天
         $('#details').datagrid({
             onClickRow: function () {
                 var row = $('#details').datagrid('getSelected');
                 if (row) {
-                    $('#sortOrderDetails').datagrid({ url: '/SortingOrder/sortOrderDetails/?OrderID=' + row.OrderID }); //根据主单ID查询细单  
+                    $('#sortOrderDetails').datagrid({ url: '/SortingOrder/sortOrderDetails/?OrderID=' + row.OrderID }); //根据主单ID查询细单
+
                 } else {
                     $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
                 }
             }
         })
-    });
-
-    function getTime() {
-        var d = new Date();
-        var vYear = d.getFullYear();
-        var vMon = d.getMonth() + 1;
-        var vDay = d.getDate();
-        var h = d.getHours();
-        var m = d.getMinutes();
-        t = vYear + "-" + (vMon < 10 ? "0" + vMon : vMon) + "-" + (vDay < 10 ? "0" + vDay : vDay);
-        return t;
-    }
+    });  
 </script>
 <div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
-    <table id="details" class="easyui-datagrid" border="false" singleSelect="true"
+    <table id="details" class="easyui-datagrid" border="false" singleSelect="true" url='/SortingOrder/Details/'
         fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="OrderID" width="80" >订单编码</th>
-                <th field="OrderDate" width="120" >订单日期</th>
-                <th field="OrderType" width="100" >订单类别</th>
-                <th field="CustomerCode" hidden="true" width="160">客户编码</th>
+                <th field="OrderID" width="100" >订单编码</th>
+                <th field="OrderDate" width="160" >订单日期</th>
+                <th field="OrderType" width="120" >订单类别</th>
+                <th field="CustomerCode" width="120">客户编码</th>
                 <th field="CustomerName" width="160">客户名称</th>
-                <th field="QuantitySum" width="160">总数量</th>
-                <th field="AmountSum" width="160">总金额</th>
-                <th field="DetailNum" width="160">明细数</th>
-                <th field="Status" width="160">是否可用</th>
+                <th field="QuantitySum" width="100">总数量</th>
+                <th field="AmountSum" width="100">总金额</th>
+                <th field="DetailNum" width="100">明细数</th>
+                <th field="IsActive" width="100">是否可用</th>
             </tr>
         </thead>
     </table>
 </div>
 <div region="south" split="true" border="false" style="height: 250px; border-top-style: solid; border-top-width: 1px; border-top-color: 99BBE8;">
-   <table class="easyui-datagrid" border="false" singleSelect="true" id="sortOrderDetails"
-        fit="true"  pagination="true" rownumbers="true">
+   <table class="easyui-datagrid" border="false" singleSelect="true" id="sortOrderDetails" url=""
+        fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
         <thead>
             <tr>
                 <th field="OrderDetailID" width="120" >订单明细编码</th>

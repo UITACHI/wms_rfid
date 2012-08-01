@@ -27,7 +27,8 @@ namespace Wms
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapConnection<AllotStockInConnection>("echo", "echo/{*operation}");
+            routes.MapConnection<AllotStockInConnection>("allotStockIn", "allotStockIn/{*operation}");
+            routes.MapConnection<AllotStockOutConnection>("allotStockOut", "allotStockOut/{*operation}");
 
             routes.MapRoute(
                 "Default", // 路由名称
@@ -58,7 +59,7 @@ namespace Wms
             i++;
         }
 
-        protected void Application_Error(object sender, EventArgs e)
+        protected void Application_Error1(object sender, EventArgs e)
         {
             Exception exception = Server.GetLastError();
             if (exception != null)

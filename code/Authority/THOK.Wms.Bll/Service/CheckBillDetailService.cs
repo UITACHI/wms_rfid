@@ -40,7 +40,7 @@ namespace THOK.Wms.Bll.Service
                     i.Product.ProductName,
                     i.Unit.UnitCode,
                     i.Unit.UnitName,
-                    i.Quantity,
+                    Quantity=i.Quantity/i.Unit.Count,
                     RealProductCode = i.RealProduct.ProductCode,
                     RealProductName = i.RealProduct.ProductName,
                     RealUnitCode = i.RealUnit.UnitCode,

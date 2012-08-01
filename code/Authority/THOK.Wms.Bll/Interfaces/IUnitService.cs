@@ -15,5 +15,8 @@ namespace THOK.Wms.Bll.Interfaces
         bool Delete(string UnitCode);
 
         bool Save(Unit unit);
+
+        object FindUnit(string productCode);
+
     }
 }

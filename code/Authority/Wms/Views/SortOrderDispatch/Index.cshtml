@@ -1,5 +1,18 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
+﻿<div region="center" split="true" border="false">    
+    <table id="details" class="easyui-datagrid" border="false" singleSelect="true" url='/SortOrderDispatch/Details/'
+        fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
+        <thead>
+            <tr>
+                <th field="ID" width="120" hidden="true">调度ID</th>
+                <th field="OrderDate" width="120" >订单日期</th>
+                <th field="SortingLineCode" width="120" >分拣线编码</th>
+                <th field="SortingLineName" width="160" >分拣线名称</th>
+                <th field="DeliverLineCode" width="120" >送货线路编码</th>
+                <th field="DeliverLineName" width="160" >送货线路名称</th>
+                <th field="IsActive" width="120">是否可用</th>
+                <th field="UpdateTime" width="120">修改时间</th>
+            </tr>
+        </thead>
+    </table>
+</div>
 
-<h2>Index</h2>

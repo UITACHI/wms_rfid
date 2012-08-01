@@ -74,6 +74,7 @@
     <Compile Include="Allot\Interfaces\IOutBillAllotService.cs" />
     <Compile Include="Allot\Service\InBillAllotService.cs" />
     <Compile Include="Allot\Service\OutBillAllotService.cs" />
+    <Compile Include="Connection\ConnectionBase.cs" />
     <Compile Include="Model\ProgressState.cs" />
     <Compile Include="Notifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="UnityConnectionDependencyResolver.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connection\AllotStockOutConnection.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

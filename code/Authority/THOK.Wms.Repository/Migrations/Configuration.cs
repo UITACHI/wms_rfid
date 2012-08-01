@@ -2428,7 +2428,7 @@ namespace THOK.Wms.Repository.Migrations
                         ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471104"),
                         ModuleName = "ø‚¥Ê∑÷≤º≤È—Ø",
                         ShowOrder = 3,
-                        ModuleURL = "/StockDistribution/",
+                        ModuleURL = "/Distribution/",
                         IndicateImage = "icon-son_StockPlace",
                         DeskTopImage = "image-son_StockPlace",
                         System = system,

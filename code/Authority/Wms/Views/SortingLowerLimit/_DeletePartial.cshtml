@@ -11,6 +11,8 @@ function deleteClick() {
         $('#IsActiveCc').combo({
             hasDownArrow: false
         });
+        $('#sortingLineCodeButton').css({ display: "none" });
+        $('#productCodeButton').css({ display: "none" });
         $('#LowerLimitfm').form('load', row);
         if (row.IsActive == 'ø…”√') {
             $('#IsActiveCc').combo('setValue', 1).combo('setText', row.IsActive);

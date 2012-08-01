@@ -6,6 +6,7 @@ using THOK.Wms.Bll.Interfaces;
 using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
+using THOK.Wms.Bll.Models;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -100,6 +101,36 @@ namespace THOK.Wms.Bll.Service
             IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
             var area = areaQuery.Where(a => a.AreaCode == areaCode).OrderBy(b => b.AreaCode).AsEnumerable().Select(b => new { b.AreaCode, b.AreaName, b.AreaType, b.ShortName,b.AllotInOrder,b.AllotOutOrder, b.Description, b.Warehouse.WarehouseCode, b.Warehouse.WarehouseName, IsActive = b.IsActive == "1" ? "可用" : "不可用", UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss") });
             return area.First(a => a.AreaCode == areaCode);
+        }
+
+        public object GetWareArea()
+        {
+            var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();
+            HashSet<Tree> wareSet = new HashSet<Tree>();
+            foreach (var warehouse in warehouses)//仓库
+            {
+                Tree wareTree = new Tree();
+                wareTree.id = warehouse.WarehouseCode;
+                wareTree.text = "仓库：" + warehouse.WarehouseName;
+                wareTree.state = "open";
+                wareTree.attributes = "ware";
+
+                var areas = AreaRepository.GetQueryable().Where(a => a.Warehouse.WarehouseCode == warehouse.WarehouseCode)
+                                                         .OrderBy(a => a.AreaCode).Select(a => a);
+                HashSet<Tree> areaSet = new HashSet<Tree>();
+                foreach (var area in areas)//库区
+                {
+                    Tree areaTree = new Tree();
+                    areaTree.id = area.AreaCode;
+                    areaTree.text = "库区：" + area.AreaName;
+                    areaTree.state = "open";
+                    areaTree.attributes = "area";
+                    areaSet.Add(areaTree);
+                }
+                wareTree.children = areaSet.ToArray();
+                wareSet.Add(wareTree);
+            }
+            return wareSet.ToArray();
         }
 
         #endregion

@@ -13,6 +13,8 @@ namespace THOK.Wms.Bll.Service
     {
         [Dependency]
         public IOutBillDetailRepository OutBillDetailRepository { get; set; }
+        [Dependency]
+        public IUnitRepository UnitRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -26,7 +28,20 @@ namespace THOK.Wms.Bll.Service
             if (BillNo != "" && BillNo != null)
             {
                 IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
-                var outBillDetail = outBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new {i.ID, i.BillNo, i.ProductCode, i.Product.ProductName, i.UnitCode, i.Unit.UnitName, i.BillQuantity, i.RealQuantity, i.Price, i.Description });
+                var outBillDetail = outBillDetailQuery.Where(i => i.BillNo.Contains(BillNo))
+                                                      .OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                                                      {
+                                                          i.ID,
+                                                          i.BillNo,
+                                                          i.ProductCode,
+                                                          i.Product.ProductName,
+                                                          i.UnitCode,
+                                                          i.Unit.UnitName,
+                                                          BillQuantity = i.BillQuantity / i.Unit.Count,
+                                                          i.RealQuantity,
+                                                          i.Price,
+                                                          i.Description
+                                                      });
                 int total = outBillDetail.Count();
                 outBillDetail = outBillDetail.Skip((page - 1) * rows).Take(rows);
                 return new { total, rows = outBillDetail.ToArray() };
@@ -38,6 +53,7 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
             var isExistProduct = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode&&i.UnitCode==outBillDetail.UnitCode);
+            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == outBillDetail.UnitCode);
             if (isExistProduct == null)
             {
                 var ibd = new OutBillDetail();
@@ -45,7 +61,7 @@ namespace THOK.Wms.Bll.Service
                 ibd.ProductCode = outBillDetail.ProductCode;
                 ibd.UnitCode = outBillDetail.UnitCode;
                 ibd.Price = outBillDetail.Price;
-                ibd.BillQuantity = outBillDetail.BillQuantity;
+                ibd.BillQuantity = outBillDetail.BillQuantity * unit.Count;
                 ibd.AllotQuantity = 0;
                 ibd.RealQuantity = 0;
                 ibd.Description = outBillDetail.Description;
@@ -55,7 +71,7 @@ namespace THOK.Wms.Bll.Service
             }
             else
             {
-                isExistProduct.BillQuantity = isExistProduct.BillQuantity + outBillDetail.BillQuantity;
+                isExistProduct.BillQuantity = isExistProduct.BillQuantity + (outBillDetail.BillQuantity * unit.Count);
                 OutBillDetailRepository.SaveChanges();
             }
             return true;
@@ -78,13 +94,14 @@ namespace THOK.Wms.Bll.Service
         {
             bool result = false;
             var outbm = OutBillDetailRepository.GetQueryable().FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ID == outBillDetail.ID);
+            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == outBillDetail.UnitCode);
             if (outbm != null)
             {
                 outbm.BillNo = outBillDetail.BillNo;
                 outbm.ProductCode = outBillDetail.ProductCode;
                 outbm.UnitCode = outBillDetail.UnitCode;
                 outbm.Price = outBillDetail.Price;
-                outbm.BillQuantity = outBillDetail.BillQuantity;
+                outbm.BillQuantity = outBillDetail.BillQuantity * unit.Count;
                 outbm.AllotQuantity = 0;
                 outbm.RealQuantity = 0;
                 outbm.Description = outBillDetail.Description;

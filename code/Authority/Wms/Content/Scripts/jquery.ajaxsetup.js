@@ -28,6 +28,7 @@ function ShowWaitMessageDialog(dlgTitle) {
         height: 120, width: 350, modal: true, resizable: false, closable: false, title: dlgTitle
     });
     $.parser.parse(j_dialog);
+    progress();
     return j_dialog;
 }
 

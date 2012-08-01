@@ -3,20 +3,20 @@ function editClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
         $('#dlg').dialog('open').dialog('setTitle', '编辑');
-        $('#LowerLimitfm').form('load', row);
+        $('#LowerLimitfm').form('load', row);   
         $('#LowerLimitfm .easyui-validatebox').validatebox({
             required: true
         });
-        if (row.IsActive == '启用') {
+        if (row.IsActive == '可用') {
             $('#IsActiveCc').combo('setValue', 1).combo('setText', row.IsActive);
         } else {
             $('#IsActiveCc').combo('setValue', 0).combo('setText', row.IsActive);
         }
-        $('form input').removeAttr("disabled");
-        $('form textarea').removeAttr("disabled");
         $('#IsActiveCc').combo({
             hasDownArrow: true
         });
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");    
         url = '/SortingLowerLimit/Edit/';
     } else {
         $.messager.confirm('错误', '没有选择行！');

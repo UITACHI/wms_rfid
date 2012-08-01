@@ -8,10 +8,8 @@
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.BillNo = $('#OrderID').val();
-        queryParams.beginDate = $('#OrderDate').datebox('getValue');
-        queryParams.OperatePersonCode = $('#CustomerCode').val();
-        queryParams.Status = $('#CustomerName').val();
+        queryParams.OrderID = $('#OrderID').val();
+        queryParams.orderDate = $('#OrderDate').datebox('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -36,14 +34,14 @@
                 <td width="60" style="text-align:right">订单日期:</td>
                 <td><input id="OrderDate" class="easyui-datebox" type="text" style="width: 140px"/></td>
               </tr>               
-              <tr>
+              @*<tr>
                 <td width="60" style="text-align:right">客户编码:</td>
                 <td><input id="CustomerCode" type="text" style="width: 140px" /></td>
               </tr>
               <tr>
                 <td   width="60" style="text-align:right">客户名称:</td>
                 <td><input id="CustomerName" type="text" style="width: 140px" /></td>
-              </tr>
+              </tr>*@
             </table>
         </div>
     </div>

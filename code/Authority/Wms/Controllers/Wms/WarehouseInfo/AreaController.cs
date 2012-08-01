@@ -50,6 +50,14 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //查询仓库数据tree结构,用于盘点
+        // GET: /Area/GetDetailsTree/
+        public ActionResult GetDetailsTree()
+        {
+            var wareArea = AreaService.GetWareArea();
+            return Json(wareArea, "text", JsonRequestBehavior.AllowGet);
+        }
+
         //编辑库区表
         // GET: /Area/Edit/
         public ActionResult Edit(Area area)

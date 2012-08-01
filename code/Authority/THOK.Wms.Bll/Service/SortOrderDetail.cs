@@ -29,7 +29,6 @@ namespace THOK.Wms.Bll.Service
                 {
                     i.OrderDetailID,
                     i.OrderID,
-                    i.Product,
                     i.Product.ProductCode,
                     i.Product.ProductName,
                     i.UnitCode,

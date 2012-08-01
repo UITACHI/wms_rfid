@@ -1,33 +1,32 @@
 ﻿<script type="text/javascript">
-    $(function () {
-        $('#warehouse-add').combogrid({
-            width: 130,
+    function searchClick() {
+        SearchLoad();
+        $('#dlg-search').dialog('open').dialog('setTitle', '库存分布精确查询');
+    };
+    function SearchLoad() {
+        $('#product').combogrid({
+            disabled: false,
+            width: 140,
             panelWidth: 340,
-            url: '/Warehouse/Details/?page=1&rows=10',
-            idField: 'WarehouseCode',
-            textField: 'WarehouseName',
+            url: '/Product/Details/?page=1&rows=10',
+            idField: 'ProductCode',
+            textField: 'ProductName',
             mode: 'local',
             editable: false,
             fitColumns: true,
             columns: [[
-					{ field: 'WarehouseCode', title: '仓库编码', hidden: true, width: 30 },
-					{ field: 'WarehouseName', title: '仓库名称', align: 'left', width: 40 },
-					{ field: 'WarehouseType', title: '仓库类型', align: 'left', width: 30 },
+					{ field: 'ProductCode', title: '卷烟编码', align: 'left', width: 40 },
+					{ field: 'ProductName', title: '卷烟名称', align: 'left', width: 40 },
 					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
 				]]
         });
-
-    })
-
-    function searchClick() {
-        $('#dlg-search').dialog('open').dialog('setTitle', '查询');
-    };
-
+    }
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.RoleName = $('#rolename').val();
-        queryParams.Description = $('#description').val();
-        queryParams.Status = $('#status').val();
+        queryParams.DepartmentCode = $('#DepartmentCode').val();
+        queryParams.DepartmentName = $('#DepartmentName').val();
+        queryParams.DepartmentLeaderID = $('#employee-search').val();
+        queryParams.companyID = $('#company-search').val();
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -36,26 +35,20 @@
         $("#details").datagrid('reload');
         $('#dlg-search').dialog('close');
     }
-
 </script>
-
 <div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:220px;padding:2px 2px"
-		closed="true" buttons="#dlg-buttons-search">
+    closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
-		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
-            <table width="250">
-              <tr>
-                <td width="60" style="padding-top:5px;padding-left:15px">起始日期:</td>
-                <td style="padding-top:5px" align="left"><input class="easyui-datebox" style="width:130px" required="true"></td>
-              </tr>
-              <tr>
-                <td style="padding-top:7px;padding-left:15px">终止日期:</td>
-                <td  style="padding-top:7px" align="left"><input style="width:130px" class="easyui-datebox" required="true"></td>
-              </tr>
-               <tr>
-                <td style="padding-top:7px;padding-left:15px">仓库选择:</td>
-                <td  style="padding-top:7px" align="left"><input name="WarehouseCode" id="warehouse-add"/></td>
-              </tr>
+        <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " overflow: scroll; padding: 1px; margin: 1px">
+            <table  width="260" style="padding:10px 10px;">
+                <tr>
+                    <td width="60">产品名称:</td>
+                    <td align="left"><input type="text" id="product"/></td>
+                </tr>
+                <tr>
+                    <td width="60">库区选择:</td>
+                    <td align="left" width="200"><select class="easyui-combotree" name="Area" url="/Area/GetDetailsTree/" cascadeCheck="false" multiple style="width:200px;"></select></td>
+                </tr>
             </table>
         </div>
     </div>

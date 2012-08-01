@@ -8,6 +8,7 @@
 
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+        $("input[type=text]").attr("value", "");
     };
 
     function select() {
@@ -16,8 +17,7 @@
         queryParams.SortingLineName = $('#SortingLineName').val();
         queryParams.ProductCode = $('#ProductCode').val();
         queryParams.ProductName = $('#ProductName').val();
-        queryParams.Quantity = $('#Quantity').val();
-        queryParams.IsActiveCc = $('#IsActiveCc').val();
+        queryParams.IsActive = $('#status').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -29,7 +29,7 @@
 
 </script>
 
-<div id="dlg-search" class="easyui-dialog" modal="true"  style="width:360px;height:260px;padding:2px 2px"
+<div id="dlg-search" class="easyui-dialog" modal="true"  style="width:310px;height:260px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
@@ -37,27 +37,24 @@
                    <table width="280">
                      <tr>
                         <td width="60" style="text-align:right">分拣线编码：</td>
-                        <td width="168"><input id="SortingLineCode" class="easyui-validatebox"/></td>
+                        <td width="168"><input id="SortingLineCode" type="text" class="easyui-validatebox"/></td>
                       </tr>
                       <tr>
                         <td width="60" style="text-align:right">分拣线名称：</td>
-                        <td width="168"><input id="SortingLineName" class="easyui-validatebox" /></td>
+                        <td width="168"><input id="SortingLineName" type="text" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
                         <td width="60" style="text-align:right">卷烟编码：</td>
-                        <td width="168"><input id="ProductCode" class="easyui-validatebox" /></td>
+                        <td width="168"><input id="ProductCode" type="text" class="easyui-validatebox" /></td>
                       </tr>
                       <tr>
                         <td width="60" style="text-align:right">卷烟名称：</td>
-                        <td width="168"><input id="ProductName" class="easyui-validatebox" /></td>
-                      </tr>
-                       <tr>
-                        <td width="60" style="text-align:right">下限数量：</td>
-                        <td width="168"><input id="Quantity" class="easyui-validatebox" /></td>
-                      </tr>                 
+                        <td width="168"><input id="ProductName" type="text" class="easyui-validatebox" /></td>
+                      </tr>          
                       <tr>
                         <td style="text-align:right">是否可用：</td>
-                        <td><select id="IsActiveCc" class="easyui-combobox" style="width:80px">
+                        <td><select id="status" class="easyui-combobox" style="width:80px">
+                                <option value="">请选择</option>
 		                        <option value="1">可用</option>
 		                        <option value="0">不可用</option>
 	                        </select>
