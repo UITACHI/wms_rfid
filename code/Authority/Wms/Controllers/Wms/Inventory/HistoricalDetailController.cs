@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Bll.Interfaces;
 
@@ -30,8 +26,8 @@ namespace Authority.Controllers.Wms.Inventory
             string productCode = collection["ProductCode"] ?? "";
             string beginDate = collection["BeginDate"] ?? "";
             string endDate = collection["EndDate"] ?? "";
-            var brand = HistoricalDetailService.GetDetails(page,rows,warehouseCode,productCode,beginDate,endDate);
-            return Json(brand, "text", JsonRequestBehavior.AllowGet);
+            var HistoricalDetail = HistoricalDetailService.GetDetails(page, rows, warehouseCode, productCode, beginDate, endDate);
+            return Json(HistoricalDetail, "text", JsonRequestBehavior.AllowGet);
         }
     }
 }

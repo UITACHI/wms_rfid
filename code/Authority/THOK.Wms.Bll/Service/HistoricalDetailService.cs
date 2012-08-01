@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using THOK.Wms.DbModel;
 using THOK.Wms.Bll.Interfaces;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
@@ -9,23 +8,8 @@ namespace THOK.Wms.Bll.Service
 {
     public class HistoricalDetailService : IHistoricalDetailService
     {
-        
-        [Dependency]
-        public IWarehouseRepository WarehouseRepository { get; set; }
-
-        [Dependency]
-        public IProductRepository ProductRepository { get; set; }
-
-        [Dependency]
-        public IBillTypeRepository BillTypeRepository { get; set; }
-
-        [Dependency]
-        public IInBillMasterRepository InBillMasterRepository { get; set; }
         [Dependency]
         public IInBillDetailRepository InBillDetailRepository { get; set; }
-
-        [Dependency]
-        public IOutBillMasterRepository OutBillMasterRepository { get; set; }
         [Dependency]
         public IOutBillDetailRepository OutBillDetailRepository { get; set; }
 

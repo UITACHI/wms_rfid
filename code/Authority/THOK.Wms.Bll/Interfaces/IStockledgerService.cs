@@ -6,7 +6,7 @@ using THOK.Wms.DbModel;
 
 namespace THOK.Wms.Bll.Interfaces
 {
-    public interface IHistoricalDetailService
+    public interface IStockledgerService
     {
         object GetDetails(int page, int rows, string warehouseCode, string productCode, string beginDate, string endDate);
     }

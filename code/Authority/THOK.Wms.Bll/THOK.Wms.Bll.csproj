@@ -80,6 +80,7 @@
     <Compile Include="Interfaces\IStockCheckSearchService.cs" />
     <Compile Include="Interfaces\IStockDifferSearchService.cs" />
     <Compile Include="Interfaces\IStockIntoSearchService.cs" />
+    <Compile Include="Interfaces\IStockledgerService.cs" />
     <Compile Include="Interfaces\IStockMoveSearchService.cs" />
     <Compile Include="Interfaces\IStockOutSearchService.cs" />
     <Compile Include="Interfaces\IStorageService.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Service\StockCheckSearchService.cs" />
     <Compile Include="Service\StockDifferSearchService.cs" />
     <Compile Include="Service\StockIntoSearchService.cs" />
+    <Compile Include="Service\StockledgerService.cs" />
     <Compile Include="Service\StockMoveSearchService.cs" />
     <Compile Include="Service\StockOutSearchService.cs" />
     <Compile Include="Service\StorageService.cs" />
