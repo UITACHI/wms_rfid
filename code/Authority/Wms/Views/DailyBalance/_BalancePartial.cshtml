@@ -1,35 +1,29 @@
 ﻿<script type="text/javascript">
-    $(function () {
-        $('#warehouse-add').combogrid({
+
+    function balanceClick() {
+        $('#wareHouse').combogrid({
+            required: true,
+            disabled: false,
             width: 130,
             panelWidth: 340,
-            url: '/Warehouse/Details/?page=1&rows=10',
+            url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
             idField: 'WarehouseCode',
             textField: 'WarehouseName',
             mode: 'local',
             editable: false,
             fitColumns: true,
             columns: [[
-					{ field: 'WarehouseCode', title: '仓库编码', hidden: true, width: 30 },
-					{ field: 'WarehouseName', title: '仓库名称', align: 'left', width: 40 },
-					{ field: 'WarehouseType', title: '仓库类型', align: 'left', width: 30 },
-					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
-				]]
+                    { field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
+                    { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 40 },
+                    { field: 'WarehouseType', title: '仓库类型', align: 'left', width: 30 },
+                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+                ]]
         });
-
-    })
-
-    function searchClick() {
         $('#dlg-Daily').dialog('open').dialog('setTitle', '产品日结');
     };
 
     function DailyBalance() {
-        $('#details').datagrid({
-            pageNumber: 1,
-            pageSize: 10
-        });
-        $("#details").datagrid('reload');
-        $('#dlg-search').dialog('close');
+        
     }
 
 </script>
@@ -38,10 +32,12 @@
 		closed="true" buttons="#dlg-buttons-Daily">
     <div class="easyui-layout" fit="true">
 		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
-            <table width="250">
-              <tr>
-                <td style="padding-top:7px;padding-left:15px">仓库选择:</td>
-                <td  style="padding-top:7px" align="left"><input name="WarehouseCode" id="warehouse-add"/></td>
+            <table width="250" style="padding-top:26px;">
+              <tr style="padding-top:10px;">
+                <td width="60" style="padding-top:5px;padding-left:15px">仓库:</td>
+                <td align="left">      
+		            <input type="text" id="wareHouse"/>
+	            </td>
               </tr>
               <tr>
                 <td width="60" style="padding-top:5px;padding-left:15px">日结日期:</td>

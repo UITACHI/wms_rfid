@@ -161,6 +161,10 @@
     <Compile Include="Migrations\201207300902560_modify_data_length.Designer.cs">
       <DependentUpon>201207300902560_modify_data_length.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201208010330430_SortWorkDispatch.cs" />
+    <Compile Include="Migrations\201208010330430_SortWorkDispatch.Designer.cs">
+      <DependentUpon>201208010330430_SortWorkDispatch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

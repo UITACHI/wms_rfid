@@ -17,5 +17,7 @@ namespace THOK.Wms.Bll.Interfaces
         bool Save(Area area);
 
         object FindArea(string parameter);
+
+        object GetWareArea();
     }
 }
