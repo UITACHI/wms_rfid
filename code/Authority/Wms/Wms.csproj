@@ -1076,6 +1076,8 @@
     <Content Include="Views\SortOrderDispatch\_EditPartial.cshtml" />
     <Content Include="Views\SortOrderDispatch\_SearchPartial.cshtml" />
     <Content Include="Views\StockInBill\_UnitPartial.cshtml" />
+    <Content Include="Views\StockInBill\_CellPartial.cshtml" />
+    <Content Include="Views\StockOutBill\_CellPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

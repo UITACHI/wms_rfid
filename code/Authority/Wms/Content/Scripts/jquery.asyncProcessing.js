@@ -43,7 +43,7 @@
                     case 7: //Confirm
                         break;
                     case 8: //Complete
-                        $.messager.confirm(g_MsgBoxTitle, progressState.Messages, function (r) {
+                        $.messager.confirm(g_MsgBoxTitle, progressState.Messages + progressState.Errors, function (r) {
                             g_connection.stop();
                             $.asyncProcessing.OnProgressComplete();
                             $.asyncProcessing.HideProgressDialog(g_progressDialog);
@@ -55,7 +55,7 @@
                         break;
                 }
             });
-            g_connection.start(function () {
+            g_connection.start({ transport: 'webSockets' }, function () {
                 g_connection.send(data);
             });
             g_progressDialog = $.asyncProcessing.ShowProgressDialog(dlgTitle);

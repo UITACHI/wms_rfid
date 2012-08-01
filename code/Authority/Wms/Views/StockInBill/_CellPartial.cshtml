@@ -1,0 +1,109 @@
+﻿<script type="text/javascript">
+    var jCellCode;
+    var jCellName
+    //选择移出货位编码
+    function outCellSelect() {
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        loadData("out");
+    }
+
+    //选择移入货位编码
+    function inCellSelect(cellCode, cellName) {
+        jCellCode = cellCode;
+        jCellName = cellName;
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        loadData("in");
+    };
+
+    //判断是移出的货位还是移入的货位out为移出，in为移入
+    var cellInOrOut;
+    //加载仓库树形结构数据数据根据cType（in或者out）加载不同的树形结构的数据
+    function loadData(cType,pCode) {
+        cellInOrOut = cType;
+        $('#cellDetail').datagrid('loadData', { total: 0, rows: [] }); //清空库存列表
+        $('#warehouseTree').tree({ url: '/Cell/GetMoveCellDetails/?inOrOut=' + cType + '&productCode=' + pCode }); //加载树形数据
+        $('#warehouseTree').tree({
+            onClick: function (node) {
+                if (node) {
+                    $('#cellDetail').datagrid('options').url = '/Storage/GetMoveStorgeDetails/?type=' + node.attributes + '&id=' + node.id + '&inOrOut=' + cType + '&productCode=' + pCode;
+                    $('#cellDetail').datagrid('load');
+                }
+            }
+        });
+    }
+
+    //货位确定按钮参数为out时给移出货位的空间赋值，参数为in时给移入货位的空间赋值
+    function cellSave() {
+        var cellRow = $('#cellDetail').datagrid('getSelected');
+        if (cellRow) {
+            if (cellInOrOut == "out") {
+                $('#outCellCode').val(cellRow.CellCode);
+                $('#outCellName').val(cellRow.CellName);
+                $('#productCode').val(cellRow.ProductCode);
+                $('#productName').val(cellRow.ProductName);
+                $('#unitCode').val(cellRow.UnitCode);
+                $('#unitName').val(cellRow.UnitName);
+                $('#cellData').dialog('close');
+            }
+            else {
+                jCellCode.val(cellRow.CellCode);
+                jCellName.val(cellRow.CellName);
+                $('#cellData').dialog('close');
+            }
+        }
+    }
+
+    //货位列表点击事件点击选中的行并将选中行的值赋给相应的控件
+    $(function () {
+        $('#cellDetail').datagrid({
+            onDblClickRow: function () {
+                cellSave();
+            }
+        })
+    });
+</script>       
+
+<div id="cellData" class="easyui-dialog" modal="true" style="width: 840px; height: 460px;
+    padding: 1px 1px" closed="true" buttons="#dlg-cellDatabuttons">
+            <div class="easyui-layout" fit="true">
+                <div id="sidebar" region="west" border="false" style="width: 220px;border-right-style: solid; border-right-width: 1px; border-right-color: #99BBE8;" >
+                    <ul id="warehouseTree" class="easyui-tree" url=''>
+                    </ul>
+                </div>
+                <div id="main" region="center" fit="true" border="false" style="margin: 1px">
+                    <table id="cellDetail" class="easyui-datagrid" border="false" singleselect="true"
+                        fit="true" pagination="true" rownumbers="true">
+                        <thead>
+                            <tr>
+                                <th field="CellCode" width="60">
+                                    货位编码
+                                </th>
+                                <th field="CellName" width="80">
+                                    货位名称
+                                </th>
+                                <th field="StorageCode" width="60">
+                                    储存编码
+                                </th>
+                                <th field="ProductCode" width="60">
+                                    产品编码
+                                </th>
+                                <th field="ProductName" width="124">
+                                    产品名称
+                                </th>
+                                <th field="UnitCode" width="60">
+                                    单位名称
+                                </th>
+                                <th field="Quantity" width="60">
+                                    数量
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+</div>
+
+<div id="dlg-cellDatabuttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="cellSave()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#cellData').dialog('close')">取消</a>
+</div>

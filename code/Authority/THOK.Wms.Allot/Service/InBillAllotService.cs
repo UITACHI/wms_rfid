@@ -76,7 +76,93 @@ namespace THOK.Wms.Allot.Service
 
             int total = query.Count();
             query = query.Skip((page - 1) * rows).Take(rows);
+            var allotBill = query.ToArray();            
             return new { total, rows = query.ToArray() }; 
+        }
+
+        public bool AllotDelete(string billNo, string id, out string strResult)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AllotEdit(string billNo, string id, string cellCode, int allotQuantity, out string strResult)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AllotConfirm(string billNo, out string strResult)
+        {
+            bool result = false;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo && i.Status == "3");
+            if (ibm != null)
+            {
+                if (ibm.InBillDetails.All(b => b.BillQuantity == b.AllotQuantity)
+                    && ibm.InBillDetails.Sum(b => b.BillQuantity) == ibm.InBillAllots.Sum(a => a.AllotQuantity))
+                {
+                    if (string.IsNullOrEmpty(ibm.LockTag))
+                    {
+                        try
+                        {
+                            ibm.Status = "4";
+                            ibm.UpdateTime = DateTime.Now;
+                            InBillMasterRepository.SaveChanges();
+                            result = true;
+                            strResult = "确认成功";
+                        }
+                        catch (Exception)
+                        {
+                            strResult = "当前订单其他人正在操作，请稍候重试！";
+                        }
+
+                    }
+                    else
+                    {
+                        strResult = "当前订单其他人正在操作，请稍候重试！";
+                    }
+                }
+                else
+                {
+                    strResult = "当前订单分配未完成或分配结果不正确！";
+                }
+            }
+            else
+            {
+                strResult = "当前订单状态不是已分配，或当前订单不存在！";
+            }
+            return result;
+        }
+
+        public bool AllotCancel(string billNo, out string strResult)
+        {
+            bool result = false;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo && i.Status == "4");
+            if (ibm != null)
+            {
+                if (string.IsNullOrEmpty(ibm.LockTag))
+                {
+                    try
+                    {
+                        ibm.Status = "3";
+                        ibm.UpdateTime = DateTime.Now;
+                        InBillMasterRepository.SaveChanges();
+                        result = true;
+                        strResult = "取消成功";
+                    }
+                    catch (Exception)
+                    {
+                        strResult = "当前订单其他人正在操作，请稍候重试！";
+                    }
+                }
+                else
+                {
+                    strResult = "当前订单其他人正在操作，请稍候重试！";
+                }
+            }
+            else
+            {
+                strResult = "当前订单状态不是已确认，或当前订单不存在！";
+            }
+            return result;
         }
     }
 }
