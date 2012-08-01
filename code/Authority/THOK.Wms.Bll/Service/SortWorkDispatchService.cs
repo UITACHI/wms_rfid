@@ -21,6 +21,24 @@ namespace THOK.Wms.Bll.Service
 
         #region ISortWorkDispatchService 成员
 
+        public string WhatStatus(string status)
+        {
+            string statusStr = "";
+            switch (status)
+            {
+                case "1":
+                    statusStr = "未调度";
+                    break;
+                case "2":
+                    statusStr = "调度中";
+                    break;
+                case "3":
+                    statusStr = "已调度";
+                    break;
+            }
+            return statusStr;
+        }
+
         public object GetDetails(int page, int rows, string OrderDate, string SortingLineCode, string DispatchStatus)
         {
             IQueryable<SortWorkDispatch> SortWorkDispatchQuery = SortWorkDispatchRepository.GetQueryable();
@@ -37,15 +55,16 @@ namespace THOK.Wms.Bll.Service
             {
                 sortWorkDispatch = sortWorkDispatch.Where(s => s.DispatchStatus == DispatchStatus);
             }
-            var temp = sortWorkDispatch.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
+            var temp = sortWorkDispatch.OrderBy(b => b.SortingLineCode).Select(b => new
             {
                 b.ID,
+                b.OrderDate,
                 b.SortingLineCode,
-                //b.
-                //b.OrderDate,
-                //b.DeliverLineCode,
-                //WorkStatus = b.WorkStatus == "1" ? "已作业" : "未作业",
-                //b.DeliverLine.DeliverLineName,
+                b.SortingLine.SortingLineName,
+                b.OutBillNo,
+                b.MoveBillNo,
+                b.DispatchBatch,
+                DispatchStatus=WhatStatus(b.DispatchStatus),
                 IsActive = b.IsActive == "1" ? "可用" : "不可用",
                 UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
             });
