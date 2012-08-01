@@ -1,17 +1,18 @@
 ﻿<div region="center" split="true" border="false">    
-    <table id="details" class="easyui-datagrid" border="false" singleSelect="true"
+    <table id="details" class="easyui-datagrid" border="false" singleSelect="true" url=''
         fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="SystemID" width="80" hidden="true">分拣线ID</th>
-                <th field="sortingCode" width="160" >订单号</th>
-                <th field="sortingName" width="160" >订单日期</th>
-                <th field="productCode" width="160">订单类型</th>
-                <th field="productName" width="160">客户名称</th>
-                <th field="productUtin" width="160">总数量</th>
-                <th field="lowerLimitNumber" width="160">明细数</th>
-                <th field="Status" width="160">是否可用</th>
-                <th field="Remarks" width="160">备注</th>
+                <th field="ID" width="80" hidden="true">作业ID</th>
+                <th field="OrderDate" width="120" >订单日期</th>
+                <th field="SortingLineCode" width="100" >分拣线编码</th>
+                <th field="SortingLineCode" width="120">分拣线名称</th>
+                <th field="DispatchBatch" width="100">作业调度批次</th>
+                <th field="OutBillNo" width="120">出库单编号</th>
+                <th field="MoveBillNo" width="120">移库单编号</th>
+                <th field="DispatchStatus" width="120">作业状态</th>
+                <th field="IsActive" width="100">是否可用</th>
+                <th field="UpdateTime" width="100">更新时间</th>
             </tr>
         </thead>
     </table>

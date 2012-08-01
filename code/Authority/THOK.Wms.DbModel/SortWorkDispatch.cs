@@ -20,6 +20,10 @@ namespace THOK.Wms.DbModel
         public string DispatchStatus { get; set; }
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
+        
+        public virtual SortingLine SortingLine { get; set; }
+        public virtual OutBillMaster OutBillMaster { get; set; }
+        public virtual MoveBillMaster MoveBillMaster { get; set; }
 
         public virtual ICollection<SortOrderDispatch> SortOrderDispatchs { get; set; }
     }

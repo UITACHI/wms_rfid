@@ -78,6 +78,7 @@
     <Compile Include="EntityRepository\SortOrderDispatchRepository.cs" />
     <Compile Include="EntityRepository\SortOrderRepository.cs" />
     <Compile Include="EntityRepository\SortOrderSearchRepository.cs" />
+    <Compile Include="EntityRepository\SortWorkDispatchRepository.cs" />
     <Compile Include="EntityRepository\StockCheckSearchRepository.cs" />
     <Compile Include="EntityRepository\StockDifferSearchRepository.cs" />
     <Compile Include="EntityRepository\StockIntoSearchRepository.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Interfaces\ISortOrderDispatchRepository.cs" />
     <Compile Include="Interfaces\ISortOrderRepository.cs" />
     <Compile Include="Interfaces\ISortOrderSearchRepository.cs" />
+    <Compile Include="Interfaces\ISortWorkDispatchRepository.cs" />
     <Compile Include="Interfaces\IStockCheckSearchRepository.cs" />
     <Compile Include="Interfaces\IStockDifferSearchRepository.cs" />
     <Compile Include="Interfaces\IStockIntoSearchRepository.cs" />

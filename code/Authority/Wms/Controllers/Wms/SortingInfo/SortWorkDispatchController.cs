@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Authority.Controllers.Wms.SortingInfo
 {
-    public class SortingOrderOptimizeController : Controller
+    public class SortWorkDispatchController : Controller
     {
         //
         // GET: /SortingOptimize/
@@ -22,6 +22,5 @@ namespace Authority.Controllers.Wms.SortingInfo
             ViewBag.ModuleID = moduleID;
             return View();
         }
-
     }
 }
