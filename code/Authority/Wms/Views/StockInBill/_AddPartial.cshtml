@@ -234,10 +234,24 @@
         }
     }
 
+    //选择产品信息
     function productSelect() {
         $('#productData').dialog('open').dialog('setTitle', '选择产品信息');
         $('#productDetail').datagrid({ url: '/StockInBill/GetProductDetails/' });
         $("#productDetail").datagrid('reload');
+    }
+
+    //选择单位信息
+    function unitSelect() {
+        var productCode = $('#productCode').val();
+        if (productCode != "" && productCode != null) {
+            //$('#billQuantity').attr("value", '')
+            $('#unitData').dialog('open').dialog('setTitle', '选择单位信息');
+            $('#unitDetail').datagrid({ url: '/Unit/FindUnit/?productCode=' + productCode });
+            $("#unitDetail").datagrid('reload');
+        } else {
+            $.messager.confirm('错误', '请先选择产品信息！');
+        }
     }
 
 </script>
@@ -343,6 +357,7 @@
     <td style=" text-align:right">单位编码</td>
     <td align="left"><label>
       <input type="text" name="UnitCode" class="easyui-validatebox" required="true" id="unitCode" readonly="true"/>
+      <a href="#" onclick="unitSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true" >
     </label></td>
     <td></td>
   </tr>
@@ -384,3 +399,4 @@
 </div>
 
 @Html.Partial("_ProductPartial")
+@Html.Partial("_UnitPartial")

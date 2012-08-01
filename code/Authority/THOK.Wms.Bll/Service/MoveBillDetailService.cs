@@ -65,13 +65,6 @@ namespace THOK.Wms.Bll.Service
         /// <returns></returns>
         public new bool Add(MoveBillDetail moveBillDetail)
         {
-            bool result = false;
-            //IQueryable<Cell> CellQuery = CellRepository.GetQueryable();
-            //var outCell = CellQuery.Where(c => c.CellCode == moveBillDetail.OutCellCode).Select();
-            //LockStorage(moveBillDetail.BillNo,outCell);
-            //var inCell = CellQuery.Where(c => c.CellCode == moveBillDetail.InCellCode);
-            //LockStorage(moveBillDetail.BillNo,inCell);
-
             IQueryable<MoveBillDetail> moveBillDetailQuery = MoveBillDetailRepository.GetQueryable();
             var mbd = new MoveBillDetail();
             mbd.BillNo=moveBillDetail.BillNo;
@@ -81,11 +74,11 @@ namespace THOK.Wms.Bll.Service
             mbd.InCellCode = moveBillDetail.InCellCode;
             mbd.InStorageCode = moveBillDetail.InStorageCode;
             mbd.UnitCode = moveBillDetail.UnitCode;
-            mbd.RealQuantity = moveBillDetail.RealQuantity;
+            mbd.RealQuantity = moveBillDetail.RealQuantity*moveBillDetail.Unit.Count;
 
             MoveBillDetailRepository.Add(mbd);
             MoveBillDetailRepository.SaveChanges();
-            return result;
+            return true;
         }
 
         public bool Delete(string ID)
