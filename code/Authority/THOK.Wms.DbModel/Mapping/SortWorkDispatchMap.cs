@@ -59,7 +59,21 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
-            // Relationships           
+            // Relationships
+            this.HasRequired(t => t.MoveBillMaster)
+                .WithMany()
+                .HasForeignKey(d => d.MoveBillNo)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.OutBillMaster)
+                .WithMany()
+                .HasForeignKey(d => d.OutBillNo)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.SortingLine)
+                .WithMany(t => t.SortWorkDispatchs)
+                .HasForeignKey(d => d.SortingLineCode)
+                .WillCascadeOnDelete(false);
         }
     }
 }
