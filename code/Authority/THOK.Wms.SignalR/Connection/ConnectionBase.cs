@@ -59,6 +59,12 @@ namespace THOK.Wms.SignalR.Connection
                 ps.State = StateType.Error;
                 ps.Messages.Add(e.Message);
             }
+            if (GetCancellationTokenSource(connectionId).Token.IsCancellationRequested)
+            {
+                ps.Messages.Clear();
+                ps.Errors.Clear();
+                ps.Messages.Add("用户已中止当前处理！");
+            }
             ps.State = StateType.Complete;
             return Connection.Send(connectionId, ps.Clone());
         }

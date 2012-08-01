@@ -60,7 +60,9 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
             var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)
-                && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                && i.Status != "6").OrderByDescending(t => t.BillDate)
+                                   .OrderByDescending(t => t.BillNo)
+                                   .AsEnumerable().Select(i => new
                 {
                     i.BillNo,
                     BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
@@ -84,7 +86,9 @@ namespace THOK.Wms.Bll.Service
                 inBillMaster = inBillMaster.Where(i =>
                     i.BillNo.Contains(BillNo)
                     && i.IsActive.Contains(IsActive)
-                    && i.Status != "6").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                    && i.Status != "6").OrderByDescending(t => t.BillDate)
+                                       .OrderByDescending(t => t.BillNo)
+                                       .AsEnumerable().Select(i => new
                     {
                         i.BillNo,
                         i.BillDate,

@@ -11,6 +11,7 @@ namespace THOK.Wms.DbModel
        {
            this.SortingLowerlimits = new List<SortingLowerlimit>();
            this.SortOrderDispatchs = new List<SortOrderDispatch>();
+           this.SortWorkDispatchs = new List<SortWorkDispatch>();
        }
        public string SortingLineCode { get; set; }
        public string SortingLineName { get; set; }
@@ -20,5 +21,6 @@ namespace THOK.Wms.DbModel
 
        public virtual ICollection<SortingLowerlimit> SortingLowerlimits { get; set; }
        public virtual ICollection<SortOrderDispatch> SortOrderDispatchs { get; set; }
+       public virtual ICollection<SortWorkDispatch> SortWorkDispatchs { get; set; }
     }
 }
