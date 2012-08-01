@@ -59,6 +59,8 @@
     <Compile Include="Interfaces\IOutBillDetailService.cs" />
     <Compile Include="Interfaces\IOutBillMasterService.cs" />
     <Compile Include="Interfaces\IOutSearchDetailService.cs" />
+    <Compile Include="Interfaces\IProfitLossBillDetailService.cs" />
+    <Compile Include="Interfaces\IProfitLossBillMasterService.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\IAreaService.cs" />
     <Compile Include="Interfaces\IBrandService.cs" />
@@ -105,6 +107,8 @@
     <Compile Include="Service\OutBillDetailService.cs" />
     <Compile Include="Service\OutBillMasterService.cs" />
     <Compile Include="Service\OutSearchDetailService.cs" />
+    <Compile Include="Service\ProfitLossBillDetailService.cs" />
+    <Compile Include="Service\ProfitLossBillMasterService.cs" />
     <Compile Include="Service\ServiceBase.cs" />
     <Compile Include="Service\AreaService.cs" />
     <Compile Include="Service\BrandService.cs" />
