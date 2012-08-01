@@ -81,7 +81,10 @@ namespace THOK.Wms.Bll.Service
                 outBillMaster = outBillMaster.Where(i => i.IsActive.Contains(IsActive));
             }
 
-            var temp = outBillMaster.AsEnumerable().OrderBy(t => t.BillNo).Select(i => new
+            var temp = outBillMaster.AsEnumerable()
+                                    .OrderByDescending(t => t.BillDate)
+                                    .OrderByDescending(t => t.BillNo)
+                                    .Select(i => new
                {
                    i.BillNo,
                    BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),

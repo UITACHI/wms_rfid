@@ -8,8 +8,8 @@ using System.Collections.Generic;
 
 namespace THOK.Wms.Allot.Service
 {
-    public class InBillAllotService:ServiceBase<InBillAllot>,IInBillAllotService
-    {       
+    public class InBillAllotService : ServiceBase<InBillAllot>, IInBillAllotService
+    {
         [Dependency]
         public IInBillAllotRepository InBillAllotRepository { get; set; }
         [Dependency]
@@ -53,8 +53,9 @@ namespace THOK.Wms.Allot.Service
 
         public object Search(string billNo, int page, int rows)
         {
-            var allotQuery = InBillAllotRepository.GetQueryable().AsEnumerable();
+            var allotQuery = InBillAllotRepository.GetQueryable();
             var query = allotQuery.Where(a => a.BillNo == billNo)
+                                  .OrderBy(a => a.ID)
                                   .Select(a => new { 
                                       a.ID,
                                       a.BillNo,
@@ -70,8 +71,8 @@ namespace THOK.Wms.Allot.Service
                                       a.OperatePersonID,
                                       a.StartTime,
                                       a.FinishTime,
-                                      Status = WhatStatus(a.Status)
-                                  });
+                                      a.Status 
+                                    });
 
             int total = query.Count();
             query = query.Skip((page - 1) * rows).Take(rows);
