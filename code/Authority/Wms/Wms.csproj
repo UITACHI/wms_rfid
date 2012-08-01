@@ -125,7 +125,6 @@
     <Compile Include="Controllers\Wms\ProfitLossInfo\ProfitLossBillTypeController.cs" />
     <Compile Include="Controllers\Wms\SortingInfo\SortingLineController.cs" />
     <Compile Include="Controllers\Wms\SortingInfo\SortingLowerLimitController.cs" />
-    <Compile Include="Controllers\Wms\SortingInfo\SortingOrderOptimizeController.cs" />
     <Compile Include="Controllers\Wms\SortingInfo\SortingOrderController.cs" />
     <Compile Include="Controllers\Wms\StockCheckInfo\CheckBillController.cs" />
     <Compile Include="Controllers\Wms\StockCheckInfo\CheckBillTypeController.cs" />
