@@ -27,11 +27,13 @@
                 $('#productName').val(cellRow.ProductName);
                 $('#unitCode').val(cellRow.UnitCode);
                 $('#unitName').val(cellRow.UnitName);
+                $('#outStorageCode').val(cellRow.StorageCode);
                 $('#cellData').dialog('close');
             }
             else {
                 $('#inCellCode').val(cellRow.CellCode);
                 $('#inCellName').val(cellRow.CellName);
+                $('#inStorageCode').val(cellRow.StorageCode);
                 $('#cellData').dialog('close');
             }
         }

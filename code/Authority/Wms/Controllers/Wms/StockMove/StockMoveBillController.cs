@@ -130,5 +130,27 @@ namespace Authority.Controllers.Wms.StockMove
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // POST: /MoveBillDetail/MoveBillDetailCreate/
+
+        [HttpPost]
+        public ActionResult MoveBillDetailCreate(MoveBillDetail moveBillDetail)
+        {
+            bool bResult = MoveBillDetailService.Add(moveBillDetail);
+            string msg = bResult ? "新增成功" : "新增失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /MoveBillDetail/MoveBillDetailEdit/
+
+        [HttpPost]
+        public ActionResult MoveBillDetailEdit(MoveBillDetail moveBillDetail)
+        {
+            bool bResult = MoveBillDetailService.Save(moveBillDetail);
+            string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
