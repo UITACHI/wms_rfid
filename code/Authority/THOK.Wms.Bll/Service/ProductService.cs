@@ -267,5 +267,11 @@ namespace THOK.Wms.Bll.Service
         }
 
         #endregion
+
+
+        public object FindProduct()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
