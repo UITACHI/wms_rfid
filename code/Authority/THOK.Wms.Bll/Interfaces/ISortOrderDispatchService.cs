@@ -10,6 +10,8 @@ namespace THOK.Wms.Bll.Interfaces
     {
         object GetDetails(int page, int rows, string OrderDate, string SortingLineCode, string DeliverLineCode);
 
+        object GetWorkStatus(string WorkStatus);
+
         bool Add(SortOrderDispatch sortDispatch);
 
         bool Delete(string id);
