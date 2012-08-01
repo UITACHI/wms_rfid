@@ -44,6 +44,7 @@ namespace THOK.Wms.Bll.Service
                b.SortingLine.SortingLineName,
                b.OrderDate,
                b.DeliverLineCode,
+               WorkStatus=b.WorkStatus=="1"?"已作业":"未作业",
                b.DeliverLine.DeliverLineName,
                IsActive = b.IsActive == "1" ? "可用" : "不可用",
                UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
@@ -59,6 +60,7 @@ namespace THOK.Wms.Bll.Service
             var sortOrderDispatch = new SortOrderDispatch();
             sortOrderDispatch.SortingLineCode = sortDispatch.SortingLineCode;
             sortOrderDispatch.DeliverLineCode = sortDispatch.DeliverLineCode;
+            sortOrderDispatch.WorkStatus = "1";
             sortOrderDispatch.OrderDate = sortDispatch.OrderDate;
             sortOrderDispatch.IsActive = sortDispatch.IsActive;
             sortOrderDispatch.UpdateTime = DateTime.Now;
@@ -88,6 +90,7 @@ namespace THOK.Wms.Bll.Service
             var sortOrderDispatch = SortOrderDispatchRepository.GetQueryable().FirstOrDefault(s => s.ID == sortDispatch.ID);
             sortOrderDispatch.SortingLineCode = sortDispatch.SortingLineCode;
             sortOrderDispatch.DeliverLineCode = sortDispatch.DeliverLineCode;
+            sortOrderDispatch.WorkStatus = "1";
             sortOrderDispatch.OrderDate = sortDispatch.OrderDate;
             sortOrderDispatch.IsActive = sortDispatch.IsActive;
             sortOrderDispatch.UpdateTime = DateTime.Now;

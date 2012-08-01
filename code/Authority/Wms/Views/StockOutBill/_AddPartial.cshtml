@@ -258,7 +258,6 @@
             $('#unitData').dialog('open').dialog('setTitle', '选择单位信息');
             $('#unitDetail').datagrid({ url: '/Unit/FindUnit/?productCode=' + productCode });
             $("#unitDetail").datagrid('reload');
-            selectProduct();
         } else {
             $.messager.confirm('错误', '请先选择产品信息！');
         }

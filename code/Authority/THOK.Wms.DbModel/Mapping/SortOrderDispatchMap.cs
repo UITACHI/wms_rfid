@@ -32,6 +32,11 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsRequired()
                 .HasMaxLength(50);
 
+            this.Property(t => t.WorkStatus)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(1);
+
             this.Property(t => t.IsActive)
                 .IsRequired()
                 .IsFixedLength()
@@ -44,7 +49,9 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.ID).HasColumnName(ColumnMap.Value.To("ID"));
             this.Property(t => t.OrderDate).HasColumnName(ColumnMap.Value.To("OrderDate"));
             this.Property(t => t.SortingLineCode).HasColumnName(ColumnMap.Value.To("SortingLineCode"));
-            this.Property(t => t.DeliverLineCode).HasColumnName(ColumnMap.Value.To("DeliverLineCode"));            
+            this.Property(t => t.DeliverLineCode).HasColumnName(ColumnMap.Value.To("DeliverLineCode"));
+            this.Property(t => t.SortWorkDispatchID).HasColumnName(ColumnMap.Value.To("SortWorkDispatchID"));
+            this.Property(t => t.WorkStatus).HasColumnName(ColumnMap.Value.To("WorkStatus"));
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
 
@@ -57,6 +64,11 @@ namespace THOK.Wms.DbModel.Mapping
             this.HasRequired(t => t.SortingLine)
                 .WithMany(t => t.SortOrderDispatchs)
                 .HasForeignKey(d => d.SortingLineCode)
+                .WillCascadeOnDelete(false);
+
+            this.HasOptional(t => t.SortWorkDispatch)
+                .WithMany(t => t.SortOrderDispatchs)
+                .HasForeignKey(d => d.SortWorkDispatchID)
                 .WillCascadeOnDelete(false);
         }
     }

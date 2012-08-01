@@ -93,6 +93,7 @@
     <Compile Include="Mapping\SortOrderDetailMap.cs" />
     <Compile Include="Mapping\SortOrderDispatchMap.cs" />
     <Compile Include="Mapping\SortOrderMap.cs" />
+    <Compile Include="Mapping\SortWorkDispatchMap.cs" />
     <Compile Include="Mapping\StorageMap.cs" />
     <Compile Include="Mapping\SupplierMap.cs" />
     <Compile Include="Mapping\UnitListMap.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="SortOrder.cs" />
     <Compile Include="SortOrderDetail.cs" />
     <Compile Include="SortOrderDispatch.cs" />
+    <Compile Include="SortWorkDispatch.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Supplier.cs" />
     <Compile Include="Unit.cs" />
