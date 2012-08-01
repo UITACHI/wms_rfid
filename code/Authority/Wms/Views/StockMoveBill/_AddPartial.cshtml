@@ -164,7 +164,6 @@
                         msg: result.msg
                     });
                     $('#dlg-AddBillDetail').dialog('close');
-                    $('#fm-moveBillDetail').form('clear');
                     $('#moveBillDetail').datagrid('reload');
                     $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + billno });
                 } else {
@@ -186,8 +185,8 @@
             $('#fm-moveBillDetail .easyui-validatebox').validatebox({
                 required: false
             });
-            //            $('form input').attr("disabled", "disabled");
-            //            $('form textarea').attr("disabled", "disabled");
+            $('input[type=text]', '#fm-moveBillDetail').attr("disabled", "disabled");
+            $('form textarea').attr("disabled", "disabled");
             $('#fm-moveBillDetail').form('load', detailRow);
             detailUrl = '/StockMoveBill/MoveBillDetailDelete/?ID=' + detailRow.ID;
         } else {
@@ -203,13 +202,14 @@
             $('#fm-moveBillDetail .easyui-validatebox').validatebox({
                 required: false
             });
-            //            $('form input').attr("disabled", "disabled");
-            //            $('form textarea').attr("disabled", "disabled");
+            $('form input').removeAttr("disabled");
+            $('form textarea').removeAttr("disabled");
             $('#fm-moveBillDetail').form('load', detailRow);
             detailUrl = '/StockMoveBill/MoveBillDetailEdit/?ID=' + detailRow.ID;
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }
+
     }
 
 </script>
