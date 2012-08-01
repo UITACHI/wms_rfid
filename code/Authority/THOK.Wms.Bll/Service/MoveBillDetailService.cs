@@ -17,6 +17,8 @@ namespace THOK.Wms.Bll.Service
         public ICellRepository CellRepository { get; set; }
         [Dependency]
         public IStorageRepository StorageRepository { get; set; }
+        [Dependency]
+        public IUnitRepository UnitRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -25,6 +27,36 @@ namespace THOK.Wms.Bll.Service
 
         #region IMoveBillDetail 成员
 
+        /// <summary>
+        /// 判断处理状态
+        /// </summary>
+        /// <param name="status">数据库查询出来的状态值</param>
+        /// <returns></returns>
+        public string WhatStatus(string status)
+        {
+            string statusStr = "";
+            switch (status)
+            {
+                case "0":
+                    statusStr = "已录入";
+                    break;
+                case "1":
+                    statusStr = "已审核";
+                    break;
+                case "2":
+                    statusStr = "执行中";
+                    break;
+            }
+            return statusStr;
+        }
+
+        /// <summary>
+        /// 查询移库细单
+        /// </summary>
+        /// <param name="page">页码</param>
+        /// <param name="rows">行数</param>
+        /// <param name="BillNo">移库单号</param>
+        /// <returns></returns>
         public object GetDetails(int page, int rows, string BillNo)
         {
             if (BillNo != "" && BillNo != null)
@@ -44,12 +76,12 @@ namespace THOK.Wms.Bll.Service
                     i.InStorageCode,
                     i.UnitCode,
                     i.Unit.UnitName,
-                    i.RealQuantity,
+                    RealQuantity=i.RealQuantity/i.Unit.Count,
                     OperatePersonID=i.OperatePersonID == null ? string.Empty : i.OperatePersonID.ToString(),
                     EmployeeName=i.OperatePerson==null?string.Empty:i.OperatePerson.EmployeeName,
                     StartTime=i.StartTime==null?null:((DateTime)i.StartTime).ToString("yyyy-MM-dd HH:mm:ss"),
                     FinishTime=i.FinishTime==null?null:((DateTime)i.FinishTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                    i.Status
+                    Status=WhatStatus(i.Status)
                 });
                 int total = moveBillDetail.Count();
                 moveBillDetail = moveBillDetail.Skip((page - 1) * rows).Take(rows);
@@ -66,6 +98,7 @@ namespace THOK.Wms.Bll.Service
         public new bool Add(MoveBillDetail moveBillDetail)
         {
             IQueryable<MoveBillDetail> moveBillDetailQuery = MoveBillDetailRepository.GetQueryable();
+            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == moveBillDetail.UnitCode);
             var mbd = new MoveBillDetail();
             mbd.BillNo=moveBillDetail.BillNo;
             mbd.ProductCode=moveBillDetail.ProductCode;
@@ -74,13 +107,19 @@ namespace THOK.Wms.Bll.Service
             mbd.InCellCode = moveBillDetail.InCellCode;
             mbd.InStorageCode = moveBillDetail.InStorageCode;
             mbd.UnitCode = moveBillDetail.UnitCode;
-            mbd.RealQuantity = moveBillDetail.RealQuantity*moveBillDetail.Unit.Count;
+            mbd.RealQuantity = moveBillDetail.RealQuantity*unit.Count;
+            mbd.Status = "0";
 
             MoveBillDetailRepository.Add(mbd);
             MoveBillDetailRepository.SaveChanges();
             return true;
         }
 
+        /// <summary>
+        /// 删除移库细单
+        /// </summary>
+        /// <param name="ID">移库细单ID</param>
+        /// <returns></returns>
         public bool Delete(string ID)
         {
             IQueryable<MoveBillDetail> moveBillDetailQuery = MoveBillDetailRepository.GetQueryable();
@@ -91,9 +130,26 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
+        /// <summary>
+        /// 修改移库细单
+        /// </summary>
+        /// <param name="moveBillDetail"></param>
+        /// <returns></returns>
         public bool Save(MoveBillDetail moveBillDetail)
         {
-            throw new NotImplementedException();
+            IQueryable<MoveBillDetail> moveBillDetailQuery = MoveBillDetailRepository.GetQueryable();
+            var mbd = moveBillDetailQuery.FirstOrDefault(i => i.ID == moveBillDetail.ID && i.BillNo == moveBillDetail.BillNo);
+            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == moveBillDetail.UnitCode);
+            mbd.ProductCode = moveBillDetail.ProductCode;
+            mbd.OutCellCode = moveBillDetail.OutCellCode;
+            mbd.OutStorageCode = moveBillDetail.OutStorageCode;
+            mbd.InCellCode = moveBillDetail.InCellCode;
+            mbd.InStorageCode = moveBillDetail.InStorageCode;
+            mbd.UnitCode = moveBillDetail.UnitCode;
+            mbd.RealQuantity = moveBillDetail.RealQuantity * unit.Count;
+            mbd.Status = "0";
+            MoveBillDetailRepository.SaveChanges();
+            return true;
         }
 
         /// <summary>
