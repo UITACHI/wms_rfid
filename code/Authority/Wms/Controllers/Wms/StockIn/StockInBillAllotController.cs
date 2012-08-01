@@ -14,13 +14,10 @@ namespace Authority.Controllers.Wms.StockIn
         [Dependency]
         public IInBillAllotService InBillAllotService { get; set; }
 
-        public ActionResult Allot(string billNo, string areaCode)
+        public ActionResult Search(string billNo,int page, int rows)
         {
-            string[] areaCodes = new string[] { };
-            string result = string.Empty;
-            bool bResult = InBillAllotService.Allot(billNo, areaCodes,out result);
-            string msg = bResult ? "分配成功,确认后生效！" : "分配过程因异常错误中止.";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, result), "text", JsonRequestBehavior.AllowGet);
+            var result = InBillAllotService.Search(billNo,page,rows);
+            return Json(result, "text", JsonRequestBehavior.AllowGet);
         }
     }
 }
