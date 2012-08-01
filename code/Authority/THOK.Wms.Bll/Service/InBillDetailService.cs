@@ -15,6 +15,8 @@ namespace THOK.Wms.Bll.Service
         public IInBillDetailRepository InBillDetailRepository { get; set; }
         [Dependency]
         public IProductRepository ProductRepository { get; set; }
+        [Dependency]
+        public IUnitRepository UnitRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -36,9 +38,9 @@ namespace THOK.Wms.Bll.Service
                     i.Product.ProductName,
                     i.UnitCode,
                     i.Unit.UnitName,
-                    i.BillQuantity,
-                    i.RealQuantity,
-                    i.AllotQuantity,
+                    BillQuantity=i.BillQuantity/i.Unit.Count,
+                    RealQuantity=i.RealQuantity/i.Unit.Count,
+                    AllotQuantity = i.AllotQuantity / i.Unit.Count,
                     i.Price,
                     i.Description
                 });
@@ -53,6 +55,7 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<InBillDetail> inBillDetailQuery = InBillDetailRepository.GetQueryable();
             var isExistProduct = inBillDetailQuery.FirstOrDefault(i=>i.BillNo==inBillDetail.BillNo&&i.ProductCode==inBillDetail.ProductCode);
+            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == inBillDetail.UnitCode);
             if (isExistProduct == null)
             {
                 var ibd = new InBillDetail();
@@ -60,7 +63,7 @@ namespace THOK.Wms.Bll.Service
                 ibd.ProductCode = inBillDetail.ProductCode;
                 ibd.UnitCode = inBillDetail.UnitCode;
                 ibd.Price = inBillDetail.Price;
-                ibd.BillQuantity = inBillDetail.BillQuantity;
+                ibd.BillQuantity = inBillDetail.BillQuantity*unit.Count;
                 ibd.AllotQuantity = 0;
                 ibd.RealQuantity = 0;
                 ibd.Description = inBillDetail.Description;
@@ -91,10 +94,11 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<InBillDetail> inBillDetailQuery = InBillDetailRepository.GetQueryable();
             var ibd = inBillDetailQuery.FirstOrDefault(i=>i.ID==inBillDetail.ID&&i.BillNo==inBillDetail.BillNo);
+            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == inBillDetail.UnitCode);
             ibd.ProductCode = inBillDetail.ProductCode;
             ibd.UnitCode = inBillDetail.UnitCode;
             ibd.Price = inBillDetail.Price;
-            ibd.BillQuantity = inBillDetail.BillQuantity;
+            ibd.BillQuantity = inBillDetail.BillQuantity*unit.Count;
             ibd.Description = inBillDetail.Description;
             InBillDetailRepository.SaveChanges();
             return true;
