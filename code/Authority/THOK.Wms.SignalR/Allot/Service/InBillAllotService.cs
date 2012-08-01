@@ -403,7 +403,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                     UnitCode = billDetail.UnitCode,
                     AllotQuantity = allotQuantity,
                     RealQuantity = 0,
-                    Status = "1"
+                    Status = "0"
                 };
                 billMaster.InBillAllots.Add(billAllot);
                 StorageRepository.SaveChanges();
