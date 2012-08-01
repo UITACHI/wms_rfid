@@ -1,9 +1,6 @@
 using System.Data.Entity;
 using THOK.Wms.DbModel.Mapping;
-using THOK.Wms.DbModel;
 using THOK.Wms.Repository.Migrations;
-using THOK.Wms.DbModel;
-using THOK.Wms.DbModel.Mapping;
 using THOK.Authority.DbModel.Mapping;
 
 namespace THOK.Wms.Repository

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using Microsoft.Practices.Unity;
+using THOK.Wms.Bll.Interfaces;
 
 namespace Authority.Controllers.Wms.Inventory
 {
@@ -11,6 +9,9 @@ namespace Authority.Controllers.Wms.Inventory
         //
         // GET: /HistoricalDetail/
 
+        [Dependency]
+        public IHistoricalDetailService HistoricalDetailService { get; set; }
+
         public ActionResult Index(string moduleID)
         {
             ViewBag.hasSearch = true;
@@ -18,6 +19,15 @@ namespace Authority.Controllers.Wms.Inventory
             ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;
             return View();
+        }
+        public ActionResult Details(int page, int rows, FormCollection collection)
+        {
+            string warehouseCode = collection["WarehouseCode"] ?? "";
+            string productCode = collection["ProductCode"] ?? "";
+            string beginDate = collection["BeginDate"] ?? "";
+            string endDate = collection["EndDate"] ?? "";
+            var HistoricalDetail = HistoricalDetailService.GetDetails(page, rows, warehouseCode, productCode, beginDate, endDate);
+            return Json(HistoricalDetail, "text", JsonRequestBehavior.AllowGet);
         }
     }
 }
