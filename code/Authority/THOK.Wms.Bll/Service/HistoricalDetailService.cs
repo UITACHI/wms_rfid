@@ -40,10 +40,12 @@ namespace THOK.Wms.Bll.Service
         {
             var inQuery = InBillDetailRepository.GetQueryable().AsEnumerable();
             var outQuery = OutBillDetailRepository.GetQueryable().AsEnumerable();
-
-            var query = inQuery.Select(a => new
+            
+            var Allquery = inQuery.Select(a => new
             {
-                a.InBillMaster.BillDate,
+                BillDate=a.InBillMaster.BillDate.ToString("yyyy-MM-dd"),
+                a.InBillMaster.Warehouse.WarehouseCode,
+                a.InBillMaster.Warehouse.WarehouseName,
                 a.BillNo,
                 a.InBillMaster.BillType.BillTypeCode,
                 a.InBillMaster.BillType.BillTypeName,
@@ -53,7 +55,9 @@ namespace THOK.Wms.Bll.Service
                 a.Unit.UnitName
             }).Union(outQuery.Select(a => new
             {
-                a.OutBillMaster.BillDate,
+                BillDate = a.OutBillMaster.BillDate.ToString("yyyy-MM-dd"),
+                a.OutBillMaster.Warehouse.WarehouseCode,
+                a.OutBillMaster.Warehouse.WarehouseName,
                 a.BillNo,
                 a.OutBillMaster.BillType.BillTypeCode,
                 a.OutBillMaster.BillType.BillTypeName,
@@ -62,7 +66,34 @@ namespace THOK.Wms.Bll.Service
                 a.RealQuantity,
                 a.Unit.UnitName
             }));
+            var query = Allquery.Where(i => i.ProductCode.Contains(productCode) 
+                                         && i.WarehouseCode.Contains(warehouseCode)
+                                       ).OrderBy(i =>i.BillDate).OrderBy(i =>i.WarehouseName
+                                       ).AsEnumerable().Select(i => new
+            {
+                i.BillDate,
+                i.WarehouseCode,
+                i.WarehouseName,
+                i.BillNo,
+                i.BillTypeCode,
+                i.BillTypeName,
+                i.ProductCode,
+                i.ProductName,
+                i.RealQuantity,
+                i.UnitName
 
+            });
+            if (!beginDate.Equals(string.Empty))
+            {
+                DateTime begin = Convert.ToDateTime(beginDate);
+                query = query.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
+            }
+
+            if (!endDate.Equals(string.Empty))
+            {
+                DateTime end = Convert.ToDateTime(endDate);
+                query = query.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+            }
             int total = query.Count();
             query = query.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = query.ToArray() };
