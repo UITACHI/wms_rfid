@@ -88,9 +88,9 @@ namespace THOK.Wms.DbModel.Mapping
                 .WillCascadeOnDelete(false);
 
             this.HasOptional(t => t.VerifyPerson)
-               .WithMany(t => t.VerifyPersonOutBillMasters)
-               .HasForeignKey(d => d.VerifyPersonID)
-               .WillCascadeOnDelete(false);
+                .WithMany(t => t.VerifyPersonOutBillMasters)
+                .HasForeignKey(d => d.VerifyPersonID)
+                .WillCascadeOnDelete(false);
         }
     }
 }
