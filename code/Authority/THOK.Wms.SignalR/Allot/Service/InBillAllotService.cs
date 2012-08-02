@@ -46,53 +46,16 @@ namespace THOK.Wms.SignalR.Allot.Service
 
             InBillMaster billMaster = inBillMasterQuery.Single(b => b.BillNo == billNo);
 
-            if ((new string[] { "1"}).Any(s => s == billMaster.Status))
-            {
-                ps.State = StateType.Info;
-                ps.Messages.Add("当前订单未审核，不可以进行分配！");
-                NotifyConnection(ps.Clone());
-                return;
-            }
+            if (!CheckAndLock(billMaster, ps)){return;}
 
-            if ((new string [] {"4","5","6"}).Any(s=>s == billMaster.Status))
-            {
-                ps.State = StateType.Info;
-                ps.Messages.Add("分配已确认生效不能再分配！");
-                NotifyConnection(ps.Clone());
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(billMaster.LockTag))
-            {
-                ps.State = StateType.Error;
-                ps.Errors.Add("当前订单被锁定不可以进行分配！");
-                NotifyConnection(ps.Clone());
-                return;
-            }
-            else
-            {
-                try
-                {
-                    billMaster.LockTag = connectionId;
-                    InBillMasterRepository.SaveChanges();
-                    ps.Messages.Add("完成锁定当前订单");
-                    NotifyConnection(ps.Clone());
-                }
-                catch (Exception)
-                {
-                    ps.State = StateType.Error;
-                    ps.Errors.Add("锁定当前订单失败不可以进行分配！");
-                    NotifyConnection(ps.Clone());
-                    return;
-                }
-            }
-
-            var billDetails = billMaster.InBillDetails.Where(b => (b.BillQuantity - b.AllotQuantity) > 0);//选择未分配的细单；
-
-            var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode); //选择当前订单操作目标仓库；
+            //选择未分配的细单；
+            var billDetails = billMaster.InBillDetails.Where(b => (b.BillQuantity - b.AllotQuantity) > 0);
+            //选择当前订单操作目标仓库；
+            var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode); 
             if (areaCodes.Length > 0)
             {
-                cells = cells.Where(c => areaCodes.Any(a => a == c.AreaCode));//选择指定库区；
+                //选择指定库区；
+                cells = cells.Where(c => areaCodes.Any(a => a == c.AreaCode));
             }
             else
             {
@@ -105,31 +68,30 @@ namespace THOK.Wms.SignalR.Allot.Service
             //7：罚烟区；8：虚拟区；
             //9：其他区；
 
-            //排除 件烟区,条烟区
+            //排除 件烟区,条烟区 货位是单一存储的空货位；
             string [] areaTypes = new string []{"2","3"};
             var cellList1 = cells.Where(c => areaTypes.All(a => a != c.Area.AreaType)
-                                            && c.IsSingle == "1" //选择货位是单一存储的货位；     
+                                            && c.IsSingle == "1"      
                                             && (c.Storages.Count==0
-                                                    || c.Storages.Any(s => (s.LockTag == null 
-                                                                        || s.LockTag == string.Empty)
+                                                    || c.Storages.Any(s => string.IsNullOrEmpty(s.LockTag) 
                                                         && s.Quantity == 0
                                                         && s.InFrozenQuantity == 0
                                                     )
                                                 )
                                         ).ToList();
 
-            //条烟区
+            //条烟区 货位是单一存储的货位（不必是空货位，因为条烟会多次存储到同一个货位）；
             areaTypes = new string[] {"3"};
             var cellList2 = cells.Where(c => areaTypes.Any(a => a == c.Area.AreaType)
-                                            && c.IsSingle == "1" //选择货位是单一存储的货位；     
+                                            && c.IsSingle == "1"      
                                         ).ToList();
 
-            //件烟区
+            //件烟区 货位是单一存储的空货位； 
             areaTypes = new string[] {"2"};
             var cellList3 = cells.Where(c => areaTypes.Any(a => a == c.Area.AreaType)
-                                            && c.IsSingle == "1" //选择货位是单一存储的货位；     
+                                            && c.IsSingle == "1"     
                                             && (c.Storages.Count == 0
-                                                    || c.Storages.Any(s => (s.LockTag == null || s.LockTag == string.Empty)
+                                                    || c.Storages.Any(s => string.IsNullOrEmpty(s.LockTag) 
                                                         && s.Quantity == 0
                                                         && s.InFrozenQuantity == 0
                                                     )
@@ -137,172 +99,95 @@ namespace THOK.Wms.SignalR.Allot.Service
                                         ).ToList();
 
             //非货位管理区
-            List<Cell> cellList4 = new List<Cell>();
-            cellList4 = cells.Where(c => c.IsSingle == "0").ToList();
+            var cellList4 = cells.Where(c => c.IsSingle == "0").ToList();
 
 
             //排除 件烟区，条烟区
             var cellQueryFromList1 = cellList1.Where(c => c.Storages.Count == 0
-                                                || c.Storages.Any(s => (s.LockTag == null || s.LockTag == string.Empty) 
+                                                || c.Storages.Any(s => string.IsNullOrEmpty(s.LockTag) 
                                                     && s.Quantity == 0 
                                                     && s.InFrozenQuantity == 0))
-                                             .OrderBy(c=>c.Area.AllotInOrder);
+                                              .OrderBy(c=>c.Area.AllotInOrder);
             //条烟区
             var cellQueryFromList2 = cellList2.OrderBy(c => c.Area.AllotInOrder);
 
             //件烟区
             var cellQueryFromList3 = cellList3.Where(c => c.Storages.Count == 0
-                                                || c.Storages.Any(s => (s.LockTag == null || s.LockTag == string.Empty
+                                                || c.Storages.Any(s => string.IsNullOrEmpty(s.LockTag) 
                                                     && s.Quantity == 0
-                                                    && s.InFrozenQuantity == 0)))
-                                             .OrderBy(c => c.Area.AllotInOrder);
+                                                    && s.InFrozenQuantity == 0))
+                                              .OrderBy(c => c.Area.AllotInOrder);
             //非货位管理区
             var cellQueryFromList4 = cellList4.OrderBy(c => c.Area.AllotInOrder);
             
             foreach (var billDetail in billDetails.ToArray())
             {
-                Cell cell;
-                while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                //分配预设当前卷烟的货位；
+                var cs = cellQueryFromList1.Where(c => c.DefaultProductCode == billDetail.ProductCode);
+                AllotPallet(billMaster, billDetail, cs, cancellationToken, ps);
+                //分配没预设卷烟的货位；
+                cs = cellQueryFromList1.Where(c => string.IsNullOrEmpty(c.DefaultProductCode));
+                AllotPallet(billMaster, billDetail, cs, cancellationToken, ps);
+                //分配预设其他卷烟的货位；
+                cs = cellQueryFromList1.Where(c => c.DefaultProductCode != billDetail.ProductCode
+                                                    && !string.IsNullOrEmpty(c.DefaultProductCode));
+                AllotPallet(billMaster, billDetail, cs, cancellationToken,ps);
+
+                //分配条烟到条烟区；
+                cs = cellQueryFromList2.Where(c => c.DefaultProductCode == billDetail.ProductCode
+                                                        || (c.Storages.Count == 1 
+                                                            && c.Storages.First().ProductCode == billDetail.ProductCode) 
+                                                        );
+                AllotBar(billMaster, billDetail, cs, cancellationToken, ps);
+                //分配条烟到条烟区；
+                cs = cellQueryFromList2.Where(c => string.IsNullOrEmpty(c.DefaultProductCode));
+                AllotBar(billMaster, billDetail, cs, cancellationToken, ps);
+
+                //分配未满一托盘的卷烟到件烟区；
+                cs = cellQueryFromList3;
+                if (cellQueryFromList2.Count() > 0)
                 {
-                    //分配预设当前卷烟的货位；
-                    cell = cellQueryFromList1.Where(c => c.DefaultProductCode == billDetail.ProductCode)
-                                            .FirstOrDefault();
-                    if (cell != null)
-                    {
-                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
-                        decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
-                            / billDetail.Product.Unit.Count)
-                            * billDetail.Product.Unit.Count;
-                        if (billQuantity >= allotQuantity)
-                        {
-                            Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps);
-                        }
-                        else break;
-                    }
-                    else break;
+                    AllotPiece(billMaster, billDetail, cs, cancellationToken, ps);
+                }
+                else
+                {
+                    AllotPieceAndBar(billMaster, billDetail, cs, cancellationToken, ps);
+                }    
+
+                //分配未满一托盘的卷烟到下层货架；
+                cs = cellQueryFromList1.Where(c => c.Layer == 1);
+                if (cellQueryFromList2.Count() > 0)
+                {
+                    AllotPiece(billMaster, billDetail, cs, cancellationToken, ps);
+                }
+                else
+                {
+                    AllotPieceAndBar(billMaster, billDetail, cs, cancellationToken, ps);
                 }
 
-                while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
-                {
-                    //分配没预设卷烟的货位；
-                    cell = cellQueryFromList1.Where(c => c.DefaultProductCode == string.Empty)
-                                             .FirstOrDefault();
-                    if (cell != null)
-                    {
-                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
-                        decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
-                            / billDetail.Product.Unit.Count)
-                            * billDetail.Product.Unit.Count;
-                        if (billQuantity >= allotQuantity)
-                        {
-                            Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
-                        }
-                        else break;
-                    }
-                    else break;
-                }
+                //分配未分配卷烟到其他库区；
+                cs = cellQueryFromList1;
+                AllotPiece(billMaster, billDetail, cs, cancellationToken, ps);
 
+                //分配未分配卷烟到其他非货位管理货位；
                 while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
                 {
-                    //分配预设其他卷烟的货位；
-                    cell = cellQueryFromList1.Where(c => c.DefaultProductCode != billDetail.ProductCode
-                                                        && c.DefaultProductCode != string.Empty)
-                                             .FirstOrDefault();
-                    if (cell != null )
+                    var c = cellQueryFromList4.FirstOrDefault();
+                    if (c != null)
                     {
-                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
-                        decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
-                            / billDetail.Product.Unit.Count)
-                            * billDetail.Product.Unit.Count;
-                        if (billQuantity >= allotQuantity)
-                        {
-                            Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
-                        }
-                        else break;
-                    }
-                    else break;                       
-                }
-
-                while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
-                {
-                    //分配条烟到条烟区；todo
-                    cell = cellQueryFromList2.FirstOrDefault();
-                    if (cell != null)
-                    {                        
-                        decimal billQuantity = (billDetail.BillQuantity - billDetail.AllotQuantity) % billDetail.Product.Unit.Count;
-                        if (billQuantity > 0)
-                        {
-                            Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), billQuantity, ps);
-                        }
-                        else break;
-                    }
-                    else break;
-                }
-
-                while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
-                {
-                    //分配未满一托盘的卷烟到件烟区；
-                    cell = cellQueryFromList3.FirstOrDefault();
-                    if (cell != null)
-                    {
-                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
+                        decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
                         decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
                         allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
+                        Allot(billMaster, billDetail, c, Locker.LockEmpty(c), allotQuantity, ps);
                     }
                     else break;
                 }
-
-                while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
-                {
-                    //分配未满一托盘的卷烟到下层货架；
-                    cell = cellQueryFromList1.Where(c => c.Layer == 1)
-                                            .FirstOrDefault();
-                    if (cell != null)
-                    {
-                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
-                        decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
-                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
-                    }
-                    else break;
-                }
-
-                while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
-                {
-                    //分配未分配卷烟到其他库区；
-                    cell = cellQueryFromList1.FirstOrDefault();
-                    if (cell != null)
-                    {
-                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
-                        decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
-                            / billDetail.Product.Unit.Count)
-                            * billDetail.Product.Unit.Count;
-                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
-                    }
-                    else break;
-                }
-
-                while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
-                {
-                    //分配未分配卷烟到其他非货位管理货位；
-                    cell = cellQueryFromList4.FirstOrDefault();
-                    if (cell != null)
-                    {
-                        decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
-                        decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
-                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps);
-                    }
-                    else break;
-                }
-            }
+            }            
             
-            billMaster.Status = "3";
             cellQuery.Select(c => c.Storages.Where(s => s.LockTag == billNo).Select(s => s))
                      .AsParallel().ForAll(s=>s.AsParallel().ForAll(i=>i.LockTag = string.Empty));
             billMaster.LockTag = string.Empty;
+            billMaster.Status = "3";
             CellRepository.SaveChanges();
 
             if (billMaster.InBillDetails.Any(i => i.BillQuantity - i.AllotQuantity > 0))
@@ -317,7 +202,126 @@ namespace THOK.Wms.SignalR.Allot.Service
                 ps.Messages.Add("分配完成!");
                 NotifyConnection(ps.Clone());
             }
-        }        
+        }
+
+        //分配件烟
+        private void AllotPiece(InBillMaster billMaster, InBillDetail billDetail, IEnumerable<Cell> cs, CancellationToken cancellationToken, ProgressState ps)
+        {
+            foreach (var c in cs)
+            {
+                if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                {
+                    decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
+                    decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
+                        / billDetail.Product.Unit.Count)
+                        * billDetail.Product.Unit.Count;
+                    allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+                    Allot(billMaster, billDetail, c, Locker.LockEmpty(c), allotQuantity, ps); 
+                }
+                else break;
+            }
+        }
+
+        //分配件烟，条烟
+        private void AllotPieceAndBar(InBillMaster billMaster, InBillDetail billDetail, IEnumerable<Cell> cs, CancellationToken cancellationToken, ProgressState ps)
+        {
+            foreach (var c in cs)
+            {
+                if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                {
+                    decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
+                    decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
+                    allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+                    Allot(billMaster, billDetail, c, Locker.LockEmpty(c), allotQuantity, ps); 
+                }
+                else break;
+            }
+        }
+
+        //分配条烟
+        private void AllotBar(InBillMaster billMaster, InBillDetail billDetail, IEnumerable<Cell> cs, CancellationToken cancellationToken, ProgressState ps)
+        {
+            foreach (var c in cs)
+            {
+                if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                {
+                    decimal billQuantity = (billDetail.BillQuantity - billDetail.AllotQuantity) % billDetail.Product.Unit.Count;
+                    if (billQuantity > 0)
+                    {
+                        Allot(billMaster, billDetail, c, Locker.LockBar(c, billDetail.Product), billQuantity, ps);
+                    }
+                    else break;
+                }
+                else break;
+            }
+        }
+
+        //分配整盘
+        private void AllotPallet(InBillMaster billMaster, InBillDetail billDetail, IEnumerable<Cell> cs, CancellationToken cancellationToken, ProgressState ps)
+        {       
+            foreach (var c in cs)
+            {
+                if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                {
+                    decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
+                    decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
+                        / billDetail.Product.Unit.Count)
+                        * billDetail.Product.Unit.Count;
+                    if (billQuantity >= allotQuantity)
+                    {
+                        Allot(billMaster, billDetail, c, Locker.LockEmpty(c), allotQuantity, ps);
+                    }
+                    else break;
+                }
+                else break;
+            }
+        }
+
+        //检查主表并加锁
+        private bool CheckAndLock(InBillMaster billMaster, ProgressState ps)
+        {
+            if ((new string[] { "1" }).Any(s => s == billMaster.Status))
+            {
+                ps.State = StateType.Info;
+                ps.Messages.Add("当前订单未审核，不可以进行分配！");
+                NotifyConnection(ps.Clone());
+                return false;
+            }
+
+            if ((new string[] { "4", "5", "6" }).Any(s => s == billMaster.Status))
+            {
+                ps.State = StateType.Info;
+                ps.Messages.Add("分配已确认生效不能再分配！");
+                NotifyConnection(ps.Clone());
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(billMaster.LockTag))
+            {
+                ps.State = StateType.Error;
+                ps.Errors.Add("当前订单被锁定不可以进行分配！");
+                NotifyConnection(ps.Clone());
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    billMaster.LockTag = ConnectionId;
+                    InBillMasterRepository.SaveChanges();
+                    ps.Messages.Add("完成锁定当前订单");
+                    NotifyConnection(ps.Clone());
+                    return true;
+                }
+                catch (Exception)
+                {
+                    ps.State = StateType.Error;
+                    ps.Errors.Add("锁定当前订单失败不可以进行分配！");
+                    NotifyConnection(ps.Clone());
+                    return false;
+                }
+            }
+        }
 
         private void Allot(InBillMaster billMaster, InBillDetail billDetail, Cell cell, Storage storage, decimal allotQuantity,ProgressState ps)
         {

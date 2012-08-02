@@ -3,9 +3,10 @@ using THOK.Wms.DbModel;
 namespace THOK.Wms.SignalR.Common
 {
     public interface IStorageLocker
-    {
-        Storage LockEmpty(Cell cell);
+    {      
         string LockKey { get; set; }
+        Storage LockEmpty(Cell cell);
         Storage LockNoEmpty(Cell cell,Product product);
+        Storage LockBar(Cell cell, Product product);
     }
 }

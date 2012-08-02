@@ -78,7 +78,7 @@ namespace THOK.Wms.SignalR.Common
                 }
                 catch (Exception)
                 {
-                    StorageRepository.Detach(storage);
+                    if (storage != null) { StorageRepository.Detach(storage); }
                     storage = null;
                 }
             }
@@ -101,6 +101,46 @@ namespace THOK.Wms.SignalR.Common
                         storage.LockTag = this.LockKey;
                         StorageRepository.SaveChanges();
                     }
+                }
+                catch (Exception)
+                {
+                    if (storage != null) { StorageRepository.Detach(storage); }
+                    storage = null;
+                }
+            }
+            UnLock(cell);
+            return storage;
+        }
+
+        public Storage LockBar(Cell cell, Product product)
+        {
+            Storage storage = null;
+            if (Lock(cell))
+            {
+                try
+                {
+                    if (cell.Storages.Count == 1)
+                    {
+                        storage = cell.Storages.Where(s => s.ProductCode == product.ProductCode
+                                                        || string.IsNullOrEmpty(s.ProductCode))
+                                               .FirstOrDefault();
+                        if (storage != null) { storage.LockTag = this.LockKey; }
+                    }
+                    else if (cell.Storages.Count == 0)
+                    {
+                        storage = new Storage()
+                        {
+                            StorageCode = Guid.NewGuid().ToString(),
+                            CellCode = cell.CellCode,
+                            IsLock = "0",
+                            LockTag = this.LockKey,
+                            IsActive = "0",
+                            StorageTime = DateTime.Now,
+                            UpdateTime = DateTime.Now
+                        };
+                        cell.Storages.Add(storage);
+                    }
+                    StorageRepository.SaveChanges();
                 }
                 catch (Exception)
                 {
@@ -139,6 +179,7 @@ namespace THOK.Wms.SignalR.Common
                 CellRepository.Detach(cell);
             }
         }
-                
+
+
     }
 }

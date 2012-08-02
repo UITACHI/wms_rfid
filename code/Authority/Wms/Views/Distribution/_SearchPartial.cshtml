@@ -2,6 +2,7 @@
     function searchClick() {
         SearchLoad();
         $('#dlg-search').dialog('open').dialog('setTitle', '库存查询');
+        $("input[type=text]").attr("value", "");
     };
     function SearchLoad() {
         $('#product').combogrid({
@@ -23,11 +24,26 @@
         });
     }
     function select() {
+        ware = "", area = "";
+        var roots = $('#warehouseTree').tree('getRoots');
+        for (i = 0; i < roots.length; i++) {
+            if (roots[i].attributes == "ware" && roots[i].checked == true) {
+                ware += roots[i].id + ",";
+            }
+            else {
+                areaChildren = $('#warehouseTree').tree('getChildren', roots[i].target);
+                //库区
+                for (j = 0; j < areaChildren.length; j++) {
+                    if (areaChildren[j].attributes == "area" && areaChildren[j].checked == true) {
+                        area += areaChildren[j].id + ",";
+                    }
+                }
+            }
+        }
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.DepartmentCode = $('#DepartmentCode').val();
-        queryParams.DepartmentName = $('#DepartmentName').val();
-        queryParams.DepartmentLeaderID = $('#employee-search').val();
-        queryParams.companyID = $('#company-search').val();
+        queryParams.ProductCode = $('#product').combo('getValue');
+        queryParams.Ware = ware;
+        queryParams.Area = area;
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,

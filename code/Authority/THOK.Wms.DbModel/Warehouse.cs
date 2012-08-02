@@ -17,6 +17,7 @@ namespace THOK.Wms.DbModel
             this.CheckBillMasters = new List<CheckBillMaster>();
             this.OutBillMasters = new List<OutBillMaster>();
             this.InBillMasters = new List<InBillMaster>();
+            this.ProfitLossBillMasters = new List<ProfitLossBillMaster>();
         }
 
         public string WarehouseCode { get; set; }

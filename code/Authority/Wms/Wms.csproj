@@ -110,9 +110,7 @@
     <Compile Include="Controllers\Wms\ProfitLossInfo\ProfitLossBillVerifyController.cs" />
     <Compile Include="Controllers\Wms\SortingInfo\SortOrderDispatchController.cs" />
     <Compile Include="Controllers\Wms\SortingInfo\SortWorkDispatchController.cs" />
-    <Compile Include="Controllers\Wms\StockMove\StockMoveBillCheckController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillController.cs" />
-    <Compile Include="Controllers\Wms\StockMove\StockMoveBillGenerateController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillTypeController.cs" />
     <Compile Include="Controllers\Wms\Organization\CompanyController.cs" />
     <Compile Include="Controllers\Wms\Organization\DepartmentController.cs" />
@@ -140,7 +138,6 @@
     <Compile Include="Controllers\Wms\StockOut\StockOutBillTypeController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\AreaController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\CellController.cs" />
-    <Compile Include="Controllers\Wms\WarehouseInfo\DefaultProductSetController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\ShelfController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\StorageController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\WarehouseController.cs" />
