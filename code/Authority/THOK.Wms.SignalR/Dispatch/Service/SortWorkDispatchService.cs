@@ -47,8 +47,16 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             IQueryable<SortOrderDispatch> sortOrderDispatchQuery = SortOrderDispatchRepository.GetQueryable();
             IQueryable<SortOrder> sortOrderQuery = SortOrderRepository.GetQueryable();
             IQueryable<SortOrderDetail> sortOrderDetailQuery = SortOrderDetailRepository.GetQueryable();
+            IQueryable<OutBillMaster> outBillMasterQuery = OutBillMasterRepository.GetQueryable();
+            IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
+            IQueryable<MoveBillMaster> moveBillMasterQuery = MoveBillMasterRepository.GetQueryable();
+            IQueryable<MoveBillDetail> moveBillDetailQuery = MoveBillDetailRepository.GetQueryable();
+
+
             workDispatchId = workDispatchId.Substring(0, workDispatchId.Length - 1);
-            var sortOrderDispatch = sortOrderDispatchQuery.Where(s => workDispatchId.Contains(s.ID.ToString())).GroupBy(s => s.SortingLineCode).Select(s => new { SortingLine = s.Key, sortOrderDisp = s });
+            var sortOrderDispatch = sortOrderDispatchQuery.Where(s => workDispatchId.Contains(s.ID.ToString()))
+                                                          .GroupBy(s => s.SortingLineCode)
+                                                          .Select(s => new { SortingLine = s.Key, sortOrderDisp = s });
             foreach (var item in sortOrderDispatch)
             {
                 foreach (var sortLine in item.sortOrderDisp)
@@ -61,13 +69,13 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                                                   sort = s,
                                                                   quantity = s.Sum(p=>p.RealQuantity)
                                                               });
-
+                    string outBill = GenOutBillNo("long").ToString();
+                    string moveBill = GenMoveBillNo("long").ToString();
                     if (sortOrder != null)
                     {
-                        string billno = GenInBillNo("long").ToString();
                         var outbm = new OutBillMaster();
                         Guid emplooyye = new Guid("2c0a649d-5f44-4a33-8e83-2b6f1b5a06d8");
-                        outbm.BillNo = billno;
+                        outbm.BillNo = outBill;
                         outbm.BillDate = DateTime.Now;
                         outbm.BillTypeCode = "2001";
                         outbm.WarehouseCode = "0101";
@@ -85,7 +93,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                             foreach (var sort in sortDetal.sort)
                             {
                                 var ibd = new OutBillDetail();
-                                ibd.BillNo = billno;
+                                ibd.BillNo = outBill;
                                 ibd.ProductCode = sort.ProductCode;
                                 ibd.UnitCode = sort.UnitCode;
                                 ibd.Price = sort.Price;
@@ -99,17 +107,28 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                             }
                         }
                     }
+                    var outBillMaster =outBillMasterQuery.FirstOrDefault(o=>o.BillNo==outBill);
+                    var outBillDetails = outBillDetailQuery.Where(o => o.BillNo == outBill);
+                    foreach (var outBillDetail in outBillDetails)
+                    {
+                        
+                    }
                     var sortWorkDispatch = new SortWorkDispatch();
                     sortWorkDispatch.OrderDate = sortLine.OrderDate;
                     sortWorkDispatch.SortingLineCode = sortLine.SortingLineCode;
                     sortWorkDispatch.DispatchBatch = "1";
+                    sortWorkDispatch.OutBillNo = "1";
+                    sortWorkDispatch.MoveBillNo = "1";
+                    sortWorkDispatch.DispatchStatus = "3";
+                    sortWorkDispatch.IsActive = "1";
+                    sortWorkDispatch.UpdateTime = DateTime.Now;
                 }
             }
 
 
         }
 
-        public object GenInBillNo(string userName)
+        public object GenOutBillNo(string userName)
         {
             string billno = "";
             IQueryable<OutBillMaster> outBillMasterQuery = OutBillMasterRepository.GetQueryable();
@@ -136,6 +155,33 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             return billno;
         }
 
+
+        public object GenMoveBillNo(string userName)
+        {
+            IQueryable<MoveBillMaster> moveBillMasterQuery = MoveBillMasterRepository.GetQueryable();
+            string sysTime = System.DateTime.Now.ToString("yyMMdd");
+            string billNo = "";
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            var inBillMaster = moveBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            if (inBillMaster.Count() == 0)
+            {
+                billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "MO";
+            }
+            else
+            {
+                string billNoStr = inBillMaster.Last(b => b.Contains(sysTime));
+                int i = Convert.ToInt32(billNoStr.ToString().Substring(6, 4));
+                i++;
+                string newcode = i.ToString();
+                for (int j = 0; j < 4 - i.ToString().Length; j++)
+                {
+                    newcode = "0" + newcode;
+                }
+                billNo = System.DateTime.Now.ToString("yyMMdd") + newcode + "MO";
+            }
+
+            return billNo;
+        }
 
         public void AddOutBill()
         { 
