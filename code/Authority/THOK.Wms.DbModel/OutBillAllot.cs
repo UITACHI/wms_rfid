@@ -20,7 +20,7 @@ namespace THOK.Wms.DbModel
         public string UnitCode { get; set; }
         public decimal AllotQuantity { get; set; }
         public decimal RealQuantity { get; set; }
-        public Guid OperatePersonID { get; set; }
+        public Guid? OperatePersonID { get; set; }
         public DateTime ?StartTime { get; set; }
         public DateTime ?FinishTime { get; set; }
         public string Status { get; set; }

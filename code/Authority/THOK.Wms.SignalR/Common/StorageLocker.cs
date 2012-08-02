@@ -180,6 +180,31 @@ namespace THOK.Wms.SignalR.Common
             }
         }
 
-
+        public Storage LockNoEmptyStorage(Storage storage, Product product)
+        {
+            var cell = storage.Cell;
+            if (Lock(cell))
+            {
+                try
+                {
+                    if (storage != null
+                        && storage.ProductCode == product.ProductCode
+                        && storage.Quantity - storage.OutFrozenQuantity > 0)
+                    {
+                        storage.LockTag = this.LockKey;
+                        StorageRepository.SaveChanges();
+                    }
+                    else
+                        storage = null;
+                }
+                catch (Exception)
+                {
+                    if (storage != null) { StorageRepository.Detach(storage); }
+                    storage = null;
+                }
+            }
+            UnLock(cell);
+            return storage;
+        }
     }
 }

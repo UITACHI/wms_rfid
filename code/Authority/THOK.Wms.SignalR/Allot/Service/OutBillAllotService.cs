@@ -52,20 +52,24 @@ namespace THOK.Wms.SignalR.Allot.Service
             var billDetails = billMaster.OutBillDetails.Where(b => (b.BillQuantity - b.AllotQuantity) > 0);
             //选择当前订单操作目标仓库；
             var storages = storageQuery.Where(s => s.Cell.WarehouseCode == billMaster.WarehouseCode);
-
             if (areaCodes.Length > 0)
             {
                 //选择指定库区；
                 storages = storages.Where(s => areaCodes.Any(a => a == s.Cell.AreaCode));
             }
-
+            else
+            {
+                storages = storages.Where(s => s.Cell.Area.AllotOutOrder > 0);
+            }
+            storages = storages.Where(s => s.Quantity - s.OutFrozenQuantity > 0);
             foreach (var billDetail in billDetails.ToArray())
             {
-                //分配条烟；
+                //分配件烟；
                 var ss = storages.Where(s=>s.ProductCode == billDetail.ProductCode
-                                            && s.Cell.Area.AreaType =="3")
-                                 .OrderBy(s=>s.StorageTime);
-
+                                            && s.Cell.Area.AreaType !="3")
+                                 .OrderBy(s=>s.StorageTime)
+                                 .OrderBy(s=>s.Cell.Area.AllotOutOrder);
+                AllotPallet(billMaster, billDetail, ss, cancellationToken, ps);
             }
 
             cellQuery.Select(c => c.Storages.Where(s => s.LockTag == billNo).Select(s => s))
@@ -77,13 +81,74 @@ namespace THOK.Wms.SignalR.Allot.Service
             if (billMaster.OutBillDetails.Any(i => i.BillQuantity - i.AllotQuantity > 0))
             {
                 ps.State = StateType.Warning;
-                ps.Errors.Add("分配未全部完成，没有储位可分配！");
+                ps.Errors.Add("分配未全部完成，没有储位可分配,储位其他人正在操作或库存不足！");
                 NotifyConnection(ps.Clone());
             }
             else
             {
                 ps.State = StateType.Info;
                 ps.Messages.Add("分配完成!");
+                NotifyConnection(ps.Clone());
+            }
+        }
+
+        private void AllotPallet(OutBillMaster billMaster, OutBillDetail billDetail, IOrderedQueryable<Storage> ss, System.Threading.CancellationToken cancellationToken, ProgressState ps)
+        {
+            foreach (var s in ss.ToArray())
+            {
+                if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                {
+                    decimal allotQuantity = s.Quantity - s.OutFrozenQuantity;
+                    decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
+                        / billDetail.Product.Unit.Count)
+                        * billDetail.Product.Unit.Count;
+                    if (billQuantity >= allotQuantity)
+                    {
+                        Allot(billMaster, billDetail, s, Locker.LockNoEmptyStorage(s,billDetail.Product), allotQuantity, ps);
+                    }
+                    else break;
+                }
+                else break;
+            }
+        }
+
+        private void Allot(OutBillMaster billMaster, OutBillDetail billDetail, Storage storage, Storage p, decimal allotQuantity, ProgressState ps)
+        {
+            if (storage != null && allotQuantity > 0)
+            {
+                OutBillAllot billAllot = null;
+                billDetail.AllotQuantity += allotQuantity;
+                storage.LockTag = billDetail.BillNo;
+                storage.OutFrozenQuantity += allotQuantity;
+
+                billAllot = new OutBillAllot()
+                {
+                    BillNo = billMaster.BillNo,
+                    OutBillDetailId = billDetail.ID,
+                    ProductCode = billDetail.ProductCode,
+                    CellCode = storage.CellCode,
+                    StorageCode = storage.StorageCode,
+                    UnitCode = billDetail.UnitCode,
+                    AllotQuantity = allotQuantity,
+                    RealQuantity = 0,
+                    Status = "0"
+                };
+                billMaster.OutBillAllots.Add(billAllot);
+                StorageRepository.SaveChanges();
+
+                decimal sumBillQuantity = billMaster.OutBillDetails.Sum(d => d.BillQuantity);
+                decimal sumAllotQuantity = billMaster.OutBillDetails.Sum(d => d.AllotQuantity);
+
+                decimal sumBillProductQuantity = billMaster.OutBillDetails.Where(d => d.ProductCode == billDetail.ProductCode)
+                                                                         .Sum(d => d.BillQuantity);
+                decimal sumAllotProductQuantity = billMaster.OutBillDetails.Where(d => d.ProductCode == billDetail.ProductCode)
+                                                                          .Sum(d => d.AllotQuantity);
+
+                ps.State = StateType.Processing;
+                ps.TotalProgressName = "分配出库单：" + billMaster.BillNo;
+                ps.TotalProgressValue = (int)(sumAllotQuantity / sumBillQuantity * 100);
+                ps.CurrentProgressName = "分配卷烟：" + billDetail.Product.ProductName;
+                ps.CurrentProgressValue = (int)(sumAllotProductQuantity / sumBillProductQuantity * 100);
                 NotifyConnection(ps.Clone());
             }
         }
