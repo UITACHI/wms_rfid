@@ -14,6 +14,10 @@ namespace THOK.Wms.Bll.Service
     {
         [Dependency]
         public IProfitLossBillMasterRepository ProfitLossBillMasterRepository { get; set; }
+        [Dependency]
+        public IProfitLossBillDetailRepository ProfitLossBillDetailRepository { get; set; }
+        [Dependency]
+        public IEmployeeRepository EmployeeRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -45,6 +49,17 @@ namespace THOK.Wms.Bll.Service
 
         #region IProfitLossBillMasterService 成员
 
+        /// <summary>
+        /// 查询损益单主单明细
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="BillNo">损益单号</param>
+        /// <param name="BillDate">损益单日期</param>
+        /// <param name="OperatePersonCode">操作员</param>
+        /// <param name="Status">状态</param>
+        /// <param name="IsActive">是否可用</param>
+        /// <returns></returns>
         public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive)
         {
             IQueryable<ProfitLossBillMaster> ProfitLossBillMasterQuery = ProfitLossBillMasterRepository.GetQueryable();
@@ -100,29 +115,145 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = ProfitLossBillMaster.ToArray() };
         }
 
+        /// <summary>
+        /// 新增损益单主单
+        /// </summary>
+        /// <param name="profitLossBillMaster">损益单主单</param>
+        /// <param name="userName">用户名</param>
+        /// <returns></returns>
         public bool Add(ProfitLossBillMaster profitLossBillMaster, string userName)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var pbm = new ProfitLossBillMaster();
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            if (employee != null)
+            {
+                pbm.BillNo = profitLossBillMaster.BillNo;
+                pbm.BillDate = profitLossBillMaster.BillDate;
+                pbm.BillTypeCode = profitLossBillMaster.BillTypeCode;
+                pbm.WarehouseCode = profitLossBillMaster.WarehouseCode;
+                pbm.OperatePersonID = employee.ID;
+                pbm.Status = "1";
+                pbm.VerifyPersonID = profitLossBillMaster.VerifyPersonID;
+                pbm.VerifyDate = profitLossBillMaster.VerifyDate;
+                pbm.Description = profitLossBillMaster.Description;
+                pbm.IsActive = profitLossBillMaster.IsActive;
+                pbm.UpdateTime = DateTime.Now;
+
+                ProfitLossBillMasterRepository.Add(pbm);
+                ProfitLossBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
+        /// <summary>
+        /// 删除损益单主单
+        /// </summary>
+        /// <param name="BillNo">损益单号</param>
+        /// <returns></returns>
         public bool Delete(string BillNo)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var pbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
+            if (pbm != null)
+            {
+                Del(ProfitLossBillDetailRepository, pbm.ProfitLossBillDetails);
+                ProfitLossBillMasterRepository.Delete(pbm);
+                ProfitLossBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
+        /// <summary>
+        /// 保存损益单主单
+        /// </summary>
+        /// <param name="profitLossBillMaster">损益单主单</param>
+        /// <returns></returns>
         public bool Save(ProfitLossBillMaster profitLossBillMaster)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var pbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == profitLossBillMaster.BillNo && i.Status == "1");
+            if (pbm != null)
+            {
+                pbm.BillDate = profitLossBillMaster.BillDate;
+                pbm.BillTypeCode = profitLossBillMaster.BillTypeCode;
+                pbm.WarehouseCode = profitLossBillMaster.WarehouseCode;
+                pbm.OperatePersonID = profitLossBillMaster.OperatePersonID;
+                pbm.Status = "1";
+                pbm.VerifyPersonID = profitLossBillMaster.VerifyPersonID;
+                pbm.VerifyDate = profitLossBillMaster.VerifyDate;
+                pbm.Description = profitLossBillMaster.Description;
+                pbm.IsActive = profitLossBillMaster.IsActive;
+                pbm.UpdateTime = DateTime.Now;
+
+                ProfitLossBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
+         /// <summary>
+         /// 生成损益主单单号
+         /// </summary>
+         /// <param name="userName">用户名</param>
+         /// <returns></returns>
         public object GenProfitLossBillNo(string userName)
         {
-            throw new NotImplementedException();
+            IQueryable<ProfitLossBillMaster> profitLossBillMasterQuery = ProfitLossBillMasterRepository.GetQueryable();
+            string sysTime = System.DateTime.Now.ToString("yyMMdd");
+            string billNo = "";
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            var profitLossBillMaster = profitLossBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            if (profitLossBillMaster.Count() == 0)
+            {
+                billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "PL";
+            }
+            else
+            {
+                string billNoStr = profitLossBillMaster.Last(b => b.Contains(sysTime));
+                int i = Convert.ToInt32(billNoStr.ToString().Substring(6, 4));
+                i++;
+                string newcode = i.ToString();
+                for (int j = 0; j < 4 - i.ToString().Length; j++)
+                {
+                    newcode = "0" + newcode;
+                }
+                billNo = System.DateTime.Now.ToString("yyMMdd") + newcode + "MO";
+            }
+            var findBillInfo = new
+            {
+                BillNo = billNo,
+                billNoDate = DateTime.Now.ToString("yyyy-MM-dd"),
+                employeeID = employee == null ? "" : employee.ID.ToString(),
+                employeeCode = employee == null ? "" : employee.EmployeeCode.ToString(),
+                employeeName = employee == null ? "" : employee.EmployeeName.ToString()
+            };
+            return findBillInfo;
         }
 
+        /// <summary>
+        /// 损益主单审核
+        /// </summary>
+        /// <param name="BillNo">损益单号</param>
+        /// <param name="userName">用户名</param>
+        /// <returns></returns>
         public bool Audit(string BillNo, string userName)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            var mbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            if (mbm != null)
+            {
+                mbm.Status = "2";
+                mbm.VerifyDate = DateTime.Now;
+                mbm.UpdateTime = DateTime.Now;
+                mbm.VerifyPersonID = employee.ID;
+                ProfitLossBillMasterRepository.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         #endregion
