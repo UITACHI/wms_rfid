@@ -28,56 +28,53 @@
             hasDownArrow: true
         });
         url = '/SortingLine/Create/';
+        
     };
 
     function save() {
-        $('#sortingLinefm').form('submit', {
-            url: url,
-            onSubmit: function () {
-                return $(this).form('validate');
-            },
-            success: function (result) {
-                var result = eval('(' + result + ')');
-                if (result.success) {
-                    $.messager.show({
-                        title: '成功',
-                        msg: result.msg
-                    });
-                    $('#dlg').dialog('close');
-                    $('#details').datagrid('reload');
-                } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
-                    $('#details').datagrid('reload');
-                }
+        var sortlineCode = $('#lineCode').combobox('getValue'), deliverLineCode = "";
+        var rows = $('#sortingOrderAllot').datagrid('getSelections');
+        if (rows.length > 0) {
+            for (var i = 0; i < rows.length; i++) {
+                deliverLineCode += rows[i].DeliverLineCode + ",";
             }
-        });
+            $.getJSON('/SortOrderDispatch/Create/', { OrderDate: "1", SortingLineCode: sortlineCode, DeliverLineCodes: deliverLineCode }, function (json) { 
+                        
+            });
+        } else {
+            $.messager.confirm('错误', '请选择需要盘点的卷烟移向右边！');
+        }
     }
 </script>
 <div id="dlg" class="easyui-dialog" modal="true" style="width: 800px; height: 480px;"
     closed="true" buttons="#dlg-buttons">
-    <table id="sortingOrderAllot" url='/SortingOrder/Details/' class="easyui-datagrid" singleSelect="false" pagination="true"
-        border="false" fit="true" rownumbers="true">
+    <table id="sortingOrderAllot" url='/SortingOrder/GetOrderMaster/' class="easyui-datagrid" singleSelect="false" pagination="fasle"
+        border="false" fit="true" rownumbers="true" toolbar="#bar">
         <thead>
              <tr>
                 <th field="ck" checkbox="true">
-                <th field="OrderID" width="80" >订单编码</th>
                 <th field="OrderDate" width="120" >订单日期</th>
-                <th field="OrderType" width="80" >订单类别</th>
-                <th field="DeliverLineCode" width="100">送货编码</th>
-                <th field="DeliverLineName" width="120">送货线路</th>
-                <th field="QuantitySum" width="60">总数量</th>
-                <th field="AmountSum" width="60">总金额</th>
-                <th field="DetailNum" width="60">明细数</th>
-                <th field="IsActive" width="60">是否可用</th>
+                <th field="DeliverLineCode" width="120">送货线路编码</th>
+                <th field="DeliverLineName" width="160">送货线路名称</th>
+                <th field="QuantitySum" width="120">总数量</th>
+                <th field="AmountSum" width="120">总金额</th>
+                <th field="DetailNum" width="120">明细数</th>
+                <th field="IsActive" width="120">是否可用</th>
             </tr>
         </thead>
     </table>
 </div>
+
+<div id="bar" style="width: auto; height: auto; background-color: #FFFFFF;padding:4px 10px;" >时间:
+    <input id="orderDate" class="easyui-datebox" type="text" style="width: 140px"/>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="allot()">查询</a>
+    <input class="easyui-combobox" name="language" url="/SortingLine/GetSortLine/" id="lineCode"
+            valueField="SortingLineCode" textField="SortingLineName" multiple="true" panelHeight="auto">
+</div>
+
 <div id="dlg-buttons">
     <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">确定</a>
     <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">
         取消</a>
 </div>
+

@@ -62,6 +62,33 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = temp.ToArray() };
         }
 
+
+        public object GetDetails(string orderDate)
+        {
+            if (orderDate == string.Empty || orderDate == null)
+            {
+                orderDate = DateTime.Now.ToString("yyyyMMdd");
+            }
+            else
+            {
+                orderDate = Convert.ToDateTime(orderDate).ToString("yyyyMMdd");
+            }
+            IQueryable<SortOrder> sortOrderQuery = SortOrderRepository.GetQueryable();
+            var sortOrder = sortOrderQuery.Where(s => s.OrderDate == orderDate).GroupBy(s => s.DeliverLine)
+                                          .Select(s => new
+                                          {
+                                              DeliverLineCode = s.Key.DeliverLineCode,
+                                              DeliverLineName = s.Key.DeliverLineName,
+                                              OrderDate = orderDate,
+                                              Quantity = s.Sum(p => p.QuantitySum),
+                                              AmountSum = s.Sum(p => p.AmountSum),
+                                              DetailNum = s.Sum(p => p.DetailNum),
+                                              IsActive="1"
+                                          });
+
+            return sortOrder.ToArray();
+        }
+
         #endregion
     }
 }

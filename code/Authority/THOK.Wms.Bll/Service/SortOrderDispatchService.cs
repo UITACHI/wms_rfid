@@ -14,7 +14,8 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public ISortOrderDispatchRepository SortOrderDispatchRepository { get; set; }
 
-
+        [Dependency]
+        public ISortOrderRepository SortOrderRepository { get; set; }
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -56,17 +57,24 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = temp.ToArray() };
         }
 
-        public new bool Add(SortOrderDispatch sortDispatch)
+        public new bool Add(string OrderDate, string SortingLineCode, string DeliverLineCodes)
         {
-            var sortOrderDispatch = new SortOrderDispatch();
-            sortOrderDispatch.SortingLineCode = sortDispatch.SortingLineCode;
-            sortOrderDispatch.DeliverLineCode = sortDispatch.DeliverLineCode;
-            sortOrderDispatch.WorkStatus = "1";
-            sortOrderDispatch.OrderDate = sortDispatch.OrderDate;
-            sortOrderDispatch.IsActive = sortDispatch.IsActive;
-            sortOrderDispatch.UpdateTime = DateTime.Now;
+            var sortOder = SortOrderRepository.GetQueryable().Where(s => DeliverLineCodes.Contains(s.DeliverLineCode))
+                                              .GroupBy(s => s.DeliverLineCode)
+                                              .Select(s => new { DeliverLineCode = s.Key, line = s });
+            foreach (var item in sortOder.ToArray())
+            {
+                var orderDate=item.line.FirstOrDefault(i => i.DeliverLineCode == item.DeliverLineCode);
+                var sortOrderDispatch = new SortOrderDispatch();
+                sortOrderDispatch.SortingLineCode = SortingLineCode;
+                sortOrderDispatch.DeliverLineCode = item.DeliverLineCode;
+                sortOrderDispatch.WorkStatus = "1";
+                sortOrderDispatch.OrderDate = orderDate.OrderDate;
+                sortOrderDispatch.IsActive = "1";
+                sortOrderDispatch.UpdateTime = DateTime.Now;
 
-            SortOrderDispatchRepository.Add(sortOrderDispatch);
+                SortOrderDispatchRepository.Add(sortOrderDispatch);
+            }
             SortOrderDispatchRepository.SaveChanges();
             return true;
         }
@@ -100,7 +108,6 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
         
-
         public object GetWorkStatus(string WorkStatus)
         {
             IQueryable<SortOrderDispatch> sortDispatchQuery = SortOrderDispatchRepository.GetQueryable();
@@ -108,7 +115,7 @@ namespace THOK.Wms.Bll.Service
             if (WorkStatus != string.Empty && WorkStatus != null)
             {
                 sortDispatch = sortDispatch.Where(s => s.WorkStatus == WorkStatus);
-            }            
+            }
             var temp = sortDispatch.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
             {
                 b.ID,

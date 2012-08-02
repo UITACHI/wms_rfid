@@ -15,5 +15,7 @@ namespace THOK.Wms.Bll.Interfaces
         bool Delete(string sortingLineCode);
 
         bool Save(SortingLine sortingLine);
+
+        object GetSortLine();
     }
 }
