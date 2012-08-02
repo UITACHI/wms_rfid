@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IBillTypeService.cs" />
+    <Compile Include="Interfaces\ICargospaceService.cs" />
     <Compile Include="Interfaces\ICheckBillDetailService.cs" />
     <Compile Include="Interfaces\ICheckBillMasterService.cs" />
     <Compile Include="Interfaces\ICheckSearchDetailService.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Models\WareTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BillTypeService.cs" />
+    <Compile Include="Service\CargospaceService.cs" />
     <Compile Include="Service\CheckBillDetailService.cs" />
     <Compile Include="Service\CheckBillMasterService.cs" />
     <Compile Include="Service\CheckSearchDetailService.cs" />
