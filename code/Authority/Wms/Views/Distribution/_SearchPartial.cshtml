@@ -1,7 +1,7 @@
 ﻿<script type="text/javascript">
     function searchClick() {
         SearchLoad();
-        $('#dlg-search').dialog('open').dialog('setTitle', '库存查询');
+        $('#dlg-search').dialog('open').dialog('setTitle', '库存分布查询');
         $("input[type=text]").attr("value", "");
     };
     function SearchLoad() {
@@ -26,6 +26,7 @@
     function select() {
         ware = "", area = "";
         var roots = $('#warehouseTree').tree('getRoots');
+        //仓库
         for (i = 0; i < roots.length; i++) {
             if (roots[i].attributes == "ware" && roots[i].checked == true) {
                 ware += roots[i].id + ",";
