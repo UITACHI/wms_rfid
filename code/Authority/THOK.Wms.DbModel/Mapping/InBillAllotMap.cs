@@ -59,6 +59,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.ID).HasColumnName(ColumnMap.Value.To("ID"));
             this.Property(t => t.BillNo).HasColumnName(ColumnMap.Value.To("BillNo"));
             this.Property(t => t.ProductCode).HasColumnName(ColumnMap.Value.To("ProductCode"));
+            this.Property(t => t.InBillDetailId).HasColumnName(ColumnMap.Value.To("InBillDetailId"));
             this.Property(t => t.CellCode).HasColumnName(ColumnMap.Value.To("CellCode"));
             this.Property(t => t.StorageCode).HasColumnName(ColumnMap.Value.To("StorageCode"));
             this.Property(t => t.UnitCode).HasColumnName(ColumnMap.Value.To("UnitCode"));
@@ -73,6 +74,11 @@ namespace THOK.Wms.DbModel.Mapping
             this.HasRequired(t => t.InBillMaster)
                 .WithMany(t => t.InBillAllots)
                 .HasForeignKey(d => d.BillNo)
+                .WillCascadeOnDelete(false);
+
+            this.HasRequired(t => t.InBillDetail)
+                .WithMany()
+                .HasForeignKey(d => d.InBillDetailId)
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(t => t.Product)

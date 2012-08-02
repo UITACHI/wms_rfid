@@ -74,7 +74,12 @@
     <Compile Include="Allot\Interfaces\IOutBillAllotService.cs" />
     <Compile Include="Allot\Service\InBillAllotService.cs" />
     <Compile Include="Allot\Service\OutBillAllotService.cs" />
+    <Compile Include="Common\IStorageLocker.cs" />
+    <Compile Include="Common\StorageLocker.cs" />
     <Compile Include="Connection\ConnectionBase.cs" />
+    <Compile Include="Connection\DispatchSortWorkConnection.cs" />
+    <Compile Include="Dispatch\Interfaces\ISortOrderWorkDispatchService.cs" />
+    <Compile Include="Dispatch\Service\SortWorkDispatchService.cs" />
     <Compile Include="Model\ProgressState.cs" />
     <Compile Include="Notifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

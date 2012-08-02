@@ -169,6 +169,14 @@
     <Compile Include="Migrations\201208010713432_modify_SortWorkDispatch.Designer.cs">
       <DependentUpon>201208010713432_modify_SortWorkDispatch.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201208011549033_modify_allot_bill.cs" />
+    <Compile Include="Migrations\201208011549033_modify_allot_bill.Designer.cs">
+      <DependentUpon>201208011549033_modify_allot_bill.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201208021047373_modify_sorting.cs" />
+    <Compile Include="Migrations\201208021047373_modify_sorting.Designer.cs">
+      <DependentUpon>201208021047373_modify_sorting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

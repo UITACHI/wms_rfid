@@ -235,7 +235,7 @@ namespace THOK.Wms.Bll.Service
         }
 
         /// <summary>
-        /// 盘点反审
+        /// 出库反审
         /// </summary>
         /// <param name="billNo">单据号</param>
         /// <returns></returns>
