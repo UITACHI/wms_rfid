@@ -1,4 +1,20 @@
 ﻿<script type="text/javascript">
+    var jCellCode;
+    var jCellName
+    //选择移出货位编码
+    function outCellSelect() {
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        loadData("out");
+    }
+
+    //选择移入货位编码
+    function inCellSelect(cellCode, cellName) {
+        jCellCode = cellCode;
+        jCellName = cellName;
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        loadData("in");
+    };
+
     //判断是移出的货位还是移入的货位out为移出，in为移入
     var cellInOrOut;
     //加载仓库树形结构数据数据根据cType（in或者out）加载不同的树形结构的数据
@@ -27,13 +43,11 @@
                 $('#productName').val(cellRow.ProductName);
                 $('#unitCode').val(cellRow.UnitCode);
                 $('#unitName').val(cellRow.UnitName);
-                $('#outStorageCode').val(cellRow.StorageCode);
                 $('#cellData').dialog('close');
             }
             else {
-                $('#inCellCode').val(cellRow.CellCode);
-                $('#inCellName').val(cellRow.CellName);
-                $('#inStorageCode').val(cellRow.StorageCode);
+                jCellCode.val(cellRow.CellCode);
+                jCellName.val(cellRow.CellName);
                 $('#cellData').dialog('close');
             }
         }

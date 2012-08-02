@@ -14,6 +14,7 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public ISortOrderDispatchRepository SortOrderDispatchRepository { get; set; }
 
+
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -44,7 +45,7 @@ namespace THOK.Wms.Bll.Service
                b.SortingLine.SortingLineName,
                b.OrderDate,
                b.DeliverLineCode,
-               WorkStatus=b.WorkStatus=="1"?"已作业":"未作业",
+               WorkStatus = b.WorkStatus == "1" ? "未作业" : "已作业",
                b.DeliverLine.DeliverLineName,
                IsActive = b.IsActive == "1" ? "可用" : "不可用",
                UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
@@ -97,6 +98,30 @@ namespace THOK.Wms.Bll.Service
 
             SortOrderDispatchRepository.SaveChanges();
             return true;
+        }
+        
+
+        public object GetWorkStatus(string WorkStatus)
+        {
+            IQueryable<SortOrderDispatch> sortDispatchQuery = SortOrderDispatchRepository.GetQueryable();
+            var sortDispatch = sortDispatchQuery.Where(s => s.SortingLineCode == s.SortingLineCode);
+            if (WorkStatus != string.Empty && WorkStatus != null)
+            {
+                sortDispatch = sortDispatch.Where(s => s.WorkStatus == WorkStatus);
+            }            
+            var temp = sortDispatch.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
+            {
+                b.ID,
+                b.SortingLineCode,
+                b.SortingLine.SortingLineName,
+                b.OrderDate,
+                b.DeliverLineCode,
+                WorkStatus = b.WorkStatus == "1" ? "未作业" : "已作业",
+                b.DeliverLine.DeliverLineName,
+                IsActive = b.IsActive == "1" ? "可用" : "不可用",
+                UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+            });
+            return temp.ToArray();
         }
 
         #endregion

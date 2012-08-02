@@ -1,5 +1,4 @@
-﻿<script src="/Content/Scripts/jquery.asyncProcessing.js" type="text/javascript"></script>
-<script type="text/javascript">
+﻿<script type="text/javascript">
     var billNo = "";    
     function allotClick() {
         var row = $('#details').datagrid('getSelected');
@@ -28,6 +27,52 @@
         $.asyncProcessing.Start('/allotStockIn', $.toJSON({ ActionType: 'start', BillNo: billNo, AreaCodes: [] }, { ActionType: 'start', BillNo: billNo, AreaCodes: ['1', '2'] }));
     }
 
+    var modifyUrl;
+
+    //删除入库单明细
+    function allotDelete() {
+        var detailRow = $('#allotBillDetails').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg_allot_modify').dialog('open').dialog('setTitle', '删除');
+            $('#fm_allot').form('load', detailRow);
+            modifyUrl = '/StockInBillAllot/AllotDelete/';
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+
+    //修改入库单明细    
+    function allotEdit() {
+        var detailRow = $('#allotBillDetails').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg_allot_modify').dialog('open').dialog('setTitle', '修改');
+            $('#fm_allot').form('load', detailRow);
+            modifyUrl = '/StockInBillAllot/AllotEdit/';
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+
+    function AllotModifySave() {
+        if ($('#fm_allot').form('validate')) {
+            var j_waitDialog = ShowWaitMessageDialog();
+            $.ajax({
+                url: modifyUrl, type: "GET", dataType: "text",
+                data: $('#fm_allot').serializeArray(),
+                complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                success: function (responseText) {
+                    var result = $.evalJSON(responseText);
+                    if (result.success) {
+                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                        $('#details').datagrid('reload');
+                    } else {
+                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                    }
+                }
+            });
+        };
+    };
+
     function allotConfirm() {
         var j_waitDialog = ShowWaitMessageDialog();
         $.ajax({
@@ -44,7 +89,7 @@
                 }
             }
         });
-    }
+    };
 
     function allotCancel() {
         var j_waitDialog = ShowWaitMessageDialog();
@@ -74,7 +119,7 @@
                 fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
                 <thead>
                     <tr>
-                        <th field="ID" width="50" align="left">ID</th>
+                        <th field="ID" width="50" align="left" hidden="true">ID</th>
                         <th field="ProductCode" width="100">商品编码</th>
                         <th field="ProductName" width="80" align="right">商品名称</th>
                         <th field="UnitCode" width="80" align="right">单位编码</th>
@@ -92,7 +137,7 @@
                 fit="true" fitColumns="true"  pagination="true" rownumbers="true" >
                 <thead>
                     <tr>
-                        <th field="ID" width="50" align="left">ID</th>
+                        <th field="ID" width="50" align="left" hidden="true">ID</th>
                         <th field="BillNo" width="80"  hidden="true">订单号</th>
                         <th field="ProductCode" width="80" align="right">商品编码</th>
                         <th field="ProductName" width="80" align="right">商品名称</th>
@@ -127,5 +172,59 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="allotDelete()">删除</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="allotConfirm()">确认</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="allotCancel()">取消</a>
+</div>
+
+<div id="dlg_allot_modify" class="easyui-dialog" modal="true"
+        style="width:290px;height:300px;padding:4px 4px"
+        closed="true" buttons="#dlg_allot_modify_buttons" align="center">
+        <form id="fm_allot" method="post" novalidate>
+            <input type="hidden" name="ID" readonly="true"/>
+            <table style="padding:10px 10px 0px 5px">
+                <tr>
+                    <td width ="60px">入库单号</td>
+                    <td align="left"><input type="text" name="BillNo" readonly="true"/></td>
+                  </tr>
+                  <tr>
+                    <td >产品代码</td>
+                    <td align="left">
+                        <input type="text" name="ProductCode" readonly="true" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td >产品名称</td>
+                    <td align="left"><input type="text" name="ProductName" class="easyui-validatebox" required="true" readonly="true"/></td>
+                  </tr>
+                  <tr>
+                    <td >储位编码</td>
+                    <td align="left">
+                      <input type="text" name="CellCode" class="easyui-validatebox" required="true" readonly="true" missingmessage="请选择储位！"/>
+                      <a href="#" onclick="javascript:inCellSelect($('input[name=CellCode]'),$('input[name=CellName]'))" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td >储位名称</td>
+                    <td align="left"><input type="text" name="CellName" class="easyui-validatebox" readonly="true" /></td>
+                  </tr>
+                  <tr>
+                    <td >单位编码</td>
+                    <td align="left">
+                        <input type="text" name="UnitCode" class="easyui-validatebox" required="true" readonly="true"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td >单位名称</td>
+                    <td align="left"><input type="text" name="UnitName" class="easyui-validatebox" required="true" readonly="true" /></td>
+                  </tr>
+                  <tr>
+                    <td >分配数量</td>
+                    <td align="left"><input type="text" name="AllotQuantity" class="easyui-numberbox" required="true"/></td>
+                  </tr>
+                </table>
+        </form>
+</div>
+
+<div id="dlg_allot_modify_buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="AllotModifySave()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_allot_modify').dialog('close')">取消</a>
 </div>
 

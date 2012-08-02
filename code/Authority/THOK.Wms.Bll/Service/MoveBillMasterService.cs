@@ -27,6 +27,11 @@ namespace THOK.Wms.Bll.Service
             get { return this.GetType(); }
         }
 
+        /// <summary>
+        /// 判断处理状态
+        /// </summary>
+        /// <param name="status">数据库查询出来的状态值</param>
+        /// <returns></returns>
         public string WhatStatus(string status)
         {
             string statusStr = "";
