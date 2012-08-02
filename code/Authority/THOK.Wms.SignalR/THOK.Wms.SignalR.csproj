@@ -76,7 +76,7 @@
     <Compile Include="Allot\Service\OutBillAllotService.cs" />
     <Compile Include="Connection\ConnectionBase.cs" />
     <Compile Include="Connection\DispatchSortWorkConnection.cs" />
-    <Compile Include="Dispatch\Interfaces\ISortWorkDispatchService.cs" />
+    <Compile Include="Dispatch\Interfaces\ISortOrderWorkDispatchService.cs" />
     <Compile Include="Dispatch\Service\SortWorkDispatchService.cs" />
     <Compile Include="Model\ProgressState.cs" />
     <Compile Include="Notifier.cs" />
