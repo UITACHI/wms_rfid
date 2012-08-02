@@ -49,6 +49,7 @@
     <Compile Include="Interfaces\ICheckSearchDetailService.cs" />
     <Compile Include="Interfaces\IDailyBalanceService.cs" />
     <Compile Include="Interfaces\IDifferSearchDetailService.cs" />
+    <Compile Include="Interfaces\IHistoricalDetailService.cs" />
     <Compile Include="Interfaces\IInBillDetailService.cs" />
     <Compile Include="Interfaces\IInBillMasterService.cs" />
     <Compile Include="Interfaces\IIntoSearchDetailService.cs" />
@@ -59,6 +60,8 @@
     <Compile Include="Interfaces\IOutBillDetailService.cs" />
     <Compile Include="Interfaces\IOutBillMasterService.cs" />
     <Compile Include="Interfaces\IOutSearchDetailService.cs" />
+    <Compile Include="Interfaces\IProfitLossBillDetailService.cs" />
+    <Compile Include="Interfaces\IProfitLossBillMasterService.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\IAreaService.cs" />
     <Compile Include="Interfaces\IBrandService.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="Interfaces\IStockCheckSearchService.cs" />
     <Compile Include="Interfaces\IStockDifferSearchService.cs" />
     <Compile Include="Interfaces\IStockIntoSearchService.cs" />
+    <Compile Include="Interfaces\IStockledgerService.cs" />
     <Compile Include="Interfaces\IStockMoveSearchService.cs" />
     <Compile Include="Interfaces\IStockOutSearchService.cs" />
     <Compile Include="Interfaces\IStorageService.cs" />
@@ -95,6 +99,7 @@
     <Compile Include="Service\CheckSearchDetailService.cs" />
     <Compile Include="Service\DailyBalanceService.cs" />
     <Compile Include="Service\DifferSearchDetailService.cs" />
+    <Compile Include="Service\HistoricalDetailService.cs" />
     <Compile Include="Service\InBillDetailService.cs" />
     <Compile Include="Service\InBillMasterService.cs" />
     <Compile Include="Service\IntoSearchDetailService.cs" />
@@ -105,6 +110,8 @@
     <Compile Include="Service\OutBillDetailService.cs" />
     <Compile Include="Service\OutBillMasterService.cs" />
     <Compile Include="Service\OutSearchDetailService.cs" />
+    <Compile Include="Service\ProfitLossBillDetailService.cs" />
+    <Compile Include="Service\ProfitLossBillMasterService.cs" />
     <Compile Include="Service\ServiceBase.cs" />
     <Compile Include="Service\AreaService.cs" />
     <Compile Include="Service\BrandService.cs" />
@@ -125,6 +132,7 @@
     <Compile Include="Service\StockCheckSearchService.cs" />
     <Compile Include="Service\StockDifferSearchService.cs" />
     <Compile Include="Service\StockIntoSearchService.cs" />
+    <Compile Include="Service\StockledgerService.cs" />
     <Compile Include="Service\StockMoveSearchService.cs" />
     <Compile Include="Service\StockOutSearchService.cs" />
     <Compile Include="Service\StorageService.cs" />

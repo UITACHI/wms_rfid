@@ -1,4 +1,5 @@
 ﻿<script type="text/javascript">
+    var detailUrl;
     $(function () {
         $('#cc').combo({
             required: true,
@@ -60,7 +61,7 @@
         return t;
     }
 
-    //新增移库单按钮
+    //新增移库主单按钮
     function addClick() {
         $('#billNo').attr("readonly", true);
         $('#billDate').attr("readonly", true);
@@ -119,30 +120,11 @@
         });
     }
 
-    //删除移库细单
-    function deleteMoveBillDetail(id) {
-        $.getJSON('/StockMoveBill/MoveBillDetailDelete/', { ID: id }, function (json) {
-            if (json.success) {
-                $.messager.show({
-                    title: '成功',
-                    msg: json.msg
-                });
-                $('#moveBillDetail').datagrid('reload');
-            }
-            else {
-                $.messager.show({
-                    title: '失败',
-                    msg: json.msg
-                });
-            }
-        });
-    }
-
     //新增移库细单按钮
     function addBillDetailClick() {
         $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增移库订单明细');
         $('#fm-moveBillDetail').form('clear');
-        detailUrl = '/StockInBill/InBillDetailCreate/';
+        detailUrl = '/StockMoveBill/MoveBillDetailCreate/';
         $('#detailBillNo').val(billno);
         $('#detailBillNo').attr("readonly", true);
     };
@@ -164,27 +146,95 @@
         }
     }
 
+    //保存移库细单
+    function DetailSave() {
+        $('#fm-moveBillDetail .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('#fm-moveBillDetail').form('submit', {
+            url: detailUrl,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg-AddBillDetail').dialog('close');
+                    $('#moveBillDetail').datagrid('reload');
+                    $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + billno });
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#moveBillDetail').datagrid('reload');
+                }
+            }
+        });
+    }
+
+    //删除移库单明细
+    function deleteBillDetailClick() {
+        var detailRow = $('#moveBillDetail').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '删除移库细表信息');
+            $('#fm-moveBillDetail .easyui-validatebox').validatebox({
+                required: false
+            });
+            $('input[type=text]', '#fm-moveBillDetail').attr("disabled", "disabled");
+            $('form textarea').attr("disabled", "disabled");
+            $('#fm-moveBillDetail').form('load', detailRow);
+            detailUrl = '/StockMoveBill/MoveBillDetailDelete/?ID=' + detailRow.ID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+
+    //修改移库单明细
+    function editBillDetailClick() {
+        var detailRow = $('#moveBillDetail').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '修改移库细表信息');
+            $('#fm-moveBillDetail .easyui-validatebox').validatebox({
+                required: false
+            });
+            $('form input').removeAttr("disabled");
+            $('form textarea').removeAttr("disabled");
+            $('#fm-moveBillDetail').form('load', detailRow);
+            detailUrl = '/StockMoveBill/MoveBillDetailEdit/?ID=' + detailRow.ID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+
+    }
+
 </script>
 
 <div id="dlg" class="easyui-dialog" modal="true"
-        style="width:900px;height:500px;padding:0px 0px"
+        style="width:880px;height:500px;padding:0px 0px"
         closed="true" buttons="#dlg-buttons">
 	<div class="easyui-layout" fit="true">
         <div region="center" border="false">
-            <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="900" id="moveBillDetail"
-                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="" idField="ID">
+            <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="880" id="moveBillDetail"
+                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="">
                 <thead>
                     <tr>
                         <th field="ID" width="100" hidden="true">细单ID</th>
                         <th field="OutCellCode" width="100" align="right">货位编码(出)</th>
                         <th field="OutCellName" width="100" align="right">货位名称(出)</th>
+                        <th field="OutStorageCode" width="100" align="right" hidden="true">库存编码(出)</th>
                         <th field="InCellCode" width="80" align="right">货位编码(入)</th>
                         <th field="InCellName" width="80" align="right">货位名称(入)</th>
+                        <th field="InStorageCode" width="100" align="right" hidden="true">库存编码(入)</th>
                         <th field="ProductCode" width="60" align="right">产品代码</th>
                         <th field="ProductName" width="90" align="right">产品名称</th>
                         <th field="UnitCode" width="60" align="right">单位编码</th>
                         <th field="UnitName" width="50" align="right">单位名称</th>
-                        <th field="RealQuantity" width="70" align="right">数量</th>
+                        <th field="RealQuantity" width="50" align="right">数量</th>
                     </tr>
                 </thead>
             </table>
@@ -251,13 +301,14 @@
 <table style="padding:10px 10px 0px 5px">
   <tr>
     <td style=" text-align:right">移库单号</td>
-    <td align="left"><input type="text" name="BillNo" id="detailBillNo" /></td>
+    <td align="left"><input type="text" name="BillNo" id="detailBillNo"/></td>
     <td></td>
   </tr>
   <tr>
     <td style=" text-align:right">货位编码(出)</td>
     <td align="left"><input type="text" name="OutCellCode" class="easyui-validatebox" required="true" readonly="true" id="outCellCode" missingmessage="请选择要移出的货位"/> 
     <a href="#" onclick="outCellSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a></td>
+    <input type="text" name="OutStorageCode" readonly="true" id="outStorageCode" style=" display:none"/>
   </tr>
   <tr>
     <td style=" text-align:right">货位名称(出)</td>
@@ -269,6 +320,7 @@
     <td align="left"><label>
       <input type="text" name="InCellCode" class="easyui-validatebox" required="true" readonly="true" id="inCellCode" missingmessage="请选择要移入的货位"/>
       <a href="#" onclick="inCellSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+      <input type="text" name="InStorageCode" readonly="true" id="inStorageCode" style=" display:none"/>
     </label></td>
     <td></td>
   </tr>

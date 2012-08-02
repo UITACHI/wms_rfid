@@ -1080,6 +1080,8 @@
     <Content Include="Views\SortOrderDispatch\_EditPartial.cshtml" />
     <Content Include="Views\SortOrderDispatch\_SearchPartial.cshtml" />
     <Content Include="Views\StockInBill\_UnitPartial.cshtml" />
+    <Content Include="Views\StockInBill\_CellPartial.cshtml" />
+    <Content Include="Views\StockOutBill\_CellPartial.cshtml" />
     <Content Include="Views\SortWorkDispatch\Index.cshtml" />
     <Content Include="Views\SortWorkDispatch\_AddPartial.cshtml" />
     <Content Include="Views\SortWorkDispatch\_DeletePartial.cshtml" />

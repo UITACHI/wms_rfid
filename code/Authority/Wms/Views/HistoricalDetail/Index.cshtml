@@ -1,10 +1,11 @@
 ﻿<div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">  
     <table id="details" class="easyui-datagrid"
-        url="/Stockledger/Details/" border="false" singleSelect="true"
+        url="/HistoricalDetail/Details/" border="false" singleSelect="true"
         fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="SettleDate" width="100">日期</th>
+                <th field="BillDate" width="100">日期</th>
+                <th field="WarehouseName" width="100">仓库名称</th>
                 <th field="BillNo" width="100">单据编号</th>
                 <th field="BillTypeName" width="100">单据业务</th>
                 <th field="ProductCode" width="100">产品代码</th>
