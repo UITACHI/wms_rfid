@@ -21,6 +21,8 @@ namespace Authority.Controllers.Wms.Inventory
             return View();
         }
 
+        //
+        // GET: /Stockledger/Details/
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string warehouseCode = collection["WarehouseCode"] ?? "";
@@ -29,6 +31,14 @@ namespace Authority.Controllers.Wms.Inventory
             string endDate = collection["EndDate"] ?? "";
             var Stockledger = StockledgerService.GetDetails(page, rows, warehouseCode, productCode, beginDate, endDate);
             return Json(Stockledger, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // GET:/Stockledger/InfoDetails/
+        public ActionResult InfoDetails(int page, int rows, string warehouseCode, string productCode, string settleDate)
+        {
+            var StockledgerDetails = StockledgerService.GetInfoDetails(page, rows, warehouseCode, productCode, settleDate);
+            return Json(StockledgerDetails, "text", JsonRequestBehavior.AllowGet);
         }
 
     }

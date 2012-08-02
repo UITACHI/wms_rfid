@@ -20,6 +20,8 @@ namespace THOK.Wms.DbModel
             this.VerifyPersonOutBillMasters = new List<OutBillMaster>();
             this.OperatePersonInBillMasters = new List<InBillMaster>();
             this.VerifyPersonInBillMasters = new List<InBillMaster>();
+            this.OperatePersonProfitLossBillMasters = new List<ProfitLossBillMaster>();
+            this.VerifyPersonProfitLossBillMasters = new List<ProfitLossBillMaster>();
         }
 
         public Guid ID { get; set; }
