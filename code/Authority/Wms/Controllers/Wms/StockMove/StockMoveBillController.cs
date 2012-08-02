@@ -110,7 +110,7 @@ namespace Authority.Controllers.Wms.StockMove
         }
 
         //
-        // POST: /MoveBillMaster/AntiTria/
+        // POST: /MoveBillMaster/AntiTrial/
 
         [HttpPost]
         public ActionResult AntiTrial(string BillNo)
@@ -151,6 +151,5 @@ namespace Authority.Controllers.Wms.StockMove
             string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
-
     }
 }

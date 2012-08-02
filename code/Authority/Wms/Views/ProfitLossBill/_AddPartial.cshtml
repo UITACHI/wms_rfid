@@ -1,27 +1,99 @@
 <script type="text/javascript">
-    var url;
+    var detailUrl;
     $(function () {
         $('#cc').combo({
             required: true,
             editable: false,
-            panelHeight: 45
+            panelHeight: 45,
+            panelWidth: 100
         });
     })
 
-    function addClick() {
-        $('#dlg').dialog('open').dialog('setTitle', '新增');
-        $('#fm').form('clear');
-        $('#fm .easyui-validatebox').validatebox({
-            required: true
+    function DataLoad() {
+        //获取仓库信息IsActive=1筛选出可用的仓库
+        $('#wareHouseadd').combogrid({
+            required: true,
+            disabled: false,
+            width: 130,
+            panelWidth: 340,
+            url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
+            idField: 'WarehouseCode',
+            textField: 'WarehouseName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+                    { field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
+                    { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 30 },
+                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+                ]]
         });
-        $('form input').removeAttr("disabled");
-        $('form textarea').removeAttr("disabled");
-        $('#cc').combo({
-            hasDownArrow: true
-        });
-        url = '/System/Create/';
-    };
 
+        //获取单据类型单据类别BillClass=0005为损益单IsActive=1为可用
+        $('#biiTypeadd').combogrid({
+            required: true,
+            disabled: false,
+            width: 130,
+            panelWidth: 340,
+            url: '/StockInBill/GetBillTypeDetail/?BillClass=0005&IsActive=1',
+            idField: 'BillTypeCode',
+            textField: 'BillTypeName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+                    { field: 'BillTypeCode', title: '订单类型编码', align: 'left', width: 40 },
+                    { field: 'BillTypeName', title: '订单类型名称', align: 'left', width: 30 },
+                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+                ]]
+        });
+    }
+
+    //获取当前时间
+    function getTime() {
+        var d = new Date();
+        var vYear = d.getFullYear();
+        var vMon = d.getMonth() + 1;
+        var vDay = d.getDate();
+        var h = d.getHours();
+        var m = d.getMinutes();
+        t = vYear + "-" + (vMon < 10 ? "0" + vMon : vMon) + "-" + (vDay < 10 ? "0" + vDay : vDay) + " " + (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m);
+        return t;
+    }
+
+    //新增损益主单按钮
+    function addClick() {
+        $('#billNo').attr("readonly", true);
+        $('#billDate').attr("readonly", true);
+        DataLoad();
+        $.getJSON("/ProfitLossBill/GenProfitLossBillNo/", function (json) {
+            if (json) {
+                $('#moveBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
+                $('#dlg').dialog('open').dialog('setTitle', '新增损益单');
+                $('#fm').form('clear');
+                $('#billNo').val(json.BillNo);
+                $('#operatePersonName').val(json.employeeName);
+                billno = json.BillNo;
+                $('#billDate').val(getTime());
+                $('#fm .easyui-validatebox').validatebox({
+                    required: true
+                });
+                $('form input').removeAttr("disabled");
+                $('form textarea').removeAttr("disabled");
+                $('#btnAddBillDetail').css('display', 'inline'); //设置新增明细按钮的可见性
+                $('#btnDeleteBillDetail').css('display', 'inline'); //设置删除明细按钮的可见性
+                $('#btnEditBillDetail').css('display', 'inline'); //设置修改明细按钮的可见性
+                $('#cc').combo({
+                    hasDownArrow: true
+                });
+                url = '/ProfitLossBill/Create/';
+            } else {
+                $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+            }
+        });
+    }
+
+    //保存损益主单
     function save() {
         $('#fm').form('submit', {
             url: url,
@@ -35,8 +107,8 @@
                         title: '成功',
                         msg: result.msg
                     });
-                    $('#dlg').dialog('close'); 
-                    $('#details').datagrid('reload'); 
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
                 } else {
                     $.messager.show({
                         title: '错误',
@@ -47,36 +119,235 @@
             }
         });
     }
+
+    //新增损益细单按钮
+    function addBillDetailClick() {
+        $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增损益细单明细');
+        $('#fm-profitLossBillDetail').form('clear');
+        detailUrl = '/ProfitLossBill/ProfitLossBillDetailCreate/';
+        $('#detailBillNo').val(billno);
+        $('#detailBillNo').attr("readonly", true);
+    }
+
+    //保存损益细单
+    function DetailSave() {
+        $('#fm-profitLossBillDetail .easyui-validatebox').validatebox({
+            required: true
+        });
+        $('#fm-profitLossBillDetail').form('submit', {
+            url: detailUrl,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.show({
+                        title: '成功',
+                        msg: result.msg
+                    });
+                    $('#dlg-AddBillDetail').dialog('close');
+                    $('#profitLossBillDetail').datagrid('reload');
+                    $('#profitLossBillDetail').datagrid({ url: '/ProfitLossBill/ProfitLossBillDetails/?BillNo=' + billno });
+                } else {
+                    $.messager.show({
+                        title: '错误',
+                        msg: result.msg
+                    });
+                    $('#profitLossBillDetail').datagrid('reload');
+                }
+            }
+        });
+    }
+
+    //删除损益单明细
+    function deleteBillDetailClick() {
+        var detailRow = $('#profitLossBillDetail').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '删除移库细表信息');
+            $('#fm-profitLossBillDetail .easyui-validatebox').validatebox({
+                required: false
+            });
+            $('input[type=text]', '#fm-profitLossBillDetail').attr("disabled", "disabled");
+            $('form textarea').attr("disabled", "disabled");
+            $('#fm-profitLossBillDetail').form('load', detailRow);
+            detailUrl = '/ProfitLossBill/ProfitLossBillDetailDelete/?ID=' + detailRow.ID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+
+    //修改损益单明细
+    function editBillDetailClick() {
+        var detailRow = $('#profitLossBillDetail').datagrid('getSelected');
+        if (detailRow) {
+            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '修改移库细表信息');
+            $('#fm-profitLossBillDetail .easyui-validatebox').validatebox({
+                required: false
+            });
+            $('form input').removeAttr("disabled");
+            $('form textarea').removeAttr("disabled");
+            $('#fm-profitLossBillDetail').form('load', detailRow);
+            detailUrl = '/ProfitLossBill/ProfitLossBillDetailEdit/?ID=' + detailRow.ID;
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+
+    //选择货位编码
+    function CellSelect() {
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        loadData("out");
+    }
 </script>
 
-    <div id="dlg" class="easyui-dialog" modal="true" style="width:300px;height:240px;padding:2px 2px"
+<div id="dlg" class="easyui-dialog" modal="true"
+        style="width:800px;height:500px;padding:0px 0px"
         closed="true" buttons="#dlg-buttons">
-		<div class="easyui-layout" fit="true">
-			<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >     
-	            <form id="fm" method="post" novalidate>
-                    <table width="250">
-                      <tr>
-                        <td width="60">损益单号:</td>
-                        <td width="168"><input name="sunyidanhao" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                       <tr>
-                        <td width="80">来源盘点单号:</td>
-                        <td width="168"><input name="pandianhao" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                     <tr>
-                        <td width="60">制单日期:</td>
-                        <td width="168"><input name="zhidianriqi" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                       <tr>
-                        <td>操作员:</td>
-                        <td><input name="caozuoyuan" class="easyui-validatebox" required="true"/></td>
-                      </tr>
-                    </table>
-	            </form>
-            </div>
+	<div class="easyui-layout" fit="true">
+        <div region="center" border="false">
+            <table class="easyui-datagrid" border="false" toolbar="#dlg-detailButtons" width="800" id="profitLossBillDetail"
+                fit="true" fitColumns="true" singleSelect="true" rownumbers="true" pagination="true" url="">
+                <thead>
+                    <tr>
+                        <th field="ID" width="100" hidden="true">细单ID</th>
+                        <th field="CellCode" width="100" align="right">货位编码</th>
+                        <th field="StorageCode" width="100" align="right">库存编码</th>
+                        <th field="ProductCode" width="60" align="right">产品代码</th>
+                        <th field="ProductName" width="90" align="right">产品名称</th>
+                        <th field="UnitCode" width="60" align="right">单位编码</th>
+                        <th field="UnitName" width="50" align="right">单位名称</th>
+                        <th field="Price" width="50" align="right">单价</th>
+                        <th field="Quantity" width="50" align="right">数量</th>
+                        <th field="Description" width="50" align="right">描述</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
+</div>
+
+<div id="dlg-detailButtons" style="width: auto; height: auto; background-color: #FFFFFF;">
+	<div border="false" style="padding:4px 4px;" >
+	    <form id="fm" method="post" novalidate>
+            <table height="100px">
+                <tr>
+                <td width="60">订单号</td>
+                <td width="168"><input name="BillNo" id="billNo" readonly="true"></td>
+                <td width="60">制单日期</td>
+                <td width="168"><input name="BillDate" id="billDate" readonly="true"></td>
+                <td width="60">单据类型</td>
+                <td width="168"><input name="BillTypeCode" id="biiTypeadd" missingmessage="请选择订单类型"></td>
+                </tr>
+                <tr>
+                <td width="60">仓库编码</td>
+                <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
+                <td width="60">经办人</td>
+                <td width="168"><input name="OperatePersonName" readonly="true" id="operatePersonName">
+                <input name="OperatePersonID" readonly="true" id="operatePersonCode"style=" display:none"></td>
+                <td width="60">状态</td>
+                <td width="168"><input name="Status" readonly="true"></td>
+                </tr>
+                <tr>
+                <td width="60">审核人员</td>
+                <td width="168"><input name="VerifyPersonName" readonly="true"></td>
+                <td width="60">审核时间</td>
+                <td width="168"><input name="VerifyDate" readonly="true"></td>
+                <td width="60">描述</td>
+                <td width="168"><input name="Description"></td>
+                </tr>
+                <tr>
+                <td>状态:</td>
+                <td><select id="cc" name="IsActive" class="easyui-combobox" style="width: 100px">
+		                <option value="1">可用</option>
+		                <option value="0">不可用</option>
+	                </select>
+	            </td>
+                </tr>
+            </table>
+	    </form>
+    </div>
+    <div border="false" style="padding:4px 4px;" >
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addBillDetailClick()" id="btnAddBillDetail">添加明细</a>
+	    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteBillDetailClick()" id="btnDeleteBillDetail">删除明细</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBillDetailClick()" id="btnEditBillDetail">修改明细</a>
+    </div>
+</div>
+
 <div id="dlg-buttons">
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
+
+<div  id="dlg-AddBillDetail" class="easyui-dialog" modal="true"
+        style="width:280px;height:350px;padding:0px 0px"
+        closed="true" buttons="#dlg-AddBillDetailbuttons">
+        <form id="fm-profitLossBillDetail" method="post" novalidate>
+<table style="padding:10px 10px 0px 5px">
+  <tr>
+    <td style=" text-align:right">损益单号</td>
+    <td align="left"><input type="text" name="BillNo" id="detailBillNo"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">货位编码</td>
+    <td align="left"><label>
+      <input type="text" name="CellCode" class="easyui-validatebox" required="true" readonly="true" id="CellCode" missingmessage="请选择要损益的货位"/>
+      <a href="#" onclick="CellSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+    </label></td>
+    <td></td>
+  </tr>
+    <tr>
+    <td style=" text-align:right">存储编码</td>
+    <td align="left"><input type="text" name="StorageCode" class="easyui-validatebox" required="true" id="storageCode" readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">产品代码</td>
+    <td align="left"><input type="text" name="ProductCode" class="easyui-validatebox" required="true" id="productCode" readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">产品名称</td>
+    <td align="left"><input type="text" name="ProductName"class="easyui-validatebox" required="true"  id="productName"   readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">单位编码</td>
+    <td align="left"><input type="text" name="UnitCode" class="easyui-validatebox" required="true"  readonly="true" id="unitCode" readonly="true"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td style=" text-align:right">单位名称</td>
+    <td align="left"><input type="text" name="UnitName"  readonly="true" id="unitName" class="easyui-validatebox" required="true" readonly="true"/></td>
+    <td>
+    </td>
+  </tr>
+   <tr>
+    <td style=" text-align:right">单价</td>
+    <td align="left"><input type="text" name="Price" class="easyui-validatebox" required="true" id="price" readonly="true"/></td>
+    <td>
+    </td>
+  </tr>
+    <tr>
+    <td style=" text-align:right">数量</td>
+    <td align="left"><input type="text" name="Quantity"class="easyui-numberbox" required="true" missingmessage="请输入要损益的数量"/></td>
+    <td>
+    </td>
+  </tr>
+      <tr>
+    <td style=" text-align:right">描述</td>
+    <td align="left"><input type="text" name="Description"/></td>
+    <td>
+    </td>
+  </tr>
+</table>
+</form>
+</div>
+
+<div id="dlg-AddBillDetailbuttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="DetailSave()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-AddBillDetail').dialog('close')">取消</a>
+</div>
+
+@Html.Partial("_CellPartial")

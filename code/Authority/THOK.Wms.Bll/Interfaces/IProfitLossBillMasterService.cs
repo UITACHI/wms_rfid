@@ -6,7 +6,7 @@ using THOK.Wms.DbModel;
 
 namespace THOK.Wms.Bll.Interfaces
 {
-    interface IProfitLossBillMasterService:IService<ProfitLossBillMaster>
+    public interface IProfitLossBillMasterService:IService<ProfitLossBillMaster>
     {
         object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive);
 

@@ -1,25 +1,33 @@
 <script type="text/javascript">
-function deleteClick() {
-    var row = $('#details').datagrid('getSelected');
-    if (row) {
-        $('#dlg').dialog('open').dialog('setTitle', '删除');
-        $('#fm .easyui-validatebox').validatebox({
-            required: false
-        });
-        $('form input').attr("disabled", "disabled");
-        $('form textarea').attr("disabled", "disabled");
-        $('#cc').combo({
-            hasDownArrow: false
-        });
-        $('#fm').form('load', row);
-        if (row.Status == '启用') {
-            $('#cc').combo('setValue', true).combo('setText', row.Status);
+    function deleteClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            if (row.Status != "已录入") {
+                $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
+            } else {
+                $('#dlg').dialog('open').dialog('setTitle', '删除损益主单信息');
+                $('#profitLossBillDetail').datagrid({ url: '/ProfitLossBill/ProfitLossBillDetails/?BillNo=' + row.BillNo });
+                $('#fm .easyui-validatebox').validatebox({
+                    required: false
+                });
+                $('form input').attr("disabled", "disabled");
+                $('form textarea').attr("disabled", "disabled");
+                $('#btnAddBillDetail').css('display', 'none'); //设置新增明细按钮的可见性
+                $('#btnDeleteBillDetail').css('display', 'none'); //设置删除明细按钮的可见性
+                $('#btnEditBillDetail').css('display', 'none'); //设置修改明细按钮的可见性
+                $('#cc').combo({
+                    hasDownArrow: false
+                });
+                $('#fm').form('load', row);
+                if (row.IsActive == '可用') {
+                    $('#cc').combo('setValue', true).combo('setText', row.IsActive);
+                } else {
+                    $('#cc').combo('setValue', false).combo('setText', row.IsActive);
+                }
+                url = '/ProfitLossBill/Delete/?BillNo=' + row.BillNo;
+            }
         } else {
-            $('#cc').combo('setValue', false).combo('setText', row.Status);
+            $.messager.confirm('错误', '没有选择行！');
         }
-        url = '/System/Delete/?SystemID=' + row.SystemID;
-    } else {
-        $.messager.confirm('错误', '没有选择行！');
-    }
-};
+    };
 </script>
