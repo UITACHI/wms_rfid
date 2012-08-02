@@ -8,11 +8,14 @@ using System.Collections.Generic;
 using THOK.Wms.SignalR.Connection;
 using System.Threading;
 using THOK.Wms.SignalR.Model;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.SignalR.Allot.Service
 {
     public class InBillAllotService : Notifier<AllotStockInConnection>, IInBillAllotService
-    {       
+    {
+        [Dependency]
+        public IStorageLocker Locker { get; set; }
         [Dependency]
         public IInBillAllotRepository InBillAllotRepository { get; set; }
         [Dependency]
@@ -33,6 +36,7 @@ namespace THOK.Wms.SignalR.Allot.Service
 
         public void Allot(string connectionId,ProgressState ps, CancellationToken cancellationToken,string billNo, string[] areaCodes)
         {
+            Locker.LockKey = billNo;
             ConnectionId = connectionId;
             ps.State = StateType.Start;
             NotifyConnection(ps.Clone());
@@ -41,6 +45,15 @@ namespace THOK.Wms.SignalR.Allot.Service
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
 
             InBillMaster billMaster = inBillMasterQuery.Single(b => b.BillNo == billNo);
+
+            if ((new string[] { "1"}).Any(s => s == billMaster.Status))
+            {
+                ps.State = StateType.Info;
+                ps.Messages.Add("当前订单未审核，不可以进行分配！");
+                NotifyConnection(ps.Clone());
+                return;
+            }
+
             if ((new string [] {"4","5","6"}).Any(s=>s == billMaster.Status))
             {
                 ps.State = StateType.Info;
@@ -162,7 +175,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                             * billDetail.Product.Unit.Count;
                         if (billQuantity >= allotQuantity)
                         {
-                            Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity, ps);
+                            Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps);
                         }
                         else break;
                     }
@@ -182,7 +195,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                             * billDetail.Product.Unit.Count;
                         if (billQuantity >= allotQuantity)
                         {
-                            Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity, ps); 
+                            Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
                         }
                         else break;
                     }
@@ -203,7 +216,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                             * billDetail.Product.Unit.Count;
                         if (billQuantity >= allotQuantity)
                         {
-                            Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity, ps); 
+                            Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
                         }
                         else break;
                     }
@@ -219,7 +232,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                         decimal billQuantity = (billDetail.BillQuantity - billDetail.AllotQuantity) % billDetail.Product.Unit.Count;
                         if (billQuantity > 0)
                         {
-                            Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), billQuantity, ps);
+                            Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), billQuantity, ps);
                         }
                         else break;
                     }
@@ -235,7 +248,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                         decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
                         decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
                         allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity, ps); 
+                        Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
                     }
                     else break;
                 }
@@ -250,7 +263,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                         decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
                         decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
                         allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity, ps); 
+                        Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
                     }
                     else break;
                 }
@@ -266,7 +279,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                             / billDetail.Product.Unit.Count)
                             * billDetail.Product.Unit.Count;
                         allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity, ps); 
+                        Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps); 
                     }
                     else break;
                 }
@@ -280,7 +293,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                         decimal allotQuantity = cell.MaxQuantity * billDetail.Product.Unit.Count;
                         decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
                         allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, cell, LockStorage(billNo, cell), allotQuantity, ps);
+                        Allot(billMaster, billDetail, cell, Locker.LockEmpty(cell), allotQuantity, ps);
                     }
                     else break;
                 }
@@ -304,85 +317,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                 ps.Messages.Add("分配完成!");
                 NotifyConnection(ps.Clone());
             }
-        }
-
-        private Storage LockStorage(string billNo, Cell cell)
-        {
-            try
-            {
-                cell.LockTag = billNo;
-                CellRepository.SaveChanges();                
-            }
-            catch (Exception)
-            {
-                CellRepository.Detach(cell);
-                return null;
-            }
-
-            Storage storage = null;
-            try
-            {                
-                if (cell.IsSingle == "1")
-                {
-                    if (cell.Storages.Count == 0)
-                    {
-                        storage = new Storage()
-                        {
-                            StorageCode = Guid.NewGuid().ToString(),
-                            CellCode = cell.CellCode,
-                            IsLock = "0",
-                            LockTag = billNo,
-                            IsActive = "0",
-                            StorageTime =  DateTime.Now,
-                            UpdateTime = DateTime.Now
-                        };
-                        cell.Storages.Add(storage);
-                    }
-                    else if (cell.Storages.Count == 1)
-                    {
-                        storage = cell.Storages.Single();
-                        storage.LockTag = billNo;
-                    }
-                }
-                else
-                {
-                    storage = cell.Storages.Where(s => s.LockTag == null || s.LockTag == string.Empty
-                                                && s.Quantity == 0
-                                                && s.InFrozenQuantity == 0)
-                                          .FirstOrDefault();
-                    if (storage != null)
-                    {
-                        storage.LockTag = billNo;
-                    }
-                    else
-                    {
-                        storage = new Storage()
-                        {
-                            StorageCode = Guid.NewGuid().ToString(),
-                            CellCode = cell.CellCode,
-                            IsLock = "0",
-                            LockTag = billNo,
-                            IsActive = "0",
-                            StorageTime = DateTime.Now,
-                            UpdateTime = DateTime.Now
-                        };
-                        cell.Storages.Add(storage);
-                    }
-                }
-                StorageRepository.SaveChanges();
-            }
-            catch (Exception)
-            {
-                StorageRepository.Detach(storage);
-                cell.Storages.Remove(storage);
-                storage = null;
-            }
-
-            cell.LockTag = string.Empty;
-            CellRepository.SaveChanges();  
-
-            return storage;
-        }
+        }        
 
         private void Allot(InBillMaster billMaster, InBillDetail billDetail, Cell cell, Storage storage, decimal allotQuantity,ProgressState ps)
         {
@@ -392,11 +327,12 @@ namespace THOK.Wms.SignalR.Allot.Service
                 billDetail.AllotQuantity += allotQuantity;                
                 storage.ProductCode = billDetail.ProductCode;
                 storage.LockTag = billDetail.BillNo;
-                storage.InFrozenQuantity += (int)allotQuantity;
+                storage.InFrozenQuantity += allotQuantity;
 
                 billAllot = new InBillAllot()
                 {
                     BillNo = billMaster.BillNo,
+                    InBillDetailId = billDetail.ID,
                     ProductCode = billDetail.ProductCode,
                     CellCode = cell.CellCode,
                     StorageCode = storage.StorageCode,
@@ -407,6 +343,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                 };
                 billMaster.InBillAllots.Add(billAllot);
                 StorageRepository.SaveChanges();
+
                 decimal sumBillQuantity = billMaster.InBillDetails.Sum(d => d.BillQuantity);
                 decimal sumAllotQuantity = billMaster.InBillDetails.Sum(d => d.AllotQuantity);
 

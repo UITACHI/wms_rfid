@@ -20,7 +20,7 @@ namespace Authority.Controllers.Wms.StockIn
             return Json(result, "text", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AllotDelete(string billNo,string id)
+        public ActionResult AllotDelete(string billNo,long id)
         {
             string strResult = string.Empty;
             bool bResult = InBillAllotService.AllotDelete(billNo,id,out strResult);
@@ -28,7 +28,7 @@ namespace Authority.Controllers.Wms.StockIn
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AllotEdit(string billNo,string id,string cellCode,int allotQuantity)
+        public ActionResult AllotEdit(string billNo, long id, string cellCode, int allotQuantity)
         {
             string strResult = string.Empty;
             bool bResult = InBillAllotService.AllotEdit(billNo, id,cellCode,allotQuantity,out strResult);
