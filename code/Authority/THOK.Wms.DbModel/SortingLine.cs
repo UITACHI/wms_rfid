@@ -16,8 +16,11 @@ namespace THOK.Wms.DbModel
        public string SortingLineCode { get; set; }
        public string SortingLineName { get; set; }
        public string SortingLineType { get; set; }
+       public string CellCode { get; set; }
        public string IsActive { get; set; }
        public DateTime UpdateTime { get; set; }
+
+       public virtual Cell Cell { get; set; }
 
        public virtual ICollection<SortingLowerlimit> SortingLowerlimits { get; set; }
        public virtual ICollection<SortOrderDispatch> SortOrderDispatchs { get; set; }
