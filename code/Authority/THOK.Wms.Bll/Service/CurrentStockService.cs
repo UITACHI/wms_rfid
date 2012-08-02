@@ -24,14 +24,15 @@ namespace THOK.Wms.Bll.Service
         public object GetCellDetails(int page, int rows, string productCode, string ware, string area)
         {
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
-            var storages = storageQuery.OrderBy(s => s.Product.ProductCode).AsEnumerable().Select(s => new
-            {
-                s.Product.ProductCode,
-                s.Product.ProductName,
-                s.Product.Unit.UnitCode,
-                s.Product.Unit.UnitName,
-                Quantity = s.Quantity / s.Product.Unit.Count,
-            });
+            var storages = storageQuery.OrderBy(s => s.Product.ProductCode).AsEnumerable().GroupBy(s => s.Product.ProductCode)
+                                       .Select(s => new
+                                       {
+                                           ProductCode= s.Max(p => p.Product.ProductCode),
+                                           ProductName = s.Max(p => p.Product.ProductName),
+                                           UnitCode = s.Max(p => p.Product.Unit.UnitCode),
+                                           UnitName = s.Max(p => p.Product.Unit.UnitName),
+                                           Quantity = s.Sum(p => p.Quantity / p.Product.Unit.Count)
+                                       });
             if (ware != null && ware != string.Empty || area != null && area != string.Empty)
             {
                 if (ware != string.Empty)
