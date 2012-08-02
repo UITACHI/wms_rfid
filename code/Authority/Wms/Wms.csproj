@@ -107,8 +107,11 @@
     <Compile Include="Controllers\Wms\Inventory\DistributionController.cs" />
     <Compile Include="Controllers\Wms\Inventory\HistoricalDetailController.cs" />
     <Compile Include="Controllers\Wms\Inventory\StockledgerController.cs" />
+    <Compile Include="Controllers\Wms\ProfitLossInfo\ProfitLossBillVerifyController.cs" />
     <Compile Include="Controllers\Wms\SortingInfo\SortOrderDispatchController.cs" />
     <Compile Include="Controllers\Wms\SortingInfo\SortWorkDispatchController.cs" />
+    <Compile Include="Controllers\Wms\StockIn\StockInBillAllotConfirmController.cs" />
+    <Compile Include="Controllers\Wms\StockIn\StockInBillCheckController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillController.cs" />
     <Compile Include="Controllers\Wms\StockMove\StockMoveBillTypeController.cs" />
     <Compile Include="Controllers\Wms\Organization\CompanyController.cs" />

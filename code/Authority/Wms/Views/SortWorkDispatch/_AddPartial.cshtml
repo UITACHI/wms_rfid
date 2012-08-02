@@ -24,8 +24,8 @@
             dispatchParameter += dispatchRows[i].ID + ",";
         }
         if (dispatchParameter != "") {
-            $.getJSON('/CheckBill/CheckCellCreate/', { workDispatchId: dispatchParameter }, function (json) {
-                alert(1);
+            $.getJSON('/SortWorkDispatch/Dispatch/', { workDispatchId: dispatchParameter }, function (json) {
+               
             });
         } else {
             $.messager.confirm('错误', '请选择需要作业调度的线路！');

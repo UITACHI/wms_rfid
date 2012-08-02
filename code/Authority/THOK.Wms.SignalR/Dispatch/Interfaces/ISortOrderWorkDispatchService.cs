@@ -5,7 +5,7 @@ using System.Text;
 
 namespace THOK.Wms.SignalR.Dispatch.Interfaces
 {
-    public interface ISortWorkDispatchService
+    public interface ISortOrderWorkDispatchService
     {
         void Dispatch(string workDispatchId);
     }
