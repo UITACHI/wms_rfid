@@ -5,7 +5,7 @@
         if (row) {
             isOutBillMasterAdd = false;
             isShowOutBillDetail = true;
-            if (row.Status != "已审核") {
+            if (row.Status == "已录入") {
                 $.messager.confirm('错误', '该记录未审核无法进行分配！');
             } else {
                 $('#dlg-allot').dialog('open').dialog('setTitle', '出库单据分配');
