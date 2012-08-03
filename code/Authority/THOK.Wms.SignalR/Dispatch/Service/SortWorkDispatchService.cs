@@ -82,7 +82,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
 
 
             //调度表未作业的数据
-            var sortDispatchGroup1 = sortOrderDispatchQuery.Where(s => workDispatchId.Contains(s.ID+"") && s.WorkStatus == "1")
+            var sortDispatchGroup1 = sortOrderDispatchQuery.Where(s => workDispatchId.Contains(s.ID.ToString()) && s.WorkStatus == "1")
                                                           .GroupBy(s => s.SortingLineCode)
                                                           .Select(s => new { SortingLine = s.Key, sortOrderDisp = s });
             foreach (var item in sortDispatchGroup1)
