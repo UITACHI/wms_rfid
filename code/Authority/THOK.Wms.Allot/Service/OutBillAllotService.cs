@@ -5,6 +5,7 @@ using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.Allot.Interfaces;
 using System.Linq;
 using System.Collections.Generic;
+using System.Transactions;
 
 namespace THOK.Wms.Allot.Service
 {
@@ -217,9 +218,13 @@ namespace THOK.Wms.Allot.Service
                     {
                         try
                         {
-                            ibm.Status = "4";
-                            ibm.UpdateTime = DateTime.Now;
-                            OutBillMasterRepository.SaveChanges();
+                            using (var scope = new TransactionScope())
+                            {
+                                ibm.Status = "4";
+                                ibm.UpdateTime = DateTime.Now;
+                                OutBillMasterRepository.SaveChanges();
+                                scope.Complete();
+                            }
                             result = true;
                             strResult = "确认成功";
                         }
