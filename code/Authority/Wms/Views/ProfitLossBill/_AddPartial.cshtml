@@ -68,7 +68,7 @@
         DataLoad();
         $.getJSON("/ProfitLossBill/GenProfitLossBillNo/", function (json) {
             if (json) {
-                $('#moveBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
+                $('#profitLossBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增损益单');
                 $('#fm').form('clear');
                 $('#billNo').val(json.BillNo);

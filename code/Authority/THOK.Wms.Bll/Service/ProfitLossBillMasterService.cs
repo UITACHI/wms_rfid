@@ -220,7 +220,7 @@ namespace THOK.Wms.Bll.Service
                 {
                     newcode = "0" + newcode;
                 }
-                billNo = System.DateTime.Now.ToString("yyMMdd") + newcode + "MO";
+                billNo = System.DateTime.Now.ToString("yyMMdd") + newcode + "PL";
             }
             var findBillInfo = new
             {

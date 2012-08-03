@@ -3,6 +3,11 @@
     function allotClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
+            $('#area').combotree({
+                url: '/Area/GetDetailsTree/',
+                multiple: true,
+                width: 160
+            });
             isOutBillMasterAdd = false;
             isShowOutBillDetail = true;
             if (row.Status == "已录入") {
@@ -163,13 +168,15 @@
 </div>
 
 <div id="bar" style="width: auto; height: auto; background-color: #FFFFFF;padding:4px 10px;" >库区
-    <input class="easyui-combobox"
+        <select class="easyui-combotree"
             name="language"
             url=""
             valueField="id"
             textField="text"
             multiple="true"
-            panelHeight="auto">
+            panelHeight="auto"
+            panelWidth="160px"
+            id="area"></select>
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="allot()">分配</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="allotEdit()">修改</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="allotDelete()">删除</a>
