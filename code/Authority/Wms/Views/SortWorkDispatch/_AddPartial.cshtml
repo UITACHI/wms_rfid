@@ -19,12 +19,12 @@
 
     function save() {
         dispatchParameter = "";
-        var dispatchRows = $('#workDispatchTable').datagrid('getRows');
+        var dispatchRows = $('#workDispatchTable').datagrid('getSelections');
         for (var i = 0; i < dispatchRows.length; i++) {
             dispatchParameter += dispatchRows[i].ID + ",";
         }
-        if (dispatchParameter != "") {
-            $.getJSON('/SortWorkDispatch/Dispatch/', { workDispatchId: dispatchParameter }, function (json) {
+        if (dispatchParameter != "" && dispatchParameter != null) {
+            $.getJSON('/SortWorkDispatch/Dispatch/', { dispatchId: dispatchParameter }, function (json) {
                
             });
         } else {

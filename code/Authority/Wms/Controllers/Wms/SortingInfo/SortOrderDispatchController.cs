@@ -50,9 +50,9 @@ namespace Wms.Controllers.Wms.SortingInfo
 
         //
         // POST: /SortOrderDispatch/Create/
-        public ActionResult Create(SortOrderDispatch sortDisoatch)
+        public ActionResult Create(string OrderDate, string SortingLineCode, string DeliverLineCodes)
         {
-            bool bResult = SortOrderDispatchService.Add(sortDisoatch);
+            bool bResult = SortOrderDispatchService.Add(OrderDate, SortingLineCode, DeliverLineCodes);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

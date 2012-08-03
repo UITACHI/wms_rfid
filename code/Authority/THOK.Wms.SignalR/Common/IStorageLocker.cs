@@ -8,5 +8,6 @@ namespace THOK.Wms.SignalR.Common
         Storage LockEmpty(Cell cell);
         Storage LockNoEmpty(Cell cell,Product product);
         Storage LockBar(Cell cell, Product product);
+        Storage LockNoEmptyStorage(Storage s, Product product);
     }
 }

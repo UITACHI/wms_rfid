@@ -48,6 +48,7 @@
     <Compile Include="Interfaces\ICheckBillDetailService.cs" />
     <Compile Include="Interfaces\ICheckBillMasterService.cs" />
     <Compile Include="Interfaces\ICheckSearchDetailService.cs" />
+    <Compile Include="Interfaces\ICurrentStockService.cs" />
     <Compile Include="Interfaces\IDailyBalanceService.cs" />
     <Compile Include="Interfaces\IDifferSearchDetailService.cs" />
     <Compile Include="Interfaces\IDistributionService.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Service\CheckBillDetailService.cs" />
     <Compile Include="Service\CheckBillMasterService.cs" />
     <Compile Include="Service\CheckSearchDetailService.cs" />
+    <Compile Include="Service\CurrentStockService.cs" />
     <Compile Include="Service\DailyBalanceService.cs" />
     <Compile Include="Service\DifferSearchDetailService.cs" />
     <Compile Include="Service\DistributionService.cs" />

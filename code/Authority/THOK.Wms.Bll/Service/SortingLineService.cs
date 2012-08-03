@@ -97,6 +97,19 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
+        public object GetSortLine()
+        {
+            var temp = SortingLineRepository.GetQueryable().OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
+            {
+                b.SortingLineCode,
+                b.SortingLineName,
+                SortingLineType = b.SortingLineType == "1" ? "半自动分拣线" : "全自动分拣线",
+                IsActive = b.IsActive == "1" ? "可用" : "不可用",
+                UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+            });
+            return temp.ToArray();
+        }
+
         #endregion
     }
 }
