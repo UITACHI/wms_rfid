@@ -136,6 +136,7 @@
     <Compile Include="Controllers\Wms\StockOut\StockOutBillTypeController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\AreaController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\CellController.cs" />
+    <Compile Include="Controllers\Wms\WarehouseInfo\DefaultProductSetController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\ShelfController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\StorageController.cs" />
     <Compile Include="Controllers\Wms\WarehouseInfo\WarehouseController.cs" />
@@ -1078,6 +1079,15 @@
     <Content Include="Views\StockInBill\_UnitPartial.cshtml" />
     <Content Include="Views\ProfitLossBill\_CellPartial.cshtml" />
     <Content Include="Views\ProfitLossBill\_AuditPartial.cshtml" />
+    <Content Include="Views\StockOutBill\_CellPartial.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\StockInBill\_CellPartial.cshtml" />
+    <Content Include="Views\SortWorkDispatch\Index.cshtml" />
+    <Content Include="Views\SortWorkDispatch\_AddPartial.cshtml" />
+    <Content Include="Views\SortWorkDispatch\_DeletePartial.cshtml" />
+    <Content Include="Views\SortWorkDispatch\_EditPartial.cshtml" />
+    <Content Include="Views\SortWorkDispatch\_SearchPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
