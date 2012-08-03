@@ -102,6 +102,8 @@
         } else {
             $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增入库订单明细');
             $('#fm-inBillDetail').form('clear');
+            $('form input').removeAttr("disabled");
+            $('form textarea').removeAttr("disabled");
             detailUrl = '/StockInBill/InBillDetailCreate/';
             $('#detailBillNo').val(billno);
             $('#detailBillNo').attr("readonly", true);

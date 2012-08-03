@@ -165,6 +165,10 @@
       <Project>{E243AB76-351D-4C97-BFE3-D55E0BA0DECF}</Project>
       <Name>THOK.Wms.DbModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\THOK.Wms.SignalR\THOK.Wms.SignalR.csproj">
+      <Project>{04A2C9B1-0F35-42CF-A6A7-4319D7C6E95F}</Project>
+      <Name>THOK.Wms.SignalR</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
