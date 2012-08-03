@@ -48,11 +48,11 @@ namespace Wms.Controllers.Wms.SortingInfo
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
+        //新增线路调度
         // POST: /SortOrderDispatch/Create/
-        public ActionResult Create(string OrderDate, string SortingLineCode, string DeliverLineCodes)
+        public ActionResult Create(string SortingLineCode, string DeliverLineCodes)
         {
-            bool bResult = SortOrderDispatchService.Add(OrderDate, SortingLineCode, DeliverLineCodes);
+            bool bResult = SortOrderDispatchService.Add(SortingLineCode, DeliverLineCodes);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

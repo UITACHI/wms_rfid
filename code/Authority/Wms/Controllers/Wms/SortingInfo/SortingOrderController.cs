@@ -44,7 +44,7 @@ namespace Authority.Controllers.Wms.SortingInfo
             return Json(SortOrderDetail, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //查询主单
+        //根据时间分组查询主单
         // GET: /SortingOrder/GetOrderMaster/
         public ActionResult GetOrderMaster(string orderDate)
         {

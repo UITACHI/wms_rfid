@@ -12,7 +12,7 @@ namespace THOK.Wms.Bll.Interfaces
 
         object GetWorkStatus(string WorkStatus);
 
-        bool Add(string OrderDate, string SortingLineCode, string DeliverLineCodes);
+        bool Add(string SortingLineCode, string DeliverLineCodes);
 
         bool Delete(string id);
 
