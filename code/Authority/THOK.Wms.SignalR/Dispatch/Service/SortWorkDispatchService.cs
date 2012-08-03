@@ -37,7 +37,11 @@ namespace THOK.Wms.SignalR.Dispatch.Service
 
         [Dependency]
         public IStorageRepository StorageRepository { get; set; }
+        [Dependency]
+        public IProductRepository ProductRepository { get; set; }
 
+        [Dependency]
+        public IUnitRepository UnitRepository { get; set; }
         #region ISortWorkDispatchService 成员
 
         public void Dispatch(string workDispatchId)
@@ -54,62 +58,39 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             IQueryable<SortWorkDispatch> SortWorkDispatchQuery = SortWorkDispatchRepository.GetQueryable();
 
             workDispatchId = workDispatchId.Substring(0, workDispatchId.Length - 1);
-
-            ////调度表作业中的数据
-            //var sortDispatchGroup2 = sortOrderDispatchQuery.Where(s => workDispatchId.Contains(s.ID.ToString()) && s.WorkStatus == "2")
-            //                                              .GroupBy(s => s.SortingLineCode)
-            //                                              .Select(s => new { SortingLine = s.Key, sortOrderDisp = s });
-            //foreach (var item in sortDispatchGroup2)
-            //{
-            //    var sortline = item.sortOrderDisp.FirstOrDefault(s => s.SortingLineCode == item.SortingLine);
-            //    var sortOrder = sortOrderQuery.Where(s => s.OrderDate == sortline.OrderDate && item.sortOrderDisp.Any(i => i.DeliverLineCode == s.DeliverLineCode));
-            //    var sortOrderDetail = sortOrderDetailQuery.Where(s => sortOrder.Any(so => so.OrderID == s.OrderID))
-            //                                             .OrderBy(s => s.ProductCode).GroupBy(s => s.Product.ProductCode).Select(s => new
-            //                                             {
-            //                                                 productCode = s.Key,
-            //                                                 sortOrderDeati = s,
-            //                                                 quantity = s.Sum(p => p.RealQuantity)
-            //                                             });
-
-            //    var sortWorkDispatch = SortWorkDispatchQuery.FirstOrDefault(s => s.ID == sortline.SortWorkDispatchID);
-            //    var outBillDetails = outBillDetailQuery.Where(s => s.BillNo == sortline.SortWorkDispatch.OutBillMaster.BillNo);
-
-            //    foreach (var sortDetailProduce in sortOrderDetail)
-            //    {
-                    
-            //    }
-            //}
-
+            int[] work = workDispatchId.Split(',').Select(s => Convert.ToInt32(s)).ToArray();
 
             //调度表未作业的数据
-            var sortDispatchGroup1 = sortOrderDispatchQuery.Where(s => workDispatchId.Contains(s.ID.ToString()) && s.WorkStatus == "1")
-                                                          .GroupBy(s => s.SortingLineCode)
-                                                          .Select(s => new { SortingLine = s.Key, sortOrderDisp = s });
-            foreach (var item in sortDispatchGroup1)
+            var temp = sortOrderDispatchQuery.Where(s => work.Any(w => w == s.ID) && s.WorkStatus == "1")
+                                           .Join(sortOrderQuery,
+                                                dp => new { dp.OrderDate, dp.DeliverLineCode },
+                                                om => new { om.OrderDate, om.DeliverLineCode },
+                                                (dp, om) => new { dp.OrderDate, dp.SortingLineCode, dp.DeliverLineCode, om.OrderID }
+                                           ).Join(sortOrderDetailQuery,
+                                                dm => new { dm.OrderID },
+                                                od => new { od.OrderID },
+                                                (dm, od) => new { dm.OrderDate, dm.SortingLineCode, od.ProductCode, od.UnitCode, od.Price, od.RealQuantity }
+                                           ).GroupBy(r => new { r.OrderDate, r.SortingLineCode, r.ProductCode, r.UnitCode, r.Price })
+                                            .Select(r => new { r.Key.OrderDate, r.Key.SortingLineCode, r.Key.ProductCode, r.Key.UnitCode, r.Key.Price, SumQuantity = r.Sum(p => p.RealQuantity) })
+                                            .GroupBy(r => new { r.OrderDate, r.SortingLineCode })
+                                            .Select(r => new { r.Key.OrderDate, r.Key.SortingLineCode, Products = r });
+
+
+            foreach (var item in temp.ToArray())
             {
-                var sortline = item.sortOrderDisp.FirstOrDefault(s => s.SortingLineCode==item.SortingLine);
-                var sortOrder = sortOrderQuery.Where(s => s.OrderDate == sortline.OrderDate && item.sortOrderDisp.Any(i => i.DeliverLineCode == s.DeliverLineCode));
-                var sortOrderDetail = sortOrderDetailQuery.Where(s => sortOrder.Any(so => so.OrderID == s.OrderID))
-                                                          .OrderBy(s => s.ProductCode).GroupBy(s => s.Product.ProductCode).Select(s => new
-                                                          {
-                                                              productCode = s.Key,
-                                                              sortOrderDeati = s,
-                                                              quantity = s.Sum(p => p.RealQuantity)
-                                                          });
-
-                string outBill = GenOutBillNo("long").ToString();
-                string moveBill = GenMoveBillNo("long").ToString();
-
-                AddBillMaster(outBill, moveBill, sortline);//
-
-                if (sortOrder != null)
+                if (item.Products != null)
                 {
+                    string outBill = GenOutBillNo("long").ToString();
+                    string moveBill = GenMoveBillNo("long").ToString();
+
+                    AddBillMaster(outBill, moveBill, item.SortingLineCode);//
                     //添加出库单细单
-                    foreach (var sortDetailProduce in sortOrderDetail)
+                    foreach (var product in item.Products.ToArray())
                     {
-                        var sortDetail = sortDetailProduce.sortOrderDeati.FirstOrDefault(s => s.ProductCode == sortDetailProduce.productCode);
-                       AddOutBillDetail(outBill, sortDetail, sortDetailProduce.quantity);
+                        AddOutBillDetail(outBill,product.ProductCode, product.SumQuantity, product.Price);
                     }
+                    OutBillDetailRepository.SaveChanges();
+
                 }
 
                 //var outBillDetails = outBillDetailQuery.Where(o => o.BillNo == outBill);
@@ -187,15 +168,16 @@ namespace THOK.Wms.SignalR.Dispatch.Service
         }
 
         //添加出库单主单，移库单主单，作业调度
-        public void AddBillMaster(string outBill, string moveBill, SortOrderDispatch sortLine)
+        public void AddBillMaster(string outBill, string moveBill, string sortLine)
         {
             Guid emplooyye = new Guid("2c0a649d-5f44-4a33-8e83-2b6f1b5a06d8");
+            var sortingLine = SortingLineRepository.GetQueryable().FirstOrDefault(s => s.SortingLineCode == sortLine);
             //添加出库单主单
             var outbm = new OutBillMaster();
             outbm.BillNo = outBill;
             outbm.BillDate = DateTime.Now;
             outbm.BillTypeCode = "2001";
-            outbm.WarehouseCode = sortLine.SortingLine.Cell.Shelf.Area.Warehouse.WarehouseCode;
+            outbm.WarehouseCode = sortingLine.Cell.WarehouseCode;
             outbm.OperatePersonID = emplooyye;
             outbm.Status = "1";
             outbm.Description = "分拣作业调度生成出库单";
@@ -238,24 +220,24 @@ namespace THOK.Wms.SignalR.Dispatch.Service
         }
 
         //添加出库单细单
-        public void AddOutBillDetail(string outBill, SortOrderDetail sortDetail,decimal quantity)
+        public void AddOutBillDetail(string outBill, string productCode, decimal quantity, decimal price)
         {
             var outbd = new OutBillDetail();
+            var product = ProductRepository.GetQueryable().FirstOrDefault(u => u.ProductCode == productCode);
             outbd.BillNo = outBill;
-            outbd.ProductCode = sortDetail.ProductCode;
-            outbd.UnitCode = sortDetail.UnitCode;
-            outbd.Price = sortDetail.Price;
-            outbd.BillQuantity = quantity * sortDetail.Unit.Count;
+            outbd.ProductCode = productCode;
+            outbd.UnitCode = product.UnitCode;
+            outbd.Price = price;
+            outbd.BillQuantity = quantity * product.Unit.Count;
             outbd.AllotQuantity = 0;
             outbd.RealQuantity = 0;
             outbd.Description = "分拣产生出库细单";
 
             OutBillDetailRepository.Add(outbd);
-            OutBillDetailRepository.SaveChanges();
         }
 
         //移库分配
-        public MoveBillDetail Allot(string product, decimal quantity,string outBill)
+        public MoveBillDetail Allot(string product, decimal quantity, string moveBill)
         {
             var moveDetail =new MoveBillDetail();
 
