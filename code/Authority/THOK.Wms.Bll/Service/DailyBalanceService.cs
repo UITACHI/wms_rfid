@@ -24,13 +24,13 @@ namespace THOK.Wms.Bll.Service
             IQueryable<DailyBalance> dailyBalanceQuery = DailyBalanceRepository.GetQueryable();
             var dailyBalance = dailyBalanceQuery.OrderBy(c => c.SettleDate).AsEnumerable()
                                                 .GroupBy(c => c.SettleDate)
-                                                .Select(c => new { ToSettleDate=c.Key.ToString("yyyy-MM-dd"),
-                                                      ToBeginning = c.Sum(p => p.Beginning),
-                                                      ToEntryAmount = c.Sum(p => p.EntryAmount),
-                                                      ToDeliveryAmount = c.Sum(p => p.DeliveryAmount),
-                                                      ToProfitAmount = c.Sum(p => p.ProfitAmount),
-                                                      ToLossAmount = c.Sum(p => p.LossAmount),
-                                                      ToEnding = c.Sum(p => p.Ending)
+                                                .Select(c => new { SettleDate=c.Key.ToString("yyyy-MM-dd"),
+                                                      Beginning = c.Sum(p => p.Beginning),
+                                                      EntryAmount = c.Sum(p => p.EntryAmount),
+                                                      DeliveryAmount = c.Sum(p => p.DeliveryAmount),
+                                                      ProfitAmount = c.Sum(p => p.ProfitAmount),
+                                                      LossAmount = c.Sum(p => p.LossAmount),
+                                                      Ending = c.Sum(p => p.Ending)
                                                 });
             int total = dailyBalance.Count();
             dailyBalance = dailyBalance.Skip((page - 1) * rows).Take(rows);

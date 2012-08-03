@@ -1,32 +1,35 @@
 ﻿<script type="text/javascript">
     function searchClick() {
         SearchLoad();
-        $('#dlg-search').dialog('open').dialog('setTitle', '库存分布精确查询');
+        $('#dlg-search').dialog('open').dialog('setTitle', '每日库存查询');
+        $("input[type=text]").attr("value", "");
     };
     function SearchLoad() {
-        $('#product').combogrid({
+
+        $('#wareHouse').combogrid({
+            required: true,
             disabled: false,
-            width: 140,
+            width: 130,
             panelWidth: 340,
-            url: '/Product/Details/?page=1&rows=10',
-            idField: 'ProductCode',
-            textField: 'ProductName',
+            url: '/StockInBill/GetWareHouseDetail/?IsActive=1',
+            idField: 'WarehouseCode',
+            textField: 'WarehouseName',
             mode: 'local',
             editable: false,
             fitColumns: true,
             columns: [[
-					{ field: 'ProductCode', title: '卷烟编码', align: 'left', width: 40 },
-					{ field: 'ProductName', title: '卷烟名称', align: 'left', width: 40 },
-					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
-				]]
+                    { field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
+                    { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 30 },
+                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+                ]]
         });
     }
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.DepartmentCode = $('#DepartmentCode').val();
-        queryParams.DepartmentName = $('#DepartmentName').val();
-        queryParams.DepartmentLeaderID = $('#employee-search').val();
-        queryParams.companyID = $('#company-search').val();
+        queryParams.BeginDate = $('#beginDate').datebox('getValue');
+        queryParams.EndDate = $('#endDate').datebox('getValue');
+        queryParams.WarehouseCode = $('#wareHouse').combo('getValue');
+        queryParams.ProductCode = $('#product').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -36,19 +39,25 @@
         $('#dlg-search').dialog('close');
     }
 </script>
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:220px;padding:2px 2px"
-    closed="true" buttons="#dlg-buttons-search">
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:210px;padding:2px 2px"
+		closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
-        <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " overflow: scroll; padding: 1px; margin: 1px">
-            <table  width="260" style="padding:10px 10px;">
-                <tr>
-                    <td width="60">产品名称:</td>
-                    <td align="left"><input type="text" id="product"/></td>
-                </tr>
-                <tr>
-                    <td width="60">库区选择:</td>
-                    <td align="left" width="200"><select class="easyui-combotree" name="Area" url="/Area/GetDetailsTree/" cascadeCheck="false" multiple style="width:200px;"></select></td>
-                </tr>
+		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc;">   
+            <table width="250">
+              <tr>
+                <td width="60">起始日期:</td>
+                <td align="left"><input id="beginDate" type="text" class="easyui-datebox" ></input></td>
+              </tr>
+              <tr >
+                <td width="60">终止日期:</td>
+                <td align="left"><input id="endDate" type="text" class="easyui-datebox" ></input></td>
+              </tr>
+              <tr style="padding-top:10px;">
+                <td>仓库:</td>
+                <td align="left">      
+		            <input type="text" id="wareHouse"/>
+	            </td>
+              </tr>
             </table>
         </div>
     </div>
