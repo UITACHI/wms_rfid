@@ -29,7 +29,8 @@
             $('#inAllotBillDetails').datagrid('reload');
             $('#allotBillDetails').datagrid('reload');
         }
-        $.asyncProcessing.Start('/allotStockIn', $.toJSON({ ActionType: 'start', BillNo: billNo, AreaCodes: [] }, { ActionType: 'start', BillNo: billNo, AreaCodes: ['1', '2'] }));
+        var areas = $('#area').combotree('getValues');
+        $.asyncProcessing.Start('/allotStockIn', $.toJSON({ ActionType: 'start', BillNo: billNo, AreaCodes: areas }));
     }
 
     var modifyUrl;
@@ -81,7 +82,7 @@
         };
     };
 
-    function allotConfirm() {
+    function confirmAllot() {
         var j_waitDialog = ShowWaitMessageDialog();
         $.ajax({
             url: "/StockInBillAllot/AllotConfirm/", type: "GET", dataType: "text",
@@ -99,7 +100,7 @@
         });
     };
 
-    function allotCancel() {
+    function cancelConfirm() {
         var j_waitDialog = ShowWaitMessageDialog();
         $.ajax({
             url: "/StockInBillAllot/AllotCancel/", type: "GET", dataType: "text",
@@ -177,11 +178,12 @@
             panelHeight="auto"
             panelWidth="160px"
             id="area"></select>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="allot()">分配</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="allotEdit()">修改</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="allotDelete()">删除</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="allotConfirm()">确认</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="allotCancel()">取消</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-Menu_CheckBill" plain="true" onclick="allot()">自动分配</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="cancelAllot()">取消分配</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="allotEdit()">手工修改</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="allotDelete()">手工删除</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="confirmAllot()">确认分配</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="cancelConfirm()">取消确认</a>
 </div>
 
 <div id="dlg_allot_modify" class="easyui-dialog" modal="true"
