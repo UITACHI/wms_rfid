@@ -82,8 +82,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                 {
                     string outBill = GenOutBillNo("long").ToString();
                     string moveBill = GenMoveBillNo("long").ToString();
-
-                    AddBillMaster(outBill, moveBill, item.SortingLineCode);//
+                    AddBillMaster(outBill, moveBill, item.SortingLineCode, item.OrderDate);
                     //添加出库单细单
                     foreach (var product in item.Products.ToArray())
                     {
@@ -168,7 +167,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
         }
 
         //添加出库单主单，移库单主单，作业调度
-        public void AddBillMaster(string outBill, string moveBill, string sortLine)
+        public void AddBillMaster(string outBill, string moveBill, string sortLine, string orderDate)
         {
             Guid emplooyye = new Guid("2c0a649d-5f44-4a33-8e83-2b6f1b5a06d8");
             var sortingLine = SortingLineRepository.GetQueryable().FirstOrDefault(s => s.SortingLineCode == sortLine);
@@ -187,36 +186,37 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             OutBillMasterRepository.Add(outbm);
             OutBillMasterRepository.SaveChanges();
 
-            ////添加移库单主单
-            //var movebm = new MoveBillMaster();
-            //movebm.BillNo = moveBill;
-            //movebm.BillDate = DateTime.Now;
-            //movebm.BillTypeCode = "3001";
-            //movebm.WarehouseCode = sortLine.SortingLine.Cell.Shelf.Area.Warehouse.WarehouseCode;
-            //movebm.OperatePersonID = emplooyye;
-            //movebm.Status = "1";
-            //movebm.Description = "分拣作业调度生成移库单";
-            //movebm.IsActive = "1";
-            //movebm.UpdateTime = DateTime.Now;
+            //添加移库单主单
+            var movebm = new MoveBillMaster();
+            movebm.BillNo = moveBill;
+            movebm.BillDate = DateTime.Now;
+            movebm.BillTypeCode = "3001";
+            movebm.WarehouseCode = sortingLine.Cell.WarehouseCode;
+            movebm.OperatePersonID = emplooyye;
+            movebm.Status = "1";
+            movebm.Description = "分拣作业调度生成移库单";
+            movebm.IsActive = "1";
+            movebm.UpdateTime = DateTime.Now;
 
-            //MoveBillMasterRepository.Add(movebm);
-            //MoveBillMasterRepository.SaveChanges();
+            MoveBillMasterRepository.Add(movebm);
+            MoveBillMasterRepository.SaveChanges();
 
-            ////添加分拣作业调度表
-            //var sortbm = new SortWorkDispatch();
-            //var workDispatch = SortWorkDispatchRepository.GetQueryable().FirstOrDefault(w => w.OrderDate == sortLine.OrderDate && 
-            //                                                           w.SortingLineCode == sortLine.SortingLineCode);
-            //sortbm.OrderDate = sortLine.OrderDate;
-            //sortbm.SortingLineCode = sortLine.SortingLineCode;
-            //sortbm.DispatchBatch = workDispatch == null ? "1" : (Convert.ToInt32(workDispatch.DispatchBatch) + 1) + "";
-            //sortbm.OutBillNo = outBill;
-            //sortbm.MoveBillNo = moveBill;
-            //sortbm.DispatchStatus = "2";
-            //sortbm.IsActive = "1";
-            //sortbm.UpdateTime = DateTime.Now;
+            //添加分拣作业调度表
+            var sortbm = new SortWorkDispatch();
+            var workDispatch = SortWorkDispatchRepository.GetQueryable().FirstOrDefault(w => w.OrderDate == orderDate &&
+                                                                       w.SortingLineCode == sortLine);
+            sortbm.ID = Guid.NewGuid();
+            sortbm.OrderDate = orderDate;
+            sortbm.SortingLineCode = sortLine;
+            sortbm.DispatchBatch = workDispatch == null ? "1" : (Convert.ToInt32(workDispatch.DispatchBatch) + 1) + "";
+            sortbm.OutBillNo = outBill;
+            sortbm.MoveBillNo = moveBill;
+            sortbm.DispatchStatus = "2";
+            sortbm.IsActive = "1";
+            sortbm.UpdateTime = DateTime.Now;
 
-            //SortWorkDispatchRepository.Add(sortbm);
-            //SortWorkDispatchRepository.SaveChanges();
+            SortWorkDispatchRepository.Add(sortbm);
+            SortWorkDispatchRepository.SaveChanges();
         }
 
         //添加出库单细单

@@ -77,24 +77,24 @@ namespace THOK.Wms.Bll.Service
             }
             IQueryable<SortOrder> sortOrderQuery = SortOrderRepository.GetQueryable();
             IQueryable<SortOrderDispatch> SortOrderDispatchQuery = SortOrderDispatchRepository.GetQueryable();
-
-            var sortOrder = sortOrderQuery.Where(s => s.OrderDate == orderDate)
-                                          .Join(SortOrderDispatchQuery,
-                                          so => new { so.OrderDate, so.DeliverLineCode },
-                                          sd => new { sd.OrderDate, sd.DeliverLineCode },
-                                          (so, sd) => new { so.OrderDate,sd.SortingLine, sd.SortingLineCode, so.DeliverLineCode, so.DeliverLine.DeliverLineName, so.QuantitySum, so.DetailNum, so.AmountSum }
-                                          ).GroupBy(s => new { s.OrderDate, s.DeliverLineCode, s.DeliverLineName, s.SortingLine, })
+            var sortorderDisp = SortOrderDispatchQuery.Where(s => s.OrderDate.Contains(orderDate));
+            var sortOrder = sortOrderQuery.Where(s => s.OrderDate.Contains(orderDate)&&!sortorderDisp.Any(d=>d.DeliverLineCode==s.DeliverLineCode))
+                                          //.Join(SortOrderDispatchQuery,
+                                          //so => new { so.OrderDate, so.DeliverLineCode },
+                                          //sd => new { sd.OrderDate, sd.DeliverLineCode },
+                                          //(so, sd) => new { so.OrderDate, so.DeliverLineCode, so.DeliverLine.DeliverLineName, so.QuantitySum, so.DetailNum, sd.SortingLine, so.AmountSum })
+                                          .GroupBy(s => new { s.OrderDate, s.DeliverLineCode,s.DeliverLine})
                                           .Select(s => new
                                           {
                                               DeliverLineCode = s.Key.DeliverLineCode,
-                                              DeliverLineName = s.Key.DeliverLineName,
+                                              DeliverLineName = s.Key.DeliverLine.DeliverLineName,
                                               OrderDate = s.Key.OrderDate,
-                                              SortingLineCode = s.Key.SortingLine.SortingLineCode,
-                                              SortingLineName = s.Key.SortingLine.SortingLineName,
+                                              //SortingLineCode = s.Key.SortingLine.SortingLineCode,
+                                              //SortingLineName = s.Key.SortingLine.SortingLineName,
                                               QuantitySum = s.Sum(p => p.QuantitySum),
                                               AmountSum = s.Sum(p => p.AmountSum),
                                               DetailNum = s.Sum(p => p.DetailNum),
-                                              IsActive = "1"
+                                              IsActive = "可用"
                                           });
 
             return sortOrder.ToArray();
