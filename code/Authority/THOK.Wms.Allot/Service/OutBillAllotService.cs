@@ -219,7 +219,7 @@ namespace THOK.Wms.Allot.Service
                         try
                         {
                             using (var scope = new TransactionScope())
-                            {
+                            {                                
                                 ibm.Status = "4";
                                 ibm.UpdateTime = DateTime.Now;
                                 OutBillMasterRepository.SaveChanges();
