@@ -1,13 +1,13 @@
-﻿    <div id="infoDetail" class="easyui-dialog" modal="true" 
+﻿<div id="infoDetail" class="easyui-dialog" modal="true" 
         style="width:800px;height:420px;padding:2px 2px"
         closed="true">    
-    <table id="infoDetails" class="easyui-datagrid"
+    <table id="infos" class="easyui-datagrid"
     url="/DailyBalance/InfoDetails/" border="false" singleSelect="true"
         fit="true" fitColumns="true"   pagination="true" rownumbers="true">
         <thead>
             <tr>
                 <th field="ProductCode" hidden="true" width="80">产品代码</th>
-                <th field="ProductName" hidden="true" width="80">产品名称</th
+                <th field="ProductName" hidden="true" width="80">产品名称</th>
                 <th field="Beginning" hidden="true" width="80">期初量</th>
                 <th field="EntryAmount" hidden="true" width="80">入库总量</th>
                 <th field="DeliveryAmount" hidden="true" width="80">出库总量</th>
@@ -18,4 +18,4 @@
                 <th field="UnitName" hidden="true" width="80">单位名称</th>
         </thead>
     </table>
-  </div>
+</div>

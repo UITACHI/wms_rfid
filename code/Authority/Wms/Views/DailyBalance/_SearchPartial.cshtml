@@ -29,7 +29,6 @@
         queryParams.BeginDate = $('#beginDate').datebox('getValue');
         queryParams.EndDate = $('#endDate').datebox('getValue');
         queryParams.WarehouseCode = $('#wareHouse').combo('getValue');
-        queryParams.ProductCode = $('#product').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
