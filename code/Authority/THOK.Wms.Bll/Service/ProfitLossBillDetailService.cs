@@ -111,7 +111,7 @@ namespace THOK.Wms.Bll.Service
                     result = true;
                 }                
             }
-            strResult = resultStr==""?"该库存的当前库存-出库冻结量小于0！":resultStr;
+            strResult = resultStr==""?"该库存的当前库存-出库冻结量小于0或者已经处于编辑状态！":resultStr;
             return result;
         }
 
