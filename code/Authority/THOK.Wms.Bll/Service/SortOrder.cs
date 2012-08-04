@@ -13,6 +13,8 @@ namespace THOK.Wms.Bll.Service
     {
         [Dependency]
         public ISortOrderRepository SortOrderRepository { get; set; }
+        [Dependency]
+        public ISortOrderDispatchRepository SortOrderDispatchRepository { get; set; }
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -74,16 +76,25 @@ namespace THOK.Wms.Bll.Service
                 orderDate = Convert.ToDateTime(orderDate).ToString("yyyyMMdd");
             }
             IQueryable<SortOrder> sortOrderQuery = SortOrderRepository.GetQueryable();
-            var sortOrder = sortOrderQuery.Where(s => s.OrderDate == orderDate).GroupBy(s => s.DeliverLine)
+            IQueryable<SortOrderDispatch> SortOrderDispatchQuery = SortOrderDispatchRepository.GetQueryable();
+
+            var sortOrder = sortOrderQuery.Where(s => s.OrderDate == orderDate)
+                                          .Join(SortOrderDispatchQuery,
+                                          so => new { so.OrderDate, so.DeliverLineCode },
+                                          sd => new { sd.OrderDate, sd.DeliverLineCode },
+                                          (so, sd) => new { so.OrderDate,sd.SortingLine, sd.SortingLineCode, so.DeliverLineCode, so.DeliverLine.DeliverLineName, so.QuantitySum, so.DetailNum, so.AmountSum }
+                                          ).GroupBy(s => new { s.OrderDate, s.DeliverLineCode, s.DeliverLineName, s.SortingLine, })
                                           .Select(s => new
                                           {
                                               DeliverLineCode = s.Key.DeliverLineCode,
                                               DeliverLineName = s.Key.DeliverLineName,
-                                              OrderDate = orderDate,
-                                              Quantity = s.Sum(p => p.QuantitySum),
+                                              OrderDate = s.Key.OrderDate,
+                                              SortingLineCode = s.Key.SortingLine.SortingLineCode,
+                                              SortingLineName = s.Key.SortingLine.SortingLineName,
+                                              QuantitySum = s.Sum(p => p.QuantitySum),
                                               AmountSum = s.Sum(p => p.AmountSum),
                                               DetailNum = s.Sum(p => p.DetailNum),
-                                              IsActive="1"
+                                              IsActive = "1"
                                           });
 
             return sortOrder.ToArray();
