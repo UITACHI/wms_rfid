@@ -2,19 +2,7 @@
     var url, dispatchParameter;
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
-        //        $('#sortingLinefm').form('clear');
-        //        $('#sortingLinefm .easyui-validatebox').validatebox({
-        //            required: true
-        //        });
-        //        $('form input').removeAttr("disabled");
-        //        $('form textarea').removeAttr("disabled");
-        //        $('#IsActivecc').combo({
-        //            hasDownArrow: true
-        //        });
-        //        $('#isSortingLineType').combo({
-        //            hasDownArrow: true
-        //        });
-        url = '/SortingLine/Create/';
+        $('#workDispatchTable').datagrid({ url: '/SortOrderDispatch/GetWorkStatus/' }); //加载线路分配信息
     }
 
     function save() {
@@ -25,7 +13,23 @@
         }
         if (dispatchParameter != "" && dispatchParameter != null) {
             $.getJSON('/SortWorkDispatch/Dispatch/', { dispatchId: dispatchParameter }, function (json) {
-               
+                if (json) {
+                    if (json.success) {
+                        $.messager.show({
+                            title: '成功',
+                            msg: json.msg
+                        });
+                        $('#dlg').dialog('close');
+                        $('#details').datagrid('load');
+                    } else {
+                        $.messager.show({
+                            title: '错误',
+                            msg: json.msg
+                        });
+                        $('#dlg').dialog('close');
+                        $('#details').datagrid('load');
+                    }
+                }
             });
         } else {
             $.messager.confirm('错误', '请选择需要作业调度的线路！');
@@ -35,18 +39,17 @@
 <div id="dlg" class="easyui-dialog" modal="true" style="width:780px; height:370;"
     closed="true" buttons="#dlg-buttons">
         <div region="center" border="false" style="height:370px;border: 1px solid #ccc;" >
-            <table id="workDispatchTable" class="easyui-datagrid" border="false" 
-                 url='/SortOrderDispatch/GetWorkStatus/'
-                fit="true" singleSelect="false">
+            <table id="workDispatchTable" class="easyui-datagrid" singleSelect="false" pagination="fasle"
+        border="false" fit="true" rownumbers="true" toolbar="#bar" fitColumns="true" showFooter="true">
                 <thead>
                      <tr>
                         <th field="ck" checkbox="true">
                         <th field="ID" width="120" hidden="true">调度ID</th>
-                        <th field="OrderDate" width="80" >订单日期</th>
-                        <th field="SortingLineCode" width="80" >分拣线编码</th>
-                        <th field="SortingLineName" width="130" >分拣线名称</th>
+                        <th field="OrderDate" width="75" >订单日期</th>
+                        <th field="SortingLineCode" width="70" >分拣线编码</th>
+                        <th field="SortingLineName" width="120" >分拣线名称</th>
                         <th field="DeliverLineCode" width="80" hidden="true">送货线路编码</th>
-                        <th field="DeliverLineName" width="150" >送货线路名称</th>
+                        <th field="DeliverLineName" width="140" >送货线路名称</th>
                         <th field="WorkStatus" width="80" >作业状态</th>
                         <th field="IsActive" width="80">是否可用</th>
                         <th field="UpdateTime" width="120">修改时间</th>

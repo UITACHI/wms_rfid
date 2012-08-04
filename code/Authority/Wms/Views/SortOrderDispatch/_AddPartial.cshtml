@@ -1,20 +1,35 @@
 <script type="text/javascript">
-    var url;
-
+    var url,delet;
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#sortingOrderAllot').datagrid({ url: '/SortingOrder/GetOrderMaster/' }); //加载线路分配信息
+        $('#checkQuantitySum').text(0);
+        $('#orderDate').datebox('setValue', "");
+        delet = "";
     };
 
     function allot() {
         var orderDate = $('#orderDate').datebox('getValue');
         if (orderDate != "" && orderDate != null) {
             $('#sortingOrderAllot').datagrid({ url: '/SortingOrder/GetOrderMaster/?orderDate=' + orderDate }); //加载线路分配信息
+            $('#checkQuantitySum').text(0);
         } else {
             $.messager.confirm('错误', '请选择需要查询的时间！');
         }
     }
 
+    function countSum() {
+        var countSum = 0;
+        var rows = $('#sortingOrderAllot').datagrid('getRows');
+        if (rows.length > 0) {
+            for (var i = 0; i < rows.length; i++) {
+                countSum = parseInt(countSum) + rows[i].QuantitySum;
+            }
+            $('#countQuantitySum').text(countSum);
+        } else {
+            $('#countQuantitySum').text(0);
+        }
+    }
 
     function save() {
         var sortlineCode = $('#lineCode').combobox('getValue'), deliverLineCode = "";
@@ -58,28 +73,31 @@
                 var rows = $('#sortingOrderAllot').datagrid('getSelections');
                 if (rows.length > 0) {
                     for (var i = 0; i < rows.length; i++) {
-                        quantitySum = parseInt(quantitySum) + rows[i].Quantity;
+                        quantitySum = parseInt(quantitySum) + rows[i].QuantitySum;
                     }
-                    $('#quantitySum').text(quantitySum);
+                    $('#checkQuantitySum').text(quantitySum);
                 } else {
-                    $('#quantitySum').text(0);
+                    $('#checkQuantitySum').text(0);
                 }
+            },
+            onLoadSuccess: function () {
+                countSum();
             }
         })
     });
 </script>
-<div id="dlg" class="easyui-dialog" modal="true" style="width: 800px; height: 480px;"
+<div id="dlg" class="easyui-dialog" modal="true" style="width: 800px; height: 470px;"
     closed="true" buttons="#dlg-buttons">
     <table id="sortingOrderAllot" url='' class="easyui-datagrid" singleSelect="false" pagination="fasle"
-        border="false" fit="true" rownumbers="true" toolbar="#bar" fitColumns="true" showFooter="true">
+        border="false" fit="true" rownumbers="true" toolbar="#bar" fitColumns="true" showFooter="true" >
         <thead>
              <tr>
                 <th field="ck" checkbox="true">
                 <th field="OrderDate" width="70" >订单日期</th>
-                <th field="DeliverLineCode" width="100">送货线路编码</th>
-                <th field="DeliverLineName" width="140">送货线路名称</th>
-                <th field="SortingLineCode" width="70" >分拣线编码</th>
-                <th field="SortingLineName" width="70" >分拣线名称</th>
+                <th field="DeliverLineCode" width="120">送货线路编码</th>
+                <th field="DeliverLineName" width="160">送货线路名称</th>
+@*              <th field="SortingLineCode" width="70" >分拣线编码</th>
+                <th field="SortingLineName" width="70" >分拣线名称</th>*@
                 <th field="QuantitySum" width="70">总数量</th>
                 <th field="AmountSum" width="70">总金额</th>
                 <th field="DetailNum" width="70">明细数</th>
@@ -95,11 +113,13 @@
     分拣线：<input class="easyui-combobox" name="language" url="/SortingLine/GetSortLine/" id="lineCode"
             valueField="SortingLineCode" textField="SortingLineName" multiple="true" panelHeight="auto" />
 </div>
-
 <div id="dlg-buttons">
-<div id="div">
-   <label>总数量：</label><label>选中量：</label><label id="checkQuantitySum"></label><label>单位（条）</label>
-</div>
+<table style="width:300px;">
+<tr>
+    <td style="width:60px;"><label>总数量：</label><label id="countQuantitySum"></label><label>（条）</label></td>
+    <td style="width:60px;"><label>选中量：</label><label id="checkQuantitySum"></label><label>（条）</label></td>
+</tr>
+</table>
     <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">确定</a>
     <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">
         取消</a>
