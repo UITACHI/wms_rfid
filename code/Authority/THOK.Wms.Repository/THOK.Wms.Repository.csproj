@@ -181,6 +181,10 @@
     <Compile Include="Migrations\201208021219188_modify_out_bill_allot.Designer.cs">
       <DependentUpon>201208021219188_modify_out_bill_allot.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201208040800146_modify_out_move_master.cs" />
+    <Compile Include="Migrations\201208040800146_modify_out_move_master.Designer.cs">
+      <DependentUpon>201208040800146_modify_out_move_master.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

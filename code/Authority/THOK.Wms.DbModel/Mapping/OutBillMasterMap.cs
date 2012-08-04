@@ -66,6 +66,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.VerifyPersonID).HasColumnName(ColumnMap.Value.To("VerifyPersonID"));
             this.Property(t => t.VerifyDate).HasColumnName(ColumnMap.Value.To("VerifyDate"));
             this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
+            this.Property(t => t.MoveBillMasterBillNo).HasColumnName(ColumnMap.Value.To("MoveBillMasterBillNo")); 
             this.Property(t => t.LockTag).HasColumnName(ColumnMap.Value.To("LockTag")); 
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
@@ -90,6 +91,11 @@ namespace THOK.Wms.DbModel.Mapping
             this.HasOptional(t => t.VerifyPerson)
                 .WithMany(t => t.VerifyPersonOutBillMasters)
                 .HasForeignKey(d => d.VerifyPersonID)
+                .WillCascadeOnDelete(false);
+
+            this.HasOptional(t => t.MoveBillMaster)
+                .WithMany()
+                .HasForeignKey(d => d.MoveBillMasterBillNo)
                 .WillCascadeOnDelete(false);
         }
     }

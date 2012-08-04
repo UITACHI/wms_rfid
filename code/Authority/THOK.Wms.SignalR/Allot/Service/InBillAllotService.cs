@@ -135,13 +135,16 @@ namespace THOK.Wms.SignalR.Allot.Service
 
                 //分配条烟到条烟区；
                 cs = cellQueryFromList2.Where(c => c.DefaultProductCode == billDetail.ProductCode
-                                                        || (c.Storages.Count == 1 
+                                                        || (c.Storages.Count == 1
                                                             && c.Storages.First().ProductCode == billDetail.ProductCode) 
                                                         );
                 AllotBar(billMaster, billDetail, cs, cancellationToken, ps);
                 //分配条烟到条烟区；
-                cs = cellQueryFromList2.Where(c => string.IsNullOrEmpty(c.DefaultProductCode));
-                AllotBar(billMaster, billDetail, cs, cancellationToken, ps);
+                if (cs.Count() == 0)
+                {
+                    cs = cellQueryFromList2.Where(c => string.IsNullOrEmpty(c.DefaultProductCode));
+                    AllotBar(billMaster, billDetail, cs, cancellationToken, ps);
+                }
 
                 //分配未满一托盘的卷烟到件烟区；
                 cs = cellQueryFromList3;

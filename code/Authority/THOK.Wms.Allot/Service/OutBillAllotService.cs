@@ -6,6 +6,7 @@ using THOK.Wms.Allot.Interfaces;
 using System.Linq;
 using System.Collections.Generic;
 using System.Transactions;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.Allot.Service
 {
@@ -27,7 +28,11 @@ namespace THOK.Wms.Allot.Service
         [Dependency]
         public ICellRepository CellRepository { get; set; }
         [Dependency]
-        public IStorageRepository StorageRepository { get; set; }
+        public IStorageRepository StorageRepository { get; set; }        
+        [Dependency]
+        public IMoveBillCreater MoveBillCreater { get; set; }
+        [Dependency]
+        public IMoveBillMasterRepository MoveBillMasterRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -219,14 +224,37 @@ namespace THOK.Wms.Allot.Service
                         try
                         {
                             using (var scope = new TransactionScope())
-                            {                                
+                            {
+                                if (MoveBillCreater.CheckIsNeedSyncMoveBill(ibm.WarehouseCode))
+                                {
+                                    var moveBillMaster = MoveBillCreater.CreateMoveBillMaster(ibm.WarehouseCode, "3001", "0e566f01-bbb3-486d-b28a-d5fc33f93d40");
+                                    MoveBillCreater.CreateSyncMoveBillDetail(moveBillMaster);
+                                    moveBillMaster.Status = "2";
+                                    moveBillMaster.VerifyDate = DateTime.Now;
+                                    moveBillMaster.VerifyPersonID = Guid.Parse("0e566f01-bbb3-486d-b28a-d5fc33f93d40");
+                                    if (MoveBillCreater.CheckIsNeedSyncMoveBill(ibm.WarehouseCode))
+                                    {
+                                        MoveBillCreater.DeleteMoveBillDetail(moveBillMaster);
+                                        MoveBillMasterRepository.Delete(moveBillMaster);
+                                        MoveBillMasterRepository.SaveChanges();
+                                        strResult = "生成同步移库单不完整，请重新确认！";
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        ibm.MoveBillMasterBillNo = moveBillMaster.BillNo;
+                                    }
+                                }
+
                                 ibm.Status = "4";
                                 ibm.UpdateTime = DateTime.Now;
                                 OutBillMasterRepository.SaveChanges();
+                                result = true;
+                                strResult = "确认成功";
+
                                 scope.Complete();
                             }
-                            result = true;
-                            strResult = "确认成功";
+
                         }
                         catch (Exception)
                         {
@@ -261,11 +289,32 @@ namespace THOK.Wms.Allot.Service
                 {
                     try
                     {
-                        ibm.Status = "3";
-                        ibm.UpdateTime = DateTime.Now;
-                        OutBillMasterRepository.SaveChanges();
-                        result = true;
-                        strResult = "取消成功";
+                        using (var scope = new TransactionScope())
+                        {
+                            if (ibm.MoveBillMaster!=null)
+                            {
+                                try
+                                {
+                                    MoveBillCreater.DeleteMoveBillDetail(ibm.MoveBillMaster);
+                                    MoveBillMasterRepository.Delete(ibm.MoveBillMaster);
+                                    MoveBillMasterRepository.SaveChanges();
+                                }
+                                catch (Exception)
+                                {
+                                    strResult = "删除同步移库单失败，请重新取消！";
+                                    return false;
+                                }
+
+                            }
+
+                            ibm.Status = "3";
+                            ibm.UpdateTime = DateTime.Now;
+                            OutBillMasterRepository.SaveChanges();
+                            result = true;
+                            strResult = "取消成功";
+
+                            scope.Complete();
+                        }
                     }
                     catch (Exception)
                     {
