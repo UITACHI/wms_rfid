@@ -74,8 +74,10 @@
     <Compile Include="Allot\Interfaces\IOutBillAllotService.cs" />
     <Compile Include="Allot\Service\InBillAllotService.cs" />
     <Compile Include="Allot\Service\OutBillAllotService.cs" />
+    <Compile Include="Common\IMoveBillCreater.cs" />
     <Compile Include="Common\IStorageLocker.cs" />
     <Compile Include="Common\StorageLocker.cs" />
+    <Compile Include="Common\MoveBillCreater.cs" />
     <Compile Include="Connection\ConnectionBase.cs" />
     <Compile Include="Connection\DispatchSortWorkConnection.cs" />
     <Compile Include="Dispatch\Interfaces\ISortOrderWorkDispatchService.cs" />

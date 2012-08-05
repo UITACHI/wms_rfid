@@ -68,7 +68,7 @@
         DataLoad();
         $.getJSON("/ProfitLossBill/GenProfitLossBillNo/", function (json) {
             if (json) {
-                $('#moveBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
+                $('#profitLossBillDetail').datagrid('loadData', { total: 0, rows: [] }); //清空细单
                 $('#dlg').dialog('open').dialog('setTitle', '新增损益单');
                 $('#fm').form('clear');
                 $('#billNo').val(json.BillNo);
@@ -124,6 +124,8 @@
     function addBillDetailClick() {
         $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增损益细单明细');
         $('#fm-profitLossBillDetail').form('clear');
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
         detailUrl = '/ProfitLossBill/ProfitLossBillDetailCreate/';
         $('#detailBillNo').val(billno);
         $('#detailBillNo').attr("readonly", true);
@@ -150,10 +152,7 @@
                     $('#profitLossBillDetail').datagrid('reload');
                     $('#profitLossBillDetail').datagrid({ url: '/ProfitLossBill/ProfitLossBillDetails/?BillNo=' + billno });
                 } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#profitLossBillDetail').datagrid('reload');
                 }
             }

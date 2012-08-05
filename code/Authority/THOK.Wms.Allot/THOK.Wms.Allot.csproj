@@ -41,6 +41,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,6 +76,10 @@
     <ProjectReference Include="..\THOK.Wms.DbModel\THOK.Wms.DbModel.csproj">
       <Project>{E243AB76-351D-4C97-BFE3-D55E0BA0DECF}</Project>
       <Name>THOK.Wms.DbModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\THOK.Wms.SignalR\THOK.Wms.SignalR.csproj">
+      <Project>{04A2C9B1-0F35-42CF-A6A7-4319D7C6E95F}</Project>
+      <Name>THOK.Wms.SignalR</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,7 @@ namespace Wms.Controllers.Wms.Inventory
     {
         //
         // GET: /DailyBalance/
+
         [Dependency]
         public IDailyBalanceService DailyBalanceService { get; set; }
 
@@ -25,16 +26,22 @@ namespace Wms.Controllers.Wms.Inventory
             ViewBag.ModuleID = moduleID;
             return View();
         }
-        //public ActionResult Details(int page, int rows, FormCollection collection)
-        //{
-        //    var brand = DailyBalanceService.GetDetails(page, rows);
-        //    return Json(brand, "text", JsonRequestBehavior.AllowGet);
-        //}
-        //public ActionResult InfoDetails(int page, int rows, string date)
-        //{
-        //    var brand = DailyBalanceService.MXGetDetails(page, rows, date);
-        //    return Json(brand, "text", JsonRequestBehavior.AllowGet);
-        //}
+
+        //
+        // GET: /DailyBalance/Details/
+        public ActionResult Details(int page, int rows, FormCollection collection)
+        {
+            string beginDate = collection["BeginDate"] ?? "";
+            string endDate = collection["EndDate"] ?? "";
+            string warehouseCode = collection["warehouseCode"] ?? "";
+            var DailyBalance = DailyBalanceService.GetDetails(page, rows, beginDate, endDate, warehouseCode);
+            return Json(DailyBalance, "text", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult InfoDetails(int page, int rows, string settleDate, string warehouseCode)
+        {
+            var DailyBalanceInfo = DailyBalanceService.GetInfoDetails(page, rows, settleDate, warehouseCode);
+            return Json(DailyBalanceInfo, "text", JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

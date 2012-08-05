@@ -7,6 +7,8 @@ using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.Bll.Models;
+using THOK.Wms.SignalR;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -16,6 +18,14 @@ namespace THOK.Wms.Bll.Service
         public IProfitLossBillDetailRepository ProfitLossBillDetailRepository { get; set; }
         [Dependency]
         public IUnitRepository UnitRepository { get; set; }
+        [Dependency]
+        public ICellRepository CellRepository { get; set; }
+        [Dependency]
+        public IProductRepository ProductRepository { get; set; }
+        [Dependency]
+        public IStorageLocker Locker { get; set; }
+        [Dependency]
+        public IStorageRepository StorageRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -23,6 +33,8 @@ namespace THOK.Wms.Bll.Service
         }
 
         #region IProfitLossBillDetailService 成员
+
+        public string resultStr = "";//错误信息字符串
 
         /// <summary>
         /// 查询损益细单信息
@@ -62,23 +74,84 @@ namespace THOK.Wms.Bll.Service
         /// </summary>
         /// <param name="profitLossBillDetail">损益单细表</param>
         /// <returns></returns>
-        public new bool Add(ProfitLossBillDetail profitLossBillDetail)
+        public new bool Add(ProfitLossBillDetail profitLossBillDetail, out string strResult)
         {
+            bool result=false;
             IQueryable<ProfitLossBillDetail> profitLossBillDetailQuery = ProfitLossBillDetailRepository.GetQueryable();
             var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == profitLossBillDetail.UnitCode);
-            var pbd = new ProfitLossBillDetail();
-            pbd.BillNo = profitLossBillDetail.BillNo;
-            pbd.CellCode = profitLossBillDetail.CellCode;
-            pbd.StorageCode = profitLossBillDetail.StorageCode;
-            pbd.ProductCode = profitLossBillDetail.ProductCode;
-            pbd.UnitCode = profitLossBillDetail.UnitCode;
-            pbd.Price = profitLossBillDetail.Price;
-            pbd.Quantity = profitLossBillDetail.Quantity * unit.Count;
-            pbd.Description = profitLossBillDetail.Description;
+            var cell=CellRepository.GetQueryable().FirstOrDefault(c=>c.CellCode==profitLossBillDetail.CellCode);
+            var product=ProductRepository.GetQueryable().FirstOrDefault(p=>p.ProductCode==profitLossBillDetail.ProductCode);
+            var storage = StorageRepository.GetQueryable().FirstOrDefault(s=>s.StorageCode==profitLossBillDetail.StorageCode);
+            if (Locker.LockNoEmptyStorage(storage, product)!=null)
+            {
+                if (IsQuntityRight(profitLossBillDetail.Quantity*unit.Count,storage.InFrozenQuantity,storage.OutFrozenQuantity,cell.MaxQuantity*unit.Count,storage.Quantity))
+                {
+                    var pbd = new ProfitLossBillDetail();
+                    pbd.BillNo = profitLossBillDetail.BillNo;
+                    pbd.CellCode = profitLossBillDetail.CellCode;
+                    pbd.StorageCode = profitLossBillDetail.StorageCode;
+                    pbd.ProductCode = profitLossBillDetail.ProductCode;
+                    pbd.UnitCode = profitLossBillDetail.UnitCode;
+                    pbd.Price = profitLossBillDetail.Price;
+                    pbd.Quantity = profitLossBillDetail.Quantity * unit.Count;
+                    pbd.Description = profitLossBillDetail.Description;
+                    if (profitLossBillDetail.Quantity > 0)
+                    {
+                        storage.InFrozenQuantity += profitLossBillDetail.Quantity * unit.Count;
+                    }
+                    else
+                    {
+                        storage.OutFrozenQuantity += Math.Abs(profitLossBillDetail.Quantity * unit.Count);
+                    }
 
-            ProfitLossBillDetailRepository.Add(pbd);
-            ProfitLossBillDetailRepository.SaveChanges();
-            return true;
+                    ProfitLossBillDetailRepository.Add(pbd);
+                    ProfitLossBillDetailRepository.SaveChanges();
+                    storage.LockTag = string.Empty;
+                    StorageRepository.SaveChanges();
+                    result = true;
+                }                
+            }
+            strResult = resultStr==""?"该库存的当前库存-出库冻结量小于0或者已经处于编辑状态！":resultStr;
+            return result;
+        }
+
+        /// <summary>
+        /// 判断输入的损益数量是否是合理的数量
+        /// </summary>
+        /// <param name="inputQuantity">用户输入的数量可以是正的也可以是负的</param>
+        /// <param name="inFrozenQuantity">当前库存的入库冻结量</param>
+        /// <param name="outFrozenQuantity">当前库存的出库冻结量</param>
+        /// <param name="maxQuantity">当前货位的最大存储量</param>
+        /// <param name="currentQuantity">当前货位的库存数量</param>
+        /// <returns></returns>
+        public bool IsQuntityRight(decimal inputQuantity,decimal inFrozenQuantity,decimal outFrozenQuantity,decimal maxQuantity,decimal currentQuantity)
+        {
+            bool result = false;
+            if (inputQuantity > 0)
+            {
+                if (inputQuantity <= (maxQuantity - inFrozenQuantity - currentQuantity))
+                {
+                    result = true;
+                }
+                else
+                {
+                    resultStr = "入库的数量必须小于或等于[货位最大量-（当前货位库存+入库冻结量）]";
+                    return result;
+                }
+            }
+            else if (inputQuantity<0)
+            {
+                if (Math.Abs(inputQuantity) <= (currentQuantity - outFrozenQuantity))
+                {
+                    result = true;
+                }
+                else
+                {
+                    resultStr = "出库数量必须小于或等于[当前库存量-出库冻结量]";
+                    return result;
+                }
+            }            
+            return result;
         }
 
         /// <summary>

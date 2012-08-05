@@ -124,9 +124,10 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
         [HttpPost]
         public ActionResult ProfitLossBillDetailCreate(ProfitLossBillDetail profitLossBillDetail)
         {
-            bool bResult = ProfitLossBillDetailService.Add(profitLossBillDetail);
+            string strResult = string.Empty;
+            bool bResult = ProfitLossBillDetailService.Add(profitLossBillDetail, out strResult);
             string msg = bResult ? "新增成功" : "新增失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
         //

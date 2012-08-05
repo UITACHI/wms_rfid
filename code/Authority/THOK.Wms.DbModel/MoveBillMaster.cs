@@ -7,6 +7,10 @@ namespace THOK.Wms.DbModel
 {
    public class MoveBillMaster
     {
+       public MoveBillMaster()
+       {
+           this.MoveBillDetails = new List<MoveBillDetail>();
+       }
         public string BillNo { get; set; }
         public DateTime BillDate { get; set; }
         public string BillTypeCode { get; set; }

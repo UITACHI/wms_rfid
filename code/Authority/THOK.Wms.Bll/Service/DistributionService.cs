@@ -50,7 +50,7 @@ namespace THOK.Wms.Bll.Service
                 }
 
                 storages = storageQuery.ToList().Where(s => (ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode)) && s.Quantity > 0 && s.IsLock == "0")
-                                       .Select(s => new
+                                       .OrderBy(s => s.Product.ProductCode).AsEnumerable().Select(s => new
                                        {
                                            s.StorageCode,
                                            s.Cell.CellCode,

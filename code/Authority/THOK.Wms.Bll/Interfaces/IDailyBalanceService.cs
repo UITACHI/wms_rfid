@@ -8,7 +8,7 @@ namespace THOK.Wms.Bll.Interfaces
 {
     public interface IDailyBalanceService : IService<DailyBalance>
     {
-        object GetDetails(int page, int rows);
-        object MXGetDetails(int page, int rows, string date);
+        object GetDetails(int page, int rows, string beginDate, string endDate, string warehouseCode);
+        object GetInfoDetails(int page, int rows, string settleDate, string warehouseCode);
     }
 }

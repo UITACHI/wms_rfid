@@ -220,7 +220,7 @@ namespace THOK.Wms.Bll.Service
                 {
                     newcode = "0" + newcode;
                 }
-                billNo = System.DateTime.Now.ToString("yyMMdd") + newcode + "MO";
+                billNo = System.DateTime.Now.ToString("yyMMdd") + newcode + "PL";
             }
             var findBillInfo = new
             {
@@ -242,16 +242,54 @@ namespace THOK.Wms.Bll.Service
         public bool Audit(string BillNo, string userName)
         {
             bool result = false;
-            var mbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
+            var pbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            if (mbm != null)
+            if (pbm != null)
             {
-                mbm.Status = "2";
-                mbm.VerifyDate = DateTime.Now;
-                mbm.UpdateTime = DateTime.Now;
-                mbm.VerifyPersonID = employee.ID;
+                pbm.Status = "2";
+                pbm.VerifyDate = DateTime.Now;
+                pbm.UpdateTime = DateTime.Now;
+                pbm.VerifyPersonID = employee.ID;
                 ProfitLossBillMasterRepository.SaveChanges();
                 result = true;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region IProfitLossBillMasterService 成员
+
+
+        /// <summary>
+        /// 对损益主单进行加锁
+        /// </summary>
+        /// <param name="BillNo">损益单号</param>
+        /// <param name="strResult">提示信息文本</param>
+        /// <returns></returns>
+        public bool LockBillMaster(string BillNo, out string strResult)
+        {
+            bool result = false;
+            strResult = "";
+            var pbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(p => p.BillNo == BillNo && p.Status == "1");
+            if (pbm != null)
+            {
+                if (string.IsNullOrEmpty(pbm.LockTag))
+                {
+                    pbm.LockTag = BillNo;
+                    ProfitLossBillMasterRepository.SaveChanges();
+                    result = true;
+                }
+                else
+                {
+                    strResult = "当前订单其他人正在操作，请稍候重试！";
+                    result = false;
+                }
+            }
+            else
+            {
+                strResult = "当前单据的状态不是已录入状态或者该单据已被删除无法编辑，请刷新页面！";
+                result = false;
             }
             return result;
         }
