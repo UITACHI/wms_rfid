@@ -87,7 +87,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                     //添加出库单细单
                     foreach (var product in item.Products.ToArray())
                     {
-                        AddOutBillDetail(outBill, product.ProductCode, product.SumQuantity, product.Price);
+                        AddOutBillDetail(outBill, product.ProductCode, product.SumQuantity, product.Price,product.UnitCode);
                     }
                     OutBillDetailRepository.SaveChanges();
                 }
@@ -116,7 +116,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                 foreach (var sortDisp in sortDispTemp.ToArray())
                 {
                     sortDisp.SortWorkDispatchID = sortWorkDisp.ID;
-                    sortDisp.WorkStatus = "2";
+                    sortDisp.WorkStatus = "3";
                     SortOrderDispatchRepository.SaveChanges();
                 }
             }
@@ -230,15 +230,16 @@ namespace THOK.Wms.SignalR.Dispatch.Service
         }
 
         //添加出库单细单
-        public void AddOutBillDetail(string outBill, string productCode, decimal quantity, decimal price)
+        public void AddOutBillDetail(string outBill, string productCode, decimal quantity, decimal price,string unitCode)
         {
             var outbd = new OutBillDetail();
             var product = ProductRepository.GetQueryable().FirstOrDefault(u => u.ProductCode == productCode);
+            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == unitCode);
             outbd.BillNo = outBill;
             outbd.ProductCode = productCode;
             outbd.UnitCode = product.UnitCode;
             outbd.Price = price;
-            outbd.BillQuantity = quantity * product.Unit.Count;
+            outbd.BillQuantity = quantity * unit.Count;
             outbd.AllotQuantity = 0;
             outbd.RealQuantity = 0;
             outbd.Description = "分拣产生出库细单";
