@@ -54,8 +54,8 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             IQueryable<MoveBillMaster> moveBillMasterQuery = MoveBillMasterRepository.GetQueryable();
             IQueryable<MoveBillDetail> moveBillDetailQuery = MoveBillDetailRepository.GetQueryable();
             IQueryable<SortingLowerlimit> SortingLowerlimitQuery = SortingLowerlimitRepository.GetQueryable();
-            IQueryable<SortingLine> SortingLineQuery = SortingLineRepository.GetQueryable();
-            IQueryable<SortWorkDispatch> SortWorkDispatchQuery = SortWorkDispatchRepository.GetQueryable();
+            IQueryable<SortingLine> sortingLineQuery = SortingLineRepository.GetQueryable();
+            IQueryable<SortWorkDispatch> sortWorkDispatchQuery = SortWorkDispatchRepository.GetQueryable();
 
             workDispatchId = workDispatchId.Substring(0, workDispatchId.Length - 1);
             int[] work = workDispatchId.Split(',').Select(s => Convert.ToInt32(s)).ToArray();
@@ -78,18 +78,18 @@ namespace THOK.Wms.SignalR.Dispatch.Service
 
             foreach (var item in temp.ToArray())
             {
+                string outBill = GenOutBillNo("long").ToString();
+                string moveBill = GenMoveBillNo("long").ToString();
                 if (item.Products != null)
                 {
-                    string outBill = GenOutBillNo("long").ToString();
-                    string moveBill = GenMoveBillNo("long").ToString();
+                    //添加出库、移库主单和作业调度表
                     AddBillMaster(outBill, moveBill, item.SortingLineCode, item.OrderDate);
                     //添加出库单细单
                     foreach (var product in item.Products.ToArray())
                     {
-                        AddOutBillDetail(outBill,product.ProductCode, product.SumQuantity, product.Price);
+                        AddOutBillDetail(outBill, product.ProductCode, product.SumQuantity, product.Price);
                     }
                     OutBillDetailRepository.SaveChanges();
-
                 }
 
                 //var outBillDetails = outBillDetailQuery.Where(o => o.BillNo == outBill);
@@ -109,6 +109,16 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                 //    MoveBillDetailRepository.Add(moveBillDetail);
                 //    MoveBillDetailRepository.SaveChanges();
                 //}
+
+                //修改线路调度作业状态和作业ID
+                var sortDispTemp = sortOrderDispatchQuery.Where(s => work.Any(w => w == s.ID) && s.OrderDate == item.OrderDate && s.SortingLineCode == item.SortingLineCode);
+                var sortWorkDisp = sortWorkDispatchQuery.FirstOrDefault(s => s.MoveBillNo == moveBill && s.OutBillNo == outBill);
+                foreach (var sortDisp in sortDispTemp.ToArray())
+                {
+                    sortDisp.SortWorkDispatchID = sortWorkDisp.ID;
+                    sortDisp.WorkStatus = "2";
+                    SortOrderDispatchRepository.SaveChanges();
+                }
             }
         }
 

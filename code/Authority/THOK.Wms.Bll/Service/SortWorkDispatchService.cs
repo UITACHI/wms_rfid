@@ -13,7 +13,16 @@ namespace THOK.Wms.Bll.Service
     {
         [Dependency]
         public ISortWorkDispatchRepository SortWorkDispatchRepository { get; set; }
-
+        [Dependency]
+        public IOutBillMasterRepository OutBillMasterRepository { get; set; }
+        [Dependency]
+        public IOutBillDetailRepository OutBillDetailRepository { get; set; }
+        [Dependency]
+        public IMoveBillMasterRepository MoveBillMasterRepository { get; set; }
+        [Dependency]
+        public IMoveBillDetailRepository MoveBillDetailRepository { get; set; }
+        [Dependency]
+        public ISortOrderDispatchRepository SortOrderDispatchRepository { get; set; }
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -39,17 +48,18 @@ namespace THOK.Wms.Bll.Service
             return statusStr;
         }
 
-        public object GetDetails(int page, int rows, string OrderDate, string SortingLineName, string DispatchStatus)
+        public object GetDetails(int page, int rows, string OrderDate, string SortingLineCode, string DispatchStatus)
         {
             IQueryable<SortWorkDispatch> SortWorkDispatchQuery = SortWorkDispatchRepository.GetQueryable();
             var sortWorkDispatch = SortWorkDispatchQuery.Where(s => s.SortingLineCode == s.SortingLineCode);
             if (OrderDate != string.Empty && OrderDate != null)
             {
-                sortWorkDispatch = sortWorkDispatch.Where(s => s.OrderDate.Contains(OrderDate));
+                OrderDate = Convert.ToDateTime(OrderDate).ToString("yyyyMMdd");
+                sortWorkDispatch = sortWorkDispatch.Where(s => s.OrderDate == OrderDate);
             }
-            if (SortingLineName != string.Empty && SortingLineName != null)
+            if (SortingLineCode != string.Empty && SortingLineCode != null)
             {
-                sortWorkDispatch = sortWorkDispatch.Where(s => s.SortingLine.SortingLineName.Contains(SortingLineName));
+                sortWorkDispatch = sortWorkDispatch.Where(s => s.SortingLineCode == SortingLineCode);
             }
             if (DispatchStatus != string.Empty && DispatchStatus != null)
             {
@@ -81,7 +91,28 @@ namespace THOK.Wms.Bll.Service
 
         public bool Delete(string id)
         {
-            throw new NotImplementedException();
+            Guid ID = new Guid(id);
+            var sortOrderDispatch = SortWorkDispatchRepository.GetQueryable()
+               .FirstOrDefault(s => s.ID == ID);
+            if (sortOrderDispatch != null)
+            {
+                Del(OutBillDetailRepository, sortOrderDispatch.OutBillMaster.OutBillDetails);//删除出库细单
+                OutBillMasterRepository.Delete(sortOrderDispatch.OutBillMaster);//删除出库主单
+                Del(MoveBillDetailRepository, sortOrderDispatch.MoveBillMaster.MoveBillDetails);//删除移库细单
+                MoveBillMasterRepository.Delete(sortOrderDispatch.MoveBillMaster);//删除移库主单
+                //修改线路调度表中作业状态
+                var sortDisp = SortOrderDispatchRepository.GetQueryable().Where(s => s.SortWorkDispatchID == sortOrderDispatch.ID);
+                foreach (var item in sortDisp.ToArray())
+                {
+                    item.WorkStatus = "1";
+                    SortOrderDispatchRepository.SaveChanges();
+                }
+                SortWorkDispatchRepository.Delete(sortOrderDispatch);
+                SortWorkDispatchRepository.SaveChanges();
+            }
+            else
+                return false;
+            return true;
         }
 
         public bool Save(SortWorkDispatch sortWorkDisp)

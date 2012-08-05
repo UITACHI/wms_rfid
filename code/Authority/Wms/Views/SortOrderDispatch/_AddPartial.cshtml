@@ -3,6 +3,7 @@
     function addClick() {
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#sortingOrderAllot').datagrid({ url: '/SortingOrder/GetOrderMaster/' }); //加载线路分配信息
+        $('#lineCode').combobox({ url: '/SortingLine/GetSortLine/',width:120 }); //加载分拣线信息        
         $('#checkQuantitySum').text(0);
         $('#orderDate').datebox('setValue', "");
         delet = "";
@@ -47,14 +48,14 @@
                                 msg: json.msg
                             });
                             $('#dlg').dialog('close');
-                            $('#details').datagrid('load');
+                            $('#details').datagrid('reload');
                         } else {
                             $.messager.show({
                                 title: '错误',
                                 msg: json.msg
                             });
                             $('#dlg').dialog('close');
-                            $('#details').datagrid('load');
+                            $('#details').datagrid('reload');
                         }
                     }
                 });
@@ -68,9 +69,11 @@
 
     $(function () {
         $('#sortingOrderAllot').datagrid({
+            //onCheckAll：function () {
             onClickRow: function () {
                 var quantitySum = 0;
                 var rows = $('#sortingOrderAllot').datagrid('getSelections');
+                //var rows = $('#sortingOrderAllot').datagrid('getChecked');
                 if (rows.length > 0) {
                     for (var i = 0; i < rows.length; i++) {
                         quantitySum = parseInt(quantitySum) + rows[i].QuantitySum;
@@ -110,8 +113,9 @@
 <div id="bar" style="width: auto; height: auto; background-color: #FFFFFF;padding:1px 10px;" >时间:
     <input id="orderDate" class="easyui-datebox" type="text" style="width: 140px"/>
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="allot()">查询</a>
-    分拣线：<input class="easyui-combobox" name="language" url="/SortingLine/GetSortLine/" id="lineCode"
-            valueField="SortingLineCode" textField="SortingLineName" multiple="true" panelHeight="auto" />
+    分拣线：<input class="easyui-combobox" name="language" url="" id="lineCode"
+            valueField="SortingLineCode" textField="SortingLineName" 
+             panelHeight="auto" />
 </div>
 <div id="dlg-buttons">
 <table style="width:300px;">
