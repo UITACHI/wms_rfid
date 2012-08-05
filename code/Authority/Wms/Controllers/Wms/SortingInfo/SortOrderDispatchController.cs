@@ -34,9 +34,7 @@ namespace Wms.Controllers.Wms.SortingInfo
         {
             string SortingLineCode = collection["SortingLineCode"] ?? "";
             string OrderDate = collection["OrderDate"] ?? "";
-            string DeliverLineCode = collection["DeliverLineCode"] ?? "";
-            string IsActive = collection["IsActive"] ?? "";
-            var sortOrder = SortOrderDispatchService.GetDetails(page, rows, SortingLineCode, OrderDate, DeliverLineCode);
+            var sortOrder = SortOrderDispatchService.GetDetails(page, rows,OrderDate,SortingLineCode);
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 
