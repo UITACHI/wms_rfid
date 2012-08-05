@@ -1,10 +1,6 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $('#IsActive').combo({
-            editable: false,
-            panelHeight: 45
-        });
-        $('#SortingLineType').combo({
+        $('#DispatchStatus').combo({
             editable: false,
             panelHeight: 45
         });
@@ -13,14 +9,30 @@
     function searchClick() {
         $('#searchdlg').dialog('open').dialog('setTitle', '查询');
         $('#searchfm').form('clear');
+
+        $('#SortingLineCode').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/SortingLine/Details/?page=1&rows=20',
+            idField: 'SortingLineCode',
+            textField: 'SortingLineName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+					{ field: 'SortingLineCode', title: '分拣线编码', align: 'left', width: 40 },
+					{ field: 'SortingLineName', title: '分拣线名称', align: 'left', width: 40 },
+                    { field: 'SortingLineType', title: '分拣线类型', align: 'left', width: 20 },
+					{ field: 'IsActive', title: '是否可用', align: 'left', width: 20 }
+				]]
+        });
     };
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.sortingLineCode = $('#SortingLineCode').val();
-        queryParams.sortingLineName = $('#SortingLineName').val();
-        queryParams.SortingLineType = $('#SortingLineType').combo('getValue');
-        queryParams.IsActive = $('#IsActive').combo('getValue');
+        queryParams.SortingLineCode = $('#SortingLineCode').combogrid('getValue');
+        queryParams.OrderDate = $('#searchOrderDate').datebox('getValue');
+        queryParams.DispatchStatus = $('#DispatchStatus').combo('getValue'); ;
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -31,36 +43,30 @@
     }
 
 </script>
-    <div id="searchdlg" class="easyui-dialog" modal="true"  style="width:300px;height:220px;"
+    <div id="searchdlg" class="easyui-dialog" modal="true"  style="width:300px;height:180px;"
         closed="true" buttons="#dlg-buttons">
 		<div class="easyui-layout" fit="true">
 			<div region="center" border="false" style="padding:10px 10px;border:1px solid #ccc; " >     
 	            <form id="searchfm" method="post" novalidate>
-                    <table width="260">
+                   <table width="260">
                      <tr>
-                        <td width="80" style="text-align:right">分拣线编码：</td>
-                        <td width="160"><input id="SortingLineCode" class="easyui-validatebox" /></td>
-                      </tr>
-                      <tr>
                         <td width="80" style="text-align:right">分拣线名称：</td>
-                        <td width="160"><input id="SortingLineName" class="easyui-validatebox" /></td>
+                        <td width="160"><input type="text" id="SortingLineCode" /></td>
                       </tr>
                       <tr>
-                        <td width="80" style="text-align:right">分拣线类型：</td>
-                         <td><select id="SortingLineType" class="easyui-combobox" style="width: 130px">
-		                        <option value="1">半自动分拣线</option>
-		                        <option value="2">全自动分拣线</option>
-	                        </select>
+                        <td width="80" style="text-align:right">订单日期：</td>
+                        <td>
+                        <input id="searchOrderDate" class="easyui-datebox" type="text" style="width: 130px"/>
 	                    </td>
                       </tr>
-                      <tr>
-                        <td width="80" style="text-align:right">是否启用：</td>
-                        <td><select  id="IsActive" class="easyui-combobox" style="width:80px">
-                                <option value="">请选择</option>
-		                        <option value="1">可用</option>
-		                        <option value="0">不可用</option>
-	                        </select>
-	                    </td>
+                       <tr>
+                        <td width="80" style="text-align:right">作业状态：</td>
+                        <td width="160">
+                        <select id="DispatchStatus" style="width: 130px;" class="easyui-combobox">
+                            <option selected="selected" value="2">调度中</option>
+                            <option value="3">已调度</option>
+                        </select>
+                        </td>
                       </tr>
                     </table>
 	            </form>

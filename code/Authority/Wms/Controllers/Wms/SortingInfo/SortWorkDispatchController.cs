@@ -36,9 +36,9 @@ namespace Authority.Controllers.Wms.SortingInfo
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string OrderDate = collection["OrderDate"] ?? "";
-            string SortingLineName = collection["SortingLineName"] ?? "";
+            string SortingLineCode = collection["SortingLineCode"] ?? "";
             string DispatchStatus = collection["DispatchStatus"] ?? "";
-            var sortOrder = SortWorkDispatchService.GetDetails(page, rows, OrderDate, SortingLineName,DispatchStatus);
+            var sortOrder = SortWorkDispatchService.GetDetails(page, rows, OrderDate, SortingLineCode, DispatchStatus);
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 
@@ -49,6 +49,15 @@ namespace Authority.Controllers.Wms.SortingInfo
             SortOrderWorkDispatchService.Dispatch(dispatchId);
             string msg = true ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(true, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /SortWorkDispatch/Delete/
+        public ActionResult Delete(string id)
+        {
+            bool bResult = SortWorkDispatchService.Delete(id);
+            string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }
 }
