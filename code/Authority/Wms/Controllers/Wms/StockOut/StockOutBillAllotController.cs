@@ -44,11 +44,19 @@ namespace Authority.Controllers.Wms.StockOut
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult AllotCancelConfirm(string billNo)
+        {
+            string strResult = string.Empty;
+            bool bResult = OutBillAllotService.AllotCancelConfirm(billNo,out strResult);
+            string msg = bResult ? "取消分配确认成功" : "取消分配确认失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult AllotCancel(string billNo)
         {
             string strResult = string.Empty;
-            bool bResult = OutBillAllotService.AllotCancel(billNo,out strResult);
-            string msg = bResult ? "取消分配确认成功" : "取消分配确认失败";
+            bool bResult = OutBillAllotService.AllotCancel(billNo, out strResult);
+            string msg = bResult ? "取消分配成功" : "取消分配失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
     }

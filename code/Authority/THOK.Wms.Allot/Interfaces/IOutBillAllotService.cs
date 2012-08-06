@@ -11,12 +11,14 @@ namespace THOK.Wms.Allot.Interfaces
     {
         object Search(string billNo, int page, int rows);
 
-        bool AllotCancel(string billNo, out string strResult);
+        bool AllotCancelConfirm(string billNo, out string strResult);
 
         bool AllotConfirm(string billNo, out string strResult);
 
         bool AllotDelete(string billNo, long id, out string strResult);
 
         bool AllotEdit(string billNo, long id, string cellCode, int allotQuantity, out string strResult);
+
+        bool AllotCancel(string billNo,out string strResult); 
     }
 }
