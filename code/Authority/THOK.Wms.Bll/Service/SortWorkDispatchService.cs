@@ -201,7 +201,7 @@ namespace THOK.Wms.Bll.Service
             var sortWork = SortWorkDispatchRepository.GetQueryable().FirstOrDefault(i => i.ID == ID);
             //using (var scope = new TransactionScope())
             //{
-            if (sortWork != null && sortWork.DispatchStatus != "4")
+            if (sortWork != null && sortWork.DispatchStatus == "3")
             {
                 try
                 {
@@ -213,24 +213,18 @@ namespace THOK.Wms.Bll.Service
                     var moveDetail = MoveBillDetailRepository.GetQueryable().Where(m => m.BillNo == sortWork.MoveBillNo && m.Status != "2");
                     foreach (var item in moveDetail.ToArray())
                     {
-                        if (Locker.LockNoEmptyStorage(item.OutStorage, item.Product) != null)//锁库存
+                        Storage InStorage = Locker.LockNoEmptyStorage(item.InStorage, item.Product);
+                        Storage OutStorage = Locker.LockNoEmptyStorage(item.OutStorage, item.Product);
+                        if (OutStorage != null && InStorage != null)//锁库存
                         {
+                            item.InStorage.InFrozenQuantity -= item.RealQuantity;
                             item.OutStorage.OutFrozenQuantity -= item.RealQuantity;
+                            item.InStorage.LockTag = string.Empty;
                             item.OutStorage.LockTag = string.Empty;
                         }
                         else
                         {
-                            errorInfo = "移出货位其他人员正在操作！无法结单！";
-                            return false;
-                        }
-                        if (Locker.LockNoEmptyStorage(item.InStorage, item.Product) != null)//锁库存
-                        {
-                            item.InStorage.InFrozenQuantity -= item.RealQuantity;
-                            item.InStorage.LockTag = string.Empty;
-                        }
-                        else
-                        {
-                            errorInfo = "移入货位其他人员正在操作！无法结单！";
+                            errorInfo = "分拣作业调度生成的移库单其他人员正在操作！无法结单！";
                             return false;
                         }
                     }

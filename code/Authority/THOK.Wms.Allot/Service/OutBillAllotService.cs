@@ -33,6 +33,8 @@ namespace THOK.Wms.Allot.Service
         public IMoveBillCreater MoveBillCreater { get; set; }
         [Dependency]
         public IMoveBillMasterRepository MoveBillMasterRepository { get; set; }
+        [Dependency]
+        public IStorageLocker Locker { get; set; } 
 
         protected override Type LogPrefix
         {
@@ -279,7 +281,7 @@ namespace THOK.Wms.Allot.Service
             return result;
         }
 
-        public bool AllotCancel(string billNo, out string strResult)
+        public bool AllotCancelConfirm(string billNo, out string strResult)
         {
             bool result = false;
             var ibm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo && i.Status == "4");
@@ -333,6 +335,64 @@ namespace THOK.Wms.Allot.Service
             return result;
         }
 
+        public bool AllotCancel(string billNo, out string strResult)
+        {
+            bool result = false;
+            var ibm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo && i.Status == "3");
+            if (ibm != null)
+            {
+                if (string.IsNullOrEmpty(ibm.LockTag))
+                {
+                    try
+                    {
+                        using (var scope = new TransactionScope())
+                        {
+                            var outAllot = OutBillAllotRepository.GetQueryable().Where(o => o.BillNo == ibm.BillNo);
+                            try
+                            {
+                                foreach (var item in outAllot.ToArray())
+                                {
+                                    if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
+                                    {
+                                        item.Storage.OutFrozenQuantity -= item.AllotQuantity;
+                                        item.Storage.LockTag = string.Empty;
+                                    }
+                                    OutBillAllotRepository.Delete(item);
+                                }
+                                OutBillAllotRepository.SaveChanges();
+                            }
+                            catch (Exception)
+                            {
+                                strResult = "当前货位其他人正在操作，请稍候重试！";
+                                return false;
+                            }
+
+                            ibm.Status = "2";
+                            ibm.UpdateTime = DateTime.Now;
+                            OutBillMasterRepository.SaveChanges();
+                            result = true;
+                            strResult = "取消成功";
+
+                            scope.Complete();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        strResult = "当前订单其他人正在操作，请稍候重试！";
+                    }
+                }
+                else
+                {
+                    strResult = "当前订单其他人正在操作，请稍候重试！";
+                }
+            }
+            else
+            {
+                strResult = "当前订单状态不是已分配，或当前订单不存在！";
+            }
+            return result;
+        }
+
         private Storage LockStorage(string billNo, Cell cell,Product product)
         {
             try
@@ -366,5 +426,6 @@ namespace THOK.Wms.Allot.Service
             CellRepository.SaveChanges();
             return storage;
         }
-    }
+
+       }
 }
