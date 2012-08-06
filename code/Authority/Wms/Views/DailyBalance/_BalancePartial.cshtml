@@ -1,7 +1,7 @@
 ﻿<script type="text/javascript">
 
     function balanceClick() {
-        $('#wareHouse').combogrid({
+        $('#wareHouse2').combogrid({
             required: true,
             disabled: false,
             width: 130,
@@ -14,8 +14,7 @@
             fitColumns: true,
             columns: [[
                     { field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
-                    { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 40 },
-                    { field: 'WarehouseType', title: '仓库类型', align: 'left', width: 30 },
+                    { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 30 },
                     { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
                 ]]
         });
@@ -23,7 +22,12 @@
     };
 
     function DailyBalance() {
-        
+        var settleDate = $('#SettleDate').datebox('getValue');
+        var warehouseCode = $('#wareHouse2').combo('getValue');
+        url = '/DailyBalance/DoDailyBalance/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate;
+//        $('#infos2').datagrid({ url: '/DailyBalance/DailyBalanceInfos/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate });
+//        $('#InfoDetails2').dialog('open').dialog('setTitle', '日结明细'); 
+
     }
 
 </script>
@@ -36,12 +40,12 @@
               <tr style="padding-top:10px;">
                 <td width="60" style="padding-top:5px;padding-left:15px">仓库:</td>
                 <td align="left">      
-		            <input type="text" id="wareHouse"/>
+		            <input type="text" id="wareHouse2"/>
 	            </td>
               </tr>
               <tr>
                 <td width="60" style="padding-top:5px;padding-left:15px">日结日期:</td>
-                <td style="padding-top:5px" align="left"><input class="easyui-datebox" style="width:130px" required="true"></td>
+                <td style="padding-top:5px" align="left"><input id ="SettleDate" class="easyui-datebox" style="width:130px" required="true"/></td>
               </tr>
 
             </table>
@@ -52,3 +56,4 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="DailyBalance()">日结</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-Daily').dialog('close')">取消</a>
 </div>
+@Html.Partial("__Detail2")
