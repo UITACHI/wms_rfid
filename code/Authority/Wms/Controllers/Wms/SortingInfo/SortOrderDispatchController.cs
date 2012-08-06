@@ -40,9 +40,9 @@ namespace Wms.Controllers.Wms.SortingInfo
 
         //查询未作业的线路调度数据
         // GET: /SortOrderDispatch/GetWorkStatus/
-        public ActionResult GetWorkStatus(string workStatus)
+        public ActionResult GetWorkStatus()
         {
-            var sortOrder = SortOrderDispatchService.GetWorkStatus(workStatus);
+            var sortOrder = SortOrderDispatchService.GetWorkStatus();
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 

@@ -104,14 +104,10 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
         
-        public object GetWorkStatus(string WorkStatus)
+        public object GetWorkStatus()
         {
             IQueryable<SortOrderDispatch> sortDispatchQuery = SortOrderDispatchRepository.GetQueryable();
-            var sortDispatch = sortDispatchQuery.Where(s => s.SortingLineCode == s.SortingLineCode);
-            if (WorkStatus != string.Empty && WorkStatus != null)
-            {
-                sortDispatch = sortDispatch.Where(s => s.WorkStatus == WorkStatus);
-            }
+            var sortDispatch = sortDispatchQuery.Where(s => s.WorkStatus == "1");
             var temp = sortDispatch.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
             {
                 b.ID,

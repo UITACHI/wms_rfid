@@ -85,13 +85,13 @@ namespace THOK.Wms.SignalR.Common
             string[] areaTypes = new string[] { "1" };
             var ss = storages.Where(s => areaTypes.Any(a => a == s.Cell.Area.AreaType)
                                             && ((s.Quantity - s.OutFrozenQuantity) / s.Product.Unit.Count) > 1);
-            if (ss.Count() > 0) { return true; }
+            if (ss.Count() > 0 && storageQuery.Where(s=>s.Cell.Area.AreaType == "2").Count() > 0) { return true; }
 
             //主库区件烟库区条烟移到条烟区
             areaTypes = new string[] { "1", "2" };
             ss = storages.Where(s => areaTypes.Any(a => a == s.Cell.Area.AreaType)
                                         && (s.Quantity - s.OutFrozenQuantity) % s.Product.Unit.Count > 0);
-            if (ss.Count() > 0) { return true; }
+            if (ss.Count() > 0 && storageQuery.Where(s => s.Cell.Area.AreaType == "3").Count() > 0) { return true; }
 
             return false;
         }

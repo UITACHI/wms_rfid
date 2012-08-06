@@ -1,25 +1,24 @@
 ﻿<script type="text/javascript">
     var url;
     function formatAction(value, row, index) {
-        var e = '<a href="#" onclick="DailyDetail()">日结明细</a> <a href="#"  onclick="BalanceAgain()">重新日结</a>';
+        var e = '<a href="#" onclick="DailyDetail(' + index + ')">日结明细</a> <a href="#"  onclick="BalanceAgain()">重新日结</a>';
         return e
     }
-    function DailyDetail() {
+    function DailyDetail(index) {
         var row = $('#details').datagrid('getSelected');
-       
-        $('#infoDetail').dialog('open').dialog('setTitle', '日结明细');
-        $('#infoDetails').datagrid({ url: '/DailyBalance/InfoDetails/?settleDate=' + row.SettleDate + '&&WarehouseCode=' + row.WarehouseCode });
-        $("#infoDetails").datagrid('reload');
-
+        if (row) {
+            $('#infos').datagrid({ url: '/DailyBalance/InfoDetails/?WarehouseCode=' + row.WarehouseCode + '&&SettleDate=' + row.SettleDate });           
+            $('#InfoDetails').dialog('open').dialog('setTitle', '日结产品明细');
+        }
     }
-    function BalanceAgain() {
-        var row = $('#details').datagrid('getSelected');
+//    function BalanceAgain() {
+//        var row = $('#details').datagrid('getSelected');
 
-        $('#infoDetail').dialog('open').dialog('setTitle', '日结明细');
-        $('#infoDetails').datagrid({ url: '/DailyBalance/InfoDetails/?date=' + row.SettleDate });
-        $("#infoDetails").datagrid('reload');
+//        $('#infoDetail').dialog('open').dialog('setTitle', '日结明细');
+//        $('#infoDetails').datagrid({ url: '/DailyBalance/InfoDetails/?date=' + row.SettleDate });
+//        $("#infoDetails").datagrid('reload');
 
-    }
+//    }
 </script>
 
     <div region="center" split="true" border="false">    
@@ -37,7 +36,7 @@
                 <th field="ProfitAmount" width="80">报益总量</th>
                 <th field="Ending" width="80">日结量</th>
                 <th field="detail" width="80"  align="center" formatter="formatAction">操作</th>
-
+            </tr>
         </thead>
     </table>
   </div>

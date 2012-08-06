@@ -23,8 +23,10 @@ namespace Authority.Controllers.Wms.SortingInfo
         {
             ViewBag.hasSearch = true;
             ViewBag.hasAdd = true;
-            ViewBag.hasEdit = true;
             ViewBag.hasDelete = true;
+            ViewBag.hasAudit = true;
+            ViewBag.hasAntiTrial = true;
+            ViewBag.hasSettle = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;

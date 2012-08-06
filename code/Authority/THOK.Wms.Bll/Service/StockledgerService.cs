@@ -119,8 +119,8 @@ namespace THOK.Wms.Bll.Service
             });
             if (!settleDate.Equals(string.Empty))
             {
-                DateTime begin = Convert.ToDateTime(settleDate);
-                query = query.Where(i => Convert.ToDateTime(i.BillDate) == begin);
+                DateTime date = Convert.ToDateTime(settleDate);
+                query = query.Where(i => Convert.ToDateTime(i.BillDate) == date);
             }
             int total = query.Count();
             query = query.Skip((page - 1) * rows).Take(rows);
