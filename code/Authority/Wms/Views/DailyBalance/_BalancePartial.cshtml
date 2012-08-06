@@ -24,7 +24,16 @@
     function DailyBalance() {
         var settleDate = $('#SettleDate').datebox('getValue');
         var warehouseCode = $('#wareHouse2').combo('getValue');
-        url = '/DailyBalance/DoDailyBalance/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate;
+        alert(settleDate);
+        alert(warehouseCode);
+//        url = '/DailyBalance/DoDailyBalance/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate;
+        $.getJSON("/DailyBalance/DoDailyBalance/", function (json) {
+            if (json) {
+                url = '/DailyBalance/DoDailyBalance/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate; ;
+            } else {
+                $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+            }
+        });
 //        $('#infos2').datagrid({ url: '/DailyBalance/DailyBalanceInfos/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate });
 //        $('#InfoDetails2').dialog('open').dialog('setTitle', '日结明细'); 
 
