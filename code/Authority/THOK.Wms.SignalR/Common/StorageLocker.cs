@@ -258,6 +258,10 @@ namespace THOK.Wms.SignalR.Common
                         storage = null;
                     }
                 }
+                else
+                {
+                    storage = null;
+                }
             }
             else
             {

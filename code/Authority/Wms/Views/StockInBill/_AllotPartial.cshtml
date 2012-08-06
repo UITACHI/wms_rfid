@@ -103,6 +103,25 @@
     function cancelConfirm() {
         var j_waitDialog = ShowWaitMessageDialog();
         $.ajax({
+            url: "/StockInBillAllot/AllotCancelConfirm/", type: "GET", dataType: "text",
+            data: { billNo: billNo },
+            complete: function () { HideWaitMessageDialog(j_waitDialog); },
+            success: function (responseText) {
+                var result = $.evalJSON(responseText);
+                if (result.success) {
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                }
+            }
+        });
+    }
+
+    // 取消分配
+    function cancelAllot() {
+        var j_waitDialog = ShowWaitMessageDialog();
+        $.ajax({
             url: "/StockInBillAllot/AllotCancel/", type: "GET", dataType: "text",
             data: { billNo: billNo },
             complete: function () { HideWaitMessageDialog(j_waitDialog); },

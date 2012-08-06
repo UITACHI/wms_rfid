@@ -303,6 +303,7 @@ namespace THOK.Wms.Bll.Service
             {
                 if (pbm != null)
                 {
+                    ChangeStorages(pbm);
                     pbm.Status = "2";
                     pbm.VerifyDate = DateTime.Now;
                     pbm.UpdateTime = DateTime.Now;
@@ -319,6 +320,32 @@ namespace THOK.Wms.Bll.Service
             }
             strResult = resultStr;
             return result;
+        }
+
+        /// <summary>
+        /// 批量修改库存信息
+        /// </summary>
+        /// <param name="profitLossBillMaster">损益主单</param>
+        public void ChangeStorages(ProfitLossBillMaster profitLossBillMaster)
+        {
+            if (profitLossBillMaster!=null)
+            {
+                foreach(var detail in profitLossBillMaster.ProfitLossBillDetails)
+                {
+                    var Storage = Locker.LockStorage(detail.Storage, detail.Product);
+                    if (detail.Quantity > 0)
+                    {
+                        Storage.InFrozenQuantity -= detail.Quantity;
+                        Storage.Quantity += detail.Quantity;
+                    }
+                    else
+                    {
+                        Storage.OutFrozenQuantity -= detail.Quantity;
+                        Storage.Quantity -=Math.Abs(detail.Quantity);
+                    }
+                    Storage.LockTag = string.Empty;
+                }
+            }
         }
 
         #endregion
