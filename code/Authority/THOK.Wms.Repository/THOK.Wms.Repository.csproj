@@ -185,6 +185,10 @@
     <Compile Include="Migrations\201208040800146_modify_out_move_master.Designer.cs">
       <DependentUpon>201208040800146_modify_out_move_master.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201208061103314_modify_ProfitLossBill_storage.cs" />
+    <Compile Include="Migrations\201208061103314_modify_ProfitLossBill_storage.Designer.cs">
+      <DependentUpon>201208061103314_modify_ProfitLossBill_storage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
