@@ -388,7 +388,7 @@ namespace THOK.Wms.Allot.Service
             }
             else
             {
-                strResult = "当前订单状态不是已确认，或当前订单不存在！";
+                strResult = "当前订单状态不是已分配，或当前订单不存在！";
             }
             return result;
         }
