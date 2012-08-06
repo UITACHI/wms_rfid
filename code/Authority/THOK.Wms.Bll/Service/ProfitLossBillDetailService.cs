@@ -170,7 +170,7 @@ namespace THOK.Wms.Bll.Service
             var storage = StorageRepository.GetQueryable().FirstOrDefault(s => s.StorageCode == pbd.StorageCode);
             if (pbd!=null)
             {
-                if (Locker.LockNoEmptyStorage(storage, product) != null)
+                if (Locker.LockStorage(storage, product) != null)
                 {
                     if (pbd.Quantity > 0)
                     {
@@ -209,7 +209,7 @@ namespace THOK.Wms.Bll.Service
             var cell = CellRepository.GetQueryable().FirstOrDefault(c => c.CellCode == profitLossBillDetail.CellCode);
             var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == pbd.ProductCode);
             var storage = StorageRepository.GetQueryable().FirstOrDefault(s => s.StorageCode == pbd.StorageCode);
-            if (Locker.LockNoEmptyStorage(storage, product)!=null)
+            if (Locker.LockStorage(storage, product)!=null)
             {
                 if (IsQuntityRight(profitLossBillDetail.Quantity * unit.Count, storage.InFrozenQuantity - Math.Abs(pbd.Quantity), storage.OutFrozenQuantity - Math.Abs(pbd.Quantity), cell.MaxQuantity * unit.Count, storage.Quantity))
                 {
