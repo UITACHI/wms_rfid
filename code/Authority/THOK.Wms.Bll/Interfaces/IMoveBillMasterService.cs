@@ -12,15 +12,15 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool Add(MoveBillMaster moveBillMaster, string userName);
 
-        bool Delete(string BillNo);
+        bool Delete(string BillNo, out string strResult);
 
-        bool Save(MoveBillMaster moveBillMaster);
+        bool Save(MoveBillMaster moveBillMaster, out string strResult);
 
         object GenMoveBillNo(string userName);
 
-        bool Audit(string BillNo, string userName);
+        bool Audit(string BillNo, string userName, out string strResult);
 
-        bool AntiTrial(string BillNo);
+        bool AntiTrial(string BillNo, out string strResult);
 
         object GetBillTypeDetail(string BillClass, string IsActive);
 
