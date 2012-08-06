@@ -6,6 +6,7 @@ using THOK.Wms.DbModel;
 using THOK.Wms.Bll.Interfaces;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -23,6 +24,11 @@ namespace THOK.Wms.Bll.Service
         public IMoveBillDetailRepository MoveBillDetailRepository { get; set; }
         [Dependency]
         public ISortOrderDispatchRepository SortOrderDispatchRepository { get; set; }
+        [Dependency]
+        public IEmployeeRepository EmployeeRepository { get; set; }
+        [Dependency]
+        public IStorageLocker Locker { get; set; } 
+
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -92,21 +98,31 @@ namespace THOK.Wms.Bll.Service
         public bool Delete(string id)
         {
             Guid ID = new Guid(id);
-            var sortOrderDispatch = SortWorkDispatchRepository.GetQueryable()
-               .FirstOrDefault(s => s.ID == ID);
+            var sortOrderDispatch = SortWorkDispatchRepository.GetQueryable().FirstOrDefault(s => s.ID == ID);            
             if (sortOrderDispatch != null)
             {
-                Del(OutBillDetailRepository, sortOrderDispatch.OutBillMaster.OutBillDetails);//删除出库细单
-                OutBillMasterRepository.Delete(sortOrderDispatch.OutBillMaster);//删除出库主单
+                //解锁移库冻结量
+                var moveDetail = MoveBillDetailRepository.GetQueryable().Where(m => m.BillNo == sortOrderDispatch.MoveBillNo);
+                if (moveDetail.Count() > 0)
+                {
+                    foreach (var item in moveDetail.ToArray())
+                    {
+                        item.OutStorage.OutFrozenQuantity -= item.RealQuantity;
+                        item.InStorage.InFrozenQuantity -= item.RealQuantity;
+                    }
+                }
+
                 Del(MoveBillDetailRepository, sortOrderDispatch.MoveBillMaster.MoveBillDetails);//删除移库细单
                 MoveBillMasterRepository.Delete(sortOrderDispatch.MoveBillMaster);//删除移库主单
+
+                Del(OutBillDetailRepository, sortOrderDispatch.OutBillMaster.OutBillDetails);//删除出库细单
+                OutBillMasterRepository.Delete(sortOrderDispatch.OutBillMaster);//删除出库主单
                 //修改线路调度表中作业状态
                 var sortDisp = SortOrderDispatchRepository.GetQueryable().Where(s => s.SortWorkDispatchID == sortOrderDispatch.ID);
                 foreach (var item in sortDisp.ToArray())
                 {
                     item.WorkStatus = "1";
                     item.SortWorkDispatchID = null;
-                    //SortOrderDispatchRepository.SaveChanges();
                 }               
                 SortWorkDispatchRepository.Delete(sortOrderDispatch);
                 SortWorkDispatchRepository.SaveChanges();
@@ -119,6 +135,124 @@ namespace THOK.Wms.Bll.Service
         public bool Save(SortWorkDispatch sortWorkDisp)
         {
             throw new NotImplementedException();
+        }
+        
+        public bool Audit(string id, string userName)
+        {
+            bool result = false;
+            Guid ID = new Guid(id);
+            var sortWork = SortWorkDispatchRepository.GetQueryable().FirstOrDefault(i => i.ID == ID);
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            if (employee != null)
+            {
+                if (sortWork != null && sortWork.DispatchStatus == "1")
+                {
+                    //出库审核
+                    var outMaster = OutBillMasterRepository.GetQueryable().FirstOrDefault(o => o.BillNo == sortWork.OutBillNo);                  
+                    outMaster.Status = "2";
+                    outMaster.VerifyPersonID = employee.ID;
+                    outMaster.VerifyDate = DateTime.Now;
+                    outMaster.UpdateTime = DateTime.Now;
+                    //移库审核
+                    var moveMater = MoveBillMasterRepository.GetQueryable().FirstOrDefault(m => m.BillNo == sortWork.MoveBillNo);
+                    moveMater.Status = "2";
+                    moveMater.VerifyPersonID = employee.ID;
+                    moveMater.VerifyDate = DateTime.Now;
+                    moveMater.UpdateTime = DateTime.Now;
+                    //分拣作业审核
+                    sortWork.DispatchStatus = "2";
+                    sortWork.UpdateTime = DateTime.Now;
+                    SortWorkDispatchRepository.SaveChanges();
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        public bool AntiTrial(string id)
+        {
+            bool result = false;
+            Guid ID = new Guid(id);
+            var sortWork = SortWorkDispatchRepository.GetQueryable().FirstOrDefault(i => i.ID == ID);
+            if (sortWork != null && sortWork.DispatchStatus == "2")
+            {
+                //出库审核
+                var outMaster = OutBillMasterRepository.GetQueryable().FirstOrDefault(o => o.BillNo == sortWork.OutBillNo);
+                outMaster.Status = "1";
+                outMaster.UpdateTime = DateTime.Now;
+                //移库审核
+                var moveMater = MoveBillMasterRepository.GetQueryable().FirstOrDefault(m => m.BillNo == sortWork.MoveBillNo);
+                moveMater.Status = "1";
+                moveMater.UpdateTime = DateTime.Now;
+                //分拣作业审核
+                sortWork.DispatchStatus = "1";
+                sortWork.UpdateTime = DateTime.Now;
+                SortWorkDispatchRepository.SaveChanges();
+                result = true;
+            }
+            return result;
+        }
+
+        public bool Settle(string id, out string errorInfo)
+        {
+            bool result = false;
+            Guid ID = new Guid(id);
+            errorInfo = string.Empty;
+            var sortWork = SortWorkDispatchRepository.GetQueryable().FirstOrDefault(i => i.ID == ID);
+            //using (var scope = new TransactionScope())
+            //{
+            if (sortWork != null && sortWork.DispatchStatus != "4")
+            {
+                try
+                {
+                    //出库结单
+                    var outMaster = OutBillMasterRepository.GetQueryable().FirstOrDefault(o => o.BillNo == sortWork.OutBillNo);
+                    outMaster.Status = "7";
+                    outMaster.UpdateTime = DateTime.Now;
+                    //移库细单解锁冻结量
+                    var moveDetail = MoveBillDetailRepository.GetQueryable().Where(m => m.BillNo == sortWork.MoveBillNo && m.Status != "2");
+                    foreach (var item in moveDetail.ToArray())
+                    {
+                        if (Locker.LockNoEmptyStorage(item.OutStorage, item.Product) != null)//锁库存
+                        {
+                            item.OutStorage.OutFrozenQuantity -= item.RealQuantity;
+                            item.OutStorage.LockTag = string.Empty;
+                        }
+                        else
+                        {
+                            errorInfo = "移出货位其他人员正在操作！无法结单！";
+                            return false;
+                        }
+                        if (Locker.LockNoEmptyStorage(item.InStorage, item.Product) != null)//锁库存
+                        {
+                            item.InStorage.InFrozenQuantity -= item.RealQuantity;
+                            item.InStorage.LockTag = string.Empty;
+                        }
+                        else
+                        {
+                            errorInfo = "移入货位其他人员正在操作！无法结单！";
+                            return false;
+                        }
+                    }
+
+                    //移库结单
+                    var moveMater = MoveBillMasterRepository.GetQueryable().FirstOrDefault(m => m.BillNo == sortWork.MoveBillNo);
+                    moveMater.Status = "5";
+                    moveMater.UpdateTime = DateTime.Now;
+                    //分拣作业结单
+                    sortWork.DispatchStatus = "4";
+                    sortWork.UpdateTime = DateTime.Now;
+                    SortWorkDispatchRepository.SaveChanges();
+                    result = true;
+                }
+                catch (Exception e)
+                {
+                    errorInfo = "结单失败！原因：" + e.Message;
+                }
+            }
+            // scope.Complete();
+            //   }
+            return result;
         }
 
         #endregion

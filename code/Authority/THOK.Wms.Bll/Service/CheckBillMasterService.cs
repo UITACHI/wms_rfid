@@ -7,6 +7,7 @@ using THOK.Wms.Bll.Interfaces;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
 using System.Transactions;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -28,7 +29,16 @@ namespace THOK.Wms.Bll.Service
         public IOutBillAllotRepository OutBillAllotRepository { get; set; }
         [Dependency]
         public IMoveBillDetailRepository MoveBillDetailRepository { get; set; }
+        [Dependency]
+        public IStorageLocker Locker { get; set; } 
 
+        [Dependency]
+        public IProfitLossBillMasterRepository ProfitLossBillMasterRepository { get; set; }
+        [Dependency]
+        public IProfitLossBillDetailRepository ProfitLossBillDetailRepository { get; set; }
+
+        [Dependency]
+        public IProfitLossBillMasterService ProfitLossBillMasterService { get; set; }
 
         protected override Type LogPrefix
         {
@@ -49,16 +59,13 @@ namespace THOK.Wms.Bll.Service
                     statusStr = "已审核";
                     break;
                 case "3":
-                    statusStr = "已分配";
-                    break;
-                case "4":
-                    statusStr = "已确认";
-                    break;
-                case "5":
                     statusStr = "执行中";
                     break;
-                case "6":
-                    statusStr = "已入库";
+                case "4":
+                    statusStr = "已盘点";
+                    break;
+                case "5":
+                    statusStr = "已确认";
                     break;
             }
             return statusStr;
@@ -800,19 +807,124 @@ namespace THOK.Wms.Bll.Service
         /// </summary>
         /// <param name="billNo">单据号</param>
         /// <returns></returns>
-        public bool confirmCheck(string billNo)
+        public bool confirmCheck(string billNo, string userName, out string errorInfo)
         {
             bool result = false;
+            errorInfo = string.Empty;
             var checkbm = CheckBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
-            if (checkbm != null && checkbm.Status == "4")
+            var checkDetail = CheckBillDetailRepository.GetQueryable().Where(c => c.BillNo == checkbm.BillNo 
+                                                                    && c.ProductCode == c.RealProductCode 
+                                                                    && c.Quantity != c.RealQuantity 
+                                                                    && c.Status == "2");
+            //using (var scope = new TransactionScope())
+            //{
+            try
             {
-                checkbm.Status = "5";
-                checkbm.VerifyDate = DateTime.Now;
-                checkbm.UpdateTime = DateTime.Now;
-                CheckBillMasterRepository.SaveChanges();
-                result = true;
+                if (checkDetail.Count() > 0)
+                {
+                    string billno = GenProfitLossBillNo(userName).ToString();
+                    //添加损益主表
+                    var pbm = new ProfitLossBillMaster();
+                    var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+                    if (employee != null)
+                    {
+                        pbm.BillNo = billno;
+                        pbm.BillDate = DateTime.Now;
+                        pbm.BillTypeCode = "5002";
+                        pbm.WarehouseCode = checkbm.WarehouseCode;
+                        pbm.OperatePersonID = employee.ID;
+                        pbm.Status = "1";
+                        pbm.IsActive = "1";
+                        pbm.UpdateTime = DateTime.Now;
+
+                        ProfitLossBillMasterRepository.Add(pbm);
+                        ProfitLossBillMasterRepository.SaveChanges();
+                    }
+
+                    //添加损益细表
+                    foreach (var item in checkDetail.ToArray())
+                    {
+                        decimal differQuantity = item.RealQuantity - item.Quantity;//损益数量
+                        if (Locker.LockNoEmptyStorage(item.Storage, item.Product) != null)//锁库存
+                        {
+                            var pbd = new ProfitLossBillDetail();
+                            pbd.BillNo = billno;
+                            pbd.CellCode = item.CellCode;
+                            pbd.StorageCode = item.StorageCode;
+                            pbd.ProductCode = item.ProductCode;
+                            pbd.UnitCode = item.UnitCode;
+                            pbd.Price = item.Product != null ? item.Product.CostPrice : 0;
+                            pbd.Quantity = differQuantity;
+
+                            if (differQuantity > 0)
+                            {
+                                item.Storage.InFrozenQuantity += differQuantity;
+                            }
+                            else
+                            {
+                                item.Storage.OutFrozenQuantity += Math.Abs(differQuantity);
+                            }
+                            ProfitLossBillDetailRepository.Add(pbd);
+                            item.Storage.LockTag = string.Empty;
+                            ProfitLossBillDetailRepository.SaveChanges();
+                        }
+                        //scope.Complete();
+                    }
+                }
+
+                var checkBillDetail = CheckBillDetailRepository.GetQueryable().Where(c => c.BillNo == checkbm.BillNo);//解锁盘点锁定
+                foreach (var item in checkBillDetail.ToArray())
+                {
+                    item.Storage.IsLock = "0";
+                }
+                if (checkbm != null && checkbm.Status == "4")
+                {
+                    checkbm.Status = "5";
+                    checkbm.VerifyDate = DateTime.Now;
+                    checkbm.UpdateTime = DateTime.Now;
+                    CheckBillMasterRepository.SaveChanges();
+                    result = true;
+                }
             }
+            catch (Exception e)
+            {
+                errorInfo = "确认盘点损益失败！原因：" + e.Message;
+            }
+            //    scope.Complete();
+            //}
             return result;
+        }
+
+        /// <summary>
+        /// 生成损益主单单号
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <returns></returns>
+        public object GenProfitLossBillNo(string userName)
+        {
+            IQueryable<ProfitLossBillMaster> profitLossBillMasterQuery = ProfitLossBillMasterRepository.GetQueryable();
+            string sysTime = System.DateTime.Now.ToString("yyMMdd");
+            string billNo = "";
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            var profitLossBillMaster = profitLossBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            if (profitLossBillMaster.Count() == 0)
+            {
+                billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "PL";
+            }
+            else
+            {
+                string billNoStr = profitLossBillMaster.Last(b => b.Contains(sysTime));
+                int i = Convert.ToInt32(billNoStr.ToString().Substring(6, 4));
+                i++;
+                string newcode = i.ToString();
+                for (int j = 0; j < 4 - i.ToString().Length; j++)
+                {
+                    newcode = "0" + newcode;
+                }
+                billNo = System.DateTime.Now.ToString("yyMMdd") + newcode + "PL";
+            }
+
+            return billNo;
         }
 
         #endregion
