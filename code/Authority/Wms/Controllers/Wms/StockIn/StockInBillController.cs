@@ -192,5 +192,16 @@ namespace Authority.Controllers.Wms.StockIn
             var product = InBillDetailService.GetProductDetails(page,rows,QueryString,Value);
             return Json(product, "text", JsonRequestBehavior.AllowGet);
         }
+
+        //
+        // POST: /InBillMaster/inBillMasterSettle/
+
+        public ActionResult inBillMasterSettle(string BillNo)
+        {
+            string strResult = string.Empty;
+            bool bResult = InBillMasterService.Settle(BillNo, out strResult);
+            string msg = bResult ? "结单成功" : "结单失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

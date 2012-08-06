@@ -6,6 +6,9 @@ using THOK.Wms.DbModel;
 using THOK.Wms.Bll.Interfaces;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
+using THOK.Wms.SignalR;
+using THOK.Wms.SignalR.Common;
+using System.Transactions;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -21,6 +24,10 @@ namespace THOK.Wms.Bll.Service
         public IEmployeeRepository EmployeeRepository { get; set; }
         [Dependency]
         public IInBillDetailRepository InBillDetailRepository { get; set; }
+        [Dependency]
+        public IInBillAllotRepository InBillAllotRepository { get; set; }
+        [Dependency]
+        public IStorageLocker Locker { get; set; }
 
         protected override Type LogPrefix
         {
@@ -51,6 +58,9 @@ namespace THOK.Wms.Bll.Service
                     break;
                 case "6":
                     statusStr = "已入库";
+                    break;
+                case "7":
+                    statusStr = "已结单";
                     break;
             }
             return statusStr;
@@ -307,6 +317,58 @@ namespace THOK.Wms.Bll.Service
                     UpdateTime = w.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
                 });
             return warehouse.ToArray();
+        }
+
+        #endregion
+
+        #region IInBillMasterService 成员
+
+        /// <summary>
+        /// 入库单结单
+        /// </summary>
+        /// <param name="BillNo">入库单号</param>
+        /// <param name="strResult">提示信息</param>
+        /// <returns></returns>
+        public bool Settle(string BillNo, out string strResult)
+        {
+            bool result = false;
+            strResult = string.Empty;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo);
+            if (ibm != null && ibm.Status == "5")
+            {
+                //using (var scope = new TransactionScope())
+                //{
+                try
+                {
+                    //修改分配入库冻结量
+                    var inAllot = InBillAllotRepository.GetQueryable().Where(o => o.BillNo == ibm.BillNo && o.Status != "2");
+                    foreach (var item in inAllot.ToArray())
+                    {
+                        if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
+                        {
+                            item.Storage.OutFrozenQuantity -= item.AllotQuantity;
+                            item.Storage.LockTag = string.Empty;
+                        }
+                        else
+                        {
+                            strResult = "入库货位其他人员正在操作！无法结单！";
+                            return false;
+                        }
+                    }
+                    ibm.Status = "7";
+                    ibm.UpdateTime = DateTime.Now;
+                    InBillMasterRepository.SaveChanges();
+                    result = true;
+                }
+                catch (Exception e)
+                {
+                    strResult = "入库单结单出错！原因：" + e.Message;
+                }
+                //scope.Complete();
+                //}
+            }
+            return result;
+
         }
 
         #endregion

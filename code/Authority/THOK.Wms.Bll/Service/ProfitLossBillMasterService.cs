@@ -343,6 +343,7 @@ namespace THOK.Wms.Bll.Service
                         Storage.OutFrozenQuantity -= detail.Quantity;
                         Storage.Quantity -=Math.Abs(detail.Quantity);
                     }
+                    Storage.LockTag = string.Empty;
                 }
             }
         }
