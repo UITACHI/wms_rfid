@@ -15,7 +15,7 @@
                             } else {
                                 $.messager.show({
                                     title: '错误',
-                                    msg: json.msg
+                                    msg: json.msg + json.data
                                 });
                                 $('#details').datagrid('load');
                             }
