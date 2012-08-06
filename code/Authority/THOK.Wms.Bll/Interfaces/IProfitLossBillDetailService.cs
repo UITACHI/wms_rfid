@@ -12,8 +12,8 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool Add(ProfitLossBillDetail profitLossBillDetail, out string strResult);
 
-        bool Delete(string ID);
+        bool Delete(string ID, out string strResult);
 
-        bool Save(ProfitLossBillDetail profitLossBillDetail);
+        bool Save(ProfitLossBillDetail profitLossBillDetail, out string strResult);
     }
 }

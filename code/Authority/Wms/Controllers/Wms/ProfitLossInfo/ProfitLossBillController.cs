@@ -72,9 +72,10 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
         [HttpPost]
         public ActionResult Edit(ProfitLossBillMaster profitLossBillMaster)
         {
-            bool bResult = ProfitLossBillMasterService.Save(profitLossBillMaster);
+            string strResult = string.Empty;
+            bool bResult = ProfitLossBillMasterService.Save(profitLossBillMaster, out strResult);
             string msg = bResult ? "修改成功" : "修改失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
@@ -83,9 +84,10 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
         [HttpPost]
         public ActionResult Delete(string BillNo)
         {
-            bool bResult = ProfitLossBillMasterService.Delete(BillNo);
+            string strResult = string.Empty;
+            bool bResult = ProfitLossBillMasterService.Delete(BillNo, out strResult);
             string msg = bResult ? "删除成功" : "删除失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
@@ -94,9 +96,10 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
         [HttpPost]
         public ActionResult Audit(string BillNo)
         {
-            bool bResult = ProfitLossBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString());
+            string strResult = string.Empty;
+            bool bResult = ProfitLossBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString(), out strResult);
             string msg = bResult ? "审核成功" : "审核失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
@@ -113,9 +116,10 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
 
         public ActionResult ProfitLossBillDetailDelete(string ID)
         {
-            bool bResult = ProfitLossBillDetailService.Delete(ID);
+            string strResult = string.Empty;
+            bool bResult = ProfitLossBillDetailService.Delete(ID, out strResult);
             string msg = bResult ? "删除成功" : "删除失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
@@ -136,9 +140,10 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
         [HttpPost]
         public ActionResult ProfitLossBillDetailEdit(ProfitLossBillDetail profitLossBillDetail)
         {
-            bool bResult = ProfitLossBillDetailService.Save(profitLossBillDetail);
+            string strResult = string.Empty;
+            bool bResult = ProfitLossBillDetailService.Save(profitLossBillDetail, out strResult);
             string msg = bResult ? "修改成功" : "修改失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
     }

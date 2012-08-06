@@ -12,12 +12,12 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool Add(ProfitLossBillMaster profitLossBillMaster, string userName);
 
-        bool Delete(string BillNo);
+        bool Delete(string BillNo, out string strResult);
 
-        bool Save(ProfitLossBillMaster profitLossBillMaster);
+        bool Save(ProfitLossBillMaster profitLossBillMaster, out string strResult);
 
         object GenProfitLossBillNo(string userName);
 
-        bool Audit(string BillNo, string userName);
+        bool Audit(string BillNo, string userName, out string strResult);
     }
 }

@@ -110,10 +110,7 @@
                     $('#dlg').dialog('close');
                     $('#details').datagrid('reload');
                 } else {
-                    $.messager.show({
-                        title: '´íÎó',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#details').datagrid('reload');
                 }
             }

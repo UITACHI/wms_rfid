@@ -24,6 +24,8 @@ namespace THOK.Wms.Bll.Service
             get { return this.GetType(); }
         }
 
+        public string resultStr = "";//错误信息字符串
+
         /// <summary>
         /// 判断处理状态
         /// </summary>
@@ -152,17 +154,25 @@ namespace THOK.Wms.Bll.Service
         /// </summary>
         /// <param name="BillNo">损益单号</param>
         /// <returns></returns>
-        public bool Delete(string BillNo)
+        public bool Delete(string BillNo,out string strResult)
         {
             bool result = false;
             var pbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
-            if (pbm != null)
+            if (LockBillMaster(BillNo))
             {
-                Del(ProfitLossBillDetailRepository, pbm.ProfitLossBillDetails);
-                ProfitLossBillMasterRepository.Delete(pbm);
-                ProfitLossBillMasterRepository.SaveChanges();
-                result = true;
+                if (pbm != null)
+                {
+                    Del(ProfitLossBillDetailRepository, pbm.ProfitLossBillDetails);
+                    ProfitLossBillMasterRepository.Delete(pbm);
+                    ProfitLossBillMasterRepository.SaveChanges();
+                    result = true;
+                }
             }
+            else
+            {
+                result = false;
+            }
+            strResult = resultStr;
             return result;
         }
 
@@ -171,26 +181,35 @@ namespace THOK.Wms.Bll.Service
         /// </summary>
         /// <param name="profitLossBillMaster">损益单主单</param>
         /// <returns></returns>
-        public bool Save(ProfitLossBillMaster profitLossBillMaster)
+        public bool Save(ProfitLossBillMaster profitLossBillMaster, out string strResult)
         {
             bool result = false;
             var pbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == profitLossBillMaster.BillNo && i.Status == "1");
-            if (pbm != null)
+            if (LockBillMaster(profitLossBillMaster.BillNo))
             {
-                pbm.BillDate = profitLossBillMaster.BillDate;
-                pbm.BillTypeCode = profitLossBillMaster.BillTypeCode;
-                pbm.WarehouseCode = profitLossBillMaster.WarehouseCode;
-                pbm.OperatePersonID = profitLossBillMaster.OperatePersonID;
-                pbm.Status = "1";
-                pbm.VerifyPersonID = profitLossBillMaster.VerifyPersonID;
-                pbm.VerifyDate = profitLossBillMaster.VerifyDate;
-                pbm.Description = profitLossBillMaster.Description;
-                pbm.IsActive = profitLossBillMaster.IsActive;
-                pbm.UpdateTime = DateTime.Now;
+                if (pbm != null)
+                {
+                    pbm.BillDate = profitLossBillMaster.BillDate;
+                    pbm.BillTypeCode = profitLossBillMaster.BillTypeCode;
+                    pbm.WarehouseCode = profitLossBillMaster.WarehouseCode;
+                    pbm.OperatePersonID = profitLossBillMaster.OperatePersonID;
+                    pbm.Status = "1";
+                    pbm.VerifyPersonID = profitLossBillMaster.VerifyPersonID;
+                    pbm.VerifyDate = profitLossBillMaster.VerifyDate;
+                    pbm.Description = profitLossBillMaster.Description;
+                    pbm.IsActive = profitLossBillMaster.IsActive;
+                    pbm.UpdateTime = DateTime.Now;
 
-                ProfitLossBillMasterRepository.SaveChanges();
-                result = true;
+                    pbm.LockTag = string.Empty;
+                    ProfitLossBillMasterRepository.SaveChanges();
+                    result = true;
+                }
             }
+            else
+            {
+                result = false;
+            }
+            strResult = resultStr;
             return result;
         }
 
@@ -239,20 +258,30 @@ namespace THOK.Wms.Bll.Service
         /// <param name="BillNo">损益单号</param>
         /// <param name="userName">用户名</param>
         /// <returns></returns>
-        public bool Audit(string BillNo, string userName)
+        public bool Audit(string BillNo, string userName, out string strResult)
         {
             bool result = false;
             var pbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            if (pbm != null)
+            if (LockBillMaster(BillNo))
             {
-                pbm.Status = "2";
-                pbm.VerifyDate = DateTime.Now;
-                pbm.UpdateTime = DateTime.Now;
-                pbm.VerifyPersonID = employee.ID;
-                ProfitLossBillMasterRepository.SaveChanges();
-                result = true;
+                if (pbm != null)
+                {
+                    pbm.Status = "2";
+                    pbm.VerifyDate = DateTime.Now;
+                    pbm.UpdateTime = DateTime.Now;
+                    pbm.VerifyPersonID = employee.ID;
+
+                    pbm.LockTag = string.Empty;
+                    ProfitLossBillMasterRepository.SaveChanges();
+                    result = true;
+                }
             }
+            else
+            {
+                result = false;
+            }
+            strResult = resultStr;
             return result;
         }
 
@@ -267,10 +296,9 @@ namespace THOK.Wms.Bll.Service
         /// <param name="BillNo">损益单号</param>
         /// <param name="strResult">提示信息文本</param>
         /// <returns></returns>
-        public bool LockBillMaster(string BillNo, out string strResult)
+        public bool LockBillMaster(string BillNo)
         {
             bool result = false;
-            strResult = "";
             var pbm = ProfitLossBillMasterRepository.GetQueryable().FirstOrDefault(p => p.BillNo == BillNo && p.Status == "1");
             if (pbm != null)
             {
@@ -282,13 +310,13 @@ namespace THOK.Wms.Bll.Service
                 }
                 else
                 {
-                    strResult = "当前订单其他人正在操作，请稍候重试！";
+                    resultStr = "当前订单其他人正在操作，请稍候重试！";
                     result = false;
                 }
             }
             else
             {
-                strResult = "当前单据的状态不是已录入状态或者该单据已被删除无法编辑，请刷新页面！";
+                resultStr = "当前单据的状态不是已录入状态或者该单据已被删除无法编辑，请刷新页面！";
                 result = false;
             }
             return result;
