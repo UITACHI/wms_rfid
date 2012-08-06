@@ -37,9 +37,11 @@ namespace Wms.Controllers.Wms.Inventory
             var DailyBalance = DailyBalanceService.GetDetails(page, rows, beginDate, endDate, warehouseCode);
             return Json(DailyBalance, "text", JsonRequestBehavior.AllowGet);
         }
-        public ActionResult InfoDetails(int page, int rows, string settleDate, string warehouseCode)
+        //
+        // GET: /DailyBalance/InfoDetails/
+        public ActionResult InfoDetails(int page, int rows, string warehouseCode, string settleDate)
         {
-            var DailyBalanceInfo = DailyBalanceService.GetInfoDetails(page, rows, settleDate, warehouseCode);
+            var DailyBalanceInfo = DailyBalanceService.GetInfoDetails(page, rows, warehouseCode, settleDate);
             return Json(DailyBalanceInfo, "text", JsonRequestBehavior.AllowGet);
         }
 

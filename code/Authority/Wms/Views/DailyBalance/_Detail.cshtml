@@ -1,21 +1,37 @@
-﻿<div id="infoDetail" class="easyui-dialog" modal="true" 
-        style="width:800px;height:420px;padding:2px 2px"
-        closed="true">    
-    <table id="infos" class="easyui-datagrid"
-    url="/DailyBalance/InfoDetails/" border="false" singleSelect="true"
-        fit="true" fitColumns="true"   pagination="true" rownumbers="true">
+﻿<div id="InfoDetails" class="easyui-dialog" modal="true" style="width: 800px; height: 420px;
+    padding: 2px 2px" closed="true">
+    <table id="infos" class="easyui-datagrid" url="" border="false" singleselect="true"
+        fit="true" fitcolumns="true" pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="ProductCode" hidden="true" width="80">产品代码</th>
-                <th field="ProductName" hidden="true" width="80">产品名称</th>
-                <th field="Beginning" hidden="true" width="80">期初量</th>
-                <th field="EntryAmount" hidden="true" width="80">入库总量</th>
-                <th field="DeliveryAmount" hidden="true" width="80">出库总量</th>
-                <th field="ProfitAmount" hidden="true" width="80">报损总量</th>
-                <th field="LossAmount" hidden="true" width="80">报益总量</th>
-                <th field="Ending" hidden="true" width="80">日结量</th>
-                <th field="UnitCode" hidden="true" width="80">单位编码</th>
-                <th field="UnitName" hidden="true" width="80">单位名称</th>
+                <th field="ProductCode" width="80">
+                    产品代码
+                </th>
+                <th field="ProductName" width="120">
+                    产品名称
+                </th>
+                <th field="WarehouseName" width="80">
+                    仓库名称
+                </th>
+                <th field="Beginning" width="70">
+                    期初量
+                </th>
+                <th field="EntryAmount" width="70">
+                    入库总量
+                </th>
+                <th field="DeliveryAmount" width="70">
+                    出库总量
+                </th>
+                <th field="ProfitAmount" width="70">
+                    报损总量
+                </th>
+                <th field="LossAmount" width="70">
+                    报益总量
+                </th>
+                <th field="Ending" width="70">
+                    日结量
+                </th>
+            </tr>
         </thead>
     </table>
 </div>
