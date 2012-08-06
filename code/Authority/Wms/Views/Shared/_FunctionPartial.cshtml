@@ -36,6 +36,8 @@
 {   @Html.Partial("_ConfirmPartial")}
 @if (ViewBag.hasAntiConfirm != null && ViewBag.hasAntiConfirm)
 {   @Html.Partial("_AntiConfirmPartial")}
+@if (ViewBag.hasSettle != null && ViewBag.hasSettle)
+{   @Html.Partial("_SettlePartial")}
 @if (ViewBag.hasPrint != null && ViewBag.hasPrint)
 {    @Html.Partial("_PrintPartial")}
 @if (ViewBag.hasHelp != null && ViewBag.hasHelp)

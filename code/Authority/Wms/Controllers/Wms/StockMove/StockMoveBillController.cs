@@ -27,6 +27,7 @@ namespace Authority.Controllers.Wms.StockMove
             ViewBag.hasDelete = true;
             ViewBag.hasAudit = true;
             ViewBag.hasAntiTrial = true;
+            ViewBag.hasSettle = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;
@@ -82,9 +83,10 @@ namespace Authority.Controllers.Wms.StockMove
         [HttpPost]
         public ActionResult Edit(MoveBillMaster moveBillMaster)
         {
-            bool bResult = MoveBillMasterService.Save(moveBillMaster);
+            string strResult = string.Empty;
+            bool bResult = MoveBillMasterService.Save(moveBillMaster, out strResult);
             string msg = bResult ? "修改成功" : "修改失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
@@ -93,9 +95,10 @@ namespace Authority.Controllers.Wms.StockMove
         [HttpPost]
         public ActionResult Delete(string BillNo)
         {
-            bool bResult = MoveBillMasterService.Delete(BillNo);
+            string strResult = string.Empty;
+            bool bResult = MoveBillMasterService.Delete(BillNo, out strResult);
             string msg = bResult ? "删除成功" : "删除失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
@@ -104,9 +107,10 @@ namespace Authority.Controllers.Wms.StockMove
         [HttpPost]
         public ActionResult Audit(string BillNo)
         {
-            bool bResult = MoveBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString());
+            string strResult = string.Empty;
+            bool bResult = MoveBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString(), out strResult);
             string msg = bResult ? "审核成功" : "审核失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
         //
@@ -115,9 +119,10 @@ namespace Authority.Controllers.Wms.StockMove
         [HttpPost]
         public ActionResult AntiTrial(string BillNo)
         {
-            bool bResult = MoveBillMasterService.AntiTrial(BillNo);
+            string strResult = string.Empty;
+            bool bResult = MoveBillMasterService.AntiTrial(BillNo, out strResult);
             string msg = bResult ? "反审成功" : "反审失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
 
         //

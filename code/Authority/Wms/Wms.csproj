@@ -874,8 +874,11 @@
     <Content Include="Views\DefaultProductSet\_DeletePartial.cshtml" />
     <Content Include="Views\DefaultProductSet\_EditPartial.cshtml" />
     <Content Include="Views\DefaultProductSet\_ProductPartial.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\DefaultProductSet\_GoodsCount.cshtml" />
     <Content Include="Views\DailyBalance\__Detail2.cshtml" />
+=======
+>>>>>>> Zys/master
     <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
@@ -1092,6 +1095,7 @@
     <Content Include="Views\SortWorkDispatch\_SearchPartial.cshtml" />
     <Content Include="Views\StockInBill\_CellPartial.cshtml" />
     <Content Include="Views\StockOutBill\_CellPartial.cshtml" />
+    <Content Include="Views\Shared\_SettlePartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

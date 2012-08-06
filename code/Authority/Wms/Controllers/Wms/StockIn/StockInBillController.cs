@@ -29,6 +29,7 @@ namespace Authority.Controllers.Wms.StockIn
             ViewBag.hasAudit = true;
             ViewBag.hasAntiTrial = true;
             ViewBag.hasAllot = true;
+            ViewBag.hasSettle = true;
             ViewBag.hasPrint = true;
             ViewBag.hasHelp = true;
             ViewBag.ModuleID = moduleID;

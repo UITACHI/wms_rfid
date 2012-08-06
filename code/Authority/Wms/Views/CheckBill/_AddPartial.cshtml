@@ -1,5 +1,7 @@
 <script type="text/javascript">
     var cellCheckParameter, ware, area, shelf, cell, productCheckParameter, begin, end;
+    var ldata = { "rows": [] };
+    var rdata = { "rows": [] };
     //新增
     function addClick() {
         addLoad();
@@ -9,7 +11,11 @@
 
     function productLoad() {
         $('#warehouseTree').tree({ url: '/Cell/GetCheckDetails/' }); //加载树形数据
-        $('#productTable').datagrid({ url: '/Product/CheckFindProduct/' }); //加载产品数据
+        //$('#productTable').datagrid({ url: '/Product/CheckFindProduct/' }); //加载产品数据
+        $.getJSON("/Product/CheckFindProduct/", function (json) {
+            ldata = json;
+            $('#productTable').datagrid('loadData', ldata);
+        });
         $('#checkProductTable').datagrid('loadData', { total: 0, rows: [] }); //清空盘点的卷烟
         $('#chanedCheckTable').datagrid({ url: '/CheckBill/CheckChangedDetails/' }); //加载异动数据
     }

@@ -36,7 +36,9 @@
     @if (ViewBag.hasConfirm != null && ViewBag.hasConfirm)
     {<a id="confirm" href="#" class="easyui-linkbutton"  plain="true" fun="true">确认</a>}
     @if (ViewBag.hasAntiConfirm != null && ViewBag.hasAntiConfirm)
-    {<a id="anticonfirm" href="#" class="easyui-linkbutton"  plain="true" fun="true">反确认</a>}                                                                                                    
+    {<a id="anticonfirm" href="#" class="easyui-linkbutton"  plain="true" fun="true">反确认</a>}
+    @if (ViewBag.hasSettle != null && ViewBag.hasSettle)
+    {<a id="settle" href="#" class="easyui-linkbutton"  plain="true" fun="true">结单</a>}                                                                                                        
     @if (ViewBag.hasPrint != null && ViewBag.hasPrint)
     {<a id="print" href="#" class="easyui-linkbutton"  plain="true" fun="true">打印</a>}
     @if (ViewBag.hasHelp != null && ViewBag.hasHelp)

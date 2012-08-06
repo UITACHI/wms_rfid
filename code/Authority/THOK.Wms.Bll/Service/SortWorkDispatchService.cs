@@ -105,8 +105,9 @@ namespace THOK.Wms.Bll.Service
                 foreach (var item in sortDisp.ToArray())
                 {
                     item.WorkStatus = "1";
-                    SortOrderDispatchRepository.SaveChanges();
-                }
+                    item.SortWorkDispatchID = null;
+                    //SortOrderDispatchRepository.SaveChanges();
+                }               
                 SortWorkDispatchRepository.Delete(sortOrderDispatch);
                 SortWorkDispatchRepository.SaveChanges();
             }
