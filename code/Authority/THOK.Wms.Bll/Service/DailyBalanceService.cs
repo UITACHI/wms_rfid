@@ -169,80 +169,97 @@ namespace THOK.Wms.Bll.Service
                 var inQuery = InBillDetailRepository.GetQueryable().AsEnumerable();
                 var outQuery = OutBillDetailRepository.GetQueryable().AsEnumerable();
                 var profitLossQuery = ProfitLossBillDetailRepository.GetQueryable().AsEnumerable();
+                var dailyBalanceQuery = DailyBalanceRepository.GetQueryable().AsEnumerable();
+                
+                DateTime dt1 = Convert.ToDateTime(settleDate);
+                var dailyBalance = dailyBalanceQuery.Where(d => d.SettleDate < dt1)
+                                           .OrderByDescending(d=>d.SettleDate)
+                                           .FirstOrDefault();
+                string t = dailyBalance != null ? dailyBalance.SettleDate.ToString("yyyy-MM-dd") : "";
 
-                var query = inQuery.Where(a => a.InBillMaster.WarehouseCode.Contains(warehouseCode)).Select(a => new
+                var query = inQuery.Where(a => a.InBillMaster.WarehouseCode == warehouseCode
+                                              && a.InBillMaster.BillDate.ToString("yyyy-MM-dd") == settleDate
+                                  ).Select(a => new
                 {
                     BillDate = a.InBillMaster.BillDate.ToString("yyyy-MM-dd"),
-                    a.InBillMaster.Warehouse.WarehouseCode,
-                    a.InBillMaster.Warehouse.WarehouseName,
-                    a.BillNo,
-                    a.InBillMaster.BillType.BillTypeCode,
-                    a.InBillMaster.BillType.BillTypeName,
-                    a.ProductCode,
-                    a.Product.ProductName,
-                    RealQuantity = a.RealQuantity,
-                    Beginning = 0.00.ToString(),
-                    EntryAmount = a.RealQuantity.ToString(),
-                    ProfitAmount = 0.00.ToString(),
-                    LossAmount = 0.00.ToString(),
-                    Ending = 0.00.ToString(),
-                    a.Unit.UnitName
-                }).Union(outQuery.Where(a => a.OutBillMaster.WarehouseCode.Contains(warehouseCode)).Select(a => new
+                    WarehouseCode = a.InBillMaster.Warehouse.WarehouseCode,
+                    ProductCode = a.ProductCode,
+                    UnitCode = a.Product.UnitCode,
+                    Beginning = decimal.Zero,
+                    EntryAmount = a.RealQuantity,
+                    DeliveryAmount = decimal.Zero,
+                    ProfitAmount = decimal.Zero,
+                    LossAmount = decimal.Zero,
+                    Ending = decimal.Zero
+                }).Union(outQuery.Where(a => a.OutBillMaster.WarehouseCode == warehouseCode
+                                            && a.OutBillMaster.BillDate.ToString("yyyy-MM-dd") == settleDate
+                                ).Select(a => new
                 {
                     BillDate = a.OutBillMaster.BillDate.ToString("yyyy-MM-dd"),
-                    a.OutBillMaster.Warehouse.WarehouseCode,
-                    a.OutBillMaster.Warehouse.WarehouseName,
-                    a.BillNo,
-                    a.OutBillMaster.BillType.BillTypeCode,
-                    a.OutBillMaster.BillType.BillTypeName,
-                    a.ProductCode,
-                    a.Product.ProductName,
-                    RealQuantity = a.RealQuantity,
-                    Beginning = 0.00.ToString(),
-                    EntryAmount = 0.00.ToString(),
-                    ProfitAmount = 0.00.ToString(),
-                    LossAmount = 0.00.ToString(),
-                    Ending = 0.00.ToString(),
-                    a.Unit.UnitName
-                })).Union(profitLossQuery.Where(a => a.ProfitLossBillMaster.WarehouseCode.Contains(warehouseCode)).Select(a => new
+                    WarehouseCode = a.OutBillMaster.Warehouse.WarehouseCode,
+                    ProductCode = a.ProductCode,
+                    UnitCode = a.Product.UnitCode,
+                    Beginning = decimal.Zero,
+                    EntryAmount = decimal.Zero,
+                    DeliveryAmount = a.RealQuantity,
+                    ProfitAmount = decimal.Zero,
+                    LossAmount = decimal.Zero,
+                    Ending = decimal.Zero
+                })).Union(profitLossQuery.Where(a => a.ProfitLossBillMaster.WarehouseCode == warehouseCode
+                                                    && a.ProfitLossBillMaster.BillDate.ToString("yyyy-MM-dd") == settleDate
+                                        ).Select(a => new
                 {
                     BillDate = a.ProfitLossBillMaster.BillDate.ToString("yyyy-MM-dd"),
-                    a.ProfitLossBillMaster.Warehouse.WarehouseCode,
-                    a.ProfitLossBillMaster.Warehouse.WarehouseName,
-                    a.BillNo,
-                    a.ProfitLossBillMaster.BillType.BillTypeCode,
-                    a.ProfitLossBillMaster.BillType.BillTypeName,
-                    a.ProductCode,
-                    a.Product.ProductName,
-                    RealQuantity = a.Quantity,
-                    Beginning = 0.00.ToString(),
-                    EntryAmount = 0.00.ToString(),
-                    ProfitAmount = a.Quantity > 0 ? a.Quantity.ToString() : 0.00.ToString(),
-                    LossAmount = a.Quantity < 0 ? (-a.Quantity).ToString() : 0.00.ToString(),
-                    Ending = 0.00.ToString(),
-                    a.Unit.UnitName
-                }));
-
-                if (!settleDate.Equals(string.Empty))
+                    WarehouseCode = a.ProfitLossBillMaster.Warehouse.WarehouseCode,
+                    ProductCode = a.ProductCode,
+                    UnitCode = a.Product.UnitCode,
+                    Beginning = decimal.Zero,
+                    EntryAmount = decimal.Zero,
+                    DeliveryAmount = decimal.Zero,
+                    ProfitAmount = a.Quantity > 0 ? Math.Abs(a.Quantity) : decimal.Zero,
+                    LossAmount = a.Quantity < 0 ? Math.Abs(a.Quantity) : decimal.Zero,
+                    Ending = decimal.Zero
+                })).Union(dailyBalanceQuery.Where(d => d.WarehouseCode == warehouseCode
+                                                      && d.SettleDate.ToString("yyyy-MM-dd") == t
+                                                      && d.Ending > decimal.Zero
+                                          ).Select(a=>new
                 {
-                    DateTime date = Convert.ToDateTime(settleDate);
-                    query = query.Where(i => Convert.ToDateTime(i.BillDate) == date);
+                    BillDate = a.SettleDate.ToString("yyyy-MM-dd"),
+                    WarehouseCode = a.WarehouseCode,
+                    ProductCode = a.ProductCode,
+                    UnitCode = a.Product.UnitCode,
+                    Beginning = a.Ending,
+                    EntryAmount = decimal.Zero,
+                    DeliveryAmount = decimal.Zero,
+                    ProfitAmount = decimal.Zero,
+                    LossAmount = decimal.Zero,
+                    Ending = decimal.Zero
                 }
-                var Newquery = query.OrderBy(a => a.ProductName).AsEnumerable().GroupBy(a => a.ProductCode).Select(a => new
+                ));
+
+                var newDailyBalance = query.GroupBy(a => new { a.BillDate, a.WarehouseCode, a.ProductCode, a.UnitCode })
+                                    .Select(a => new DailyBalance
                 {
-                    BillDate = a.Max(s => s.BillDate.ToString()),
-                    WarehouseCode = a.Max(s => s.WarehouseCode.ToString()),
-                    WarehouseName = a.Max(s => s.WarehouseName.ToString()),
-                    ProductCode = a.Max(s => s.ProductCode.ToString()),
-                    ProductName = a.Max(s => s.ProductName.ToString()),
-                    RealQuantity = a.Max(s => s.RealQuantity.ToString()),
-                    Beginning = a.Max(s => s.Beginning.ToString()),
-                    EntryAmount = a.Max(s => s.EntryAmount.ToString()),
-                    ProfitAmount = a.Max(s => s.ProfitAmount.ToString()),
-                    LossAmount = a.Max(s => s.LossAmount.ToString()),
-                    Ending = a.Max(s => s.Ending.ToString()),
-                    UnitName = a.Max(s => s.UnitName.ToString()),
-                });
+                    SettleDate = Convert.ToDateTime(a.Key.BillDate),
+                    WarehouseCode = a.Key.WarehouseCode,   
+                    ProductCode = a.Key.ProductCode,
+                    UnitCode = a.Key.UnitCode,
+                    Beginning = a.Sum(d => d.Beginning),
+                    EntryAmount = a.Sum(d => d.EntryAmount),
+                    DeliveryAmount = a.Sum(d=>d.DeliveryAmount),
+                    ProfitAmount = a.Sum(d => d.ProfitAmount),
+                    LossAmount = a.Sum(d => d.LossAmount),
+                    Ending = a.Sum(d => d.Beginning) + a.Sum(d => d.EntryAmount) - a.Sum(d => d.DeliveryAmount) + a.Sum(d => d.ProfitAmount) - a.Sum(d => d.LossAmount),
+                }).ToArray();
+
+                newDailyBalance.AsParallel().ForAll(b => b.ID = Guid.NewGuid());                
+                foreach (var item in newDailyBalance)
+                {
+                    item.ID = Guid.NewGuid();
+                    DailyBalanceRepository.Add(item);
+                }
+                DailyBalanceRepository.SaveChanges();
+
                 return true;
             }
             catch (Exception e)

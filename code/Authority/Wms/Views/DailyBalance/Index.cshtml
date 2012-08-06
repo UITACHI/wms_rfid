@@ -1,27 +1,27 @@
 ﻿<script type="text/javascript">
     var url;
     function formatAction(value, row, index) {
-        var e = '<a href="#" onclick="DailyDetail(' + index + ')">日结明细</a> <a href="#"  onclick="BalanceAgain()">重新日结</a>';
+        var e = '<a href="#" onclick="DailyDetail(' + index + ')">日结明细</a> <a href="#"  onclick="BalanceAgain(' + index + ')">重新日结</a>';
         return e
     }
     function DailyDetail(index) {
         var row = $('#details').datagrid('getSelected');
         if (row) {
             $('#infos').datagrid({ url: '/DailyBalance/InfoDetails/?WarehouseCode=' + row.WarehouseCode + '&&SettleDate=' + row.SettleDate });           
-            $('#InfoDetails').dialog('open').dialog('setTitle', '日结产品明细');
+            $('#InfoDetails').dialog('open').dialog('setTitle', '日结明细');
         }
     }
-    function BalanceAgain() {
+    function BalanceAgain(index) {
         var row = $('#details').datagrid('getSelected');
         $('#infos2').datagrid({ url: '/DailyBalance/DailyBalanceInfos/?WarehouseCode=' + row.WarehouseCode + '&&SettleDate=' + row.SettleDate });
         $('#InfoDetails2').dialog('open').dialog('setTitle', '日结明细');  
     }
 </script>
 
-    <div region="center" split="true" border="false">    
+<div region="center" split="true" border="false">    
     <table id="details" class="easyui-datagrid"
         url="/DailyBalance/Details/" border="false" singleSelect="true"
-        fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
+        fit="true" fitColumns="true" pagination="true" rownumbers="true">
         <thead>
             <tr>
                 <th field="SettleDate" width="80">日结日期</th>
@@ -36,5 +36,5 @@
             </tr>
         </thead>
     </table>
-  </div>
-    @Html.Partial("_Detail")
+</div>
+@Html.Partial("_Detail")

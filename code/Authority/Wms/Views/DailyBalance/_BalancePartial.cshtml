@@ -1,5 +1,4 @@
 ﻿<script type="text/javascript">
-
     function balanceClick() {
         $('#wareHouse2').combogrid({
             required: true,
@@ -24,21 +23,23 @@
     function DailyBalance() {
         var settleDate = $('#SettleDate').datebox('getValue');
         var warehouseCode = $('#wareHouse2').combo('getValue');
-        alert(settleDate);
-        alert(warehouseCode);
-//        url = '/DailyBalance/DoDailyBalance/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate;
-        $.getJSON("/DailyBalance/DoDailyBalance/", function (json) {
-            if (json) {
-                url = '/DailyBalance/DoDailyBalance/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate; ;
-            } else {
-                $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+        var j_waitDialog = ShowWaitMessageDialog();
+        $.ajax({
+            url: '/DailyBalance/DoDailyBalance/', type: "GET", dataType: "text",
+            data: { 'WarehouseCode': warehouseCode, 'SettleDate': settleDate },
+            complete: function () { HideWaitMessageDialog(j_waitDialog); },
+            success: function (responseText) {
+                var result = $.evalJSON(responseText);
+                if (result.success) {
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#details').datagrid('reload');
+                    $('#dlg-Daily').dialog('close');
+                } else {
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                }
             }
         });
-//        $('#infos2').datagrid({ url: '/DailyBalance/DailyBalanceInfos/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate });
-//        $('#InfoDetails2').dialog('open').dialog('setTitle', '日结明细'); 
-
-    }
-
+    };
 </script>
 
 <div id="dlg-Daily" class="easyui-dialog" modal="true" style="width:300px;height:220px;padding:2px 2px"
@@ -56,7 +57,6 @@
                 <td width="60" style="padding-top:5px;padding-left:15px">日结日期:</td>
                 <td style="padding-top:5px" align="left"><input id ="SettleDate" class="easyui-datebox" style="width:130px" required="true"/></td>
               </tr>
-
             </table>
         </div>
     </div>
@@ -65,4 +65,3 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="DailyBalance()">日结</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-Daily').dialog('close')">取消</a>
 </div>
-@Html.Partial("__Detail2")
