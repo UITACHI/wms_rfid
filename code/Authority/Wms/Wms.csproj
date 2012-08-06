@@ -876,7 +876,7 @@
     <Content Include="Views\DefaultProductSet\_ProductPartial.cshtml" />
     <Content Include="Views\DefaultProductSet\_GoodsCount.cshtml" />
     <Content Include="Views\DailyBalance\__Detail2.cshtml" />
-    <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\DefaultProductSet\_GoodsCount.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
     <Content Include="Views\Home\_HeaderPartial.cshtml" />
