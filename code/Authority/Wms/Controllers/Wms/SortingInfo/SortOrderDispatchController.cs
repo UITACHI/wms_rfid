@@ -34,9 +34,7 @@ namespace Wms.Controllers.Wms.SortingInfo
         {
             string SortingLineCode = collection["SortingLineCode"] ?? "";
             string OrderDate = collection["OrderDate"] ?? "";
-            string DeliverLineCode = collection["DeliverLineCode"] ?? "";
-            string IsActive = collection["IsActive"] ?? "";
-            var sortOrder = SortOrderDispatchService.GetDetails(page, rows, SortingLineCode, OrderDate, DeliverLineCode);
+            var sortOrder = SortOrderDispatchService.GetDetails(page, rows,OrderDate,SortingLineCode);
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 
@@ -48,11 +46,11 @@ namespace Wms.Controllers.Wms.SortingInfo
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
+        //新增线路调度
         // POST: /SortOrderDispatch/Create/
-        public ActionResult Create(SortOrderDispatch sortDisoatch)
+        public ActionResult Create(string SortingLineCode, string DeliverLineCodes)
         {
-            bool bResult = SortOrderDispatchService.Add(sortDisoatch);
+            bool bResult = SortOrderDispatchService.Add(SortingLineCode, DeliverLineCodes);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

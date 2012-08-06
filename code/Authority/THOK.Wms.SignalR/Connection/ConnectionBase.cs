@@ -37,8 +37,8 @@ namespace THOK.Wms.SignalR.Connection
         protected override Task OnReceivedAsync(IRequest request, string connectionId, string data)
         {
             ProgressState ps = new ProgressState();
-            try
-            {
+            //try
+            //{
                 ActionData ad = jns.Parse<ActionData>(data);
                 //start:开始分配；stop:停止分配
                 switch (ad.ActionType)
@@ -53,12 +53,12 @@ namespace THOK.Wms.SignalR.Connection
                     default:
                         break;
                 }
-            }
-            catch (Exception e)
-            {
-                ps.State = StateType.Error;
-                ps.Messages.Add(e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    ps.State = StateType.Error;
+            //    ps.Messages.Add(e.Message);
+            //}
             if (GetCancellationTokenSource(connectionId).Token.IsCancellationRequested)
             {
                 ps.Messages.Clear();

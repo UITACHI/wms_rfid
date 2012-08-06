@@ -21,6 +21,7 @@ namespace THOK.Wms.DbModel
         public Guid ?VerifyPersonID { get; set; }
         public DateTime ?VerifyDate { get; set; }
         public string Description { get; set; }
+        public string MoveBillMasterBillNo { get; set; }
         public string LockTag { get; set; }
         public string IsActive { get; set; }
         public DateTime UpdateTime { get; set; }
@@ -30,8 +31,10 @@ namespace THOK.Wms.DbModel
         public virtual Warehouse Warehouse { get; set; }
         public virtual Employee OperatePerson { get; set; }
         public virtual Employee VerifyPerson { get; set; }
+        public virtual MoveBillMaster MoveBillMaster { get; set; }
 
         public virtual ICollection<OutBillDetail> OutBillDetails { get; set; }
         public virtual ICollection<OutBillAllot> OutBillAllots { get; set; }
+        
     }
 }

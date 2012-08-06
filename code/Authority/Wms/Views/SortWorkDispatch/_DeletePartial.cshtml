@@ -2,32 +2,29 @@
 function deleteClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
-        $('#dlg').dialog('open').dialog('setTitle', '删除');
-        $('#sortingLinefm .easyui-validatebox').validatebox({
-            required: false
+        $.messager.confirm('删除', '删除本记录，将删除已生成的出库单和移库单，确认要删除这条记录吗？', function (r) {
+            if (r) {
+                $.getJSON('/SortWorkDispatch/Delete/', { id: row.ID }, function (json) {
+                    if (json) {
+                        if (json.success) {
+                            $.messager.show({
+                                title: '成功',
+                                msg: json.msg
+                            });
+                            $('#details').datagrid('load');
+                        } else {
+                            $.messager.show({
+                                title: '错误',
+                                msg: json.msg
+                            });
+                            $('#details').datagrid('load');
+                        }
+                    }
+                });
+            }
         });
-        $('form input').attr("disabled", "disabled");
-        $('form textarea').attr("disabled", "disabled");
-        $('#IsActivecc').combo({
-            hasDownArrow: false
-        });
-        $('#isSortingLineType').combo({
-            hasDownArrow: false
-        });
-        $('#sortingLinefm').form('load', row);
-        if (row.IsActive == '可用') {
-            $('#IsActivecc').combo('setValue', 1).combo('setText', row.IsActive);
-        } else {
-            $('#IsActivecc').combo('setValue', 0).combo('setText', row.IsActive);
-        }
-        if (row.SortingLineType == '半自动分拣线') {
-            $('#isSortingLineType').combo('setValue', 1).combo('setText', row.SortingLineType);
-        } else {
-            $('#isSortingLineType').combo('setValue', 2).combo('setText', row.SortingLineType);
-        }
-        url = '/SortingLine/Delete/?sortLineCode=' + row.SortingLineCode;
     } else {
         $.messager.confirm('错误', '没有选择行！');
     }
-};
+}
 </script>

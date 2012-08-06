@@ -14,7 +14,8 @@ namespace THOK.Wms.Bll.Service
         [Dependency]
         public ISortOrderDispatchRepository SortOrderDispatchRepository { get; set; }
 
-
+        [Dependency]
+        public ISortOrderRepository SortOrderRepository { get; set; }
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -22,21 +23,18 @@ namespace THOK.Wms.Bll.Service
 
         #region ISortOrderDispatchService 成员
 
-        public object GetDetails(int page, int rows, string OrderDate, string SortingLineCode, string DeliverLineCode)
+        public object GetDetails(int page, int rows, string OrderDate, string SortingLineCode)
         {
             IQueryable<SortOrderDispatch> sortDispatchQuery = SortOrderDispatchRepository.GetQueryable();
             var sortDispatch = sortDispatchQuery.Where(s => s.SortingLineCode == s.SortingLineCode);
             if (OrderDate != string.Empty && OrderDate != null)
             {
-                sortDispatch = sortDispatch.Where(s => s.OrderDate.Contains(OrderDate));
+                OrderDate = Convert.ToDateTime(OrderDate).ToString("yyyyMMdd");
+                sortDispatch = sortDispatch.Where(s => s.OrderDate == OrderDate);
             }
             if (SortingLineCode != string.Empty && SortingLineCode != null)
             {
-                sortDispatch = sortDispatch.Where(s => s.SortingLineCode.Contains(SortingLineCode));
-            }
-            if (DeliverLineCode != string.Empty && DeliverLineCode != null)
-            {
-                sortDispatch = sortDispatch.Where(s => s.DeliverLineCode.Contains(DeliverLineCode));
+                sortDispatch = sortDispatch.Where(s => s.SortingLineCode == SortingLineCode);
             }
             var temp = sortDispatch.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
            {
@@ -56,17 +54,23 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = temp.ToArray() };
         }
 
-        public new bool Add(SortOrderDispatch sortDispatch)
+        public new bool Add(string SortingLineCode, string DeliverLineCodes)
         {
-            var sortOrderDispatch = new SortOrderDispatch();
-            sortOrderDispatch.SortingLineCode = sortDispatch.SortingLineCode;
-            sortOrderDispatch.DeliverLineCode = sortDispatch.DeliverLineCode;
-            sortOrderDispatch.WorkStatus = "1";
-            sortOrderDispatch.OrderDate = sortDispatch.OrderDate;
-            sortOrderDispatch.IsActive = sortDispatch.IsActive;
-            sortOrderDispatch.UpdateTime = DateTime.Now;
+            var sortOder = SortOrderRepository.GetQueryable().Where(s => DeliverLineCodes.Contains(s.DeliverLineCode))
+                                              .GroupBy(s => new { s.DeliverLineCode, s.OrderDate })
+                                              .Select(s => new { DeliverLineCode = s.Key.DeliverLineCode, OrderDate = s.Key.OrderDate });
+            foreach (var item in sortOder.ToArray())
+            {
+                var sortOrderDispatch = new SortOrderDispatch();
+                sortOrderDispatch.SortingLineCode = SortingLineCode;
+                sortOrderDispatch.DeliverLineCode = item.DeliverLineCode;
+                sortOrderDispatch.WorkStatus = "1";
+                sortOrderDispatch.OrderDate = item.OrderDate;
+                sortOrderDispatch.IsActive = "1";
+                sortOrderDispatch.UpdateTime = DateTime.Now;
 
-            SortOrderDispatchRepository.Add(sortOrderDispatch);
+                SortOrderDispatchRepository.Add(sortOrderDispatch);
+            }
             SortOrderDispatchRepository.SaveChanges();
             return true;
         }
@@ -100,7 +104,6 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
         
-
         public object GetWorkStatus(string WorkStatus)
         {
             IQueryable<SortOrderDispatch> sortDispatchQuery = SortOrderDispatchRepository.GetQueryable();
@@ -108,7 +111,7 @@ namespace THOK.Wms.Bll.Service
             if (WorkStatus != string.Empty && WorkStatus != null)
             {
                 sortDispatch = sortDispatch.Where(s => s.WorkStatus == WorkStatus);
-            }            
+            }
             var temp = sortDispatch.OrderBy(b => b.SortingLineCode).AsEnumerable().Select(b => new
             {
                 b.ID,

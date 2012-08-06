@@ -124,6 +124,8 @@
     function addBillDetailClick() {
         $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增移库订单明细');
         $('#fm-moveBillDetail').form('clear');
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
         detailUrl = '/StockMoveBill/MoveBillDetailCreate/';
         $('#detailBillNo').val(billno);
         $('#detailBillNo').attr("readonly", true);
@@ -209,7 +211,6 @@
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }
-
     }
 
 </script>

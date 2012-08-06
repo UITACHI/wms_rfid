@@ -61,6 +61,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
@@ -74,8 +75,12 @@
     <Compile Include="Allot\Interfaces\IOutBillAllotService.cs" />
     <Compile Include="Allot\Service\InBillAllotService.cs" />
     <Compile Include="Allot\Service\OutBillAllotService.cs" />
+    <Compile Include="Common\IMoveBillCreater.cs" />
+    <Compile Include="Common\IOutBillCreater.cs" />
     <Compile Include="Common\IStorageLocker.cs" />
     <Compile Include="Common\StorageLocker.cs" />
+    <Compile Include="Common\MoveBillCreater.cs" />
+    <Compile Include="Common\OutBillCreater.cs" />
     <Compile Include="Connection\ConnectionBase.cs" />
     <Compile Include="Connection\DispatchSortWorkConnection.cs" />
     <Compile Include="Dispatch\Interfaces\ISortOrderWorkDispatchService.cs" />

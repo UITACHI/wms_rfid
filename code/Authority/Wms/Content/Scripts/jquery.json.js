@@ -13,7 +13,7 @@ jQuery.extend({
     * @see 将javascript数据类型转换为json字符串 
     * @param 待转换对象,支持object,array,string,function,number,boolean,regexp 
     * @return 返回json字符串 */
-    toJSON: function (object, target) {
+    toJSON: function (object) {
         var type = jQuery.type(object);
         if ('object' == type) {
             if (!object === null) {
@@ -45,17 +45,15 @@ jQuery.extend({
                 if (object === null) return 'null';
                 var results = [];
                 for (var property in object) {
-                    if (target === null || target.hasOwnProperty(property.toString())) {
-                        var value = jQuery.toJSON(object[property], target);
-                        if (value !== undefined) results.push(jQuery.toJSON(property, target) + ':' + value);
-                    }
+                    var value = jQuery.toJSON(object[property]);
+                    if (value !== undefined) results.push(jQuery.toJSON(property) + ':' + value);
                 }
                 return '{' + results.join(',') + '}';
                 break;
             case 'array':
                 var results = [];
                 for (var i = 0; i < object.length; i++) {
-                    var value = jQuery.toJSON(object[i], target);
+                    var value = jQuery.toJSON(object[i]);
                     if (value !== undefined) results.push(value);
                 }
                 return '[' + results.join(',') + ']';
