@@ -1,8 +1,7 @@
 ﻿<script type="text/javascript">
-
     var data = { "total": 0, "rows": [] };
-    var ydata = { "rows": [] };
-    var rdata = { "rows": [] };
+//    var ldata = { "rows": [] };
+//    var rdata = { "rows": [] };
     //    $(function () {
     //        $.getJSON("/Product/FindProduct/", function (json) {
     //            ydata = json;
@@ -70,6 +69,9 @@
         var rows = $('#productTable').datagrid('getSelections');
         if (rows.length > 0) {
             for (var i = 0; i < rows.length; i++) {
+
+
+
                 var index = $('#productTable').datagrid('getRowIndex', rows[i]);
                 $('#productTable').datagrid('deleteRow', index);
                 $('#checkProductTable').datagrid('appendRow', rows[i]);

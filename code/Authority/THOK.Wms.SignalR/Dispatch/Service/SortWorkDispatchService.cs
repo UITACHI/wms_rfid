@@ -88,8 +88,8 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                             .GroupBy(r => new { r.OrderDate, r.SortingLine })
                                             .Select(r => new { r.Key.OrderDate, r.Key.SortingLine, Products = r });
 
-            using (var scope = new TransactionScope())
-            {
+            //using (var scope = new TransactionScope())
+            //{
                 bool hasError = false;
                 string strErrors = "";
                 MoveBillMaster lastMoveBillMaster = null;
@@ -108,14 +108,20 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                             }
 
                             //todo
-                            MoveBillMaster moveBillMaster = MoveBillCreater.CreateMoveBillMaster(item.SortingLine.Cell.WarehouseCode, "3001", "操作员");
+                            MoveBillMaster moveBillMaster = MoveBillCreater.CreateMoveBillMaster(item.SortingLine.Cell.WarehouseCode, "3001", "2c0a649d-5f44-4a33-8e83-2b6f1b5a06d8");
                             lastMoveBillMaster = moveBillMaster;
                             foreach (var product in item.Products.ToArray())
                             {
                                 //获取分拣线下限数据
                                 var sortingLowerlimitQuantity = sortingLowerlimitQuery.Where(s => s.ProductCode == product.Product.ProductCode
-                                                                                                    && s.SortingLineCode == product.SortingLine.SortingLineCode)
-                                                                                      .Sum(l => l.Quantity);
+                                                                                                    && s.SortingLineCode == product.SortingLine.SortingLineCode);
+                                                                                                    //.Sum(l => l.Quantity);
+                                decimal lowerlimitQuantity=0;
+                                if (sortingLowerlimitQuantity.Count()>0)
+                                {
+                                    lowerlimitQuantity = sortingLowerlimitQuantity.Sum(s=>s.Quantity);
+                                }
+
                                 //获取分拣备货区库存                    
                                 var storageQuantity = storageQuery.Where(s => s.ProductCode == product.Product.ProductCode)
                                                                   .Join(sortingLineQuery,
@@ -123,10 +129,15 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                                                         l => l.Cell,
                                                                         (s, l) => new { l.SortingLineCode, s.Quantity }
                                                                   )
-                                                                  .Where(r => r.SortingLineCode == product.SortingLine.SortingLineCode)
-                                                                  .Sum(s => s.Quantity);
+                                                                  .Where(r => r.SortingLineCode == product.SortingLine.SortingLineCode);
+                                                                  //.Sum(s => s.Quantity);
+                                decimal storQuantity = 0;
+                                if (storageQuantity.Count()>0)
+                                {
+                                    storQuantity = storageQuantity.Sum(s => s.Quantity);
+                                }
                                 //获取移库量（按整件计）
-                                decimal quantity = Math.Ceiling((product.SumQuantity + sortingLowerlimitQuantity - storageQuantity) / product.Product.Unit.Count)
+                                decimal quantity = Math.Ceiling((product.SumQuantity + lowerlimitQuantity - storQuantity) / product.Product.Unit.Count)
                                                    * product.Product.Unit.Count;
 
                                 AlltoMoveBill(moveBillMaster, product.Product, item.SortingLine.Cell, ref quantity);
@@ -141,7 +152,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                             if (!hasError)
                             {
                                 //todo
-                                OutBillMaster outBillMaster = OutBillCreater.CreateOutBillMaster(item.SortingLine.Cell.WarehouseCode, "3001", "操作员");
+                                OutBillMaster outBillMaster = OutBillCreater.CreateOutBillMaster(item.SortingLine.Cell.WarehouseCode, "2001", "2c0a649d-5f44-4a33-8e83-2b6f1b5a06d8");
                                 //添加出库单细单
                                 foreach (var product in item.Products.ToArray())
                                 {
@@ -162,7 +173,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                     sortDisp.WorkStatus = "2";
                                     SortOrderDispatchRepository.SaveChanges();
                                 }
-                                scope.Complete();
+                               // scope.Complete();
                             }
                         }
                     }
@@ -177,8 +188,8 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                 {
                     MoveBillCreater.CreateSyncMoveBillDetail(lastMoveBillMaster);
                 }
-                scope.Complete();
-            }
+               // scope.Complete();
+         //   }
         }
 
         private SortWorkDispatch AddSortWorkDispMaster(MoveBillMaster moveBillMaster, OutBillMaster outBillMaster, string sortingLineCode, string orderDate)
