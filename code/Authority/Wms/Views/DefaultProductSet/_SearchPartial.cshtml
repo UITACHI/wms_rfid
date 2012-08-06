@@ -1,9 +1,7 @@
 ﻿<script type="text/javascript">
     function searchLoad() {
-        $('#ware-add').combogrid({
-            width: 130,
-            panelWidth: 340,
-            url: '/DefaultProductSet/Details?page=1&rows=10',
+        $('#ProductCode').combogrid({
+            url: '/DefaultProductSet/LoadProduct',
             idField: 'ProductCode',
             textField: 'ProductName',
             mode: 'local',
@@ -17,18 +15,18 @@
     }
 
     function searchClick() {
-        $('#dlg-search').dialog('open').dialog('setTitle', '查询');
+        $('#dlgSearch').dialog('open').dialog('setTitle', '查询');
     }
     function select() {
-        $("#details").treegrid({
-            url: '/DefaultProductSet/Details/?productCode=' + $('#product-add').combogrid('getValue')
+        $("#details").datagrid({
+            url: '/DefaultProductSet/Details/?productCode=' + $('#productAdd').combogrid('getValue')
         });
         $("#details").treegrid('reload');
-        $('#dlg-search').dialog('close');
+        $('#dlgSearch').dialog('close');
     }
-
+    
 </script>
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width: 290px; height: 130px;
+<div id="dlgSearch" class="easyui-dialog" modal="true" style="width: 290px; height: 130px;
     padding: 2px 2px;" closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
         <div region="center" border="false" style="padding: 10px 10px; background: #fff;
@@ -36,10 +34,10 @@
             <table width="250">
                 <tr>
                     <td>
-                        卷烟:
+                        卷烟筛选:
                     </td>
                     <td colspan="3" align="left">
-                        <input name="ProductCode" type="text" id="product-add" />
+                        <input name="ProductCode" type="text" id="productAdd" />
                     </td>
                 </tr>
             </table>
