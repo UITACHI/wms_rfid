@@ -240,25 +240,30 @@ namespace THOK.Wms.Bll.Service
             }
             else//传入的参数为in时查询的是移入货位的存储信息
             {
-                storages = storages.Where(s=>s.Quantity==0
-                    ||(s.Cell.IsSingle=="1"&&s.ProductCode==productCode&&s.Quantity<s.Cell.MaxQuantity*s.Product.Unit.Count)
-                    ||(s.Cell.IsSingle == "0" && string.IsNullOrEmpty(s.Cell.LockTag)));
+                storages = storages.Where(s => s.Quantity == 0
+                    || (s.Cell.IsSingle == "1" && s.ProductCode == productCode && s.Quantity < s.Cell.MaxQuantity * s.Product.Unit.Count)
+                    || (s.Cell.IsSingle == "0" && string.IsNullOrEmpty(s.Cell.LockTag)));
+            }
+
+            if (!storages.Any())
+            {
+                return null;
             }
             var temp = storages.AsEnumerable().Select(s => new
-            {
-                s.StorageCode,
-                s.Cell.CellCode,
-                s.Cell.CellName,
-                s.Product.ProductCode,
-                s.Product.ProductName,
-                s.Product.Unit.UnitCode,
-                s.Product.Unit.UnitName,
-                Price=s.Product.CostPrice,
-                Quantity = s.Quantity / s.Product.Unit.Count,
-                IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-            });
+                {
+                    s.StorageCode,
+                    s.Cell.CellCode,
+                    s.Cell.CellName,
+                    ProductCode = s.Product == null ? "" : s.Product.ProductCode,
+                    ProductName = s.Product == null ? "" : s.Product.ProductName,
+                    UnitCode = s.Product == null ? "" : s.Product.Unit.UnitCode,
+                    UnitName = s.Product == null ? "" : s.Product.Unit.UnitName,
+                    Price = s.Product == null ? 0 : s.Product.CostPrice,
+                    Quantity = s.Product == null ? 0 : s.Quantity / s.Product.Unit.Count,
+                    IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                    StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                    UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                });
 
             int total = temp.Count();
             temp = temp.Skip((page - 1) * rows).Take(rows);

@@ -10,10 +10,10 @@ namespace THOK.Wms.Bll.Interfaces
     {
         object GetDetails(int page, int rows, string BillNo);
 
-        bool Add(MoveBillDetail moveBillDetail);
+        bool Add(MoveBillDetail moveBillDetail, out string strResult);
 
-        bool Delete(string ID);
+        bool Delete(string ID, out string strResult);
 
-        bool Save(MoveBillDetail moveBillDetail);
+        bool Save(MoveBillDetail moveBillDetail, out string strResult);
     }
 }

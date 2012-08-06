@@ -110,10 +110,7 @@
                     $('#dlg').dialog('close');
                     $('#details').datagrid('reload');
                 } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#details').datagrid('reload');
                 }
             }
@@ -169,10 +166,7 @@
                     $('#moveBillDetail').datagrid('reload');
                     $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + billno });
                 } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#moveBillDetail').datagrid('reload');
                 }
             }

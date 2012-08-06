@@ -7,6 +7,8 @@ using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.Bll.Models;
+using THOK.Wms.SignalR;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -18,6 +20,8 @@ namespace THOK.Wms.Bll.Service
         public IProfitLossBillDetailRepository ProfitLossBillDetailRepository { get; set; }
         [Dependency]
         public IEmployeeRepository EmployeeRepository { get; set; }
+        [Dependency]
+        public IStorageLocker Locker { get; set; }
 
         protected override Type LogPrefix
         {
@@ -162,7 +166,7 @@ namespace THOK.Wms.Bll.Service
             {
                 if (pbm != null)
                 {
-                    Del(ProfitLossBillDetailRepository, pbm.ProfitLossBillDetails);
+                    DeleteProfitLossBillDetail(pbm);
                     ProfitLossBillMasterRepository.Delete(pbm);
                     ProfitLossBillMasterRepository.SaveChanges();
                     result = true;
@@ -174,6 +178,38 @@ namespace THOK.Wms.Bll.Service
             }
             strResult = resultStr;
             return result;
+        }
+
+        /// <summary>
+        /// 批量删除损益细单
+        /// </summary>
+        /// <param name="profitLossBillMaster">损益主单</param>
+        public void DeleteProfitLossBillDetail(ProfitLossBillMaster profitLossBillMaster)
+        {
+            if (profitLossBillMaster != null)
+            {
+                foreach (var detail in profitLossBillMaster.ProfitLossBillDetails)
+                {
+                    var Storage = Locker.LockStorage(detail.Storage, detail.Product);
+                    if (Storage != null)
+                    {
+                        if (detail.Quantity > 0)
+                        {
+                            Storage.InFrozenQuantity -= detail.Quantity;
+                        }
+                        else
+                        {
+                            Storage.OutFrozenQuantity -= Math.Abs(detail.Quantity);
+                        }
+                        Storage.LockTag = string.Empty;
+                        detail.Quantity = 0;
+                    }
+                }
+                var details = profitLossBillMaster.ProfitLossBillDetails.Where(d => d.Quantity == 0)
+                                                            .Select(d => d);
+                ProfitLossBillDetailRepository.Delete(details.ToArray());
+                ProfitLossBillDetailRepository.SaveChanges();
+            }
         }
 
         /// <summary>
