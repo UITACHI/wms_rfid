@@ -33,7 +33,7 @@ namespace Authority.Controllers.Wms.SortingInfo
             return View();
         }
 
-        //
+        //查询数据
         // GET: /SortWorkDispatch/Details/
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
@@ -44,7 +44,7 @@ namespace Authority.Controllers.Wms.SortingInfo
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
+        //新增数据
         // GET: /SortWorkDispatch/Dispatch/
         public ActionResult Dispatch(string dispatchId)
         {
@@ -53,12 +53,40 @@ namespace Authority.Controllers.Wms.SortingInfo
             return Json(JsonMessageHelper.getJsonMessage(true, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
-        //
+        //删除数据
         // POST: /SortWorkDispatch/Delete/
         public ActionResult Delete(string id)
         {
             bool bResult = SortWorkDispatchService.Delete(id);
             string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //订单审核(出库审核，移库审核，分拣作业审核)
+        // POST: /SortWorkDispatch/Audit/
+        public ActionResult Audit(string id)
+        {
+            bool bResult = SortWorkDispatchService.Audit(id, this.User.Identity.Name.ToString());
+            string msg = bResult ? "审核成功" : "审核失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //订单反审(出库审核，移库审核，分拣作业审核)
+        // POST: /SortWorkDispatch/AntiTrial/
+        public ActionResult AntiTrial(string id)
+        {
+            bool bResult = SortWorkDispatchService.AntiTrial(id);
+            string msg = bResult ? "反审成功" : "反审失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //订单结单(出库结单，移库结单，分拣作业结单)
+        // POST: /SortWorkDispatch/Settle/
+        public ActionResult Settle(string id)
+        {
+            string errorInfo = string.Empty;
+            bool bResult = SortWorkDispatchService.Settle(id, out errorInfo);
+            string msg = bResult ? "反审成功" : "反审失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }

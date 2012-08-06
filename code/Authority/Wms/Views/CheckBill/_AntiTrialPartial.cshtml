@@ -3,7 +3,7 @@
         var row = $('#details').datagrid('getSelected');
         if (row) {
             if (row.Status != "已审核") {
-                $.messager.confirm('错误', '该记录状态不是已录入状态无法反审！');
+                $.messager.confirm('错误', '该记录状态不是已审核状态无法反审！');
             } else {
                 DataLoad();
                 $('#checkdlg').dialog('open').dialog('setTitle', '反审盘点主单信息');

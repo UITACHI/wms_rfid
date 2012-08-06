@@ -6,6 +6,7 @@ using THOK.Wms.Bll.Interfaces;
 using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -18,9 +19,14 @@ namespace THOK.Wms.Bll.Service
         public IOutBillDetailRepository OutBillDetailRepository { get; set; }
 
         [Dependency]
+        public IOutBillAllotRepository OutBillAllotRepository { get; set; }
+
+        [Dependency]
         public IEmployeeRepository EmployeeRepository { get; set; }
 
-        
+        [Dependency]
+        public IStorageLocker Locker { get; set; } 
+
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
@@ -50,6 +56,9 @@ namespace THOK.Wms.Bll.Service
                     break;
                 case "6":
                     statusStr = "已入库";
+                    break;
+                case "7":
+                    statusStr = "已结单";
                     break;
             }
             return statusStr;
@@ -251,6 +260,47 @@ namespace THOK.Wms.Bll.Service
                 outbm.VerifyPersonID = null;
                 OutBillMasterRepository.SaveChanges();
                 result = true;
+            }
+            return result;
+        }
+
+        public bool Settle(string billNo, out string errorInfo)
+        {
+            bool result = false;
+            errorInfo = string.Empty;
+            var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
+            if (outbm != null && outbm.Status != "7")
+            {
+                //using (var scope = new TransactionScope())
+                //{
+                try
+                {
+                    //修改分配出库冻结量
+                    var outAllot = OutBillAllotRepository.GetQueryable().Where(o => o.BillNo == outbm.BillNo && o.Status != "2");
+                    foreach (var item in outAllot.ToArray())
+                    {
+                        if (Locker.LockNoEmptyStorage(item.Storage, item.Product) != null)//锁库存
+                        {
+                            item.Storage.OutFrozenQuantity -= item.AllotQuantity;
+                            item.Storage.LockTag = string.Empty;
+                        }
+                        else
+                        {
+                            errorInfo = "出库货位其他人员正在操作！无法结单！";
+                            return false;
+                        }
+                    }
+                    outbm.Status = "7";
+                    outbm.UpdateTime = DateTime.Now;
+                    OutBillMasterRepository.SaveChanges();
+                    result = true;
+                }
+                catch (Exception e)
+                {
+                    errorInfo = "出库单结单出错！原因：" + e.Message;
+                }
+                //    scope.Complete();
+                //}
             }
             return result;
         }

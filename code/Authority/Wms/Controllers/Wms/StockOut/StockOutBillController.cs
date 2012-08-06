@@ -144,6 +144,16 @@ namespace Authority.Controllers.Wms.StockOut
             string msg = bResult ? "反审成功" : "反审失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
-        
+
+        //主单结单
+        // POST: /StockOutBill/outBillMasterSettle/
+        public ActionResult outBillMasterSettle(string BillNo)
+        {
+            string errorInfo = string.Empty;
+            bool bResult = OutBillMasterService.Settle(BillNo, out errorInfo);
+            string msg = bResult ? "反审成功" : "反审失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

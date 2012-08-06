@@ -35,7 +35,7 @@
 
     var modifyUrl;
 
-    //删除入库单明细
+    //删除出库单明细
     function allotDelete() {
         var detailRow = $('#allotBillDetails').datagrid('getSelected');
         if (detailRow) {
@@ -47,7 +47,12 @@
         }
     }
 
-    //修改入库单明细    
+    //新增出库单明细分配  
+    function allotAdd() { 
+        
+    }
+
+    //修改出库单明细    
     function allotEdit() {
         var detailRow = $('#allotBillDetails').datagrid('getSelected');
         if (detailRow) {

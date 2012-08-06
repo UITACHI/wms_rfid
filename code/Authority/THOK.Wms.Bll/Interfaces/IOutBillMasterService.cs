@@ -21,5 +21,7 @@ namespace THOK.Wms.Bll.Interfaces
         bool Audit(string billNo, string userName);
 
         bool AntiTrial(string billNo);
+
+        bool Settle(string billNo,out string errorInfo);
     }
 }

@@ -15,5 +15,11 @@ namespace THOK.Wms.Bll.Interfaces
         bool Delete(string id);
 
         bool Save(SortWorkDispatch sortWorkDisp);
+
+        bool Audit(string id, string userName);
+
+        bool AntiTrial(string id);
+
+        bool Settle(string id, out string errorInfo);
     }
 }

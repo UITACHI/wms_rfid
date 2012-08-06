@@ -69,10 +69,8 @@
         var rows = $('#productTable').datagrid('getSelections');
         if (rows.length > 0) {
             for (var i = 0; i < rows.length; i++) {
-
-
-
                 var index = $('#productTable').datagrid('getRowIndex', rows[i]);
+                //ldata.rows.splice(index,0)
                 $('#productTable').datagrid('deleteRow', index);
                 $('#checkProductTable').datagrid('appendRow', rows[i]);
             }
