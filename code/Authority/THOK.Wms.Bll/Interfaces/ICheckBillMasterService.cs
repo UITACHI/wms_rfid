@@ -34,6 +34,6 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool AntiTrial(string billNo);
 
-        bool confirmCheck(string billNo);
+        bool confirmCheck(string billNo, string userName, out string errorInfo);
     }
 }

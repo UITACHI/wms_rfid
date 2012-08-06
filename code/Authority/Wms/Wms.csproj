@@ -875,7 +875,8 @@
     <Content Include="Views\DefaultProductSet\_EditPartial.cshtml" />
     <Content Include="Views\DefaultProductSet\_ProductPartial.cshtml" />
     <Content Include="Views\DefaultProductSet\_GoodsCount.cshtml" />
-    <None Include="Views\Home\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\DailyBalance\__Detail2.cshtml" />
+    <Content Include="Views\DefaultProductSet\_GoodsCount.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
     <Content Include="Views\Home\_HeaderPartial.cshtml" />
@@ -1092,6 +1093,10 @@
     <Content Include="Views\StockInBill\_CellPartial.cshtml" />
     <Content Include="Views\StockOutBill\_CellPartial.cshtml" />
     <Content Include="Views\Shared\_SettlePartial.cshtml" />
+    <Content Include="Views\SortWorkDispatch\_AuditPartial.cshtml" />
+    <Content Include="Views\SortWorkDispatch\_AntiTrialPartial.cshtml" />
+    <Content Include="Views\SortWorkDispatch\_SettlePartial.cshtml" />
+    <Content Include="Views\StockOutBill\_SettlePartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

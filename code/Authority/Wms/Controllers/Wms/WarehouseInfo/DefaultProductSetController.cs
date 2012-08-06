@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
+using THOK.WebUtil;
 using THOK.Wms.Bll.Interfaces;
 using THOK.Wms.DbModel;
-using THOK.WebUtil;
 
 namespace Wms.Controllers.Wms.WarehouseInfo
 {
@@ -14,6 +14,8 @@ namespace Wms.Controllers.Wms.WarehouseInfo
     {
         [Dependency]
         public IProductService ProductService { get; set; }
+        [Dependency]
+        public ICellService CellService { get; set; }
 
         //
         // GET: /DefaultProductSet/
@@ -55,13 +57,12 @@ namespace Wms.Controllers.Wms.WarehouseInfo
             return Json(product, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //添加卷烟表
-        // POST: /DefaultProductSet/ProductCreate/
-        [HttpPost]
-        public ActionResult ProductCreate(Product product)
+        //添加货位预设编码DefaultProductCode
+        // POST: /DefaultProductSet/CellInsertCode/
+        public ActionResult CellInsertCode(string wareCodes, string areaCodes, string shelfCodes, string cellCodes, string defaultProductCode)
         {
-            bool bResult = ProductService.Add(product);
-            string msg = bResult ? "新增成功" : "新增失败";
+            bool bResult = CellService.SaveCell(wareCodes, areaCodes, shelfCodes, cellCodes, defaultProductCode);
+            string msg = bResult ? "保存成功" : "保存失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 

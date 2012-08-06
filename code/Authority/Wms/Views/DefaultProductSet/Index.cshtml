@@ -1,19 +1,17 @@
 ﻿<script type="text/javascript">
-    $(function () {
-        
-    });
+    
 </script>
-
-<div region="center" split="true" border="false" >
-    <table id="details" class="easyui-treegrid" border="false" 
-   			url="/DefaultProductSet/Details/" rownumbers="true" singleSelect="true"
-    		idField="Code" treeField="Name" toolbar="#tool" pagination="false" fit="true">
-		<thead>
-			<tr>
-                <th field="ProductCode" width="100" align="left" iconCls="icon">卷烟编码</th> 
-                <th field="ProductName" width="400" align="left" iconCls="icon">卷烟名称</th>
-				<th field="ProductQuantity" width="80" align="left" iconCls="icon">货位数量</th>
-			</tr>
-		</thead>
-	</table>
+<div id="divtemp" region="center" split="true" border="false">
+    <table id="details" class="easyui-datagrid" border="false" singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true" url="/DefaultProductSet/LoadProduct/" >
+        <thead>
+            <tr>
+                <th field="ProductCode" width="100" align="left" iconcls="icon">
+                    卷烟编码
+                </th>
+                <th field="ProductName" width="400" align="left" iconcls="icon">
+                    卷烟名称
+                </th>
+            </tr>
+        </thead>
+    </table>
 </div>

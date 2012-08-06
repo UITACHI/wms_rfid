@@ -35,7 +35,7 @@
 
     var modifyUrl;
 
-    //删除入库单明细
+    //删除出库单明细
     function allotDelete() {
         var detailRow = $('#allotBillDetails').datagrid('getSelected');
         if (detailRow) {
@@ -47,7 +47,12 @@
         }
     }
 
-    //修改入库单明细    
+    //新增出库单明细分配  
+    function allotAdd() { 
+        
+    }
+
+    //修改出库单明细    
     function allotEdit() {
         var detailRow = $('#allotBillDetails').datagrid('getSelected');
         if (detailRow) {
@@ -180,6 +185,7 @@
             id="area"></select>
     <a href="#" class="easyui-linkbutton" iconCls="icon-Menu_CheckBill" plain="true" onclick="allot()">自动分配</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="cancelAllot()">取消分配</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="allotAdd()">手工增加</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="allotEdit()">手工修改</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="allotDelete()">手工删除</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="confirmAllot()">确认分配</a>

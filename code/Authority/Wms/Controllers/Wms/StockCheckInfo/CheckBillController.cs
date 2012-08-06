@@ -151,7 +151,8 @@ namespace Authority.Controllers.Wms.StockCheckInfo
         // POST: /CheckBill/checkBillMasterConfirm/
         public ActionResult checkBillMasterConfirm(string BillNo)
         {
-            bool bResult = CheckBillMasterService.confirmCheck(BillNo);
+            string errorInfo=string.Empty;
+            bool bResult = CheckBillMasterService.confirmCheck(BillNo, this.User.Identity.Name.ToString(), out errorInfo);
             string msg = bResult ? "反审成功" : "反审失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }

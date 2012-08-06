@@ -11,14 +11,11 @@
             $('#InfoDetails').dialog('open').dialog('setTitle', '日结产品明细');
         }
     }
-//    function BalanceAgain() {
-//        var row = $('#details').datagrid('getSelected');
-
-//        $('#infoDetail').dialog('open').dialog('setTitle', '日结明细');
-//        $('#infoDetails').datagrid({ url: '/DailyBalance/InfoDetails/?date=' + row.SettleDate });
-//        $("#infoDetails").datagrid('reload');
-
-//    }
+    function BalanceAgain() {
+        var row = $('#details').datagrid('getSelected');
+        $('#infos2').datagrid({ url: '/DailyBalance/DailyBalanceInfos/?WarehouseCode=' + row.WarehouseCode + '&&SettleDate=' + row.SettleDate });
+        $('#InfoDetails2').dialog('open').dialog('setTitle', '日结明细');  
+    }
 </script>
 
     <div region="center" split="true" border="false">    
