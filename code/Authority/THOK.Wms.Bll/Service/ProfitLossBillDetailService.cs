@@ -74,7 +74,7 @@ namespace THOK.Wms.Bll.Service
         /// </summary>
         /// <param name="profitLossBillDetail">损益单细表</param>
         /// <returns></returns>
-        public new bool Add(ProfitLossBillDetail profitLossBillDetail, out string strResult)
+        public bool Add(ProfitLossBillDetail profitLossBillDetail, out string strResult)
         {
             bool result=false;
             IQueryable<ProfitLossBillDetail> profitLossBillDetailQuery = ProfitLossBillDetailRepository.GetQueryable();
@@ -159,14 +159,40 @@ namespace THOK.Wms.Bll.Service
         /// </summary>
         /// <param name="ID">损益单细单ID</param>
         /// <returns></returns>
-        public bool Delete(string ID)
+        public bool Delete(string ID,out string strResult)
         {
+            bool result=false;
             IQueryable<ProfitLossBillDetail> profitLossBillDetailQuery = ProfitLossBillDetailRepository.GetQueryable();
             int intID = Convert.ToInt32(ID);
             var pbd = profitLossBillDetailQuery.FirstOrDefault(i => i.ID == intID);
-            ProfitLossBillDetailRepository.Delete(pbd);
-            ProfitLossBillDetailRepository.SaveChanges();
-            return true;
+            var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == pbd.UnitCode);
+            var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == pbd.ProductCode);
+            var storage = StorageRepository.GetQueryable().FirstOrDefault(s => s.StorageCode == pbd.StorageCode);
+            if (pbd!=null)
+            {
+                if (Locker.LockNoEmptyStorage(storage, product) != null)
+                {
+                    if (pbd.Quantity > 0)
+                    {
+                        storage.InFrozenQuantity -= pbd.Quantity;
+                    }
+                    else
+                    {
+                        storage.OutFrozenQuantity -= Math.Abs(pbd.Quantity);
+                    }
+                    storage.LockTag = string.Empty;
+                    StorageRepository.SaveChanges();
+                    ProfitLossBillDetailRepository.Delete(pbd);
+                    ProfitLossBillDetailRepository.SaveChanges();
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+            }
+            strResult = resultStr;
+            return result;
         }
 
         /// <summary>
@@ -174,20 +200,50 @@ namespace THOK.Wms.Bll.Service
         /// </summary>
         /// <param name="profitLossBillDetail">损益细单</param>
         /// <returns></returns>
-        public bool Save(ProfitLossBillDetail profitLossBillDetail)
+        public bool Save(ProfitLossBillDetail profitLossBillDetail,out string strResult)
         {
+            bool result = false;
             IQueryable<ProfitLossBillDetail> profitLossBillDetailQuery = ProfitLossBillDetailRepository.GetQueryable();
             var pbd = profitLossBillDetailQuery.FirstOrDefault(i => i.ID == profitLossBillDetail.ID && i.BillNo == profitLossBillDetail.BillNo);
             var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == profitLossBillDetail.UnitCode);
-            pbd.CellCode = profitLossBillDetail.CellCode;
-            pbd.StorageCode = profitLossBillDetail.StorageCode;
-            pbd.ProductCode = profitLossBillDetail.ProductCode;
-            pbd.UnitCode = profitLossBillDetail.UnitCode;
-            pbd.Price = profitLossBillDetail.Price;
-            pbd.Quantity = profitLossBillDetail.Quantity * unit.Count;
-            pbd.Description = profitLossBillDetail.Description;
-            ProfitLossBillDetailRepository.SaveChanges();
-            return true;
+            var cell = CellRepository.GetQueryable().FirstOrDefault(c => c.CellCode == profitLossBillDetail.CellCode);
+            var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == pbd.ProductCode);
+            var storage = StorageRepository.GetQueryable().FirstOrDefault(s => s.StorageCode == pbd.StorageCode);
+            if (Locker.LockNoEmptyStorage(storage, product)!=null)
+            {
+                if (IsQuntityRight(profitLossBillDetail.Quantity * unit.Count, storage.InFrozenQuantity - Math.Abs(pbd.Quantity), storage.OutFrozenQuantity - Math.Abs(pbd.Quantity), cell.MaxQuantity * unit.Count, storage.Quantity))
+                {
+                    pbd.CellCode = profitLossBillDetail.CellCode;
+                    pbd.StorageCode = profitLossBillDetail.StorageCode;
+                    pbd.ProductCode = profitLossBillDetail.ProductCode;
+                    pbd.UnitCode = profitLossBillDetail.UnitCode;
+                    pbd.Price = profitLossBillDetail.Price;
+                    //原来的数量撤销
+                    if (pbd.Quantity > 0)
+                    {
+                        storage.InFrozenQuantity -= pbd.Quantity;
+                    }
+                    else
+                    {
+                        storage.OutFrozenQuantity -= Math.Abs(pbd.Quantity);
+                    }
+                    //新的数量生效
+                    if (profitLossBillDetail.Quantity > 0)
+                    {
+                        storage.InFrozenQuantity += profitLossBillDetail.Quantity * unit.Count;
+                    }
+                    else
+                    {
+                        storage.OutFrozenQuantity += Math.Abs(profitLossBillDetail.Quantity * unit.Count);
+                    }
+                    pbd.Quantity = profitLossBillDetail.Quantity * unit.Count;
+                    pbd.Description = profitLossBillDetail.Description;
+                    ProfitLossBillDetailRepository.SaveChanges();
+                    result = true;
+                }
+            }
+            strResult = resultStr;
+            return result;
         }
 
         #endregion
