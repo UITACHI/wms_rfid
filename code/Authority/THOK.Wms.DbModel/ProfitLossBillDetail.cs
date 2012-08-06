@@ -23,6 +23,7 @@ namespace THOK.Wms.DbModel
         public virtual ProfitLossBillMaster ProfitLossBillMaster { get; set; }
         public virtual Product Product { get; set; }
         public virtual Unit Unit { get; set; }
+        public virtual Storage Storage { get; set; }
 
     }
 }

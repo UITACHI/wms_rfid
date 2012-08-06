@@ -6,6 +6,8 @@ using THOK.Wms.Bll.Interfaces;
 using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
+using THOK.Wms.SignalR;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -21,6 +23,8 @@ namespace THOK.Wms.Bll.Service
         public IEmployeeRepository EmployeeRepository { get; set; }
         [Dependency]
         public IMoveBillDetailRepository MoveBillDetailRepository { get; set; }
+        [Dependency]
+        public IMoveBillCreater MoveBillCreater { get; set; }
 
         protected override Type LogPrefix
         {
@@ -144,6 +148,7 @@ namespace THOK.Wms.Bll.Service
             {
                 if (mbm != null)
                 {
+                    MoveBillCreater.DeleteMoveBillDetail(mbm);
                     Del(MoveBillDetailRepository, mbm.MoveBillDetails);
                     MoveBillMasterRepository.Delete(mbm);
                     MoveBillMasterRepository.SaveChanges();

@@ -82,7 +82,7 @@ namespace THOK.Wms.Bll.Service
             var cell=CellRepository.GetQueryable().FirstOrDefault(c=>c.CellCode==profitLossBillDetail.CellCode);
             var product=ProductRepository.GetQueryable().FirstOrDefault(p=>p.ProductCode==profitLossBillDetail.ProductCode);
             var storage = StorageRepository.GetQueryable().FirstOrDefault(s=>s.StorageCode==profitLossBillDetail.StorageCode);
-            if (Locker.LockNoEmptyStorage(storage, product)!=null)
+            if (Locker.LockStorage(storage, product)!=null)
             {
                 if (IsQuntityRight(profitLossBillDetail.Quantity*unit.Count,storage.InFrozenQuantity,storage.OutFrozenQuantity,cell.MaxQuantity*unit.Count,storage.Quantity))
                 {

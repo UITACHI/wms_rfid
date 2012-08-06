@@ -14,6 +14,7 @@ namespace THOK.Wms.DbModel
            this.CheckBillDetails = new List<CheckBillDetail>();
            this.InBillAllots = new List<InBillAllot>();
            this.OutBillAllots = new List<OutBillAllot>();
+           this.ProfitLossBillDetails = new List<ProfitLossBillDetail>();
        }
        public string StorageCode { get; set; }
        public string CellCode { get; set; }
@@ -37,6 +38,7 @@ namespace THOK.Wms.DbModel
        public virtual ICollection<CheckBillDetail> CheckBillDetails { get; set; }
        public virtual ICollection<InBillAllot> InBillAllots { get; set; }
        public virtual ICollection<OutBillAllot> OutBillAllots { get; set; }
+       public virtual ICollection<ProfitLossBillDetail> ProfitLossBillDetails { get; set; }
 
     }
 }
