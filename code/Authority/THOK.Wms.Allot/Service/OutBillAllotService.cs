@@ -157,7 +157,7 @@ namespace THOK.Wms.Allot.Service
                         }
                         else
                         {
-                            storage = LockStorage(billNo, cell, allotDetail.Product);
+                            storage = Locker.LockNoEmpty(cell, allotDetail.Product);
                             allotDetail.Storage.OutFrozenQuantity -= allotDetail.AllotQuantity;
                         }
                         if (storage != null)
@@ -394,6 +394,75 @@ namespace THOK.Wms.Allot.Service
             return result;
         }
 
+        public bool AllotAdd(string billNo, long id, string productCode, string cellCode, int allotQuantity, out string strResult)
+        {
+            bool result = false;
+            var ibm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
+            var cell = CellRepository.GetQueryable().Single(c => c.CellCode == cellCode);
+            var obm = OutBillDetailRepository.GetQueryable().FirstOrDefault(o=>o.ProductCode==productCode);
+            if (ibm != null)
+            {
+                if (string.IsNullOrEmpty(ibm.LockTag))
+                {
+                    Storage storage= Locker.LockNoEmpty(cell, obm.Product);
+                    if (storage != null && allotQuantity > 0)
+                    {
+                        OutBillAllot billAllot = null;
+                        decimal q1 = obm.BillQuantity - obm.AllotQuantity;
+                        decimal q2 = allotQuantity * obm.Unit.Count;
+                        decimal q3 = storage.Quantity - storage.OutFrozenQuantity;
+                        if (q1 >= q2 && q2 <= q3)
+                        {
+                            try
+                            {
+                                billAllot = new OutBillAllot()
+                                {
+                                    BillNo = billNo,
+                                    OutBillDetailId = obm.ID,
+                                    ProductCode = obm.ProductCode,
+                                    CellCode = storage.CellCode,
+                                    StorageCode = storage.StorageCode,
+                                    UnitCode = obm.UnitCode,
+                                    AllotQuantity = q2,
+                                    RealQuantity = 0,
+                                    Status = "0"
+                                };
+                                obm.AllotQuantity += q2;
+                                storage.OutFrozenQuantity += q2;
+                                ibm.OutBillAllots.Add(billAllot);
+                                ibm.Status = "3";
+                                storage.LockTag = string.Empty;
+                                StorageRepository.SaveChanges();
+                                strResult = "保存修改成功！";
+                                result = true;
+                            }
+                            catch (Exception)
+                            {
+                                strResult = "保存添加失败，订单或储位其他人正在操作！";
+                            }
+                        }
+                        else
+                        {
+                            strResult = "分配数量超过订单数量,或者当前储位库存量不足！";
+                        }
+                    }
+                    else
+                    {
+                        strResult = "当前选择的储位不可用，其他人正在操作或没有库存！";
+                    }
+                }
+                else
+                {
+                    strResult = "当前订单其他人正在操作，请稍候重试！";
+                }
+            }
+            else
+            {
+                strResult = "当前订单状态不是已分配，或当前订单不存在！";
+            }
+            return result;
+        }
+
         private Storage LockStorage(string billNo, Cell cell,Product product)
         {
             try
@@ -427,6 +496,6 @@ namespace THOK.Wms.Allot.Service
             CellRepository.SaveChanges();
             return storage;
         }
-
-       }
+                
+    }
 }
