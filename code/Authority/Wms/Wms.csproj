@@ -1098,6 +1098,7 @@
     <Content Include="Views\StockOutBill\_SettlePartial.cshtml" />
     <Content Include="Views\DailyBalance\__Detail2.cshtml" />
     <Content Include="Views\StockInBill\_SettlePartial.cshtml" />
+    <Content Include="Views\StockIntoSearch\_Detail.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
