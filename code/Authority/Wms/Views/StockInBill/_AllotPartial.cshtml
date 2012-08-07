@@ -130,6 +130,9 @@
                 if (result.success) {
                     $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                     $('#details').datagrid('reload');
+                    $('#inBillDetails').datagrid('reload');
+                    $('#inAllotBillDetails').datagrid('reload');
+                    $('#allotBillDetails').datagrid('reload');
                 } else {
                     $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                 }

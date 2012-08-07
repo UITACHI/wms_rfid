@@ -57,9 +57,6 @@ namespace THOK.Wms.Bll.Service
                     statusStr = "执行中";
                     break;
                 case "6":
-                    statusStr = "已入库";
-                    break;
-                case "7":
                     statusStr = "已结单";
                     break;
             }
@@ -336,8 +333,8 @@ namespace THOK.Wms.Bll.Service
             var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo);
             if (ibm != null && ibm.Status == "5")
             {
-                //using (var scope = new TransactionScope())
-                //{
+                using (var scope = new TransactionScope())
+                {
                 try
                 {
                     //修改分配入库冻结量
@@ -346,7 +343,7 @@ namespace THOK.Wms.Bll.Service
                     {
                         if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
                         {
-                            item.Storage.OutFrozenQuantity -= item.AllotQuantity;
+                            item.Storage.InFrozenQuantity -= item.AllotQuantity;
                             item.Storage.LockTag = string.Empty;
                         }
                         else
@@ -355,7 +352,7 @@ namespace THOK.Wms.Bll.Service
                             return false;
                         }
                     }
-                    ibm.Status = "7";
+                    ibm.Status = "6";
                     ibm.UpdateTime = DateTime.Now;
                     InBillMasterRepository.SaveChanges();
                     result = true;
@@ -364,8 +361,8 @@ namespace THOK.Wms.Bll.Service
                 {
                     strResult = "入库单结单出错！原因：" + e.Message;
                 }
-                //scope.Complete();
-                //}
+                scope.Complete();
+                }
             }
             return result;
 
