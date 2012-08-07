@@ -74,7 +74,8 @@ namespace THOK.Wms.Bll.Service
             else
             {
                 var ibd = inBillDetailQuery.FirstOrDefault(i => i.BillNo == inBillDetail.BillNo && i.ProductCode == inBillDetail.ProductCode);
-                ibd.BillQuantity = ibd.BillQuantity + inBillDetail.BillQuantity;
+                ibd.UnitCode = inBillDetail.UnitCode;
+                ibd.BillQuantity = ibd.BillQuantity + inBillDetail.BillQuantity*unit.Count;
                 InBillDetailRepository.SaveChanges();
             }
             return true;
@@ -92,16 +93,38 @@ namespace THOK.Wms.Bll.Service
 
         public bool Save(InBillDetail inBillDetail)
         {
+            bool result=false;
             IQueryable<InBillDetail> inBillDetailQuery = InBillDetailRepository.GetQueryable();
-            var ibd = inBillDetailQuery.FirstOrDefault(i=>i.ID==inBillDetail.ID&&i.BillNo==inBillDetail.BillNo);
+            var ibd = inBillDetailQuery.FirstOrDefault(i=>i.BillNo==inBillDetail.BillNo&&inBillDetail.ProductCode==inBillDetail.ProductCode);
             var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == inBillDetail.UnitCode);
-            ibd.ProductCode = inBillDetail.ProductCode;
-            ibd.UnitCode = inBillDetail.UnitCode;
-            ibd.Price = inBillDetail.Price;
-            ibd.BillQuantity = inBillDetail.BillQuantity*unit.Count;
-            ibd.Description = inBillDetail.Description;
-            InBillDetailRepository.SaveChanges();
-            return true;
+            if ((ibd!= null&&ibd.ID==inBillDetail.ID)||ibd==null)
+            {
+                if(ibd==null)
+                {
+                    ibd=inBillDetailQuery.FirstOrDefault(i=>i.BillNo==inBillDetail.BillNo&&i.ID==inBillDetail.ID);
+                }
+                ibd.BillNo=inBillDetail.BillNo;
+                ibd.ProductCode = inBillDetail.ProductCode;
+                ibd.UnitCode = inBillDetail.UnitCode;
+                ibd.Price = inBillDetail.Price;
+                ibd.BillQuantity = inBillDetail.BillQuantity * unit.Count;
+                ibd.Description = inBillDetail.Description;
+                InBillDetailRepository.SaveChanges();
+                result = true;
+            }
+            else if(ibd != null && ibd.ID != inBillDetail.ID)
+            {
+                bool delDetail=this.Delete(inBillDetail.ID.ToString());
+                ibd.BillNo=inBillDetail.BillNo;
+                ibd.ProductCode=inBillDetail.ProductCode;
+                ibd.UnitCode=inBillDetail.UnitCode;
+                ibd.Price=inBillDetail.Price;
+                ibd.BillQuantity=ibd.BillQuantity+inBillDetail.BillQuantity*unit.Count;
+                ibd.Description=inBillDetail.Description;
+                InBillDetailRepository.SaveChanges();
+                result=true;
+            }
+            return result;
         }
 
         #endregion

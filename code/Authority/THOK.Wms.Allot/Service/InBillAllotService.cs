@@ -396,6 +396,7 @@ namespace THOK.Wms.Allot.Service
                                     {
                                         item.Storage.InFrozenQuantity -= item.AllotQuantity;
                                         item.Storage.LockTag = string.Empty;
+                                        item.InBillDetail.AllotQuantity -= item.AllotQuantity;//扣除入库细单的已分配数量
                                     }
                                     InBillAllotRepository.Delete(item);
                                 }

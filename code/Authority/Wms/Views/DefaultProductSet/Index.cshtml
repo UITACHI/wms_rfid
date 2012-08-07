@@ -2,14 +2,17 @@
     
 </script>
 <div id="divtemp" region="center" split="true" border="false">
-    <table id="details" class="easyui-datagrid" border="false" singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true" url="/DefaultProductSet/LoadProduct/" >
+    <table id="details" class="easyui-datagrid" border="false" singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true" url=" /DefaultProductSet/GetProductCell/">
         <thead>
             <tr>
-                <th field="ProductCode" width="100" align="left" iconcls="icon">
+                <th field="ProductCode"  width="100" align="left" iconcls="icon">
                     卷烟编码
                 </th>
                 <th field="ProductName" width="400" align="left" iconcls="icon">
                     卷烟名称
+                </th>
+                <th field="ProductQuantity" width="400" align="left" iconcls="icon">
+                    货位数量
                 </th>
             </tr>
         </thead>

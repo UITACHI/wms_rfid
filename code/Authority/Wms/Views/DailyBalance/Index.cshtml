@@ -1,20 +1,30 @@
 ﻿<script type="text/javascript">
     var url;
     function formatAction(value, row, index) {
-        var e = '<a href="#" onclick="DailyDetail(' + index + ')">日结明细</a> <a href="#"  onclick="BalanceAgain(' + index + ')">重新日结</a>';
+        var e = '<a href="#" onclick=DailyDetail("' + row.WarehouseCode + '","' + row.SettleDate + '")>日结明细</a> <a href="#"  onclick=BalanceAgain("' + row.WarehouseCode + '","' + row.SettleDate + '")>重新日结</a>';
         return e
     }
-    function DailyDetail(index) {
-        var row = $('#details').datagrid('getSelected');
-        if (row) {
-            $('#infos').datagrid({ url: '/DailyBalance/InfoDetails/?WarehouseCode=' + row.WarehouseCode + '&&SettleDate=' + row.SettleDate });           
+    function DailyDetail(warehouseCode, settleDate) {
+            $('#infos').datagrid({ url: '/DailyBalance/InfoDetails/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate });           
             $('#InfoDetails').dialog('open').dialog('setTitle', '日结明细');
-        }
     }
-    function BalanceAgain(index) {
-        var row = $('#details').datagrid('getSelected');
-        $('#infos2').datagrid({ url: '/DailyBalance/DailyBalanceInfos/?WarehouseCode=' + row.WarehouseCode + '&&SettleDate=' + row.SettleDate });
-        $('#InfoDetails2').dialog('open').dialog('setTitle', '日结明细');  
+    function BalanceAgain(warehouseCode, settleDate) {
+        var j_waitDialog = ShowWaitMessageDialog();
+        $.ajax({
+            url: '/DailyBalance/DoDailyBalance/', type: "GET", dataType: "text",
+            data: { 'WarehouseCode': warehouseCode, 'SettleDate': settleDate },
+            complete: function () { HideWaitMessageDialog(j_waitDialog); },
+            success: function (responseText) {
+                var result = $.evalJSON(responseText);
+                if (result.success) {
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#details').datagrid('reload');
+                    $('#dlg-Daily').dialog('close');
+                } else {
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                }
+            }
+        });
     }
 </script>
 
@@ -26,12 +36,13 @@
             <tr>
                 <th field="SettleDate" width="80">日结日期</th>
                 <th field="WarehouseName" width="80">仓库名称</th>
+                <th field="UnitName" width="80">单位</th>
                 <th field="Beginning" width="80">期初量</th>
-                <th field="EntryAmount" width="80">入库总量</th>
-                <th field="DeliveryAmount" width="80">出库总量</th>
-                <th field="LossAmount" width="80">报损总量</th>
-                <th field="ProfitAmount" width="80">报益总量</th>
-                <th field="Ending" width="80">日结量</th>
+                <th field="EntryAmount" width="80">入库量</th>
+                <th field="DeliveryAmount" width="80">出库量</th>
+                <th field="LossAmount" width="80">报损量</th>
+                <th field="ProfitAmount" width="80">报益量</th>
+                <th field="Ending" width="80">结余量</th>
                 <th field="detail" width="80"  align="center" formatter="formatAction">操作</th>
             </tr>
         </thead>

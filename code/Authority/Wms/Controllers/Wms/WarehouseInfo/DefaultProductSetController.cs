@@ -32,14 +32,6 @@ namespace Wms.Controllers.Wms.WarehouseInfo
             return View();
         }
 
-        //查询卷烟信息表
-        // POST: /DefaultProductSet/Details/
-        [HttpPost]
-        public ActionResult Details(int page, int rows, string ProductName, string ProductCode, string CustomCode, string BrandCode, string UniformCode, string AbcTypeCode, string ShortCode, string PriceLevelCode, string SupplierCode)
-        {
-            var product = ProductService.GetDetails(page, rows, ProductName, ProductCode, CustomCode, BrandCode, UniformCode, AbcTypeCode, ShortCode, PriceLevelCode, SupplierCode);
-            return Json(product, "text", JsonRequestBehavior.AllowGet);
-        }
         //加载烟卷信息表
         // POST: /DefaultProductSet/LoadProduct/
         public ActionResult LoadProduct(int page, int rows)
@@ -47,17 +39,26 @@ namespace Wms.Controllers.Wms.WarehouseInfo
             var product = ProductService.LoadProduct(page, rows);
             return Json(product, "text", JsonRequestBehavior.AllowGet);
         }
-
-        //查询卷烟信息表
-        // POST: /DefaultProductSet/FindProduct/
-        [HttpPost]
-        public ActionResult FindProduct(string parameter)
+        //首页加载卷烟信息
+        //POST: /DefaultProductSet/GetProductCell/
+        public ActionResult GetProductCell()
         {
-            var product = ProductService.FindProduct();
+            var product = CellService.GetCellInfo();
             return Json(product, "text", JsonRequestBehavior.AllowGet);
         }
-
-        //添加货位预设编码DefaultProductCode
+        //查找卷烟信息
+        public ActionResult SearchProductCell(string productCode)
+        {
+            var product = CellService.GetCellInfo(productCode);
+            return Json(product, "text", JsonRequestBehavior.AllowGet);
+        }
+        //获得货位的ID
+        public ActionResult GetCellCode(string productCode)
+        {
+            var product = CellService.GetCellCode(productCode);
+            return Json(product, "text", JsonRequestBehavior.AllowGet);
+        }
+        //添加货位预设编码
         // POST: /DefaultProductSet/CellInsertCode/
         public ActionResult CellInsertCode(string wareCodes, string areaCodes, string shelfCodes, string cellCodes, string defaultProductCode)
         {
@@ -65,25 +66,5 @@ namespace Wms.Controllers.Wms.WarehouseInfo
             string msg = bResult ? "保存成功" : "保存失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
-
-        //编辑卷烟表
-        // GET: /DefaultProductSet/Edit/
-        public ActionResult Edit(Product product)
-        {
-            bool bResult = ProductService.Save(product);
-            string msg = bResult ? "修改成功" : "修改失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
-        }
-
-        //删除卷烟表
-        // POST: /DefaultProductSet/Delete/
-        [HttpPost]
-        public ActionResult Delete(string productCode)
-        {
-            bool bResult = ProductService.Delete(productCode);
-            string msg = bResult ? "删除成功" : "删除失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
-        }
-
     }
 }

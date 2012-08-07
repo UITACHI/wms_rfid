@@ -1,5 +1,17 @@
-﻿@{
-    ViewBag.Title = "_EditPartial";
-}
+﻿<script type="text/javascript">
+    function editClick() {
+        $('#dlg').dialog('open').dialog('setTitle', '编辑');
+        enterSave();
 
-<h2>_EditPartial</h2>
+        var productRow = $('#details').datagrid('getSelected');
+        if (productRow) {
+            $('#productCode').val(productRow.ProductCode);
+            $('#productName').val(productRow.ProductName);
+            $('#productData').dialog('close');
+        }
+        $('#productTree').tree({ url: '/Cell/GetCheckDetails/?id=' + productRow.ProductCode }); //加载树形数据
+        
+    }
+</script>
+
+
