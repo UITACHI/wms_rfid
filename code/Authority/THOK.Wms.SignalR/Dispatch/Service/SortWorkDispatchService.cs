@@ -9,6 +9,7 @@ using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.DbModel;
 using THOK.Wms.SignalR.Common;
 using System.Transactions;
+using THOK.Wms.SignalR.Model;
 
 namespace THOK.Wms.SignalR.Dispatch.Service
 {
@@ -53,8 +54,13 @@ namespace THOK.Wms.SignalR.Dispatch.Service
         [Dependency]
         public IOutBillCreater OutBillCreater { get; set; }
 
-        public void Dispatch(string workDispatchId)
+        public void Dispatch(string connectionId, Model.ProgressState ps, System.Threading.CancellationToken cancellationToken, string workDispatchId)
         {
+            Locker.LockKey = workDispatchId;
+            ConnectionId = connectionId;
+            ps.State = StateType.Start;
+            NotifyConnection(ps.Clone());
+
             IQueryable<SortOrderDispatch> sortOrderDispatchQuery = SortOrderDispatchRepository.GetQueryable();
             IQueryable<SortOrder> sortOrderQuery = SortOrderRepository.GetQueryable();
             IQueryable<SortOrderDetail> sortOrderDetailQuery = SortOrderDetailRepository.GetQueryable();
@@ -88,8 +94,8 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                             .GroupBy(r => new { r.OrderDate, r.SortingLine })
                                             .Select(r => new { r.Key.OrderDate, r.Key.SortingLine, Products = r });
 
-            //using (var scope = new TransactionScope())
-            //{
+            using (var scope = new TransactionScope())
+            {
                 bool hasError = false;
                 string strErrors = "";
                 MoveBillMaster lastMoveBillMaster = null;
@@ -173,7 +179,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                     sortDisp.WorkStatus = "2";
                                     SortOrderDispatchRepository.SaveChanges();
                                 }
-                               // scope.Complete();
+                                scope.Complete();
                             }
                         }
                     }
@@ -188,8 +194,12 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                 {
                     MoveBillCreater.CreateSyncMoveBillDetail(lastMoveBillMaster);
                 }
-               // scope.Complete();
-         //   }
+                scope.Complete();
+            }
+
+            ps.State = StateType.Info;
+            ps.Messages.Add("分配完成!");
+            NotifyConnection(ps.Clone());
         }
 
         private SortWorkDispatch AddSortWorkDispMaster(MoveBillMaster moveBillMaster, OutBillMaster outBillMaster, string sortingLineCode, string orderDate)
