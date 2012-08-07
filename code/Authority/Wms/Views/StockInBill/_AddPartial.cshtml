@@ -2,8 +2,8 @@
     var url;
     var detailUrl;
     var billno;
-    var isInBillMasterSaved;
-    var isInBillMasterCanEdit;
+    var isShowInBillDetail; //true 表示可以弹出明细添加窗口，false 表示提交主表单据失败，不能弹出明细添加窗体
+    var isInBillMasterAdd; //true 表示可以提交主表单据，false不能提交主表单据
     $(function () {
         $('#cc').combo({
             required: true,
@@ -63,8 +63,8 @@
     }
 
     function addClick() {
-        isInBillMasterSaved = true;
-        isInBillMasterCanEdit=false;
+        isShowInBillDetail = false;
+        isInBillMasterAdd = true;
         $('#billNo').attr("readonly", true);
         $('#billDate').attr("readonly", true);
         DataLoad();
@@ -96,49 +96,28 @@
         });
     };
 
+    //新增入库库明细按钮
     function addBillDetailClick() {
-        if (isInBillMasterSaved) {
-            inBillMasterSave();
-        } else {
-            $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增入库订单明细');
-            $('#fm-inBillDetail').form('clear');
-            $('form input').removeAttr("disabled");
-            $('form textarea').removeAttr("disabled");
-            detailUrl = '/StockInBill/InBillDetailCreate/';
-            $('#detailBillNo').val(billno);
-            $('#detailBillNo').attr("readonly", true);
+        inBillMasterSave();
+        if (isShowInBillDetail) {
+            inBillDetailShow();
         }
     };
 
-    function inBillMasterSave() {
-        $('#fm').form('submit', {
-            url:url,
-            onSubmit: function () {
-                return $(this).form('validate');
-            },
-            success: function (result) {
-                var result = eval('(' + result + ')');
-                if (result.success) {
-                    $.messager.show({
-                        title: '成功',
-                        msg: result.msg
-                    });
-
-                    isInBillMasterSaved = false;
-                    $('#details').datagrid('reload');
-                } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
-                    $('#details').datagrid('reload');
-                }
-            }
-        });
+    //显示入库细单新增页面
+    function inBillDetailShow() {
+        $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增入库订单明细');
+        $('#fm-inBillDetail').form('clear');
+        $('form input').removeAttr("disabled");
+        $('form textarea').removeAttr("disabled");
+        detailUrl = '/StockInBill/InBillDetailCreate/';
+        $('#detailBillNo').val(billno);
+        $('#detailBillNo').attr("readonly", true);
     }
 
-    function save() {
-        if (isInBillMasterCanEdit == true) {
+    //单击添加细表保存主表单据
+    function inBillMasterSave() {
+        if (isInBillMasterAdd) {//判断是否可以添加主单
             $('#fm').form('submit', {
                 url: url,
                 onSubmit: function () {
@@ -151,8 +130,37 @@
                             title: '成功',
                             msg: result.msg
                         });
+                        isShowInBillDetail = true;
+                        isInBillMasterAdd = false;
+                        inBillDetailShow();
+                        $('#details').datagrid('reload');
+                    } else {
+                        $.messager.show({
+                            title: '错误',
+                            msg: result.msg
+                        });
+                        $('#details').datagrid('reload');
+                    }
+                }
+            });
+        }
+    }
 
-                        isInBillMasterSaved = false;
+    //保存入库主单
+    function save() {
+        if (isInBillMasterAdd == false) {//false 表示主表未保存
+            $('#fm').form('submit', {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.show({
+                            title: '成功',
+                            msg: result.msg
+                        });
                         $('#dlg').dialog('close');
                         $('#details').datagrid('reload');
                         $('#inBillDetails').datagrid('load');
@@ -166,8 +174,14 @@
                 }
             });
         }
+        else{
+            moveBillMasterSave();
+            $('#dlg-AddBillDetail').dialog('close');
+        }
+         $('#inBillDetails').datagrid('loadData', { total: 0, rows: [] }); //清空细单
     }
 
+    //保存入库细单
     function DetailSave() {
         $('#fm-inBillDetail .easyui-validatebox').validatebox({
             required: true
@@ -185,7 +199,6 @@
                         msg: result.msg
                     });
                     $('#dlg-AddBillDetail').dialog('close');
-                    //                    $('#inBillDetail').datagrid('reload');
                     $('#inBillDetail').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + billno });
                 } else {
                     $.messager.show({
@@ -196,10 +209,6 @@
                 }
             }
         });
-    }
-
-    function editBillDetailClick() {
-        alert("编辑");
     }
 
     //删除入库单明细

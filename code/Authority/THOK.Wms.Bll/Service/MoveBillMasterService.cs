@@ -182,6 +182,7 @@ namespace THOK.Wms.Bll.Service
                     mbm.IsActive = moveBillMaster.IsActive;
                     mbm.UpdateTime = DateTime.Now;
 
+                    mbm.LockTag = string.Empty;
                     MoveBillMasterRepository.SaveChanges();
                     result = true;
                 }
@@ -241,6 +242,7 @@ namespace THOK.Wms.Bll.Service
                     mbm.VerifyDate = DateTime.Now;
                     mbm.UpdateTime = DateTime.Now;
                     mbm.VerifyPersonID = employee.ID;
+                    mbm.LockTag = string.Empty;
                     MoveBillMasterRepository.SaveChanges();
                     result = true;
                 }
@@ -265,6 +267,7 @@ namespace THOK.Wms.Bll.Service
                     mbm.VerifyDate = null;
                     mbm.UpdateTime = DateTime.Now;
                     mbm.VerifyPersonID = null;
+                    mbm.LockTag = string.Empty;
                     MoveBillMasterRepository.SaveChanges();
                     result = true;
                 }

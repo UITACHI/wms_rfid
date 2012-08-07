@@ -5,6 +5,8 @@
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录已审核无需重复审核！');
             } else {
+                isProfitLossBillMasterAdd = false;
+                isShowProfitLossBillDetail = true;
                 $('#dlg').dialog('open').dialog('setTitle', '审核损益单据信息');
                 $('#fm').form('load', row);
                 $('#profitLossBillDetail').datagrid({ url: '/ProfitLossBill/ProfitLossBillDetails/?BillNo=' + row.BillNo });

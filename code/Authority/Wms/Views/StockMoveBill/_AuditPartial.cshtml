@@ -5,6 +5,8 @@
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录已审核无需重复审核！');
             } else {
+                isMoveBillMasterAdd = false;
+                isShowMoveBillDetail = true;
                 $('#dlg').dialog('open').dialog('setTitle', '审核移库单据信息');
                 $('#fm').form('load', row);
                 $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });

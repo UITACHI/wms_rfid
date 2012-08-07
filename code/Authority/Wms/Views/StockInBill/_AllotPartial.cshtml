@@ -41,6 +41,7 @@
         if (detailRow) {
             $('#dlg_allot_modify').dialog('open').dialog('setTitle', '删除');
             $('#fm_allot').form('load', detailRow);
+            $('#allotQuantity').attr("readonly", true);
             modifyUrl = '/StockInBillAllot/AllotDelete/';
         } else {
             $.messager.confirm('错误', '没有选择行！');
@@ -53,6 +54,9 @@
         if (detailRow) {
             $('#dlg_allot_modify').dialog('open').dialog('setTitle', '修改');
             $('#fm_allot').form('load', detailRow);
+            $('form input').removeAttr("disabled");
+            $('form textarea').removeAttr("disabled");
+            $('#allotQuantity').attr("readonly", false);
             modifyUrl = '/StockInBillAllot/AllotEdit/';
         } else {
             $.messager.confirm('错误', '没有选择行！');
@@ -252,7 +256,7 @@
                   </tr>
                   <tr>
                     <td >分配数量</td>
-                    <td align="left"><input type="text" name="AllotQuantity" class="easyui-numberbox" required="true"/></td>
+                    <td align="left"><input type="text" name="AllotQuantity" class="easyui-numberbox" id="allotQuantity" required="true"/></td>
                   </tr>
                 </table>
         </form>

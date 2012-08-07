@@ -7,6 +7,8 @@
             if (row.Status != "已审核") {
                 $.messager.confirm('错误', '该记录的状态不是已审核无法反审！');
             } else {
+                isMoveBillMasterAdd = false;
+                isShowMoveBillDetail = true;
                 $('#dlg').dialog('open').dialog('setTitle', '反审移库单据信息');
                 $('#fm').form('load', row);
                 $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });

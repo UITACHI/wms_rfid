@@ -72,7 +72,7 @@ namespace THOK.Wms.Bll.Service
                                    .AsEnumerable().Select(i => new
                 {
                     i.BillNo,
-                    BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
+                    BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
                     i.OperatePersonID,
                     i.WarehouseCode,
                     i.BillTypeCode,
@@ -82,11 +82,11 @@ namespace THOK.Wms.Bll.Service
                     OperatePersonName = i.OperatePerson.EmployeeName,
                     VerifyPersonID=i.VerifyPersonID==null?string.Empty:i.VerifyPerson.EmployeeCode,
                     VerifyPersonName =i.VerifyPersonID==null?string.Empty:i.VerifyPerson.EmployeeName,
-                    VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss")),
+                    VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
                     Status = WhatStatus(i.Status),
                     IsActive = i.IsActive == "1" ? "可用" : "不可用",
                     Description = i.Description,
-                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
                 });
             if (!IsActive.Equals(""))
             {
