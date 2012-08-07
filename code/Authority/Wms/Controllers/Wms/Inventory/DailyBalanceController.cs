@@ -34,15 +34,16 @@ namespace Wms.Controllers.Wms.Inventory
         {
             string beginDate = collection["BeginDate"] ?? "";
             string endDate = collection["EndDate"] ?? "";
-            string warehouseCode = collection["warehouseCode"] ?? "";
-            var DailyBalance = DailyBalanceService.GetDetails(page, rows, beginDate, endDate, warehouseCode);
+            string warehouseCode = collection["WarehouseCode"] ?? "";
+            string unitType = collection["unitType"] ?? "";
+            var DailyBalance = DailyBalanceService.GetDetails(page, rows, beginDate, endDate, warehouseCode, unitType);
             return Json(DailyBalance, "text", JsonRequestBehavior.AllowGet);
         }
         //
         // GET: /DailyBalance/InfoDetails/
-        public ActionResult InfoDetails(int page, int rows, string warehouseCode, string settleDate)
+        public ActionResult InfoDetails(int page, int rows, string warehouseCode, string settleDate,string unitType)
         {
-            var DailyBalanceInfo = DailyBalanceService.GetInfoDetails(page, rows, warehouseCode, settleDate);
+            var DailyBalanceInfo = DailyBalanceService.GetInfoDetails(page, rows, warehouseCode, settleDate, unitType);
             return Json(DailyBalanceInfo, "text", JsonRequestBehavior.AllowGet);
         }
 
@@ -58,9 +59,10 @@ namespace Wms.Controllers.Wms.Inventory
         // GET: /DailyBalance/DoDailyBalance/
         public ActionResult DoDailyBalance(string warehouseCode, string settleDate)
         {
-            bool bResult = DailyBalanceService.DoDailyBalance(warehouseCode, settleDate);
+            string errorInfo = string.Empty;
+            bool bResult = DailyBalanceService.DoDailyBalance(warehouseCode, settleDate,ref errorInfo);
             string msg = bResult ? "日结成功！" : "日结失败！";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
     }

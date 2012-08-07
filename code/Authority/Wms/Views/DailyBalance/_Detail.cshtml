@@ -1,35 +1,40 @@
-﻿<div id="InfoDetails" class="easyui-dialog" modal="true" style="width: 800px; height: 420px;
+﻿<div id="InfoDetails" class="easyui-dialog" modal="true" style="width: 1000px; height: 500px;
     padding: 2px 2px" closed="true">
     <table id="infos" class="easyui-datagrid" url="" border="false" singleselect="true"
         fit="true" fitcolumns="true" pagination="true" rownumbers="true">
         <thead>
-            <tr>
+            <tr>                
+               <th field="SettleDate" width="80">
+                    结算日期
+                </th>
+                <th field="WarehouseName" width="80">
+                    仓库名称
+                </th>
                 <th field="ProductCode" width="80">
                     产品代码
                 </th>
                 <th field="ProductName" width="120">
                     产品名称
                 </th>
-                <th field="WarehouseName" width="80">
-                    仓库名称
-                </th>
+                <th field="UnitName" width="80">单位</th>
+
                 <th field="Beginning" width="70">
                     期初量
                 </th>
                 <th field="EntryAmount" width="70">
-                    入库总量
+                    入库量
                 </th>
                 <th field="DeliveryAmount" width="70">
-                    出库总量
+                    出库量
                 </th>
                 <th field="ProfitAmount" width="70">
-                    报损总量
+                    报损量
                 </th>
                 <th field="LossAmount" width="70">
-                    报益总量
+                    报益量
                 </th>
                 <th field="Ending" width="70">
-                    日结量
+                    结余量
                 </th>
             </tr>
         </thead>
