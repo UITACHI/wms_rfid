@@ -97,6 +97,8 @@
                 var result = $.evalJSON(responseText);
                 if (result.success) {
                     $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#outBillDetails1').datagrid('reload');
+                    $('#allotBillDetails').datagrid('reload');
                     $('#details').datagrid('reload');
                 } else {
                     $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
@@ -115,6 +117,8 @@
                 var result = $.evalJSON(responseText);
                 if (result.success) {
                     $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#outBillDetails1').datagrid('reload');
+                    $('#allotBillDetails').datagrid('reload');
                     $('#details').datagrid('reload');
                 } else {
                     $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
@@ -133,6 +137,8 @@
                 var result = $.evalJSON(responseText);
                 if (result.success) {
                     $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#outBillDetails1').datagrid('reload');
+                    $('#allotBillDetails').datagrid('reload');
                     $('#details').datagrid('reload');
                 } else {
                     $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");

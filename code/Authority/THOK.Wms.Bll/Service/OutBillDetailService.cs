@@ -38,7 +38,8 @@ namespace THOK.Wms.Bll.Service
                                                           i.UnitCode,
                                                           i.Unit.UnitName,
                                                           BillQuantity = i.BillQuantity / i.Unit.Count,
-                                                          i.RealQuantity,
+                                                          AllotQuantity = i.AllotQuantity / i.Unit.Count,
+                                                          RealQuantity = i.RealQuantity / i.Unit.Count,
                                                           i.Price,
                                                           i.Description
                                                       });
@@ -52,7 +53,7 @@ namespace THOK.Wms.Bll.Service
         public bool Add(OutBillDetail outBillDetail)
         {
             IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
-            var isExistProduct = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode&&i.UnitCode==outBillDetail.UnitCode);
+            var isExistProduct = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode);
             var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == outBillDetail.UnitCode);
             if (isExistProduct == null)
             {
@@ -72,6 +73,7 @@ namespace THOK.Wms.Bll.Service
             else
             {
                 isExistProduct.BillQuantity = isExistProduct.BillQuantity + (outBillDetail.BillQuantity * unit.Count);
+                isExistProduct.UnitCode = outBillDetail.UnitCode;
                 OutBillDetailRepository.SaveChanges();
             }
             return true;
@@ -93,10 +95,14 @@ namespace THOK.Wms.Bll.Service
         public bool Save(OutBillDetail outBillDetail)
         {
             bool result = false;
-            var outbm = OutBillDetailRepository.GetQueryable().FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ID == outBillDetail.ID);
+            var outbm = OutBillDetailRepository.GetQueryable().FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode);
             var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == outBillDetail.UnitCode);
-            if (outbm != null)
+            if ((outbm != null && outbm.ID == outBillDetail.ID)||outbm==null)
             {
+                if (outbm == null)
+                {
+                    outbm = OutBillDetailRepository.GetQueryable().FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ID == outBillDetail.ID);
+                }
                 outbm.BillNo = outBillDetail.BillNo;
                 outbm.ProductCode = outBillDetail.ProductCode;
                 outbm.UnitCode = outBillDetail.UnitCode;
@@ -109,6 +115,19 @@ namespace THOK.Wms.Bll.Service
                 OutBillDetailRepository.SaveChanges();
                 result = true;
             }
+            else if (outbm != null && outbm.ID != outBillDetail.ID)
+            {
+                bool deltrue = this.Delete(outBillDetail.ID.ToString());
+                outbm.BillNo = outBillDetail.BillNo;
+                outbm.ProductCode = outBillDetail.ProductCode;
+                outbm.UnitCode = outBillDetail.UnitCode;
+                outbm.Price = outBillDetail.Price;
+                outbm.BillQuantity = outbm.BillQuantity + (outBillDetail.BillQuantity * unit.Count);          
+                outbm.Description = outBillDetail.Description;
+                OutBillDetailRepository.SaveChanges();
+                result = true;
+            }
+            
             return result;
         }
 

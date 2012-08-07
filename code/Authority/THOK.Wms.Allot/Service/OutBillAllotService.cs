@@ -354,8 +354,9 @@ namespace THOK.Wms.Allot.Service
                                 {
                                     if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
                                     {
-                                        item.Storage.OutFrozenQuantity -= item.AllotQuantity;
+                                        item.Storage.OutFrozenQuantity -= item.AllotQuantity;//修改分配数量
                                         item.Storage.LockTag = string.Empty;
+                                        item.OutBillDetail.AllotQuantity -= item.AllotQuantity;//修改出库细单数量
                                     }
                                     OutBillAllotRepository.Delete(item);
                                 }
