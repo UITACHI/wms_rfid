@@ -1089,8 +1089,6 @@
     <Content Include="Views\SortWorkDispatch\_DeletePartial.cshtml" />
     <Content Include="Views\SortWorkDispatch\_EditPartial.cshtml" />
     <Content Include="Views\SortWorkDispatch\_SearchPartial.cshtml" />
-    <Content Include="Views\StockInBill\_CellPartial.cshtml" />
-    <Content Include="Views\StockOutBill\_CellPartial.cshtml" />
     <Content Include="Views\Shared\_SettlePartial.cshtml" />
     <Content Include="Views\SortWorkDispatch\_AuditPartial.cshtml" />
     <Content Include="Views\SortWorkDispatch\_AntiTrialPartial.cshtml" />
