@@ -61,9 +61,6 @@ namespace THOK.Wms.Bll.Service
                 case "6":
                     statusStr = "已入库";
                     break;
-                case "7":
-                    statusStr = "已结单";
-                    break;
             }
             return statusStr;
         }
@@ -268,7 +265,12 @@ namespace THOK.Wms.Bll.Service
             return result;
         }
 
-
+        /// <summary>
+        /// 出库结单
+        /// </summary>
+        /// <param name="billNo">单据号</param>
+        /// <param name="errorInfo">错误信息</param>
+        /// <returns></returns>
         public bool Settle(string billNo, out string errorInfo)
         {
             bool result = false;
@@ -320,10 +322,10 @@ namespace THOK.Wms.Bll.Service
                         }
                         if (outbm.MoveBillMaster != null)
                         {
-                            outbm.MoveBillMaster.Status = "5";
+                            outbm.MoveBillMaster.Status = "4";
                             outbm.MoveBillMaster.UpdateTime = DateTime.Now;
                         }
-                        outbm.Status = "7";
+                        outbm.Status = "6";
                         outbm.UpdateTime = DateTime.Now;
                         OutBillMasterRepository.SaveChanges();
                         result = true;

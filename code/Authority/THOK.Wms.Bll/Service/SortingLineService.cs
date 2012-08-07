@@ -48,6 +48,10 @@ namespace THOK.Wms.Bll.Service
                 b.SortingLineCode,
                 b.SortingLineName,
                 SortingLineType = b.SortingLineType == "1" ? "半自动分拣线" : "全自动分拣线",
+                b.OutBillTypeCode,
+                b.MoveBillTypeCode,
+                CellName = b.Cell != null ? b.Cell.CellName : "",
+                b.CellCode,
                 IsActive = b.IsActive == "1" ? "可用" : "不可用",
                 UpdateTime = b.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
             });
@@ -63,6 +67,9 @@ namespace THOK.Wms.Bll.Service
             sortLine.SortingLineCode = sortingLine.SortingLineCode;
             sortLine.SortingLineName = sortingLine.SortingLineName;
             sortLine.SortingLineType = sortingLine.SortingLineType;
+            sortLine.OutBillTypeCode = sortingLine.OutBillTypeCode;
+            sortLine.MoveBillTypeCode = sortingLine.MoveBillTypeCode;
+            sortLine.CellCode = sortingLine.CellCode;
             sortLine.IsActive = sortingLine.IsActive;
             sortLine.UpdateTime = DateTime.Now;
 
@@ -90,6 +97,9 @@ namespace THOK.Wms.Bll.Service
             var sortLineSave = SortingLineRepository.GetQueryable().FirstOrDefault(s => s.SortingLineCode == sortingLine.SortingLineCode);
             sortLineSave.SortingLineName = sortingLine.SortingLineName;
             sortLineSave.SortingLineType = sortingLine.SortingLineType;
+            sortLineSave.OutBillTypeCode = sortingLine.OutBillTypeCode;
+            sortLineSave.MoveBillTypeCode = sortingLine.MoveBillTypeCode;
+            sortLineSave.CellCode = sortingLine.CellCode;
             sortLineSave.IsActive = sortingLine.IsActive;
             sortLineSave.UpdateTime = DateTime.Now;
 
