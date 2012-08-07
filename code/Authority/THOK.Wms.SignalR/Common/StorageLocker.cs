@@ -235,22 +235,13 @@ namespace THOK.Wms.SignalR.Common
             var cell = storage.Cell;
             if (Lock(cell))
             {
-                if (string.IsNullOrEmpty(storage.LockTag))
+                if (string.IsNullOrEmpty(storage.LockTag) && storage.ProductCode == product.ProductCode)
                 {
                     try
                     {
-                        if (cell.Storages.Count == 1)
-                        {
-                            storage = cell.Storages.Where(s => s.ProductCode == product.ProductCode)
-                                                   .FirstOrDefault();
-                            if (storage != null)
-                            {
-                                if (string.IsNullOrEmpty(storage.LockTag)) { storage.LockTag = this.LockKey; }
-                                else storage = null;
-                            }
-
-                            StorageRepository.SaveChanges();
-                        }
+                        if (string.IsNullOrEmpty(storage.LockTag)) { storage.LockTag = this.LockKey; }
+                        else storage = null;
+                        StorageRepository.SaveChanges();
                     }
                     catch (Exception)
                     {

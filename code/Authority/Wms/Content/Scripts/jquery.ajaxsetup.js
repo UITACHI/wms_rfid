@@ -59,3 +59,29 @@ $(function () {
         }
     });
 });
+(function ($){
+    $.ajaxSender = 
+    {
+        send:function(url,data,callback) {
+            var j_waitDialog = ShowWaitMessageDialog();
+            $.ajaxSender.complete = callback;
+            $.ajax({
+                url: url, type: "GET", dataType: "text",
+                data: data,
+                complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                success: function (responseText) {
+                    var result = $.evalJSON(responseText);
+                    if (result.success) {
+                        $.messager.alert(g_MsgBoxTitle, result.msg, "info",function()
+                        {
+                             $.ajaxSender.complete(result.data);
+                        });                       
+                    } else {
+                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                    }
+                }
+            })
+         },
+         complete: $.noop()
+    } 
+})(jQuery);
