@@ -1,0 +1,37 @@
+﻿<script type="text/javascript">
+    var jCellCode;
+    var jCellName;
+    //选择移出货位编码
+    function outCellSelect(cellCode, cellName) {
+        jCellCode = cellCode;
+        jCellName = cellName;
+        $('#cellData').dialog('open').dialog('setTitle', '选择货位信息');
+        $('#warehouseTree').tree({ url: '/Cell/GetSortCell/?areaType=5' }); //加载树形数据
+    }
+
+    //货位确定按钮参数为out时给移出货位的空间赋值，参数为in时给移入货位的空间赋值
+    function cellSave() {
+        var roots = $('#warehouseTree').tree('getChecked');
+        var cell="";
+        for (i = 0; i < roots.length; i++) {
+            if (roots[i].attributes == "cell" && roots[i].checked == true) {
+                jCellCode.val(roots[i].id);
+                jCellName.val(roots[i].text);
+                $('#cellData').dialog('close');
+            }
+        }
+    }
+</script>
+<div id="cellData" class="easyui-dialog" modal="true" style="width: 260px; height: 460px;
+    padding: 1px 1px" closed="true" buttons="#dlg-cellDatabuttons">
+    <div id="sidebar" region="west" border="false" style="width: 250px; border-right-style: solid;
+        border-right-width: 1px; border-right-color: #99BBE8;">
+        <ul id="warehouseTree" class="easyui-tree" checkbox="true" url=''>
+        </ul>
+    </div>
+</div>
+<div id="dlg-cellDatabuttons">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="cellSave()">确定</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#cellData').dialog('close')">
+        取消</a>
+</div>
