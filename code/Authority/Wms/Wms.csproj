@@ -865,7 +865,6 @@
     <Content Include="Views\DefaultProductSet\_EditPartial.cshtml" />
     <Content Include="Views\DefaultProductSet\_ProductPartial.cshtml" />
     <Content Include="Views\DefaultProductSet\_GoodsCount.cshtml" />
-    <Content Include="Views\DailyBalance\__Detail2.cshtml" />
     <Content Include="Views\DefaultProductSet\_GoodsCount.cshtml" />
     <Content Include="Views\Home\_LogonPartial.cshtml" />
     <Content Include="Views\Home\_MenuPartial.cshtml" />
@@ -1085,6 +1084,7 @@
     <Content Include="Views\SortWorkDispatch\_AntiTrialPartial.cshtml" />
     <Content Include="Views\SortWorkDispatch\_SettlePartial.cshtml" />
     <Content Include="Views\StockOutBill\_SettlePartial.cshtml" />
+    <Content Include="Views\DailyBalance\__Detail2.cshtml" />
     <Content Include="Views\StockInBill\_SettlePartial.cshtml" />
     <Content Include="Views\Home\_ChangePasswordPartial.cshtml" />
   </ItemGroup>

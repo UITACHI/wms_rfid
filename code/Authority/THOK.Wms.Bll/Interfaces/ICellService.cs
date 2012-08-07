@@ -29,5 +29,12 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool SaveCell(string wareCodes, string areaCodes, string shelfCodes, string cellCodes, string defaultProductCode);
 
+
+        object GetCellInfo();
+
+        object GetCellInfo(string productCode);
+
+        object GetCellCode(string productCode);
+
     }
 }

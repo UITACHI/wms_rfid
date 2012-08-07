@@ -97,6 +97,8 @@
                 var result = $.evalJSON(responseText);
                 if (result.success) {
                     $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#outBillDetails1').datagrid('reload');
+                    $('#allotBillDetails').datagrid('reload');
                     $('#details').datagrid('reload');
                 } else {
                     $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
@@ -108,6 +110,26 @@
     function cancelConfirm() {
         var j_waitDialog = ShowWaitMessageDialog();
         $.ajax({
+            url: "/StockOutBillAllot/AllotCancelConfirm/", type: "GET", dataType: "text",
+            data: { billNo: billNo },
+            complete: function () { HideWaitMessageDialog(j_waitDialog); },
+            success: function (responseText) {
+                var result = $.evalJSON(responseText);
+                if (result.success) {
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#outBillDetails1').datagrid('reload');
+                    $('#allotBillDetails').datagrid('reload');
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                }
+            }
+        });
+    }
+
+    function cancelAllot() {
+        var j_waitDialog = ShowWaitMessageDialog();
+        $.ajax({
             url: "/StockOutBillAllot/AllotCancel/", type: "GET", dataType: "text",
             data: { billNo: billNo },
             complete: function () { HideWaitMessageDialog(j_waitDialog); },
@@ -115,6 +137,8 @@
                 var result = $.evalJSON(responseText);
                 if (result.success) {
                     $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#outBillDetails1').datagrid('reload');
+                    $('#allotBillDetails').datagrid('reload');
                     $('#details').datagrid('reload');
                 } else {
                     $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");

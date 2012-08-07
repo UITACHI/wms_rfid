@@ -7,10 +7,11 @@ using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.SignalR.Common;
+using System.Transactions;
 
 namespace THOK.Wms.Bll.Service
 {
-    public class OutBillMasterService:ServiceBase<OutBillMaster>,IOutBillMasterService
+    public class OutBillMasterService : ServiceBase<OutBillMaster>, IOutBillMasterService
     {
         [Dependency]
         public IOutBillMasterRepository OutBillMasterRepository { get; set; }
@@ -22,10 +23,13 @@ namespace THOK.Wms.Bll.Service
         public IOutBillAllotRepository OutBillAllotRepository { get; set; }
 
         [Dependency]
+        public IMoveBillDetailRepository MoveBillDetailRepository { get; set; }
+
+        [Dependency]
         public IEmployeeRepository EmployeeRepository { get; set; }
 
         [Dependency]
-        public IStorageLocker Locker { get; set; } 
+        public IStorageLocker Locker { get; set; }
 
         protected override Type LogPrefix
         {
@@ -219,7 +223,7 @@ namespace THOK.Wms.Bll.Service
             };
             return findBillInfo;
         }
-        
+
         /// <summary>
         /// 出库审核
         /// </summary>
@@ -231,7 +235,7 @@ namespace THOK.Wms.Bll.Service
             bool result = false;
             var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            if (outbm != null && outbm.Status=="1")
+            if (outbm != null && outbm.Status == "1")
             {
                 outbm.Status = "2";
                 outbm.VerifyDate = DateTime.Now;
@@ -264,43 +268,72 @@ namespace THOK.Wms.Bll.Service
             return result;
         }
 
+
         public bool Settle(string billNo, out string errorInfo)
         {
             bool result = false;
             errorInfo = string.Empty;
             var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
-            if (outbm != null && outbm.Status != "7")
+            if (outbm != null && outbm.Status == "5")
             {
-                //using (var scope = new TransactionScope())
-                //{
-                try
+                using (var scope = new TransactionScope())
                 {
-                    //修改分配出库冻结量
-                    var outAllot = OutBillAllotRepository.GetQueryable().Where(o => o.BillNo == outbm.BillNo && o.Status != "2");
-                    foreach (var item in outAllot.ToArray())
+                    try
                     {
-                        if (Locker.LockNoEmptyStorage(item.Storage, item.Product) != null)//锁库存
+                        //结单移库单，修改冻结量
+                        var moveDetail = MoveBillDetailRepository.GetQueryable().Where(m => m.BillNo == outbm.MoveBillMasterBillNo && m.Status != "2");
+                        if (moveDetail.Count() > 0)
                         {
-                            item.Storage.OutFrozenQuantity -= item.AllotQuantity;
-                            item.Storage.LockTag = string.Empty;
+                            foreach (var item in moveDetail.ToArray())
+                            {
+                                Storage InStorage = Locker.LockNoEmptyStorage(item.InStorage, item.Product);
+                                Storage OutStorage = Locker.LockNoEmptyStorage(item.OutStorage, item.Product);
+                                if (OutStorage != null && InStorage != null)//锁库存
+                                {
+                                    item.InStorage.InFrozenQuantity -= item.RealQuantity;
+                                    item.OutStorage.OutFrozenQuantity -= item.RealQuantity;
+                                    item.InStorage.LockTag = string.Empty;
+                                    item.OutStorage.LockTag = string.Empty;
+                                }
+                                else
+                                {
+                                    errorInfo = "出库单生成的移库单其他人员正在操作！无法结单！";
+                                    return false;
+                                }
+                            }
                         }
-                        else
+
+                        //修改分配出库冻结量
+                        var outAllot = OutBillAllotRepository.GetQueryable().Where(o => o.BillNo == outbm.BillNo && o.Status != "2");
+                        foreach (var item in outAllot.ToArray())
                         {
-                            errorInfo = "出库货位其他人员正在操作！无法结单！";
-                            return false;
+                            if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
+                            {
+                                item.Storage.OutFrozenQuantity -= item.AllotQuantity;
+                                item.Storage.LockTag = string.Empty;
+                            }
+                            else
+                            {
+                                errorInfo = "出库货位其他人员正在操作！无法结单！";
+                                return false;
+                            }
                         }
+                        if (outbm.MoveBillMaster != null)
+                        {
+                            outbm.MoveBillMaster.Status = "5";
+                            outbm.MoveBillMaster.UpdateTime = DateTime.Now;
+                        }
+                        outbm.Status = "7";
+                        outbm.UpdateTime = DateTime.Now;
+                        OutBillMasterRepository.SaveChanges();
+                        result = true;
                     }
-                    outbm.Status = "7";
-                    outbm.UpdateTime = DateTime.Now;
-                    OutBillMasterRepository.SaveChanges();
-                    result = true;
+                    catch (Exception e)
+                    {
+                        errorInfo = "出库单结单出错！原因：" + e.Message;
+                    }
+                    scope.Complete();
                 }
-                catch (Exception e)
-                {
-                    errorInfo = "出库单结单出错！原因：" + e.Message;
-                }
-                //    scope.Complete();
-                //}
             }
             return result;
         }

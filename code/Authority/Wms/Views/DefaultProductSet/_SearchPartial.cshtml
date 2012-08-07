@@ -1,27 +1,31 @@
 ﻿<script type="text/javascript">
+    //点击弹出查询框
+    function searchClick() {
+        $('#dlgSearch').dialog('open').dialog('setTitle', '查询');
+        searchLoad();
+    }
     function searchLoad() {
-        $('#ProductCode').combogrid({
-            url: '/DefaultProductSet/LoadProduct',
+        $('#productChoose').combogrid({
+            width: 130,
+            panelWidth: 340,
+            url: '/DefaultProductSet/GetProductCell/' ,
             idField: 'ProductCode',
             textField: 'ProductName',
             mode: 'local',
             editable: false,
             fitColumns: true,
             columns: [[
-					{ field: 'ProductCode', title: '仓库编码', align: 'left', width: 40 },
-					{ field: 'ProductName', title: '仓库名称', align: 'left', width: 40 }
+					{ field: 'ProductCode', title: '卷烟编码', align: 'left', width: 100 },
+					{ field: 'ProductName', title: '卷烟名称', align: 'left', width: 200 }
 				]]
         });
     }
-
-    function searchClick() {
-        $('#dlgSearch').dialog('open').dialog('setTitle', '查询');
-    }
-    function select() {
+    //点击查询结果
+    function searchResult() {
         $("#details").datagrid({
-            url: '/DefaultProductSet/Details/?productCode=' + $('#productAdd').combogrid('getValue')
+            url: '/DefaultProductSet/SearchProductCell/?productCode=' + $('#productChoose').combogrid('getValue')
         });
-        $("#details").treegrid('reload');
+        $("#details").datagrid('reload');
         $('#dlgSearch').dialog('close');
     }
     
@@ -34,10 +38,10 @@
             <table width="250">
                 <tr>
                     <td>
-                        卷烟筛选:
+                        选择卷烟:
                     </td>
                     <td colspan="3" align="left">
-                        <input name="ProductCode" type="text" id="productAdd" />
+                        <input id="productChoose" name="ProductCode" type="text" width="300px" />
                     </td>
                 </tr>
             </table>
@@ -45,7 +49,7 @@
     </div>
 </div>
 <div id="dlg-buttons-search">
-    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="select()">查询</a>
-    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="searchResult()">查询</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlgSearch').dialog('close')">
         取消</a>
 </div>
