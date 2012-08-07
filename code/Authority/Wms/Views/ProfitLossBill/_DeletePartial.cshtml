@@ -5,6 +5,8 @@
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
             } else {
+                isProfitLossBillMasterAdd = false;
+                isShowProfitLossBillDetail = true;
                 $('#dlg').dialog('open').dialog('setTitle', '删除损益主单信息');
                 $('#profitLossBillDetail').datagrid({ url: '/ProfitLossBill/ProfitLossBillDetails/?BillNo=' + row.BillNo });
                 $('#fm .easyui-validatebox').validatebox({

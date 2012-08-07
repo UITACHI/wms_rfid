@@ -1,5 +1,8 @@
 ﻿<script type="text/javascript">
+    var url;
     var detailUrl;
+    var isShowMoveBillDetail; //true 表示可以弹出明细添加窗口，false 表示提交主表单据失败，不能弹出明细添加窗体
+    var isMoveBillMasterAdd; //true 表示可以提交主表单据，false不能提交主表单据
     $(function () {
         $('#cc').combo({
             required: true,
@@ -63,6 +66,8 @@
 
     //新增移库主单按钮
     function addClick() {
+        isShowMoveBillDetail = false;
+        isMoveBillMasterAdd = true;
         $('#billNo').attr("readonly", true);
         $('#billDate').attr("readonly", true);
         DataLoad();
@@ -72,6 +77,7 @@
                 $('#dlg').dialog('open').dialog('setTitle', '新增移库单');
                 $('#fm').form('clear');
                 $('#billNo').val(json.BillNo);
+                $('#operatePersonID').val(json.employeeID);
                 $('#operatePersonName').val(json.employeeName);
                 billno = json.BillNo;
                 $('#billDate').val(getTime());
@@ -95,30 +101,81 @@
 
     //保存移库主单
     function save() {
-        $('#fm').form('submit', {
-            url: url,
-            onSubmit: function () {
-                return $(this).form('validate');
-            },
-            success: function (result) {
-                var result = eval('(' + result + ')');
-                if (result.success) {
-                    $.messager.show({
-                        title: '成功',
-                        msg: result.msg
-                    });
-                    $('#dlg').dialog('close');
-                    $('#details').datagrid('reload');
-                } else {
-                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
-                    $('#details').datagrid('reload');
+        if (isMoveBillMasterAdd == false) {//false 表示主表未保存
+            $('#fm').form('submit', {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.show({
+                            title: '成功',
+                            msg: result.msg
+                        });
+                        $('#dlg').dialog('close');
+                        $('#details').datagrid('reload');
+                    } else {
+                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                        $('#details').datagrid('reload');
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            moveBillMasterSave();
+            $('#dlg-AddBillDetail').dialog('close');
+        }
+        $('#moveBillDetails').datagrid('loadData', { total: 0, rows: [] }); //清空细单
     }
 
-    //新增移库细单按钮
+    //单击添加细表保存主表单据
+    function moveBillMasterSave() {
+        if (isMoveBillMasterAdd) {//判断是否可以添加主单
+            $('#fm').form('submit', {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.show({
+                            title: '成功',
+                            msg: result.msg
+                        });
+                        url = '/StockMoveBill/Edit/';
+                        isShowMoveBillDetail = true;
+                        isMoveBillMasterAdd = false;
+                        moveBillDetailShow();
+                        $('#details').datagrid('reload');
+                    } else {
+                        $.messager.show({
+                            title: '错误',
+                            msg: result.msg
+                        });
+                        $('#dlg-AddBillDetail').dialog('close');
+                        $('#details').datagrid('reload');
+                    }
+                }
+            });
+        }
+    }
+
+    //新增移库明细按钮
     function addBillDetailClick() {
+        moveBillMasterSave();
+        if (isShowMoveBillDetail) {
+            moveBillDetailShow();
+        }
+    }
+
+    //显示移库细单新增页面
+    function moveBillDetailShow() {
+        $('#fm-moveBillDetail .easyui-validatebox').validatebox({
+            required: true
+        });
         $('#dlg-AddBillDetail').dialog('open').dialog('setTitle', '新增移库订单明细');
         $('#fm-moveBillDetail').form('clear');
         $('form input').removeAttr("disabled");
@@ -254,7 +311,7 @@
                 <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
                 <td width="60">经办人</td>
                 <td width="168"><input name="OperatePersonName" readonly="true" id="operatePersonName">
-                <input name="OperatePersonID" readonly="true" id="operatePersonCode"style=" display:none"></td>
+                <input name="OperatePersonID" readonly="true" id="operatePersonID"style=" display:none"></td>
                 <td width="60">状态</td>
                 <td width="168"><input name="Status" readonly="true"></td>
                 </tr>

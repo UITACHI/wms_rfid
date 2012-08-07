@@ -3,10 +3,11 @@
     function deleteClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
-            isInBillMasterCanEdit = true;
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
             } else {
+                isInBillMasterAdd = false;
+                isShowInBillDetail = true;
                 $('#dlg').dialog('open').dialog('setTitle', '删除入库主单信息');
                 $('#inBillDetail').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + row.BillNo });
                 $('#fm .easyui-validatebox').validatebox({

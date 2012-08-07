@@ -7,6 +7,8 @@
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法编辑！');
             } else {
+                isMoveBillMasterAdd = false;
+                isShowMoveBillDetail = true;
                 $('#dlg').dialog('open').dialog('setTitle', '编辑移库主单信息');
                 $('#fm').form('load', row);
                 $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + row.BillNo });
