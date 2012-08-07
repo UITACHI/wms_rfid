@@ -65,26 +65,14 @@
 
     function AllotModifySave() {
         if ($('#fm_allot').form('validate')) {
-            var j_waitDialog = ShowWaitMessageDialog();
-            $.ajax({
-                url: modifyUrl, type: "GET", dataType: "text",
-                data: $('#fm_allot').serializeArray(),
-                complete: function () { HideWaitMessageDialog(j_waitDialog); },
-                success: function (responseText) {
-                    var result = $.evalJSON(responseText);
-                    if (result.success) {
-                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
-                        $('#details').datagrid('reload');
-                        $('#inAllotBillDetails').datagrid('reload');
-                        $('#allotBillDetails').datagrid('reload');
-                        $('#dlg_allot_modify').dialog('close');
-                    } else {
-                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
-                    }
-                }
-            });
-        };
-    };
+            $.ajaxSender.send(modifyUrl, $('#fm_allot').serializeArray(), function (data) {
+                $('#details').datagrid('reload');
+                $('#inAllotBillDetails').datagrid('reload');
+                $('#allotBillDetails').datagrid('reload');
+                $('#dlg_allot_modify').dialog('close');
+            });       
+        }
+    }
 
     function confirmAllot() {
         var j_waitDialog = ShowWaitMessageDialog();

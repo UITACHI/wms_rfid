@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using THOK.Wms.DbModel;
 using THOK.Wms.Bll.Interfaces;
@@ -335,37 +336,41 @@ namespace THOK.Wms.Bll.Service
             {
                 using (var scope = new TransactionScope())
                 {
-                try
-                {
-                    //修改分配入库冻结量
-                    var inAllot = InBillAllotRepository.GetQueryable().Where(o => o.BillNo == ibm.BillNo && o.Status != "2");
-                    foreach (var item in inAllot.ToArray())
+                    try
                     {
-                        if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
-                        {
-                            item.Storage.InFrozenQuantity -= item.AllotQuantity;
-                            item.Storage.LockTag = string.Empty;
-                        }
-                        else
-                        {
-                            strResult = "入库货位其他人员正在操作！无法结单！";
-                            return false;
-                        }
+                        //修改分配入库冻结量
+                        var inAllot = InBillAllotRepository.GetQueryable()
+                            .Where(o => o.BillNo == ibm.BillNo && o.Status != "2");
+
+                        inAllot.AsParallel().ForAll(
+                            (Action<InBillAllot>)delegate(InBillAllot i){
+                                var s = i.Storage.Cell;
+
+                                if (Locker.LockStorage( i.Storage, i.Product) != null)//锁库存
+                                {
+                                    i.Storage.InFrozenQuantity -= i.AllotQuantity;
+                                    i.Storage.LockTag = string.Empty;
+                                }
+                                else
+                                {
+                                    throw new Exception("入库货位其他人员正在操作！无法结单！");
+                                }
+                            }
+                        );
+
+                        ibm.Status = "6";
+                        ibm.UpdateTime = DateTime.Now;
+                        InBillMasterRepository.SaveChanges();
+                        scope.Complete();
+                        result = true;
                     }
-                    ibm.Status = "6";
-                    ibm.UpdateTime = DateTime.Now;
-                    InBillMasterRepository.SaveChanges();
-                    result = true;
-                }
-                catch (Exception e)
-                {
-                    strResult = "入库单结单出错！原因：" + e.Message;
-                }
-                scope.Complete();
+                    catch (Exception e)
+                    {
+                        strResult = "入库单结单出错！原因：" + e.Message;
+                    }                    
                 }
             }
             return result;
-
         }
 
         #endregion

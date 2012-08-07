@@ -19,6 +19,8 @@ namespace THOK.Wms.Allot.Interfaces
 
         bool AllotEdit(string billNo, long id, string cellCode, int allotQuantity, out string strResult);
 
+        bool AllotAdd(string billNo, long id,string productCode,string cellCode, int allotQuantity, out string strResult);
+
         bool AllotCancel(string billNo,out string strResult); 
     }
 }

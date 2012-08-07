@@ -23,6 +23,14 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsRequired()
                 .HasMaxLength(100);
 
+            this.Property(t => t.OutBillTypeCode)
+                .IsRequired()
+                .HasMaxLength(4);
+
+            this.Property(t => t.MoveBillTypeCode)
+                .IsRequired()
+                .HasMaxLength(4);
+
             this.Property(t => t.CellCode)
                 .IsRequired()
                 .HasMaxLength(20);
@@ -44,6 +52,8 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.SortingLineCode).HasColumnName(ColumnMap.Value.To("SortingLineCode"));
             this.Property(t => t.SortingLineName).HasColumnName(ColumnMap.Value.To("SortingLineName"));
             this.Property(t => t.SortingLineType).HasColumnName(ColumnMap.Value.To("SortingLineType"));
+            this.Property(t => t.OutBillTypeCode).HasColumnName(ColumnMap.Value.To("OutBillTypeCode"));
+            this.Property(t => t.MoveBillTypeCode).HasColumnName(ColumnMap.Value.To("MoveBillTypeCode"));
             this.Property(t => t.CellCode).HasColumnName(ColumnMap.Value.To("CellCode"));
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));
             this.Property(t => t.UpdateTime).HasColumnName(ColumnMap.Value.To("UpdateTime"));
