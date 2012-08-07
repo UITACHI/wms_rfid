@@ -235,26 +235,37 @@ namespace THOK.Wms.SignalR.Common
             var cell = storage.Cell;
             if (Lock(cell))
             {
-                try
+                if (string.IsNullOrEmpty(storage.LockTag))
                 {
-                    if (cell.Storages.Count == 1)
+                    try
                     {
-                        storage = cell.Storages.Where(s =>s.ProductCode == product.ProductCode)
-                                               .FirstOrDefault();
-                        if (storage != null)
+                        if (cell.Storages.Count == 1)
                         {
-                            if (string.IsNullOrEmpty(storage.LockTag)) { storage.LockTag = this.LockKey; }
-                            else storage = null;
-                        }
+                            storage = cell.Storages.Where(s => s.ProductCode == product.ProductCode)
+                                                   .FirstOrDefault();
+                            if (storage != null)
+                            {
+                                if (string.IsNullOrEmpty(storage.LockTag)) { storage.LockTag = this.LockKey; }
+                                else storage = null;
+                            }
 
-                        StorageRepository.SaveChanges();
-                    }                    
+                            StorageRepository.SaveChanges();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        if (storage != null) { StorageRepository.Detach(storage); }
+                        storage = null;
+                    }
                 }
-                catch (Exception)
+                else
                 {
-                    if (storage != null) { StorageRepository.Detach(storage); }
                     storage = null;
                 }
+            }
+            else
+            {
+                storage = null;
             }
             UnLock(cell);
             return storage;
@@ -264,9 +275,17 @@ namespace THOK.Wms.SignalR.Common
         {
             try
             {
-                cell.LockTag = this.LockKey;
-                CellRepository.SaveChanges();
-                return true;
+                if (string.IsNullOrEmpty(cell.LockTag))
+                {
+                    cell.LockTag = this.LockKey;
+                    CellRepository.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
             }
             catch (Exception)
             {

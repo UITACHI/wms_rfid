@@ -1,7 +1,6 @@
 ﻿<script type="text/javascript">
-
     function balanceClick() {
-        $('#wareHouse').combogrid({
+        $('#wareHouse2').combogrid({
             required: true,
             disabled: false,
             width: 130,
@@ -14,8 +13,7 @@
             fitColumns: true,
             columns: [[
                     { field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
-                    { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 40 },
-                    { field: 'WarehouseType', title: '仓库类型', align: 'left', width: 30 },
+                    { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 30 },
                     { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
                 ]]
         });
@@ -23,9 +21,25 @@
     };
 
     function DailyBalance() {
-        
-    }
-
+        var settleDate = $('#SettleDate').datebox('getValue');
+        var warehouseCode = $('#wareHouse2').combo('getValue');
+        var j_waitDialog = ShowWaitMessageDialog();
+        $.ajax({
+            url: '/DailyBalance/DoDailyBalance/', type: "GET", dataType: "text",
+            data: { 'WarehouseCode': warehouseCode, 'SettleDate': settleDate },
+            complete: function () { HideWaitMessageDialog(j_waitDialog); },
+            success: function (responseText) {
+                var result = $.evalJSON(responseText);
+                if (result.success) {
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#details').datagrid('reload');
+                    $('#dlg-Daily').dialog('close');
+                } else {
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                }
+            }
+        });
+    };
 </script>
 
 <div id="dlg-Daily" class="easyui-dialog" modal="true" style="width:300px;height:220px;padding:2px 2px"
@@ -36,14 +50,13 @@
               <tr style="padding-top:10px;">
                 <td width="60" style="padding-top:5px;padding-left:15px">仓库:</td>
                 <td align="left">      
-		            <input type="text" id="wareHouse"/>
+		            <input type="text" id="wareHouse2"/>
 	            </td>
               </tr>
               <tr>
                 <td width="60" style="padding-top:5px;padding-left:15px">日结日期:</td>
-                <td style="padding-top:5px" align="left"><input class="easyui-datebox" style="width:130px" required="true"></td>
+                <td style="padding-top:5px" align="left"><input id ="SettleDate" class="easyui-datebox" style="width:130px" required="true"/></td>
               </tr>
-
             </table>
         </div>
     </div>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
+using THOK.WebUtil;
 using THOK.Wms.Bll.Interfaces;
 
 namespace Wms.Controllers.Wms.Inventory
@@ -43,6 +44,23 @@ namespace Wms.Controllers.Wms.Inventory
         {
             var DailyBalanceInfo = DailyBalanceService.GetInfoDetails(page, rows, warehouseCode, settleDate);
             return Json(DailyBalanceInfo, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // GET: /DailyBalance/DailyBalanceInfos/
+        public ActionResult DailyBalanceInfos(int page, int rows, string warehouseCode, string settleDate)
+        {
+            var DailyBalanceInfo = DailyBalanceService.GetDailyBalanceInfos(page, rows, warehouseCode, settleDate);
+            return Json(DailyBalanceInfo, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // GET: /DailyBalance/DoDailyBalance/
+        public ActionResult DoDailyBalance(string warehouseCode, string settleDate)
+        {
+            bool bResult = DailyBalanceService.DoDailyBalance(warehouseCode, settleDate);
+            string msg = bResult ? "日结成功！" : "日结失败！";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
 
     }

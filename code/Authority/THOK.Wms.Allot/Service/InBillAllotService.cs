@@ -5,6 +5,9 @@ using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.Allot.Interfaces;
 using System.Linq;
 using System.Collections.Generic;
+using System.Transactions;
+using THOK.Wms.SignalR;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.Allot.Service
 {
@@ -27,6 +30,8 @@ namespace THOK.Wms.Allot.Service
         public ICellRepository CellRepository { get; set; }
         [Dependency]
         public IStorageRepository StorageRepository { get; set; }
+        [Dependency]
+        public IStorageLocker Locker { get; set; }
 
         protected override Type LogPrefix
         {
@@ -251,7 +256,7 @@ namespace THOK.Wms.Allot.Service
             return result;
         }
 
-        public bool AllotCancel(string billNo, out string strResult)
+        public bool AllotCancelConfirm(string billNo, out string strResult)
         {
             bool result = false;
             var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo && i.Status == "4");
@@ -361,5 +366,73 @@ namespace THOK.Wms.Allot.Service
 
             return storage;
         }
+
+        #region IInBillAllotService 成员
+
+        /// <summary>
+        /// 取消分配
+        /// </summary>
+        /// <param name="billNo">入库单号</param>
+        /// <param name="strResult">提示信息</param>
+        /// <returns></returns>
+        public bool AllotCancel(string billNo, out string strResult)
+        {
+            bool result = false;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo && i.Status == "3");
+            if (ibm != null)
+            {
+                if (string.IsNullOrEmpty(ibm.LockTag))
+                {
+                    try
+                    {
+                        using (var scope = new TransactionScope())
+                        {
+                            var inAllot = InBillAllotRepository.GetQueryable().Where(o => o.BillNo == ibm.BillNo);
+                            try
+                            {
+                                foreach (var item in inAllot.ToArray())
+                                {
+                                    if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
+                                    {
+                                        item.Storage.InFrozenQuantity -= item.AllotQuantity;
+                                        item.Storage.LockTag = string.Empty;
+                                    }
+                                    InBillAllotRepository.Delete(item);
+                                }
+                                InBillAllotRepository.SaveChanges();
+                            }
+                            catch (Exception)
+                            {
+                                strResult = "当前货位其他人正在操作，请稍候重试！";
+                                return false;
+                            }
+
+                            ibm.Status = "2";
+                            ibm.UpdateTime = DateTime.Now;
+                            InBillMasterRepository.SaveChanges();
+                            result = true;
+                            strResult = "取消成功";
+
+                            scope.Complete();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        strResult = "当前订单其他人正在操作，请稍候重试！";
+                    }
+                }
+                else
+                {
+                    strResult = "当前订单其他人正在操作，请稍候重试！";
+                }
+            }
+            else
+            {
+                strResult = "当前订单状态不是已分配，或当前订单不存在！";
+            }
+            return result;
+        }
+
+        #endregion
     }
 }

@@ -6,6 +6,8 @@ using THOK.Wms.Bll.Interfaces;
 using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
+using THOK.Wms.SignalR;
+using THOK.Wms.SignalR.Common;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -21,11 +23,15 @@ namespace THOK.Wms.Bll.Service
         public IEmployeeRepository EmployeeRepository { get; set; }
         [Dependency]
         public IMoveBillDetailRepository MoveBillDetailRepository { get; set; }
+        [Dependency]
+        public IMoveBillCreater MoveBillCreater { get; set; }
 
         protected override Type LogPrefix
         {
             get { return this.GetType(); }
         }
+
+        public string resultStr = "";//错误信息字符串
 
         /// <summary>
         /// 判断处理状态
@@ -134,40 +140,57 @@ namespace THOK.Wms.Bll.Service
             return result;
         }
 
-        public bool Delete(string BillNo)
+        public bool Delete(string BillNo,out string strResult)
         {
             bool result = false;
             var mbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
-            if (mbm != null)
+            if (LockBillMaster(BillNo))
             {
-                Del(MoveBillDetailRepository, mbm.MoveBillDetails);
-                MoveBillMasterRepository.Delete(mbm);
-                MoveBillMasterRepository.SaveChanges();
-                result = true;
+                if (mbm != null)
+                {
+                    MoveBillCreater.DeleteMoveBillDetail(mbm);
+                    Del(MoveBillDetailRepository, mbm.MoveBillDetails);
+                    MoveBillMasterRepository.Delete(mbm);
+                    MoveBillMasterRepository.SaveChanges();
+                    result = true;
+                }
             }
+            else
+            {
+                result = false;
+            }
+            strResult = resultStr;
             return result;
         }
 
-        public bool Save(MoveBillMaster moveBillMaster)
+        public bool Save(MoveBillMaster moveBillMaster,out string strResult)
         {
             bool result = false;
             var mbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == moveBillMaster.BillNo && i.Status == "1");
-            if (mbm != null)
+            if (LockBillMaster(moveBillMaster.BillNo))
             {
-                mbm.BillDate = moveBillMaster.BillDate;
-                mbm.BillTypeCode = moveBillMaster.BillTypeCode;
-                mbm.WarehouseCode = moveBillMaster.WarehouseCode;
-                mbm.OperatePersonID = moveBillMaster.OperatePersonID;
-                mbm.Status = "1";
-                mbm.VerifyPersonID = moveBillMaster.VerifyPersonID;
-                mbm.VerifyDate = moveBillMaster.VerifyDate;
-                mbm.Description = moveBillMaster.Description;
-                mbm.IsActive = moveBillMaster.IsActive;
-                mbm.UpdateTime = DateTime.Now;
+                if (mbm != null)
+                {
+                    mbm.BillDate = moveBillMaster.BillDate;
+                    mbm.BillTypeCode = moveBillMaster.BillTypeCode;
+                    mbm.WarehouseCode = moveBillMaster.WarehouseCode;
+                    mbm.OperatePersonID = moveBillMaster.OperatePersonID;
+                    mbm.Status = "1";
+                    mbm.VerifyPersonID = moveBillMaster.VerifyPersonID;
+                    mbm.VerifyDate = moveBillMaster.VerifyDate;
+                    mbm.Description = moveBillMaster.Description;
+                    mbm.IsActive = moveBillMaster.IsActive;
+                    mbm.UpdateTime = DateTime.Now;
 
-                MoveBillMasterRepository.SaveChanges();
-                result = true;
+                    MoveBillMasterRepository.SaveChanges();
+                    result = true;
+                }
             }
+            else
+            {
+                result = false;
+            }
+            strResult = resultStr;
             return result;
         }
 
@@ -205,36 +228,48 @@ namespace THOK.Wms.Bll.Service
             return findBillInfo;
         }
 
-        public bool Audit(string BillNo, string userName)
+        public bool Audit(string BillNo, string userName, out string strResult)
         {
             bool result = false;
             var mbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            if (mbm != null)
+            if (LockBillMaster(BillNo))
             {
-                mbm.Status = "2";
-                mbm.VerifyDate = DateTime.Now;
-                mbm.UpdateTime = DateTime.Now;
-                mbm.VerifyPersonID = employee.ID;
-                MoveBillMasterRepository.SaveChanges();
-                result = true;
+                if (mbm != null)
+                {
+                    mbm.Status = "2";
+                    mbm.VerifyDate = DateTime.Now;
+                    mbm.UpdateTime = DateTime.Now;
+                    mbm.VerifyPersonID = employee.ID;
+                    MoveBillMasterRepository.SaveChanges();
+                    result = true;
+                }
             }
+            else
+            {
+                result = false;
+            }
+            strResult = resultStr;
             return result;
         }
 
-        public bool AntiTrial(string BillNo)
+        public bool AntiTrial(string BillNo, out string strResult)
         {
             bool result = false;
             var mbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "2");
-            if (mbm != null)
+            if (LockBillMaster(BillNo))
             {
-                mbm.Status = "1";
-                mbm.VerifyDate = null;
-                mbm.UpdateTime = DateTime.Now;
-                mbm.VerifyPersonID = null;
-                MoveBillMasterRepository.SaveChanges();
-                result = true;
+                if (mbm != null)
+                {
+                    mbm.Status = "1";
+                    mbm.VerifyDate = null;
+                    mbm.UpdateTime = DateTime.Now;
+                    mbm.VerifyPersonID = null;
+                    MoveBillMasterRepository.SaveChanges();
+                    result = true;
+                }
             }
+            strResult = resultStr;
             return result;
         }
 
@@ -246,6 +281,37 @@ namespace THOK.Wms.Bll.Service
         public object GetWareHouseDetail(string IsActive)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 对移库单进行加锁
+        /// </summary>
+        /// <param name="BillNo">移库单号</param>
+        /// <returns></returns>
+        public bool LockBillMaster(string BillNo)
+        {
+            bool result = false;
+            var pbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(p => p.BillNo == BillNo && p.Status == "1");
+            if (pbm != null)
+            {
+                if (string.IsNullOrEmpty(pbm.LockTag))
+                {
+                    pbm.LockTag = BillNo;
+                    MoveBillMasterRepository.SaveChanges();
+                    result = true;
+                }
+                else
+                {
+                    resultStr = "当前订单其他人正在操作，请稍候重试！";
+                    result = false;
+                }
+            }
+            else
+            {
+                resultStr = "当前单据的状态不是已录入状态或者该单据已被删除无法编辑，请刷新页面！";
+                result = false;
+            }
+            return result;
         }
 
         #endregion

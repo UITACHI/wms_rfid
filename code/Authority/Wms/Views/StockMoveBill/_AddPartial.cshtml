@@ -110,10 +110,7 @@
                     $('#dlg').dialog('close');
                     $('#details').datagrid('reload');
                 } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#details').datagrid('reload');
                 }
             }
@@ -169,10 +166,7 @@
                     $('#moveBillDetail').datagrid('reload');
                     $('#moveBillDetail').datagrid({ url: '/StockMoveBill/MoveBillDetails/?BillNo=' + billno });
                 } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#moveBillDetail').datagrid('reload');
                 }
             }
@@ -353,7 +347,7 @@
   </tr>
     <tr>
     <td style=" text-align:right">数量</td>
-    <td align="left"><input type="text" name="RealQuantity"class="easyui-numberbox" required="true" missingmessage="请输入要移库的数量"/></td>
+    <td align="left"><input type="text" name="RealQuantity"class="easyui-numberbox" min="0" max="999999999" precision="2" required="true" missingmessage="请输入要移库的数量"/></td>
     <td>
     </td>
   </tr>

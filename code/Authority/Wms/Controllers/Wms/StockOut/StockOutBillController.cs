@@ -152,7 +152,8 @@ namespace Authority.Controllers.Wms.StockOut
             string errorInfo = string.Empty;
             bool bResult = OutBillMasterService.Settle(BillNo, out errorInfo);
             string msg = bResult ? "结单成功" : "结单失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
+
         }
 
     }

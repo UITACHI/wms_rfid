@@ -1,105 +1,112 @@
 ﻿<script type="text/javascript">
     var url;
-    var fm
     function addClick() {
-        url = '/DefaultProductSet/ProductCreate/';
         $('#dlg').dialog('open').dialog('setTitle', '新增');
-        $('#productFm').form('clear');
-        $('form input').removeAttr("disabled");
-        $('form textarea').removeAttr("disabled");
         $('#productCode').attr("readonly", true);
         $('#productName').attr("readonly", true);
-    }
-    function productSearchClick() {
-        $('#productSearch').datagrid({
-            url: '/DefaultProductSet/FindProduct/ '
-        });
-        $("#productSearch").datagrid('reload');
-    }
+        $('#productTree').tree({ url: '/Cell/GetCheckDetails/' }); //加载树形数据
 
-    function save() {
-        $('#productFm').form('submit', {
-            url: url,
-            onSubmit: function () {
-                return $(this).form('validate');
-            },
-            success: function (result) {
-                var result = eval('(' + result + ')');
-                if (result.success) {
-                    $.messager.show({
-                        title: '成功',
-                        msg: result.msg
-                    });
-                    $('#dlg').dialog('close');
-                    $('#details').treegrid('reload');
-                } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
-                    $('#details').treegrid('reload');
-                }
-            }
-        });
     }
     function productSearchClick() {
         $('#productData').dialog('open').dialog('setTitle', '选择卷烟信息');
         $('#productDetail').datagrid({ url: '/DefaultProductSet/LoadProduct/' });
         $("#productDetail").datagrid('reload');
     }
-    function searchQuntityClick() {
-        $('#productTree').dialog('open').dialog('setTitle', '货位信息');
-        $('#goodscountTree').tree({ url: '/Cell/GetCheckDetails/' }); //加载树形数据
-    }
 
+    function enterSave() {
+        var ware="", area="", shelf="", cell="";
+        var roots = $('#productTree').tree('getRoots');
+        var areaChildren, shelfChildren, cellChildren;
+        //仓库
+        for (i = 0; i < roots.length; i++) {
+            if (roots[i].attributes == "ware" && roots[i].checked == true) {
+                ware += roots[i].id + ",";
+            } else {
+                areaChildren = $('#productTree').tree('getChildren', roots[i].target);
+                //库区
+                for (j = 0; j < areaChildren.length; j++) {
+                    if (areaChildren[j].attributes == "area" && areaChildren[j].checked == true) {
+                        area += areaChildren[j].id + ",";
+                    } else {
+                        shelfChildren = $('#productTree').tree('getChildren', areaChildren[j].target);
+                        //货架
+                        for (h = 0; h < shelfChildren.length; h++) {
+                            if (shelfChildren[h].attributes == "shelf" && shelfChildren[h].checked == true) {
+                                shelf += shelfChildren[h].id + ",";
+                            } else {
+                                cellChildren = $('#productTree').tree('getChildren', shelfChildren[h].target);
+                                //货位
+                                for (k = 0; k < cellChildren.length; k++) {
+                                    if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
+                                        cell += cellChildren[k].id + ",";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if ((ware != "" || area != "" || shelf != "" || cell != "") && ($('#productCode').val() != "")) {
+            $.getJSON('/DefaultProductSet/CellInsertCode/?wareCodes=' + ware + '&areaCodes=' + area + '&shelfCodes=' + shelf + '&cellCodes=' + cell + '&defaultProductCode=' + $("#productCode").val(), function (json) {
+                if (json) {
+                    if (json.success) {
+                        $.messager.show({ title: '成功', msg: json.msg });
+                        $('#details').datagrid('reload');
+                    } else {
+                        $.messager.show({ title: '错误', msg: result.msg });
+                        $('#details').datagrid('reload');
+                    }
+                }
+                else {
+                    $.messager.show({ title: '系统提示', msg: '失败！0000x1' });
+                }
+            });
+        }
+        else {
+            $.messager.show({ title: '系统提示', msg: '失败！无法获取信息！' });
+        }
+        $('#main').form('clear');
+    }
+    
 </script>
-<div id="dlg" class="easyui-dialog" modal="true" style="width: 500px; height: 360px;
+<div id="dlg" class="easyui-dialog" modal="true" style="width: 500px; height: 500px;
     padding: 1px 1px" closed="true" buttons="#dlg-buttons">
-    <div id="product" class="easyui-layout" fit="true">
-        <div region="center" border="false" style="padding: 10px 10px; background: #fff;
-            border: 1px solid #ccc;">
-            <form id="productFm" method="post">
-            <label>
-                当前新增页面：卷烟</label>
-            <div style="margin-top: 10px;">
-                <div style="padding: 10px 10px 10px 10px;">
-                    <div style="float: left; margin-top: 5px; margin-right: 2px;">
-                        卷烟编码:
-                    </div>
-                    <div>
-                        <input id="productCode" name="ProductCode" type="text" class="easyui-validatebox"
-                            style="width: 140px;" />
-                        <a href="#" id="productSearch" class="easyui-linkbutton" iconcls="icon-search" plain="true"
-                            onclick="productSearchClick()">浏览</a>
-                    </div>
+    <div class="easyui-tabs" fit="true">
+        <div id="product" title="货位视图">
+            <div class="easyui-layout" fit="true">
+                <div id="sidebar" region="west" border="false" style="width: 220px; border-right-style: solid;
+                    border-right-width: 1px; border-right-color: #99BBE8;">
+                    <ul id="productTree" class="easyui-tree" checkbox="true" url=''>
+                    </ul>
                 </div>
-                <div style="padding: 10px 10px 10px 10px;">
-                    <div style="float: left; margin-top: 5px; margin-right: 2px;">
-                        卷烟名称:
+                <div id="main" region="center" fit="true" border="false" style="margin: 10px 10px 10px 10px;">
+                    <div style="padding: 3px 3px 3px 3px;">
+                        <div style="float: left; margin-top: 5px; margin-right: 2px;">
+                            卷烟编码:
+                        </div>
+                        <div>
+                            <input id="productCode" name="DefaultProductCode" type="text" class="easyui-validatebox" style="width: 140px;" missingmessage="必填" required="true"  />
+                            <a href="#" id="productSearch" class="easyui-linkbutton" iconcls="icon-search" plain="true"
+                                onclick="productSearchClick()"></a>
+                        </div>
                     </div>
-                    <div>
-                        <input id="productName" type="text" class="easyui-validatebox" style="width: 140px;" />
-                    </div>
-                </div>
-                <div style="padding: 10px 10px 10px 10px;">
-                    <div style="float: left; margin-top: 5px; margin-right: 2px;">
-                        货位数量:
-                    </div>
-                    <div>
-                        <input id="productQuantity" type="text" class="easyui-validatebox" style="width: 140px;" />
-                        <a href="#" id="searchQuntity" class="easyui-linkbutton" iconcls="icon-search" plain="true"
-                            onclick="searchQuntityClick()">浏览</a>
+                    <div style="padding: 3px 3px 3px 3px;">
+                        <div style="float: left; margin-top: 5px; margin-right: 2px;">
+                            卷烟名称:
+                        </div>
+                        <div>
+                            <input id="productName" type="text" class="easyui-validatebox" style="width: 140px;" />
+                        </div>
                     </div>
                 </div>
             </div>
-            </form>
         </div>
     </div>
 </div>
 <div id="dlg-buttons">
-    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="save()">确定</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="enterSave()">确定</a>
     <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">
         取消</a>
 </div>
 @Html.Partial("_ProductPartial")
-@Html.Partial("_GoodsCount")
