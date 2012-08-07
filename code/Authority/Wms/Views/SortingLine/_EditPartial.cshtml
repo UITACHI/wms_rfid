@@ -2,6 +2,7 @@
 function editClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
+        addLoad();
         $('#dlg').dialog('open').dialog('setTitle', '±à¼­');
         $('#sortingLinefm').form('load', row);
         $('#sortingLinefm .easyui-validatebox').validatebox({

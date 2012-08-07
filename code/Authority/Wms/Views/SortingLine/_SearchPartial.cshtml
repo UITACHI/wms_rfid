@@ -1,5 +1,9 @@
 ﻿<script type="text/javascript">
-    $(function () {
+
+    function searchClick() {
+        $('#searchdlg').dialog('open').dialog('setTitle', '查询');
+        $('#searchfm').form('clear');
+
         $('#IsActive').combo({
             editable: false,
             panelHeight: 45
@@ -8,11 +12,6 @@
             editable: false,
             panelHeight: 45
         });
-    })
-
-    function searchClick() {
-        $('#searchdlg').dialog('open').dialog('setTitle', '查询');
-        $('#searchfm').form('clear');
     };
 
     function select() {

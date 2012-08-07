@@ -1,18 +1,5 @@
 <script type="text/javascript">
     var url;
-    $(function () {
-        $('#IsActivecc').combo({
-            required: true,
-            editable: false,
-            panelHeight: 45
-        });
-        $('#isSortingLineType').combo({
-            required: true,
-            editable: false,
-            panelHeight: 45
-        });
-    })
-
     function addClick() {
         addLoad();
         $('#dlg').dialog('open').dialog('setTitle', '新增');
@@ -32,6 +19,17 @@
     };
 
     function addLoad() {
+        $('#IsActivecc').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45
+        });
+        $('#isSortingLineType').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45
+        });
+
         //获取单据类型单据类别BillClass=0003为移库单IsActive=1为可用
         $('#moveBillTypeCode').combogrid({
             required: true,
@@ -50,7 +48,6 @@
                     { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
                 ]]
         });
-
 
         $('#outBillTypeCode').combogrid({
             required: true,
@@ -97,11 +94,11 @@
         });
     }
 </script>
-<div id="dlg" class="easyui-dialog" modal="true" style="width: 300px; height: 220px;"
+<div id="dlg" class="easyui-dialog" modal="true" style="width: 300px; height: 320px;"
     closed="true" buttons="#dlg-buttons">
     <div class="easyui-layout" fit="true">
         <div region="center" border="false" style="padding: 10px 10px; border: 1px solid #ccc;">
-            <form id="sortingLinefm" method="post" novalidate>
+            <form id="sortingLinefm" method="post">
             <table width="260">
                 <tr>
                     <td width="80" style="text-align: right">
@@ -111,7 +108,7 @@
                         <input name="SortingLineCode" class="easyui-validatebox" />
                     </td>
                 </tr>
-                <tr>
+               <tr>
                     <td width="80" style="text-align: right">
                         分拣线名称：
                     </td>
@@ -119,7 +116,7 @@
                         <input name="SortingLineName" class="easyui-validatebox" />
                     </td>
                 </tr>
-                <tr>
+                 <tr>
                     <td width="80" style="text-align: right">
                         分拣线类型：
                     </td>
@@ -131,24 +128,24 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="60">
+                    <td width="60" style="text-align: right">
                         出库类型：
                     </td>
                     <td width="168">
-                        <input name="OutBillTypeCode" id="outBillTypeCode" class="easyui-validatebox" required="true" />
+                        <input name="OutBillTypeCode" id="outBillTypeCode"/>
                     </td>
                 </tr>
                 <tr>
-                    <td width="60">
+                    <td width="60" style="text-align: right">
                         移库类型：
                     </td>
                     <td width="168">
-                        <input name="OutBillTypeCode" id="moveBillTypeCode" class="easyui-validatebox" required="true" />
+                        <input name="MoveBillTypeCode" id="moveBillTypeCode"  />
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        储位编码
+                    <td style="text-align: right">
+                        储位编码：
                     </td>
                     <td align="left">
                         <input type="text" name="CellCode" class="easyui-validatebox" readonly="true" missingmessage="请选择储位！" />
@@ -157,8 +154,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        储位名称
+                    <td style="text-align: right">
+                        储位名称：
                     </td>
                     <td align="left">
                         <input type="text" name="CellName" class="easyui-validatebox" readonly="true" />
