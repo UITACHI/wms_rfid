@@ -247,8 +247,15 @@ namespace THOK.Wms.Bll.Service
         public object checkFindProduct()
         {
             IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
-            var product = ProductQuery.OrderBy(p => p.ProductCode).Where(p => p.Storages.Any(s => s.ProductCode == p.ProductCode));
-            return product.ToArray();
+            IQueryable<Storage> StorageQuery = StorageRepository.GetQueryable();
+            var storage = StorageQuery.Join(ProductQuery,
+                                           s => s.ProductCode,
+                                           p => p.ProductCode,
+                                           (s, p) => new { p.ProductCode, p.ProductName, s.Quantity, s.Product,p.UnitCode }
+                                           ).GroupBy(s => new { s.ProductCode, s.ProductName,s.UnitCode })
+                                           .Select(s => new { ProductCode = s.Key.ProductCode, ProductName = s.Key.ProductName, UnitCode=s.Key.UnitCode, Quantity = s.Sum(st => (st.Quantity / st.Product.Unit.Count)) });
+           // var product = ProductQuery.OrderBy(p => p.ProductCode).Where(p => p.Storages.Any(s => s.ProductCode == p.ProductCode));
+            return storage.ToArray();
         }
 
         /// <summary>
