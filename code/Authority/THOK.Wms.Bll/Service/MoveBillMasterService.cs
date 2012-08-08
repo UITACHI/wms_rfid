@@ -130,7 +130,8 @@ namespace THOK.Wms.Bll.Service
                 mbm.VerifyPersonID = moveBillMaster.VerifyPersonID;
                 mbm.VerifyDate = moveBillMaster.VerifyDate;
                 mbm.Description = moveBillMaster.Description;
-                mbm.IsActive = moveBillMaster.IsActive;
+                //mbm.IsActive = moveBillMaster.IsActive;
+                mbm.IsActive = "1";
                 mbm.UpdateTime = DateTime.Now;
 
                 MoveBillMasterRepository.Add(mbm);
@@ -179,7 +180,8 @@ namespace THOK.Wms.Bll.Service
                     mbm.VerifyPersonID = moveBillMaster.VerifyPersonID;
                     mbm.VerifyDate = moveBillMaster.VerifyDate;
                     mbm.Description = moveBillMaster.Description;
-                    mbm.IsActive = moveBillMaster.IsActive;
+                    //mbm.IsActive = moveBillMaster.IsActive;
+                    mbm.IsActive = "1";
                     mbm.UpdateTime = DateTime.Now;
 
                     mbm.LockTag = string.Empty;
@@ -294,7 +296,7 @@ namespace THOK.Wms.Bll.Service
         public bool LockBillMaster(string BillNo)
         {
             bool result = false;
-            var pbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(p => p.BillNo == BillNo && p.Status == "1");
+            var pbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(p => p.BillNo == BillNo);
             if (pbm != null)
             {
                 if (string.IsNullOrEmpty(pbm.LockTag))

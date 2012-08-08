@@ -137,7 +137,8 @@ namespace THOK.Wms.Bll.Service
                 ibm.VerifyPersonID = inBillMaster.VerifyPersonID;
                 ibm.VerifyDate = inBillMaster.VerifyDate;
                 ibm.Description = inBillMaster.Description;
-                ibm.IsActive = inBillMaster.IsActive;
+                //ibm.IsActive = inBillMaster.IsActive;
+                ibm.IsActive = "1";
                 ibm.UpdateTime = DateTime.Now;
 
                 InBillMasterRepository.Add(ibm);
@@ -175,7 +176,8 @@ namespace THOK.Wms.Bll.Service
                 ibm.VerifyPersonID = inBillMaster.VerifyPersonID;
                 ibm.VerifyDate = inBillMaster.VerifyDate;
                 ibm.Description = inBillMaster.Description;
-                ibm.IsActive = inBillMaster.IsActive;
+                //ibm.IsActive = inBillMaster.IsActive;
+                ibm.IsActive = "1";
                 ibm.UpdateTime = DateTime.Now;
 
                 InBillMasterRepository.SaveChanges();
