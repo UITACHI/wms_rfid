@@ -53,6 +53,10 @@
                     if (json.success) {
                         $.messager.show({ title: '成功', msg: json.msg });
                         $('#details').datagrid('reload');
+                        $("#productCode").attr("value", "");
+                        $("#productName").attr("value", "");
+                        $('#dlg').dialog('close'); 
+
                     } else {
                         $.messager.show({ title: '错误', msg: result.msg });
                         $('#details').datagrid('reload');
