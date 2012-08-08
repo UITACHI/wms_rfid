@@ -1096,6 +1096,7 @@
     <Content Include="Views\StockIntoSearch\_Detail.cshtml" />
     <Content Include="Views\SortingLine\_CellPartial.cshtml" />
     <Content Include="Views\SortingOrder\_DownLoadPartial.cshtml" />
+    <Content Include="Views\StockInBill\_SearchPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
