@@ -287,8 +287,8 @@ namespace THOK.Wms.Bll.Service
                                                                  .Where(m => m.BillNo == outbm.MoveBillMasterBillNo 
                                                                      && m.Status != "2");
 
-                        var sourceStorages = moveDetail.Select(m => m.OutStorage);
-                        var targetStorages = moveDetail.Select(m => m.OutStorage);
+                        var sourceStorages = moveDetail.Select(m => m.OutStorage).ToArray();
+                        var targetStorages = moveDetail.Select(m => m.OutStorage).ToArray();
 
                         if (sourceStorages.All(s => string.IsNullOrEmpty(s.LockTag))
                             && targetStorages.All(t=>string.IsNullOrEmpty(t.LockTag)))
@@ -339,7 +339,7 @@ namespace THOK.Wms.Bll.Service
                                                              .Where(o => o.BillNo == outbm.BillNo 
                                                                  && o.Status != "2");
 
-                        var storages = outAllot.Select(o => o.Storage);
+                        var storages = outAllot.Select(o => o.Storage).ToArray();
 
                         if (storages.All(s => string.IsNullOrEmpty(s.LockTag)))
                         {
