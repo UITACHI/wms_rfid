@@ -106,20 +106,14 @@
                 success: function (result) {
                     var result = eval('(' + result + ')');
                     if (result.success) {
-                        $.messager.show({
-                            title: '成功',
-                            msg: result.msg
-                        });
+                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                         url = '/StockOutBill/Edit/';
                         isShowOutBillDetail = true;
                         isOutBillMasterAdd = false;
                         outBillDetailShoew();
                         $('#details').datagrid('reload');
                     } else {
-                        $.messager.show({
-                            title: '错误',
-                            msg: result.msg
-                        });
+                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                         $('#dlg-AddBillDetail').dialog('close');
                         $('#details').datagrid('reload');
                     }
@@ -139,19 +133,13 @@
                 success: function (result) {
                     var result = eval('(' + result + ')');
                     if (result.success) {
-                        $.messager.show({
-                            title: '成功',
-                            msg: result.msg
-                        });
+                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                         isInBillMasterSaved = false;
                         $('#dlg').dialog('close');
                         $('#details').datagrid('reload');
                         $('#outBillDeatil').datagrid('load');
                     } else {
-                        $.messager.show({
-                            title: '错误',
-                            msg: result.msg
-                        });
+                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                         $('#details').datagrid('reload');
                     }
                 }
@@ -198,7 +186,7 @@
             $('#fm-inBillDetail').form('load', detailRow);
             detailUrl = '/StockOutBill/outBillDelete/?BillNo=' + detailRow.BillNo + '&ID=' + detailRow.ID;
         } else {
-            $.messager.confirm('错误', '没有选择行！');
+            $.messager.alert('错误', '没有选择行！');
         }
     }
 
@@ -215,7 +203,7 @@
             $('#fm-inBillDetail').form('load', detailRow);
             detailUrl = '/StockOutBill/editOutBillDelete/';
         } else {
-            $.messager.confirm('错误', '没有选择行！');
+            $.messager.alert('错误', '没有选择行！');
         }
     }
 
@@ -229,17 +217,11 @@
             success: function (result) {
                 var result = eval('(' + result + ')');
                 if (result.success) {
-                    $.messager.show({
-                        title: '成功',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                     $('#dlg-AddBillDetail').dialog('close');
                     $('#outBillDeatil').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + billno });
                 } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#outBillDetail').datagrid('reload');
                 }
             }
@@ -248,7 +230,7 @@
     
     function productSelect() {
         $('#productData').dialog('open').dialog('setTitle', '选择产品信息');
-        $('#productDetail').datagrid({ url: '/StockInBill/GetProductDetails/' });
+        $('#productDetail').datagrid({ url: '/Product/CheckFindProduct/' });
         $("#productDetail").datagrid('reload');
     }
     function unitSelect() {
@@ -259,7 +241,7 @@
             $('#billQuantity').attr("value", '')
             $("#unitDetail").datagrid('reload');
         } else {
-            $.messager.confirm('错误', '请先选择产品信息！');
+            $.messager.alert('错误', '请先选择产品信息！');
         }
     }
 </script>
@@ -367,7 +349,8 @@
               <tr>
                 <td style=" text-align:right">单位编码</td>
                 <td align="left"><label>
-                  <input type="text" name="UnitCode" class="easyui-validatebox" id="unitCode" readonly="readonly"/><a href="#" onclick="unitSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true" ></a>
+                  <input type="text" name="UnitCode" class="easyui-validatebox" id="unitCode" readonly="readonly"/>
+                  <a href="#" onclick="unitSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true" ></a>
                 </label></td>
                 <td></td>
               </tr>
@@ -378,7 +361,8 @@
               </tr>
               <tr>
                 <td style=" text-align:right">数量</td>
-                <td align="left"><input type="text" id="billQuantity" name="BillQuantity" class="easyui-numberbox" required="true" missingMessage="请填写数字！" /></td>
+                <td align="left"><input  id="storageQuantity" style=" display:none" />
+                <input type="text" id="billQuantity" name="BillQuantity" class="easyui-numberbox" required="true" missingMessage="请填写数字！" /></td>
                 <td></td>
               </tr>
               <tr style="display:none">

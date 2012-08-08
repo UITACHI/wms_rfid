@@ -6,24 +6,24 @@ function editClick(){
         var editName;
         if (row.attributes == "ware") {
             divid = "ware";
-            Load("/Warehouse/FindWarehouse", row.Code, divid);
+            Load("/Warehouse/FindWarehouse/", row.Code, divid);
             url = "/Warehouse/Edit/";
             editName = "仓库";
         } else if (row.attributes == "area") {
             divid = "area";
-            Load("/Area/FindArea", row.Code, divid);
+            Load("/Area/FindArea/", row.Code, divid);
             addClass("wareArea", "");
             url = "/Area/Edit/";
             editName = "库区";
         } else if (row.attributes == "shelf") {
             divid = "shelf";
-            Load("/Shelf/FindShelf", row.Code, divid);
+            Load("/Shelf/FindShelf/", row.Code, divid);
             addClass("wareShelf", "areaShelf");
             url = "/Shelf/Edit/";
             editName = "货架";
         } else if (row.attributes == "cell") {
             divid = "cell";
-            Load("/Cell/FindCell", row.Code, divid);
+            Load("/Cell/FindCell/", row.Code, divid);
             addClass("wareCell", "areaCell")
             url = "/Cell/Edit/";
             editName = "货位";

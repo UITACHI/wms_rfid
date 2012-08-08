@@ -1,30 +1,28 @@
 <script type="text/javascript">
-function deleteClick() {
-    var row = $('#details').datagrid('getSelected');
-    if (row) {
-        $.messager.confirm('删除', '确认要删除这条数据吗？', function (r) {
-            if (r) {
-                $.getJSON('/SortOrderDispatch/Delete/', { id: row.ID }, function (json) {
-                    if (json) {
-                        if (json.success) {
-                            $.messager.show({
-                                title: '成功',
-                                msg: json.msg
-                            });
-                            $('#details').datagrid('load');
-                        } else {
-                            $.messager.show({
-                                title: '错误',
-                                msg: json.msg
-                            });
-                            $('#details').datagrid('load');
+    function deleteClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $.messager.confirm('删除', '确认要删除这条数据吗？', function (r) {
+                if (r) {
+                    var j_waitDialog = ShowWaitMessageDialog();
+                    $.ajax({
+                        url: '/SortOrderDispatch/Delete/', type: "GET", dataType: "text",
+                        data: { 'id': row.ID },
+                        complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                        success: function (responseText) {
+                            var result = $.evalJSON(responseText);
+                            if (result.success) {
+                                $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                                $('#details').datagrid('reload');
+                            } else {
+                                $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                            }
                         }
-                    }
-                });
-            }
-        });
-    } else {
-        $.messager.confirm('错误', '没有选择行！');
+                    });
+                }
+            });
+        } else {
+            $.messager.alert('错误', '没有选择行！');
+        }
     }
-}
 </script>

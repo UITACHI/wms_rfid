@@ -7,7 +7,7 @@
             isInBillMasterSaved = false;
             isInBillMasterCanEdit = true;
             if (row.Status != "已录入") {
-                $.messager.confirm('错误', '该记录状态不是已录入状态无法编辑！');
+                $.messager.alert('错误', '该记录状态不是已录入状态无法编辑！');
             } else {
                 isOutBillMasterAdd = false;
                 isShowOutBillDetail = true;
@@ -31,7 +31,7 @@
                 url = '/StockOutBill/Edit/';
             }
         } else {
-            $.messager.confirm('错误', '没有选择行！');
+            $.messager.alert('错误', '没有选择行！');
         }
     };
 </script>

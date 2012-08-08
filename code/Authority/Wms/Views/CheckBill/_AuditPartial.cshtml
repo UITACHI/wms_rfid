@@ -3,18 +3,30 @@
         var row = $('#details').datagrid('getSelected');
         if (row) {
             if (row.Status != "已录入") {
-                $.messager.confirm('错误', '该记录状态不是已录入状态无法审核！');
+                $.messager.alert('错误', '该记录状态不是已录入状态无法审核！');
             } else {
-                DataLoad();
-                $('#checkdlg').dialog('open').dialog('setTitle', '审核盘点主单信息');
-                $('#checkBillDeatilShow').datagrid({ url: '/CheckBill/CheckBillDetails/?BillNo=' + row.BillNo }); //加载明细                
-                $('form input').attr("disabled", "disabled");
-                $('form select').attr("disabled", "disabled");
-                $('#checkfm').form('load', row);
-                url = '/CheckBill/checkBillMasterAudit/?BillNo=' + row.BillNo;
+                $.messager.confirm('审核', '确认要审核该记录吗？', function (r) {
+                    if (r) {
+                        var j_waitDialog = ShowWaitMessageDialog();
+                        $.ajax({
+                            url: '/CheckBill/checkBillMasterAudit/', type: "GET", dataType: "text",
+                            data: { 'BillNo': row.BillNo },
+                            complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                            success: function (responseText) {
+                                var result = $.evalJSON(responseText);
+                                if (result.success) {
+                                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                                    $('#details').datagrid('reload');
+                                } else {
+                                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                                }
+                            }
+                        });
+                    }
+                });
             }
         } else {
-            $.messager.confirm('错误', '没有选择行，无法审核！');
+            $.messager.alert('错误', '没有选择行，无法审核！');
         }
     }
 </script>

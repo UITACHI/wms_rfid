@@ -147,6 +147,10 @@ namespace THOK.Wms.Bll.Service
             if (checkbm != null)
             {
                 //Del(OutBillDetailRepository, ibm.OutBillAllots);
+                foreach (var item in checkbm.CheckBillDetails.ToArray())
+                {
+                    item.Storage.IsLock = "0";
+                }
                 Del(CheckBillDetailRepository, checkbm.CheckBillDetails);
                 CheckBillMasterRepository.Delete(checkbm);
                 CheckBillMasterRepository.SaveChanges();

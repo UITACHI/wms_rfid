@@ -1,22 +1,37 @@
 ﻿<script type="text/javascript">
     function antitrialClick() {
-        var row = $('#details').datagrid('getSelected');
-        if (row) {
-            if (row.Status != "已审核") {
-                $.messager.confirm('错误', '该记录状态不是已录入状态无法反审！');
-            } else {
-                DataLoad();
-                isOutBillMasterAdd = false;
-                isShowOutBillDetail = true;
-                $('#centerShowDiv').css({ display: "none" });
-                $('#dlg').dialog('open').dialog('setTitle', '反审出库主单信息');
-                $('#outBillDeatil').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + row.BillNo }); //加载明细
-                $('#fm').form('load', row);
-                $('form input').attr("disabled", "disabled");
-                url = '/StockOutBill/outBillMasterAntiTrial/?BillNo=' + row.BillNo;
+        var billnoRow = "";
+        //var row = $('#details').datagrid('getSelected');
+        var rows = $('#details').datagrid('getSelections');
+        if (rows.length > 0) {
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].Status == "已审核") {
+                    billnoRow += rows[i].BillNo + ",";
+                }
             }
+        }
+        if (billnoRow != "") {
+            $.messager.confirm('反审', '确认要反审该记录吗？', function (r) {
+                if (r) {
+                    var j_waitDialog = ShowWaitMessageDialog();
+                    $.ajax({
+                        url: '/StockOutBill/outBillMasterAntiTrial/', type: "GET", dataType: "text",
+                        data: { 'BillNo': billnoRow },
+                        complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                        success: function (responseText) {
+                            var result = $.evalJSON(responseText);
+                            if (result.success) {
+                                $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                                $('#details').datagrid('reload');
+                            } else {
+                                $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                            }
+                        }
+                    });
+                }
+            });
         } else {
-            $.messager.confirm('错误', '没有选择行，无法反审！');
+            $.messager.alert('错误', '所选择的行没有已审核状态的单据！无法反审！');
         }
     }
 </script>
