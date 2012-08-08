@@ -75,7 +75,7 @@
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.BillNo = $('#billNo').val();
+        queryParams.BillNo = $('#searchBillNo').val();
         queryParams.WarehouseCode = $('#warehouse_In').combo('getValue');
         queryParams.BeginDate = $('#beginDate').datebox('getValue');
         queryParams.EndDate = $('#endDate').datebox('getValue');
@@ -100,7 +100,7 @@
             <table align="left" width="250">
               <tr>
                 <td width="60">入库单号:</td>
-                <td><input id="billNo" type="text" style="width: 140px"></td>
+                <td><input id="searchBillNo" type="text" style="width: 140px"></td>
               </tr>
               <tr style="padding-top:10px;">
                 <td width="60">仓库名称:</td>
