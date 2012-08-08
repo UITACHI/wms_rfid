@@ -94,7 +94,7 @@
 </script>
 <div class="easyui-layout" fit="true">
     <div region="west" style="width: 380px; border-right-style: solid; border-right-width: 1px; border-right-color: #99BBE8;" border="false">
-        <table id="productTable" class="easyui-datagrid" border="false" url=''
+        <table id="productTable" class="easyui-datagrid" border="false" url='/Product/CheckFindProduct/'
             singleselect="false" fit="true" rownumbers="true">
             <thead>
                 <tr>
@@ -105,6 +105,12 @@
                         <th field="ProductName" width="140">
                             产品名称
                         </th>
+                        @*<th field="UnitCode" width="140">
+                            单位（件）
+                        </th>
+                        <th field="Quantity" width="140">
+                            数量
+                        </th>*@
                 </tr>
             </thead>
         </table>

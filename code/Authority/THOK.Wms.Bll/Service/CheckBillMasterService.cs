@@ -458,7 +458,7 @@ namespace THOK.Wms.Bll.Service
             {
                 products = products.Substring(0, products.Length - 1);
 
-                var storages = storageQuery.ToList().Where(s => products.Contains(s.Product.ProductCode) && s.Quantity > 0 && s.IsLock == "0")
+                var storages = storageQuery.ToList().Where(s => s.ProductCode != null && products.Contains(s.ProductCode) && s.Quantity > 0 && s.IsLock == "0")
                                       .OrderBy(s => s.StorageCode).AsEnumerable()
                                       .Select(s => new
                                       {
@@ -507,7 +507,7 @@ namespace THOK.Wms.Bll.Service
                             var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
                             foreach (var item in warehouses.ToArray())
                             {
-                                var storages = storageQuery.Where(s => products.Contains(s.Product.ProductCode) && s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
+                                var storages = storageQuery.Where(s => products.Contains(s.ProductCode) && s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
                                                            .OrderBy(s => s.StorageCode).AsEnumerable()
                                                            .Select(s => new
                                                             {
