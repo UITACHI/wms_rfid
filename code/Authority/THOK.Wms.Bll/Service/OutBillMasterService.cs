@@ -288,7 +288,7 @@ namespace THOK.Wms.Bll.Service
                                                                      && m.Status != "2");
 
                         var sourceStorages = moveDetail.Select(m => m.OutStorage).ToArray();
-                        var targetStorages = moveDetail.Select(m => m.OutStorage).ToArray();
+                        var targetStorages = moveDetail.Select(m => m.InStorage).ToArray();
 
                         if (sourceStorages.All(s => string.IsNullOrEmpty(s.LockTag))
                             && targetStorages.All(t=>string.IsNullOrEmpty(t.LockTag)))

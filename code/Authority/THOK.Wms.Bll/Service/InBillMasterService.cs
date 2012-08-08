@@ -346,21 +346,8 @@ namespace THOK.Wms.Bll.Service
                                                                && o.Status != "2");
                         var storages = inAllot.Select(i => i.Storage).ToArray();
 
-                        if (storages.All(s => string.IsNullOrEmpty(s.LockTag)))
-                        {
-                            try
-                            {
-                                storages.AsParallel().ForAll(s => s.LockTag = Locker.LockKey);
-                                InBillAllotRepository.SaveChanges();
-                            }
-                            catch (Exception)
-                            {
-                                strResult = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
-                                return false;
-                            }
-                        }
-                        else
-                        {
+                        if (!Locker.Lock(storages))
+                        {                           
                             strResult = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
                             return false;
                         }
