@@ -127,20 +127,14 @@
                 success: function (result) {
                     var result = eval('(' + result + ')');
                     if (result.success) {
-                        $.messager.show({
-                            title: '成功',
-                            msg: result.msg
-                        });
+                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                         url = '/StockInBill/Edit/';
                         isShowInBillDetail = true;
                         isInBillMasterAdd = false;
                         inBillDetailShow();
                         $('#details').datagrid('reload');
                     } else {
-                        $.messager.show({
-                            title: '错误',
-                            msg: result.msg
-                        });
+                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                         $('#details').datagrid('reload');
                     }
                 }
@@ -159,18 +153,12 @@
                 success: function (result) {
                     var result = eval('(' + result + ')');
                     if (result.success) {
-                        $.messager.show({
-                            title: '成功',
-                            msg: result.msg
-                        });
+                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                         $('#dlg').dialog('close');
                         $('#details').datagrid('reload');
                         $('#inBillDetails').datagrid('load');
                     } else {
-                        $.messager.show({
-                            title: '错误',
-                            msg: result.msg
-                        });
+                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                         $('#details').datagrid('reload');
                     }
                 }
@@ -196,17 +184,11 @@
             success: function (result) {
                 var result = eval('(' + result + ')');
                 if (result.success) {
-                    $.messager.show({
-                        title: '成功',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                     $('#dlg-AddBillDetail').dialog('close');
                     $('#inBillDetail').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + billno });
                 } else {
-                    $.messager.show({
-                        title: '错误',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#inBillDetail').datagrid('reload');
                 }
             }
