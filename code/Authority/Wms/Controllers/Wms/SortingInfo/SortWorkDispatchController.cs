@@ -44,14 +44,14 @@ namespace Authority.Controllers.Wms.SortingInfo
             return Json(sortOrder, "text", JsonRequestBehavior.AllowGet);
         }
 
-        //新增数据
-        // GET: /SortWorkDispatch/Dispatch/
-        public ActionResult Dispatch(string dispatchId)
-        {
-            SortOrderWorkDispatchService.Dispatch(dispatchId);
-            string msg = true ? "新增成功" : "新增失败";
-            return Json(JsonMessageHelper.getJsonMessage(true, msg, null), "text", JsonRequestBehavior.AllowGet);
-        }
+        ////新增数据
+        //// GET: /SortWorkDispatch/Dispatch/
+        //public ActionResult Dispatch(string dispatchId)
+        //{
+        //    SortOrderWorkDispatchService.Dispatch(dispatchId);
+        //    string msg = true ? "新增成功" : "新增失败";
+        //    return Json(JsonMessageHelper.getJsonMessage(true, msg, null), "text", JsonRequestBehavior.AllowGet);
+        //}
 
         //删除数据
         // POST: /SortWorkDispatch/Delete/
