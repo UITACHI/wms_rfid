@@ -160,11 +160,12 @@ namespace THOK.Wms.Bll.Service
         /// <summary>删除货位数量的信息</summary>
         public bool DeleteCell(string productCode)
         {
+
             var cellSave = CellRepository.GetQueryable().Where(c => c.DefaultProductCode == productCode);
             foreach (var item in cellSave.ToArray())
             {
-                item.DefaultProductCode = null;
                 item.Product = null;
+                item.DefaultProductCode = null;
                 CellRepository.SaveChanges();
             }
             return true;
