@@ -489,6 +489,56 @@ namespace THOK.Wms.Bll.Service
             return wareSet.ToArray();
         }
 
+        /// <summary>
+        /// 查询库区，用于分拣设置货位
+        /// </summary>
+        /// <param name="areaType">库区类型</param>
+        /// <returns></returns>
+        public object GetSortCell(string areaType)
+        {
+            var areas = AreaRepository.GetQueryable().Where(a => a.AreaType == areaType)
+                                                     .OrderBy(a => a.AreaCode).Select(a => a);
+            HashSet<Tree> areaSet = new HashSet<Tree>();
+            foreach (var area in areas)//库区
+            {
+                Tree areaTree = new Tree();
+                areaTree.id = area.AreaCode;
+                areaTree.text = "库区：" + area.AreaName;
+                areaTree.state = "open";
+                areaTree.attributes = "area";
+
+                var shelfs = ShelfRepository.GetQueryable().Where(s => s.Area.AreaCode == area.AreaCode)
+                                                           .OrderBy(s => s.ShelfCode).Select(s => s);
+                HashSet<Tree> shelfSet = new HashSet<Tree>();
+                foreach (var shelf in shelfs)//货架
+                {
+                    Tree shelfTree = new Tree();
+                    shelfTree.id = shelf.ShelfCode;
+                    shelfTree.text = "货架：" + shelf.ShelfName;
+                    shelfTree.attributes = "shelf";
+
+
+                    var cells = CellRepository.GetQueryable().Where(c => c.Shelf.ShelfCode == shelf.ShelfCode)
+                                                             .OrderBy(c => c.CellCode).Select(c => c);
+                    HashSet<Tree> cellSet = new HashSet<Tree>();
+                    foreach (var cell in cells)//货位
+                    {
+                        Tree cellTree = new Tree();
+                        cellTree.id = cell.CellCode;
+                        cellTree.text = cell.CellName;
+                        cellTree.state = "open";
+                        cellTree.attributes = "cell";
+                        cellSet.Add(cellTree);
+                    }
+                    shelfTree.children = cellSet.ToArray();
+                    shelfSet.Add(shelfTree);
+                }
+                areaTree.children = shelfSet.ToArray();
+                areaSet.Add(areaTree);
+            }
+            return areaSet.ToArray();
+        }
+
         #endregion
     }
 }

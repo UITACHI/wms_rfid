@@ -30,7 +30,8 @@ namespace THOK.Common.Ef.EntityRepository
 
         public void Update(T entity)
         {
-            dbSet.Attach(entity);        }
+            dbSet.Attach(entity);        
+        }
 
         public void Attach(T entity)
         {

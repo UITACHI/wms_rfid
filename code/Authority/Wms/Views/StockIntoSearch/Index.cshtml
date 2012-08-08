@@ -1,4 +1,18 @@
 ﻿<script type="text/javascript">
+
+    function formatAction(value, row, index) {
+        var e = '<a href="#" onclick="detail( ' + index + ')">查询明细</a> ';
+        return e
+    }
+
+    function detail(index) {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $('#infos').datagrid({ url: '/StockIntoSearch/DetailInfos/?BillNo=' + row.BillNo });
+            $('#InfoDetails').dialog('open').dialog('setTitle', '入库单'+row.BillNo+'明细');
+        }
+    }
+
     $(function () {
         $('#details').datagrid({
             onClickRow: function () {
@@ -25,6 +39,7 @@
                 <th field="Status" width="120" align="center">处理状态</th>
                 <th field="VerifyPersonName" width="120" align="center">审核人</th>
                 <th field="VerifyDate" width="120" align="center">审核日期</th>
+                <th  id="detailformatAction" field="detail" width="80" align="center" formatter="formatAction">商品明细</th>
                 <th field="Description" width="120" align="center">备注</th>
             </tr>
         </thead>
@@ -48,4 +63,5 @@
             </tr>
         </thead>
     </table>
-</div>    
+</div>
+@Html.Partial("_Detail") 

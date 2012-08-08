@@ -239,8 +239,7 @@ namespace THOK.Wms.SignalR.Common
                 {
                     try
                     {
-                        if (string.IsNullOrEmpty(storage.LockTag)) { storage.LockTag = this.LockKey; }
-                        else storage = null;
+                        storage.LockTag = this.LockKey;
                         StorageRepository.SaveChanges();
                     }
                     catch (Exception)
