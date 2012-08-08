@@ -31,13 +31,13 @@ namespace THOK.Wms.Bll.Service
                     i.ID,
                     i.BillNo,
                     i.ProductCode,
-                    //i.Product.ProductName,
-                    //i.UnitCode,
-                    //i.Unit.UnitName,
-                    //i.BillQuantity,
-                    //i.RealQuantity,
-                    //i.Price,
-                    //i.Description
+                    i.Product.ProductName,
+                    i.UnitCode,
+                    i.Unit.UnitName,
+                    i.CellCode,
+                    i.Cell.CellName,
+                    i.RealQuantity,
+                    i.Status
                 });
                 int total = OutBillAllot.Count();
                 OutBillAllot = OutBillAllot.Skip((page - 1) * rows).Take(rows);
