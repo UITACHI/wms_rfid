@@ -166,6 +166,7 @@ namespace THOK.Wms.Bll.Service
             var cellSave = CellRepository.GetQueryable().Where(c => c.DefaultProductCode == productCode);
             foreach (var item in cellSave.ToArray())
             {
+                item.DefaultProductCode = null;
                 item.Product = null;
                 CellRepository.SaveChanges();
             }            
