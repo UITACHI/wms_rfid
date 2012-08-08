@@ -6,31 +6,17 @@
     }
 
     function save() {
+        $.asyncProcessing.OnProgressComplete = function () {
+            $('#dlg').dialog('close');
+            $('#details').datagrid('reload');
+        }
         dispatchParameter = "";
         var dispatchRows = $('#workDispatchTable').datagrid('getSelections');
         for (var i = 0; i < dispatchRows.length; i++) {
             dispatchParameter += dispatchRows[i].ID + ",";
         }
         if (dispatchParameter != "" && dispatchParameter != null) {
-            $.getJSON('/SortWorkDispatch/Dispatch/', { dispatchId: dispatchParameter }, function (json) {
-                if (json) {
-                    if (json.success) {
-                        $.messager.show({
-                            title: '成功',
-                            msg: json.msg
-                        });
-                        $('#dlg').dialog('close');
-                        $('#details').datagrid('reload');
-                    } else {
-                        $.messager.show({
-                            title: '错误',
-                            msg: json.msg
-                        });
-                        $('#dlg').dialog('close');
-                        $('#details').datagrid('reload');
-                    }
-                }
-            });
+            $.asyncProcessing.Start('/allotSortWork', $.toJSON({ ActionType: 'start', workDispatchId: dispatchParameter }));
         } else {
             $.messager.confirm('错误', '请选择需要作业调度的线路！');
         }
