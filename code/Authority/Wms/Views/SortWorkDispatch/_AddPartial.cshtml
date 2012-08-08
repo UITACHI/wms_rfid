@@ -16,7 +16,7 @@
             dispatchParameter += dispatchRows[i].ID + ",";
         }
         if (dispatchParameter != "" && dispatchParameter != null) {
-            $.asyncProcessing.Start('/DispatchSortWork', $.toJSON({ ActionType: 'start', BillNo: dispatchParameter}));
+            $.asyncProcessing.Start('/allotSortWork', $.toJSON({ ActionType: 'start', workDispatchId: dispatchParameter }));
         } else {
             $.messager.confirm('错误', '请选择需要作业调度的线路！');
         }
