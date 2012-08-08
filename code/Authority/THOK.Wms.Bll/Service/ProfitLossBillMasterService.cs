@@ -143,7 +143,8 @@ namespace THOK.Wms.Bll.Service
                 pbm.VerifyPersonID = profitLossBillMaster.VerifyPersonID;
                 pbm.VerifyDate = profitLossBillMaster.VerifyDate;
                 pbm.Description = profitLossBillMaster.Description;
-                pbm.IsActive = profitLossBillMaster.IsActive;
+                //pbm.IsActive = profitLossBillMaster.IsActive;
+                pbm.IsActive = "1";
                 pbm.UpdateTime = DateTime.Now;
 
                 ProfitLossBillMasterRepository.Add(pbm);
@@ -233,7 +234,8 @@ namespace THOK.Wms.Bll.Service
                     pbm.VerifyPersonID = profitLossBillMaster.VerifyPersonID;
                     pbm.VerifyDate = profitLossBillMaster.VerifyDate;
                     pbm.Description = profitLossBillMaster.Description;
-                    pbm.IsActive = profitLossBillMaster.IsActive;
+                    //pbm.IsActive = profitLossBillMaster.IsActive;
+                    pbm.IsActive = "1";
                     pbm.UpdateTime = DateTime.Now;
 
                     pbm.LockTag = string.Empty;

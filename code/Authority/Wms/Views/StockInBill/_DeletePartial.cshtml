@@ -18,15 +18,15 @@
                 $('#btnAddBillDetail').css('display', 'none'); //设置新增明细按钮的可见性
                 $('#btnDeleteBillDetail').css('display', 'none'); //设置删除明细按钮的可见性
                 $('#btnEditBillDetail').css('display', 'none'); //设置修改明细按钮的可见性
-                $('#cc').combo({
-                    hasDownArrow: false
-                });
+//                $('#cc').combo({
+//                    hasDownArrow: false
+//                });
                 $('#fm').form('load', row);
-                if (row.IsActive == '可用') {
-                    $('#cc').combo('setValue', true).combo('setText', row.IsActive);
-                } else {
-                    $('#cc').combo('setValue', false).combo('setText', row.IsActive);
-                }
+//                if (row.IsActive == '可用') {
+//                    $('#cc').combo('setValue', true).combo('setText', row.IsActive);
+//                } else {
+//                    $('#cc').combo('setValue', false).combo('setText', row.IsActive);
+//                }
                 url = '/StockInBill/Delete/?BillNo=' + row.BillNo;
             }
         } else {

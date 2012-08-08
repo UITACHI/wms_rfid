@@ -15,19 +15,19 @@
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
-                if (row.IsActive == '可用') {
-                    $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
-                } else {
-                    $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
-                }
+//                if (row.IsActive == '可用') {
+//                    $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
+//                } else {
+//                    $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
+//                }
                 $('form input').removeAttr("disabled");
                 $('form textarea').removeAttr("disabled");
                 $('#btnAddBillDetail').css('display', 'inline'); //设置新增明细按钮的可见性
                 $('#btnDeleteBillDetail').css('display', 'inline'); //设置删除明细按钮的可见性
                 $('#btnEditBillDetail').css('display', 'inline'); //设置修改明细按钮的可见性
-                $('#cc').combo({
-                    hasDownArrow: true
-                });
+//                $('#cc').combo({
+//                    hasDownArrow: true
+//                });
                 url = '/ProfitLossBill/Edit/';
             }
         } else {

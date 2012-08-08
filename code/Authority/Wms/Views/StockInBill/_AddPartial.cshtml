@@ -4,14 +4,14 @@
     var billno;
     var isShowInBillDetail; //true 表示可以弹出明细添加窗口，false 表示提交主表单据失败，不能弹出明细添加窗体
     var isInBillMasterAdd; //true 表示可以提交主表单据，false不能提交主表单据
-    $(function () {
-        $('#cc').combo({
-            required: true,
-            editable: false,
-            panelHeight: 45,
-            panelWidth: 100
-        });
-    })
+//    $(function () {
+//        $('#cc').combo({
+//            required: true,
+//            editable: false,
+//            panelHeight: 45,
+//            panelWidth: 100
+//        });
+//    })
 
     function DataLoad() {
         $('#wareHouseadd').combogrid({
@@ -74,6 +74,7 @@
                 $('#dlg').dialog('open').dialog('setTitle', '新增入库订单');
                 $('#fm').form('clear');
                 $('#billNo').val(json.BillNo);
+                $('#operatePersonID').val(json.employeeID);
                 $('#operatePersonName').val(json.employeeName);
                 billno = json.BillNo;
                 $('#billDate').val(getTime());
@@ -130,6 +131,7 @@
                             title: '成功',
                             msg: result.msg
                         });
+                        url = '/StockInBill/Edit/';
                         isShowInBillDetail = true;
                         isInBillMasterAdd = false;
                         inBillDetailShow();
@@ -175,7 +177,7 @@
             });
         }
         else{
-            moveBillMasterSave();
+            inBillMasterSave();
             $('#dlg-AddBillDetail').dialog('close');
         }
          $('#inBillDetails').datagrid('loadData', { total: 0, rows: [] }); //清空细单
@@ -309,7 +311,7 @@
                 <td width="168"><input name="WarehouseCode" id="wareHouseadd" missingmessage="请选择仓库编码"></td>
                 <td width="60">经办人</td>
                 <td width="168"><input name="OperatePersonName" readonly="true" id="operatePersonName">
-                <input name="OperatePersonID" readonly="true" id="operatePersonCode"style=" display:none"></td>
+                <input name="OperatePersonID" readonly="true" id="operatePersonID"style=" display:none"></td>
                 <td width="60">状态</td>
                 <td width="168"><input name="Status" readonly="true"></td>
                 </tr>
@@ -319,16 +321,19 @@
                 <td width="60">审核时间</td>
                 <td width="168"><input name="VerifyDate" readonly="true"></td>
                 <td width="60">描述</td>
-                <td width="168"><input name="Description"></td>
+                <td width="168">
+                <input name="Description">
+                </td>
                 </tr>
-                <tr>
-                <td>状态:</td>
-                <td><select id="cc" name="IsActive" class="easyui-combobox" style="width: 100px">
+@*                <tr>
+                <td></td>
+                <td>
+                <select id="cc" name="IsActive" class="easyui-combobox" style="width: 100px">
 		                <option value="1">可用</option>
 		                <option value="0">不可用</option>
 	                </select>
 	            </td>
-                </tr>
+                </tr>*@
             </table>
 	    </form>
     </div>
