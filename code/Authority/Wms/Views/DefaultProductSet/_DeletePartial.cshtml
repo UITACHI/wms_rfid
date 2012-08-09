@@ -1,1 +1,7 @@
-﻿
+﻿<script type="text/javascript">
+    function deleteClick() {
+        var productRow = $('#details').datagrid('getSelected');
+        $('#details').datagrid({ url: '/DefaultProductSet/CellDel/?productCode=' + productRow.ProductCode });
+        $('#details').datagrid('reload');
+    }
+</script>
