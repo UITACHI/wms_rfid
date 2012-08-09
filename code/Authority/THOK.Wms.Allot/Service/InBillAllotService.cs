@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Transactions;
 using THOK.Wms.SignalR;
 using THOK.Wms.SignalR.Common;
-using THOK.Common;
 using Entities.Extensions;
 
 namespace THOK.Wms.Allot.Service
@@ -89,6 +88,7 @@ namespace THOK.Wms.Allot.Service
 
         public bool AllotCancel(string billNo, out string strResult)
         {
+            Locker.LockKey = billNo;
             bool result = false;
             var ibm = InBillMasterRepository.GetQueryable()
                                             .FirstOrDefault(i => i.BillNo == billNo 
@@ -109,7 +109,7 @@ namespace THOK.Wms.Allot.Service
 
                             if (!Locker.Lock(storages))
                             {
-                                strResult = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
+                                strResult = "锁定储位失败，储位其他人正在操作，无法取消分配请稍候重试！";
                                 return false;
                             }
 
@@ -119,20 +119,22 @@ namespace THOK.Wms.Allot.Service
                                     if (i.Storage.ProductCode == i.ProductCode
                                         && i.Storage.InFrozenQuantity >= i.AllotQuantity)
                                     {
-                                        i.InBillDetail.AllotQuantity -= i.AllotQuantity;
+                                        lock(i.InBillDetail)
+                                        {
+                                            i.InBillDetail.AllotQuantity -= i.AllotQuantity;
+                                        }                                        
                                         i.Storage.InFrozenQuantity -= i.AllotQuantity;
                                         i.Storage.LockTag = string.Empty;
                                     }
                                     else
                                     {
-                                        throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能结单！");
+                                        throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能取消当前入库分配！");
                                     }
                                 }
                             );
 
-                            InBillAllotRepository.GetObjectSet()
-                                .UpdateEntity(i => i.BillNo == ibm.BillNo, i => new InBillAllot() { AllotQuantity = 0});
-
+                            InBillAllotRepository.SaveChanges();
+        
                             InBillAllotRepository.GetObjectSet()
                                 .DeleteEntity(i => i.BillNo == ibm.BillNo);
 
