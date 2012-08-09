@@ -7,6 +7,7 @@ using THOK.Common.Ef.Interfaces;
 using Microsoft.Practices.Unity;
 using System.Data;
 using System.Data.Entity.Infrastructure;
+using System.Data.Objects;
 
 namespace THOK.Common.Ef.EntityRepository
 {
@@ -57,6 +58,18 @@ namespace THOK.Common.Ef.EntityRepository
             return this.dbSet.AsParallel<T>();
         }
 
+        public ObjectSet<T> GetObjectSet()
+        {
+            return ((IObjectContextAdapter)RepositoryContext.DbContext)
+                .ObjectContext.CreateObjectSet<T>();
+        }
+
+        public ObjectContext GetObjectContext()
+        {
+            return ((IObjectContextAdapter)RepositoryContext.DbContext)
+                .ObjectContext;
+        }
+
         public IList<T> GetAll()
         {
             return this.dbSet.ToList<T>();
@@ -95,11 +108,14 @@ namespace THOK.Common.Ef.EntityRepository
         //todo
         public void Delete<TSub>(TSub[] tsubs)
         {
-            foreach (var tsub in tsubs)
+            if (tsubs.Any())
             {
-                RepositoryContext.DbContext.Set(tsub.GetType()).Remove(tsub);
+                var dbSet = RepositoryContext.DbContext.Set(tsubs.First().GetType());
+                foreach (var tsub in tsubs)
+                {
+                    dbSet.Remove(tsub);
+                }
             }
-            RepositoryContext.SaveChanges();
         }            
     }
 }

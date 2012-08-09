@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Transactions;
 using THOK.Wms.SignalR;
 using THOK.Wms.SignalR.Common;
+using Entities.Extensions;
 
 namespace THOK.Wms.Allot.Service
 {
@@ -58,7 +59,7 @@ namespace THOK.Wms.Allot.Service
 
         public object Search(string billNo, int page, int rows)
         {
-            var allotQuery = InBillAllotRepository.GetQueryable();
+            var allotQuery = InBillAllotRepository.GetParallelQuery();
             var query = allotQuery.Where(a => a.BillNo == billNo)
                                   .OrderBy(a => a.ID)
                                   .Select(a => new { 
@@ -76,13 +77,91 @@ namespace THOK.Wms.Allot.Service
                                       a.OperatePersonID,
                                       a.StartTime,
                                       a.FinishTime,
-                                      a.Status 
+                                      Status = WhatStatus(a.Status)
                                     });
 
             int total = query.Count();
             query = query.Skip((page - 1) * rows).Take(rows);
             var allotBill = query.ToArray();            
             return new { total, rows = query.ToArray() }; 
+        }
+
+        public bool AllotCancel(string billNo, out string strResult)
+        {
+            Locker.LockKey = billNo;
+            bool result = false;
+            var ibm = InBillMasterRepository.GetQueryable()
+                                            .FirstOrDefault(i => i.BillNo == billNo 
+                                                && i.Status == "3");
+            if (ibm != null)
+            {
+                if (string.IsNullOrEmpty(ibm.LockTag))
+                {
+                    try
+                    {
+                        using (var scope = new TransactionScope())
+                        {
+                            var inAllot = InBillAllotRepository.GetQueryable()
+                                                               .Where(o => o.BillNo == ibm.BillNo)
+                                                               .ToArray();
+
+                            var storages = inAllot.Select(i => i.Storage).ToArray();
+
+                            if (!Locker.Lock(storages))
+                            {
+                                strResult = "锁定储位失败，储位其他人正在操作，无法取消分配请稍候重试！";
+                                return false;
+                            }
+
+                            inAllot.AsParallel().ForAll(
+                                (Action<InBillAllot>)delegate(InBillAllot i)
+                                {
+                                    if (i.Storage.ProductCode == i.ProductCode
+                                        && i.Storage.InFrozenQuantity >= i.AllotQuantity)
+                                    {
+                                        lock(i.InBillDetail)
+                                        {
+                                            i.InBillDetail.AllotQuantity -= i.AllotQuantity;
+                                        }                                        
+                                        i.Storage.InFrozenQuantity -= i.AllotQuantity;
+                                        i.Storage.LockTag = string.Empty;
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能取消当前入库分配！");
+                                    }
+                                }
+                            );
+
+                            InBillAllotRepository.SaveChanges();
+        
+                            InBillAllotRepository.GetObjectSet()
+                                .DeleteEntity(i => i.BillNo == ibm.BillNo);
+
+                            ibm.Status = "2";
+                            ibm.UpdateTime = DateTime.Now;
+                            InBillMasterRepository.SaveChanges();
+                            result = true;
+                            strResult = "取消分配成功！";
+
+                            scope.Complete();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        strResult = "取消分配失败，详情：" + e.Message;
+                    }
+                }
+                else
+                {
+                    strResult = "当前订单其他人正在操作，请稍候重试！";
+                }
+            }
+            else
+            {
+                strResult = "当前订单状态不是已分配，或当前订单不存在！";
+            }
+            return result;
         }
 
         public bool AllotDelete(string billNo, long id, out string strResult)
@@ -153,7 +232,7 @@ namespace THOK.Wms.Allot.Service
                         }
                         else
                         {
-                            storage = LockStorage(billNo, cell);
+                            storage = Locker.LockEmpty(cell);
                             if (storage != null && (storage.Quantity != 0 || storage.InFrozenQuantity != 0))
                             {
                                 storage.LockTag = string.Empty;
@@ -288,152 +367,5 @@ namespace THOK.Wms.Allot.Service
             }
             return result;
         }
-
-        private Storage LockStorage(string billNo, Cell cell)
-        {
-            try
-            {
-                cell.LockTag = billNo;
-                CellRepository.SaveChanges();
-            }
-            catch (Exception)
-            {
-                CellRepository.Detach(cell);
-                return null;
-            }
-
-            Storage storage = null;
-            try
-            {
-                if (cell.IsSingle == "1")
-                {
-                    if (cell.Storages.Count == 0)
-                    {
-                        storage = new Storage()
-                        {
-                            StorageCode = Guid.NewGuid().ToString(),
-                            CellCode = cell.CellCode,
-                            IsLock = "0",
-                            LockTag = billNo,
-                            IsActive = "0",
-                            StorageTime = DateTime.Now,
-                            UpdateTime = DateTime.Now
-                        };
-                        cell.Storages.Add(storage);
-                    }
-                    else if (cell.Storages.Count == 1)
-                    {
-                        storage = cell.Storages.Single();
-                        storage.LockTag = billNo;
-                    }
-                }
-                else
-                {
-                    storage = cell.Storages.Where(s => s.LockTag == null || s.LockTag == string.Empty
-                                                && s.Quantity == 0
-                                                && s.InFrozenQuantity == 0)
-                                          .FirstOrDefault();
-                    if (storage != null)
-                    {
-                        storage.LockTag = billNo;
-                    }
-                    else
-                    {
-                        storage = new Storage()
-                        {
-                            StorageCode = Guid.NewGuid().ToString(),
-                            CellCode = cell.CellCode,
-                            IsLock = "0",
-                            LockTag = billNo,
-                            IsActive = "0",
-                            StorageTime = DateTime.Now,
-                            UpdateTime = DateTime.Now
-                        };
-                        cell.Storages.Add(storage);
-                    }
-                }
-                StorageRepository.SaveChanges();
-            }
-            catch (Exception)
-            {
-                StorageRepository.Detach(storage);
-                cell.Storages.Remove(storage);
-                storage = null;
-            }
-
-            cell.LockTag = string.Empty;
-            CellRepository.SaveChanges();
-
-            return storage;
-        }
-
-        #region IInBillAllotService 成员
-
-        /// <summary>
-        /// 取消分配
-        /// </summary>
-        /// <param name="billNo">入库单号</param>
-        /// <param name="strResult">提示信息</param>
-        /// <returns></returns>
-        public bool AllotCancel(string billNo, out string strResult)
-        {
-            bool result = false;
-            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo && i.Status == "3");
-            if (ibm != null)
-            {
-                if (string.IsNullOrEmpty(ibm.LockTag))
-                {
-                    try
-                    {
-                        using (var scope = new TransactionScope())
-                        {
-                            var inAllot = InBillAllotRepository.GetQueryable().Where(o => o.BillNo == ibm.BillNo);
-                            try
-                            {
-                                foreach (var item in inAllot.ToArray())
-                                {
-                                    if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
-                                    {
-                                        item.Storage.InFrozenQuantity -= item.AllotQuantity;
-                                        item.Storage.LockTag = string.Empty;
-                                        item.InBillDetail.AllotQuantity -= item.AllotQuantity;//扣除入库细单的已分配数量
-                                    }
-                                    InBillAllotRepository.Delete(item);
-                                }
-                                InBillAllotRepository.SaveChanges();
-                            }
-                            catch (Exception)
-                            {
-                                strResult = "当前货位其他人正在操作，请稍候重试！";
-                                return false;
-                            }
-
-                            ibm.Status = "2";
-                            ibm.UpdateTime = DateTime.Now;
-                            InBillMasterRepository.SaveChanges();
-                            result = true;
-                            strResult = "取消成功";
-
-                            scope.Complete();
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        strResult = "当前订单其他人正在操作，请稍候重试！";
-                    }
-                }
-                else
-                {
-                    strResult = "当前订单其他人正在操作，请稍候重试！";
-                }
-            }
-            else
-            {
-                strResult = "当前订单状态不是已分配，或当前订单不存在！";
-            }
-            return result;
-        }
-
-        #endregion
     }
 }

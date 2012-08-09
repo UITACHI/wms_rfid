@@ -343,7 +343,8 @@ namespace THOK.Wms.Bll.Service
                         //修改分配入库冻结量
                         var inAllot = InBillAllotRepository.GetQueryable()
                                                            .Where(o => o.BillNo == ibm.BillNo 
-                                                               && o.Status != "2");
+                                                               && o.Status != "2")
+                                                           .ToArray();
                         var storages = inAllot.Select(i => i.Storage).ToArray();
 
                         if (!Locker.Lock(storages))
