@@ -69,11 +69,11 @@ namespace Wms.Controllers.Wms.WarehouseInfo
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
         //获得货位勾选状态
-        //POST: /DefaultProductSet/CellCodeSet/
-        public ActionResult CellCodeSet(string cellCode)
+        // GET: /DefaultProductSet/CellCodeSet/
+        public ActionResult CellCodeSet(string id,string productId)
         {
-            var cell = CellService.GetCellCheck(cellCode);
-            return Json(cell, "text", JsonRequestBehavior.AllowGet);
+            var wareCell = CellService.GetCellCheck(id, productId);
+            return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
         }
         //删除货位信息
         //POST: /DefaultProductSet/CellDel/

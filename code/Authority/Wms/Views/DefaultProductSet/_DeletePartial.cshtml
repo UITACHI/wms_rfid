@@ -1,7 +1,15 @@
 ﻿<script type="text/javascript">
     function deleteClick() {
-        var productRow = $('#details').datagrid('getSelected');
-        $('#details').datagrid({ url: '/DefaultProductSet/CellDel/?productCode=' + productRow.ProductCode });
-        $('#details').datagrid('reload');
+        var productRows = $('#details').datagrid('getSelections', 1);
+        var pRows="";
+        if (!productRows || productRows.length == 0) {
+            $.messager.alert('提示', '请选择要删除的数据!', 'info');
+            return;
+        }
+        for (var i = 0; i < productRows.length; i++) {            
+            pRows += productRows[i].ProductCode+",";
+        }
+        alert(pRows);
+        $('#details').datagrid({ url: '/DefaultProductSet/CellDel/?productCode=' + pRows });
     }
 </script>

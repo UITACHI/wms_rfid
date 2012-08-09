@@ -2,48 +2,12 @@
     function editClick() {
         $('#dlg').dialog('open').dialog('setTitle', '编辑');
 
-        var ware = "", area = "", shelf = "", cell = "";
-        var roots = $('#productTree').tree('getRoots');
-        var areaChildren, shelfChildren, cellChildren;
-        //仓库
-        for (i = 0; i < roots.length; i++) {
-            if (roots[i].attributes == "ware" && roots[i].checked == true) {
-                ware += roots[i].id + ",";
-            } else {
-                areaChildren = $('#productTree').tree('getChildren', roots[i].target);
-                //库区
-                for (j = 0; j < areaChildren.length; j++) {
-                    if (areaChildren[j].attributes == "area" && areaChildren[j].checked == true) {
-                        area += areaChildren[j].id + ",";
-                    } else {
-                        shelfChildren = $('#productTree').tree('getChildren', areaChildren[j].target);
-                        //货架
-                        for (h = 0; h < shelfChildren.length; h++) {
-                            if (shelfChildren[h].attributes == "shelf" && shelfChildren[h].checked == true) {
-                                shelf += shelfChildren[h].id + ",";
-                            } else {
-                                cellChildren = $('#productTree').tree('getChildren', shelfChildren[h].target);
-                                //货位
-                                for (k = 0; k < cellChildren.length; k++) {
-                                    if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
-                                        cell += cellChildren[k].id + ",";
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         var productRow = $('#details').datagrid('getSelected');
         if (productRow) {
             $('#productCode').val(productRow.ProductCode);
             $('#productName').val(productRow.ProductName);
             $('#productData').dialog('close');
         }
-        $('#productTree').tree({ url: '/DefaultProductSet/CellCodeSet/?cellCode=00008' }); //加载树形数据
-        
+        $('#productTree').tree({ url: '/DefaultProductSet/CellCodeSet/?productId=' + productRow.ProductCode });  //加载树形数据
     }
 </script>
-
-

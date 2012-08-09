@@ -163,13 +163,15 @@ namespace THOK.Wms.Bll.Service
         /// <summary>删除货位数量的信息</summary>
         public bool DeleteCell(string productCode)
         {
+
             var cellSave = CellRepository.GetQueryable().Where(c => c.DefaultProductCode == productCode);
             foreach (var item in cellSave.ToArray())
             {
                 item.DefaultProductCode = null;
                 item.Product = null;
+                item.DefaultProductCode = null;
                 CellRepository.SaveChanges();
-            }            
+            }
             return true;
         }
         /// <summary>加载卷烟信息</summary>
@@ -209,7 +211,7 @@ namespace THOK.Wms.Bll.Service
             return cellInfo;
         }
         /// <summary>编辑储位货位树形菜单</summary>
-        public object GetCellCheck(string shelfCode)
+        public object GetCellCheck(string shelfCode, string productCode)
         {
             var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();
             HashSet<Tree> wareSet = new HashSet<Tree>();
@@ -242,7 +244,7 @@ namespace THOK.Wms.Bll.Service
                             Tree shelfTree = new Tree();
                             shelfTree.id = shelf.ShelfCode;
                             shelfTree.text = "货架：" + shelf.ShelfName;
-                            shelfTree.attributes = "shelf";
+                            shelfTree.attributes = "shelf";                    
                             shelfTree.state = "closed";
                             shelfSet.Add(shelfTree);
                         }
@@ -259,10 +261,13 @@ namespace THOK.Wms.Bll.Service
                                                          .OrderBy(c => c.CellCode).Select(c => c);
                 foreach (var cell in cells)//货位
                 {
-                    var product = ProductRepository.GetQueryable().FirstOrDefault(p => p.ProductCode == cell.DefaultProductCode);
                     Tree cellTree = new Tree();
                     cellTree.id = cell.CellCode;
                     cellTree.text = "货位：" + cell.CellName;
+                    if (cell.DefaultProductCode == productCode)
+                        cellTree.@checked = true;
+                    else
+                        cellTree.@checked = false;
                     cellTree.state = "open";
                     cellTree.attributes = "cell";
                     wareSet.Add(cellTree);
@@ -270,6 +275,8 @@ namespace THOK.Wms.Bll.Service
             }
             return wareSet.ToArray();
         }
+
+
 
         /// <summary>
         /// 盘点时用的树形结构数据，可根据货架Code查询
