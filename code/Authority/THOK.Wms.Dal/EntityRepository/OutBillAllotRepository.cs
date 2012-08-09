@@ -17,5 +17,16 @@ namespace THOK.Wms.Dal.EntityRepository
                              .Include("OutBillDetail")
                              .AsQueryable<OutBillAllot>();
         }
+
+        public new ParallelQuery<OutBillAllot> GetParallelQuery()
+        {
+            return this.dbSet.Include("Cell")
+                             .Include("Storage")
+                             .Include("Storage.Cell")
+                             .Include("Product")
+                             .Include("Unit")
+                             .Include("OutBillDetail")
+                             .AsParallel<OutBillAllot>();
+        }
     }
 }
