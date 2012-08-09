@@ -12,6 +12,8 @@ namespace THOK.Wms.Dal.EntityRepository
             return this.dbSet.Include("Storage")
                              .Include("Storage.Cell")
                              .Include("Product")
+                             .Include("Unit")
+                             .Include("InBillDetail")
                              .AsQueryable<InBillAllot>();
         }
     }
