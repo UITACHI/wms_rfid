@@ -52,6 +52,11 @@ namespace THOK.Common.Ef.EntityRepository
             return this.dbSet.AsQueryable<T>();
         }
 
+        public ParallelQuery<T> GetParallelQuery()
+        {
+            return this.dbSet.AsParallel<T>();
+        }
+
         public IList<T> GetAll()
         {
             return this.dbSet.ToList<T>();
