@@ -435,5 +435,23 @@ namespace THOK.Wms.Allot.Service
         }
 
         #endregion
+
+        #region IInBillAllotService 成员
+
+        /// <summary>
+        /// 手工分配入库单
+        /// </summary>
+        /// <param name="billNo"></param>
+        /// <param name="id"></param>
+        /// <param name="cellCode"></param>
+        /// <param name="allotQuantity"></param>
+        /// <param name="strResult"></param>
+        /// <returns></returns>
+        public bool AllotAdd(string billNo, long id, string cellCode, int allotQuantity, out string strResult)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
