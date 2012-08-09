@@ -31,10 +31,13 @@ namespace Authority.Controllers.Wms.ComplexSearch
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string BillNo = collection["BillNo"] ?? "";
-            string BillDate = collection["BillDate"] ?? "";
-            string OperatePersonCode = collection["OperatePersonCode"] ?? "";
-            string Status = collection["Status"] ?? "";
-            var outBillMaster = StockOutSearchService.GetDetails(page, rows, BillNo, BillDate, OperatePersonCode, Status);
+            string WarehouseCode = collection["WarehouseCode"] ?? "";
+            string BeginDate = collection["BeginDate"] ?? "";
+            string EndDate = collection["EndDate"] ?? "";
+            string OperatePersonCode = collection["OperatePerson"] ?? "";
+            string CheckPersonCode = collection["CheckPerson"] ?? "";
+            string Operate_Status = collection["Operate_Status"] ?? "";
+            var outBillMaster = StockOutSearchService.GetDetails(page, rows, BillNo, WarehouseCode, BeginDate, EndDate, OperatePersonCode, CheckPersonCode, Operate_Status);
             return Json(outBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
         //
@@ -43,6 +46,15 @@ namespace Authority.Controllers.Wms.ComplexSearch
         public ActionResult InfoDetails(int page, int rows, string BillNo)
         {
             var outBillDetail = OutSearchDetailService.GetDetails(page, rows, BillNo);
+            return Json(outBillDetail, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // GET: /StockOutSearch/DetailInfos/
+
+        public ActionResult DetailInfos(int page, int rows, string BillNo)
+        {
+            var outBillDetail = StockOutSearchService.GetDetailInfos(page, rows, BillNo);
             return Json(outBillDetail, "text", JsonRequestBehavior.AllowGet);
         }
     }
