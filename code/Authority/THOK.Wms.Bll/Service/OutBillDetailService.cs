@@ -15,6 +15,8 @@ namespace THOK.Wms.Bll.Service
         public IOutBillDetailRepository OutBillDetailRepository { get; set; }
         [Dependency]
         public IUnitRepository UnitRepository { get; set; }
+        [Dependency]
+        public IStorageRepository StorageRepository { get; set; }
 
         protected override Type LogPrefix
         {
@@ -50,37 +52,55 @@ namespace THOK.Wms.Bll.Service
             return "";
         }
 
-        public bool Add(OutBillDetail outBillDetail)
+        public bool Add(OutBillDetail outBillDetail, out string errorInfo)
         {
+            errorInfo = string.Empty;
+            bool result = false;
             IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
             var isExistProduct = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode);
             var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == outBillDetail.UnitCode);
+            var storage = StorageRepository.GetQueryable().Where(s => s.ProductCode == outBillDetail.ProductCode);//
+            var storageQuantity = storage.Sum(s => (s.Quantity - s.OutFrozenQuantity));
+
             if (isExistProduct == null)
             {
-                var ibd = new OutBillDetail();
-                ibd.BillNo = outBillDetail.BillNo;
-                ibd.ProductCode = outBillDetail.ProductCode;
-                ibd.UnitCode = outBillDetail.UnitCode;
-                ibd.Price = outBillDetail.Price;
-                ibd.BillQuantity = outBillDetail.BillQuantity * unit.Count;
-                ibd.AllotQuantity = 0;
-                ibd.RealQuantity = 0;
-                ibd.Description = outBillDetail.Description;
+                if (storageQuantity >= (outBillDetail.BillQuantity * unit.Count))
+                {
+                    var ibd = new OutBillDetail();
+                    ibd.BillNo = outBillDetail.BillNo;
+                    ibd.ProductCode = outBillDetail.ProductCode;
+                    ibd.UnitCode = outBillDetail.UnitCode;
+                    ibd.Price = outBillDetail.Price;
+                    ibd.BillQuantity = outBillDetail.BillQuantity * unit.Count;
+                    ibd.AllotQuantity = 0;
+                    ibd.RealQuantity = 0;
+                    ibd.Description = outBillDetail.Description;
 
-                OutBillDetailRepository.Add(ibd);
-                OutBillDetailRepository.SaveChanges();
+                    OutBillDetailRepository.Add(ibd);
+                    OutBillDetailRepository.SaveChanges();
+                    result = true;
+                }
+                else
+                    errorInfo = "当前库存小于您输入的数量！请从新输入！";
             }
             else
             {
-                isExistProduct.BillQuantity = isExistProduct.BillQuantity + (outBillDetail.BillQuantity * unit.Count);
-                isExistProduct.UnitCode = outBillDetail.UnitCode;
-                OutBillDetailRepository.SaveChanges();
+                if (storageQuantity >= isExistProduct.BillQuantity + (outBillDetail.BillQuantity * unit.Count))
+                {
+                    isExistProduct.BillQuantity = isExistProduct.BillQuantity + (outBillDetail.BillQuantity * unit.Count);
+                    isExistProduct.UnitCode = outBillDetail.UnitCode;
+                    OutBillDetailRepository.SaveChanges();
+                    result = true;
+                }
+                else
+                    errorInfo = "当前库存小于您输入的数量！请从新输入！";
             }
-            return true;
+            return result;
         }
 
-        public bool Delete(string ID)
+        public bool Delete(string ID, out string errorInfo)
         {
+            errorInfo = string.Empty;
             IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
             int id = Convert.ToInt32(ID);
             var outBillDetail = outBillDetailQuery.FirstOrDefault(o => o.ID == id);
@@ -92,40 +112,55 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
-        public bool Save(OutBillDetail outBillDetail)
+        public bool Save(OutBillDetail outBillDetail, out string errorInfo)
         {
             bool result = false;
+            errorInfo = string.Empty;
             var outbm = OutBillDetailRepository.GetQueryable().FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode);
             var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == outBillDetail.UnitCode);
+            var storage = StorageRepository.GetQueryable().Where(s => s.ProductCode == outBillDetail.ProductCode);//
+            var storageQuantity = storage.Sum(s => (s.Quantity - s.OutFrozenQuantity));
+
             if ((outbm != null && outbm.ID == outBillDetail.ID)||outbm==null)
             {
                 if (outbm == null)
                 {
                     outbm = OutBillDetailRepository.GetQueryable().FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ID == outBillDetail.ID);
                 }
-                outbm.BillNo = outBillDetail.BillNo;
-                outbm.ProductCode = outBillDetail.ProductCode;
-                outbm.UnitCode = outBillDetail.UnitCode;
-                outbm.Price = outBillDetail.Price;
-                outbm.BillQuantity = outBillDetail.BillQuantity * unit.Count;
-                outbm.AllotQuantity = 0;
-                outbm.RealQuantity = 0;
-                outbm.Description = outBillDetail.Description;
+                if (storageQuantity >= (outBillDetail.BillQuantity * unit.Count))
+                {
+                    outbm.BillNo = outBillDetail.BillNo;
+                    outbm.ProductCode = outBillDetail.ProductCode;
+                    outbm.UnitCode = outBillDetail.UnitCode;
+                    outbm.Price = outBillDetail.Price;
+                    outbm.BillQuantity = outBillDetail.BillQuantity * unit.Count;
+                    outbm.AllotQuantity = 0;
+                    outbm.RealQuantity = 0;
+                    outbm.Description = outBillDetail.Description;
 
-                OutBillDetailRepository.SaveChanges();
-                result = true;
+                    OutBillDetailRepository.SaveChanges();
+                    result = true;
+                }
+                else
+                    errorInfo = "当前库存小于您输入的数量！请从新输入！";
             }
             else if (outbm != null && outbm.ID != outBillDetail.ID)
             {
-                bool deltrue = this.Delete(outBillDetail.ID.ToString());
-                outbm.BillNo = outBillDetail.BillNo;
-                outbm.ProductCode = outBillDetail.ProductCode;
-                outbm.UnitCode = outBillDetail.UnitCode;
-                outbm.Price = outBillDetail.Price;
-                outbm.BillQuantity = outbm.BillQuantity + (outBillDetail.BillQuantity * unit.Count);          
-                outbm.Description = outBillDetail.Description;
-                OutBillDetailRepository.SaveChanges();
-                result = true;
+                string err = string.Empty;
+                if (storageQuantity >= outbm.BillQuantity + (outBillDetail.BillQuantity * unit.Count))
+                {
+                    bool deltrue = this.Delete(outBillDetail.ID.ToString(), out err);
+                    outbm.BillNo = outBillDetail.BillNo;
+                    outbm.ProductCode = outBillDetail.ProductCode;
+                    outbm.UnitCode = outBillDetail.UnitCode;
+                    outbm.Price = outBillDetail.Price;
+                    outbm.BillQuantity = outbm.BillQuantity + (outBillDetail.BillQuantity * unit.Count);
+                    outbm.Description = outBillDetail.Description;
+                    OutBillDetailRepository.SaveChanges();
+                    result = true;
+                }
+                else
+                    errorInfo = "当前库存小于您输入的数量！请从新输入！";
             }
             
             return result;

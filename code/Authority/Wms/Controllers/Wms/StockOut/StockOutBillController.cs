@@ -72,9 +72,10 @@ namespace Authority.Controllers.Wms.StockOut
         [HttpPost]
         public ActionResult Create(OutBillMaster outBillMaster)
         {
-            bool bResult = OutBillMasterService.Add(outBillMaster,this.User.Identity.Name.ToString());
+            string errorInfo = string.Empty;
+            bool bResult = OutBillMasterService.Add(outBillMaster, this.User.Identity.Name.ToString(), out errorInfo);
             string msg = bResult ? "新增成功" : "新增失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //修改主单
@@ -83,9 +84,10 @@ namespace Authority.Controllers.Wms.StockOut
         [HttpPost]
         public ActionResult Edit(OutBillMaster outBillMaster)
         {
-            bool bResult = OutBillMasterService.Save(outBillMaster);
+            string errorInfo = string.Empty;
+            bool bResult = OutBillMasterService.Save(outBillMaster, out errorInfo);
             string msg = bResult ? "修改成功" : "修改失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //删除主单
@@ -93,9 +95,10 @@ namespace Authority.Controllers.Wms.StockOut
         [HttpPost]
         public ActionResult Delete(string BillNo)
         {
-            bool bResult = OutBillMasterService.Delete(BillNo);
+            string errorInfo = string.Empty;
+            bool bResult = OutBillMasterService.Delete(BillNo, out errorInfo);
             string msg = bResult ? "删除成功" : "删除失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //新增细单
@@ -103,18 +106,20 @@ namespace Authority.Controllers.Wms.StockOut
         [HttpPost]
         public ActionResult OutBillDetailCreate(OutBillDetail outBillDetail)
         {
-            bool bResult = OutBillDetailService.Add(outBillDetail);
+            string errorInfo = string.Empty;
+            bool bResult = OutBillDetailService.Add(outBillDetail, out errorInfo);
             string msg = bResult ? "新增成功" : "新增失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //删除细单
         // POST: /StockOutBill/outBillDelete/
         public ActionResult outBillDelete(string BillNo, string ID)
         {
-            bool bResult = OutBillDetailService.Delete(ID);
+            string errorInfo = string.Empty;
+            bool bResult = OutBillDetailService.Delete(ID, out errorInfo);
             string msg = bResult ? "删除成功" : "删除失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //修改细单
@@ -122,27 +127,30 @@ namespace Authority.Controllers.Wms.StockOut
         [HttpPost]
         public ActionResult editOutBillDelete(OutBillDetail outBillDetail)
         {
-            bool bResult = OutBillDetailService.Save(outBillDetail);
+            string errorInfo = string.Empty;
+            bool bResult = OutBillDetailService.Save(outBillDetail, out errorInfo);
             string msg = bResult ? "修改成功" : "修改失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //主单审核
         // POST: /StockOutBill/outBillMasterAudit/
         public ActionResult outBillMasterAudit(string BillNo)
         {
-            bool bResult = OutBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString());
+            string errorInfo = string.Empty;
+            bool bResult = OutBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString(), out errorInfo);
             string msg = bResult ? "审核成功" : "审核失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //主单反审
         // POST: /StockOutBill/outBillMasterAntiTrial/
         public ActionResult outBillMasterAntiTrial(string BillNo)
         {
-            bool bResult = OutBillMasterService.AntiTrial(BillNo);
+            string errorInfo = string.Empty;
+            bool bResult = OutBillMasterService.AntiTrial(BillNo, out errorInfo);
             string msg = bResult ? "反审成功" : "反审失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //主单结单

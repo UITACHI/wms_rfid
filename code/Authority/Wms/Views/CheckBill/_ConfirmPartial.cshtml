@@ -3,28 +3,30 @@
         var row = $('#details').datagrid('getSelected');
         if (row) {
             if (row.Status != "已盘点") {
-                $.messager.confirm('错误', '该记录状态不是已盘点状态无法确认！');
+                $.messager.alert('错误', '该记录状态不是已盘点状态无法确认！');
             } else {
-                $('#checkdlg').dialog('open').dialog('setTitle', '确认盘点主单信息');
-                $('#checkBillDeatilShow').datagrid({ url: '/CheckBill/CheckBillDetails/?BillNo=' + row.BillNo }); //加载明细
-                $('#checkfm .easyui-validatebox').validatebox({
-                    required: false
+                $.messager.confirm('确认', '确认要确认该记录吗？', function (r) {
+                    if (r) {
+                        var j_waitDialog = ShowWaitMessageDialog();
+                        $.ajax({
+                            url: '/CheckBill/checkBillMasterConfirm/', type: "GET", dataType: "text",
+                            data: { 'BillNo': row.BillNo },
+                            complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                            success: function (responseText) {
+                                var result = $.evalJSON(responseText);
+                                if (result.success) {
+                                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                                    $('#details').datagrid('reload');
+                                } else {
+                                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                                }
+                            }
+                        });
+                    }
                 });
-                $('form input').attr("disabled", "disabled");
-                $('form textarea').attr("disabled", "disabled");
-                $('#checkfm').form('load', row);
-                $('#checkcc').combo({
-                    hasDownArrow: true
-                });
-                if (row.IsActive == '可用') {
-                    $('#checkcc').combo('setValue', true).combo('setText', row.IsActive);
-                } else {
-                    $('#checkcc').combo('setValue', false).combo('setText', row.IsActive);
-                }
-                url = '/CheckBill/checkBillMasterConfirm/?BillNo=' + row.BillNo;
             }
         } else {
-            $.messager.confirm('错误', '没有选择行，无法确认！');
+            $.messager.alert('错误', '没有选择行，无法确认！');
         }
     }
 </script>

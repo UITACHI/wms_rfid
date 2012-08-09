@@ -1,27 +1,28 @@
 <script type="text/javascript">
-function deleteClick() {
-    var row = $('#details').datagrid('getSelected');
-    if (row) {
-        $('#dlg').dialog('open').dialog('setTitle', '删除');
-        $('#LowerLimitfm .easyui-validatebox').validatebox({
-            required: false
-        });
-        $('form input').attr("disabled", "disabled");
-        $('form textarea').attr("disabled", "disabled");
-        $('#IsActiveCc').combo({
-            hasDownArrow: false
-        });
-        $('#sortingLineCodeButton').css({ display: "none" });
-        $('#productCodeButton').css({ display: "none" });
-        $('#LowerLimitfm').form('load', row);
-        if (row.IsActive == '可用') {
-            $('#IsActiveCc').combo('setValue', 1).combo('setText', row.IsActive);
+    function deleteClick() {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $.messager.confirm('删除', '确认要删除该记录吗？', function (r) {
+                if (r) {
+                    var j_waitDialog = ShowWaitMessageDialog();
+                    $.ajax({
+                        url: '/SortingLowerLimit/Delete/', type: "GET", dataType: "text",
+                        data: { 'id': row.ID },
+                        complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                        success: function (responseText) {
+                            var result = $.evalJSON(responseText);
+                            if (result.success) {
+                                $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                                $('#details').datagrid('reload');
+                            } else {
+                                $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                            }
+                        }
+                    });
+                }
+            });
         } else {
-            $('#IsActiveCc').combo('setValue', 0).combo('setText', row.IsActive);
+            $.messager.alert('错误', '没有选择行！');
         }
-        url = '/SortingLowerLimit/Delete/?id=' + row.ID;
-    } else {
-        $.messager.confirm('错误', '没有选择行！');
     }
-};
 </script>

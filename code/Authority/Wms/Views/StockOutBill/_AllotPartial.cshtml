@@ -10,8 +10,8 @@
             });
             isOutBillMasterAdd = false;
             isShowOutBillDetail = true;
-            if (row.Status == "已录入") {
-                $.messager.confirm('错误', '该记录未审核无法进行分配！');
+            if (row.Status == "已录入" || row.Status == "已入库") {
+                $.messager.confirm('错误', '该记录未审核或已入库无法进行分配！');
             } else {
                 $('#dlg-allot').dialog('open').dialog('setTitle', '出库单据分配');
                 $('#outBillDetails1').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + row.BillNo });
@@ -19,7 +19,7 @@
                 billNo = row.BillNo;
             }
         } else {
-            $.messager.confirm('错误', '没有选择行！');
+            $.messager.alert('错误', '没有选择行！');
         }
     };
 
@@ -43,25 +43,25 @@
             $('#fm_allot').form('load', detailRow);
             modifyUrl = '/StockOutBillAllot/AllotDelete/';
         } else {
-            $.messager.confirm('错误', '没有选择行！');
+            $.messager.alert('错误', '没有选择行！');
         }
     }
 
     //新增出库单明细分配
     function allotAdd() {
         var detailRow = $('#outBillDetails1').datagrid('getSelected');
-        $('#fm_allot').form('clear');
         if (detailRow) {
             if (detailRow.AllotQuantity < detailRow.BillQuantity) {
+                $('#fm_allot').form('clear');
                 $('#dlg_allot_modify').dialog('open').dialog('setTitle', '新增');
                 $('#fm_allot').form('load', detailRow);
                 $('#allQuantity').attr("value", '')
                 modifyUrl = '/StockOutBillAllot/AllotAdd/';
             } else {
-                $.messager.confirm('错误', '所选卷烟已分配完成！');
+                $.messager.alert('错误', '所选卷烟已分配完成！');
             }
         } else {
-            $.messager.confirm('错误', '没有选择行！');
+            $.messager.alert('错误', '没有选择行！');
         }
     }
 
@@ -73,7 +73,7 @@
             $('#fm_allot').form('load', detailRow);
             modifyUrl = '/StockOutBillAllot/AllotEdit/';
         } else {
-            $.messager.confirm('错误', '没有选择行！');
+            $.messager.alert('错误', '没有选择行！');
         }
     }
 

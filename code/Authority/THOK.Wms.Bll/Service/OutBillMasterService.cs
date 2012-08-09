@@ -120,64 +120,101 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = temp.ToArray() };
         }
 
-        public bool Add(OutBillMaster outBillMaster, string userName)
+        public bool Add(OutBillMaster outBillMaster, string userName, out string errorInfo)
         {
+            errorInfo = string.Empty;
             var outbm = new OutBillMaster();
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             if (employee != null)
             {
-                outbm.BillNo = outBillMaster.BillNo;
-                outbm.BillDate = outBillMaster.BillDate;
-                outbm.BillTypeCode = outBillMaster.BillTypeCode;
-                outbm.WarehouseCode = outBillMaster.WarehouseCode;
-                outbm.OperatePersonID = employee.ID;
-                outbm.Status = "1";
-                outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
-                outbm.VerifyDate = outBillMaster.VerifyDate;
-                outbm.Description = outBillMaster.Description;
-                outbm.IsActive = outBillMaster.IsActive;
-                outbm.UpdateTime = DateTime.Now;
+                try
+                {
+                    outbm.BillNo = outBillMaster.BillNo;
+                    outbm.BillDate = outBillMaster.BillDate;
+                    outbm.BillTypeCode = outBillMaster.BillTypeCode;
+                    outbm.WarehouseCode = outBillMaster.WarehouseCode;
+                    outbm.OperatePersonID = employee.ID;
+                    outbm.Status = "1";
+                    outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
+                    outbm.VerifyDate = outBillMaster.VerifyDate;
+                    outbm.Description = outBillMaster.Description;
+                    outbm.IsActive = outBillMaster.IsActive;
+                    outbm.UpdateTime = DateTime.Now;
 
-                OutBillMasterRepository.Add(outbm);
-                OutBillMasterRepository.SaveChanges();
-                return true;
+                    OutBillMasterRepository.Add(outbm);
+                    OutBillMasterRepository.SaveChanges();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    errorInfo = "添加失败！原因：" + e.Message;
+                    return false;
+                }
             }
-            return false;
+            else
+            {
+                errorInfo = "找不到当前登陆用户！请重新登陆！";
+                return false;
+            }
         }
 
-        public bool Delete(string BillNo)
+        public bool Delete(string BillNo, out string errorInfo)
         {
+            errorInfo = string.Empty;
             var ibm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
             if (ibm != null)
             {
-                //Del(OutBillDetailRepository, ibm.OutBillAllots);
-                Del(OutBillDetailRepository, ibm.OutBillDetails);
-                OutBillMasterRepository.Delete(ibm);
-                OutBillMasterRepository.SaveChanges();
+                try
+                {
+                    //Del(OutBillDetailRepository, ibm.OutBillAllots);
+                    Del(OutBillDetailRepository, ibm.OutBillDetails);
+                    OutBillMasterRepository.Delete(ibm);
+                    OutBillMasterRepository.SaveChanges();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    errorInfo = "删除失败！原因：" + e.Message;
+                    return false;
+                }
             }
-            return true;
+            else
+            {
+                errorInfo = "删除失败！未找到当前需要删除的数据！";
+                return false;
+            }
         }
 
-        public bool Save(OutBillMaster outBillMaster)
+        public bool Save(OutBillMaster outBillMaster, out string errorInfo)
         {
             bool result = false;
+            errorInfo = string.Empty;
             var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == outBillMaster.BillNo && i.Status == "1");
             if (outbm != null)
             {
-                outbm.BillDate = outBillMaster.BillDate;
-                outbm.BillTypeCode = outBillMaster.BillTypeCode;
-                outbm.WarehouseCode = outBillMaster.WarehouseCode;
-                outbm.OperatePersonID = outBillMaster.OperatePersonID;
-                outbm.Status = "1";
-                outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
-                outbm.VerifyDate = outBillMaster.VerifyDate;
-                outbm.Description = outBillMaster.Description;
-                outbm.IsActive = outBillMaster.IsActive;
-                outbm.UpdateTime = DateTime.Now;
+                try
+                {
+                    outbm.BillDate = outBillMaster.BillDate;
+                    outbm.BillTypeCode = outBillMaster.BillTypeCode;
+                    outbm.WarehouseCode = outBillMaster.WarehouseCode;
+                    outbm.OperatePersonID = outBillMaster.OperatePersonID;
+                    outbm.Status = "1";
+                    outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
+                    outbm.VerifyDate = outBillMaster.VerifyDate;
+                    outbm.Description = outBillMaster.Description;
+                    outbm.IsActive = outBillMaster.IsActive;
+                    outbm.UpdateTime = DateTime.Now;
 
-                OutBillMasterRepository.SaveChanges();
-                result = true;
+                    OutBillMasterRepository.SaveChanges();
+                    result = true;
+                }
+                catch (Exception e)
+                {
+                    errorInfo = "删除失败！原因：" + e.Message;
+                }
             }
+            else
+                errorInfo = "保存失败！没有找到这条数据！";
             return result;
         }
 
@@ -227,9 +264,10 @@ namespace THOK.Wms.Bll.Service
         /// <param name="billNo">单据号</param>
         /// <param name="userName">登陆用户</param>
         /// <returns></returns>
-        public bool Audit(string billNo, string userName)
+        public bool Audit(string billNo, string userName, out string errorInfo)
         {
             bool result = false;
+            errorInfo = string.Empty;
             var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             if (outbm != null && outbm.Status == "1")
@@ -249,19 +287,37 @@ namespace THOK.Wms.Bll.Service
         /// </summary>
         /// <param name="billNo">单据号</param>
         /// <returns></returns>
-        public bool AntiTrial(string billNo)
+        public bool AntiTrial(string billNo, out string errorInfo)
         {
             bool result = false;
-            var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
-            if (outbm != null && outbm.Status == "2")
+            errorInfo = string.Empty;
+            var outbm = OutBillMasterRepository.GetQueryable().Where(i => billNo.Contains(i.BillNo));
+            if (outbm.Count() > 0)
             {
-                outbm.Status = "1";
-                outbm.VerifyDate = null;
-                outbm.UpdateTime = DateTime.Now;
-                outbm.VerifyPersonID = null;
-                OutBillMasterRepository.SaveChanges();
-                result = true;
+                foreach (var item in outbm.ToArray())
+                {
+                    if (item.Status == "2")
+                    {
+                        try
+                        {
+                            item.Status = "1";
+                            item.VerifyDate = null;
+                            item.UpdateTime = DateTime.Now;
+                            item.VerifyPersonID = null;
+                            OutBillMasterRepository.SaveChanges();
+                            result = true;
+                        }
+                        catch (Exception e)
+                        {
+                            errorInfo = item.BillNo + "其他人员正在操作！无法保存！" + e.Message;
+                        }
+                    }
+                    else
+                        errorInfo = item.BillNo + "这条单据状态不是已审核！";
+                }
             }
+            else
+                errorInfo = "保存失败！没有找到这些数据！";
             return result;
         }
 
