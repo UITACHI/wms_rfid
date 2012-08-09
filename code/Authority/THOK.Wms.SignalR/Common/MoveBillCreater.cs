@@ -44,10 +44,15 @@ namespace THOK.Wms.SignalR.Common
         public void CreateSyncMoveBillDetail(MoveBillMaster moveBillMaster)
         {
             Locker.LockKey = moveBillMaster.BillNo;
+
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+
             var storages = storageQuery.Where(s => s.Cell.WarehouseCode == moveBillMaster.WarehouseCode
                                                    && s.Quantity - s.OutFrozenQuantity > 0
                                                    && s.OutFrozenQuantity > 0);
+
+            var cells = cellQuery.Where(c => c.WarehouseCode == moveBillMaster.WarehouseCode);
 
             //1：主库区 1；2：件烟区 2；
             //3；条烟区 3；4：暂存区 4；
@@ -58,14 +63,177 @@ namespace THOK.Wms.SignalR.Common
             //主库区未满盘件烟移到件烟区
             string[] areaTypes = new string[] { "1" };
             var ss = storages.Where(s => areaTypes.Any(a => a == s.Cell.Area.AreaType)
-                                            && ((s.Quantity - s.OutFrozenQuantity) / s.Product.Unit.Count) > 1);
-            MoveToPieceArea(moveBillMaster, ss);
+                                         && ((s.Quantity - s.OutFrozenQuantity) / s.Product.Unit.Count) > 1)
+                             .ToArray();
+
+            if (Locker.Lock(ss))
+            {
+                //件烟区 货位是单一存储的空货位； 
+                areaTypes = new string[] { "2" };
+                var cc = cells.Where(c => areaTypes.Any(a => a == c.Area.AreaType)
+                                          && c.IsSingle == "1")
+                              .ToArray();
+
+                ss.AsParallel().ForAll(
+                    (Action<Storage>)delegate(Storage s)
+                    {
+                        MoveToPieceArea(moveBillMaster, s, cc);
+                    }
+                );
+
+                Locker.UnLock(ss);
+            }
+            else
+                return;
+
+            MoveBillDetailRepository.SaveChanges();
 
             //主库区件烟库区条烟移到条烟区
-            areaTypes = new string[] { "1","2" };
+            areaTypes = new string[] { "1", "2" };
             ss = storages.Where(s => areaTypes.Any(a => a == s.Cell.Area.AreaType)
-                                        && (s.Quantity - s.OutFrozenQuantity) % s.Product.Unit.Count > 0);
-            MoveToBarArea(moveBillMaster, ss);
+                                        && (s.Quantity - s.OutFrozenQuantity) % s.Product.Unit.Count > 0)
+                         .ToArray();
+
+            if (Locker.Lock(ss))
+            {
+                areaTypes = new string[] { "3" };
+                var cc = cells.Where(c => areaTypes.Any(a => a == c.Area.AreaType)
+                                                && c.IsSingle == "1")
+                              .ToArray();
+
+                ss.AsParallel().ForAll(
+                    (Action<Storage>)delegate(Storage s)
+                    {
+                        MoveToBarArea(moveBillMaster, s,cc);
+                    }
+                );
+
+                Locker.UnLock(ss);
+            }
+            else
+                return;
+
+            MoveBillDetailRepository.SaveChanges();
+        }
+
+        private void MoveToBarArea(MoveBillMaster moveBillMaster, Storage sourceStorage, Cell[] cc)
+        {
+            var cells = cc.Where(c => c.DefaultProductCode == sourceStorage.ProductCode
+                                      || (c.Storages.Any()
+                                         && c.Storages.FirstOrDefault().ProductCode == sourceStorage.ProductCode));
+            foreach (var c in cells)
+            {
+                lock (c)
+                {
+                    var targetStorage = Locker.LockSingleArea(c);
+                    if (sourceStorage != null && targetStorage != null
+                        && (string.IsNullOrEmpty(targetStorage.ProductCode)
+                            || targetStorage.ProductCode == sourceStorage.ProductCode
+                            || (targetStorage.Quantity == 0
+                                && targetStorage.InFrozenQuantity == 0)))
+                    {
+                        decimal moveQuantity = (sourceStorage.Quantity - sourceStorage.OutFrozenQuantity) % sourceStorage.Product.Unit.Count;
+                        AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, moveQuantity);
+                    }
+
+                    if (targetStorage != null)
+                    {
+                        targetStorage.LockTag = string.Empty;
+                    }
+                }
+            }
+
+            cells = cc.Where(c => string.IsNullOrEmpty(c.DefaultProductCode));
+
+            foreach (var c in cells)
+            {
+                lock (c)
+                {
+                    var targetStorage = Locker.LockSingleArea(c);
+                    if (sourceStorage != null && targetStorage != null
+                        && (string.IsNullOrEmpty(targetStorage.ProductCode)
+                            || targetStorage.ProductCode == sourceStorage.ProductCode
+                            || (targetStorage.Quantity == 0
+                                && targetStorage.InFrozenQuantity == 0)))
+                    {
+                        decimal moveQuantity = (sourceStorage.Quantity - sourceStorage.OutFrozenQuantity) % sourceStorage.Product.Unit.Count;
+                        AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, moveQuantity);
+                    }
+                    if (targetStorage != null)
+                    {
+                        targetStorage.LockTag = string.Empty;
+                    }
+                }
+            }
+        }
+
+        private void MoveToPieceArea(MoveBillMaster moveBillMaster, Storage sourceStorage, Cell[] cc)
+        {
+            var cells = cc.Where(c => c.DefaultProductCode == sourceStorage.ProductCode
+                                      || (c.Storages.Any()
+                                         && c.Storages.FirstOrDefault().ProductCode == sourceStorage.ProductCode));
+            foreach (var c in cells)
+            {
+                lock (c)
+                {
+                    var targetStorage = Locker.LockSingleArea(c);
+                    if (sourceStorage != null && targetStorage != null
+                        && (string.IsNullOrEmpty(targetStorage.ProductCode)
+                            || targetStorage.ProductCode == sourceStorage.ProductCode
+                            || (targetStorage.Quantity == 0 
+                                && targetStorage.InFrozenQuantity == 0)))
+                    {
+                        decimal moveQuantity = Math.Floor((sourceStorage.Quantity - sourceStorage.OutFrozenQuantity) 
+                                                    / sourceStorage.Product.Unit.Count)
+                                                   * sourceStorage.Product.Unit.Count;
+                        decimal targetAbleQuantity = Math.Floor((targetStorage.Cell.MaxQuantity 
+                                                        * sourceStorage.Product.Unit.Count 
+                                                        - targetStorage.Quantity 
+                                                        - targetStorage.InFrozenQuantity
+                                                        + targetStorage.OutFrozenQuantity) / sourceStorage.Product.Unit.Count)
+                                                        * sourceStorage.Product.Unit.Count;
+                        moveQuantity = moveQuantity <= targetAbleQuantity ? moveQuantity : targetAbleQuantity;
+                        AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, moveQuantity);
+                    }
+
+                    if (targetStorage != null)
+                    {
+                        targetStorage.LockTag = string.Empty;
+                    }
+                }
+            }
+
+            cells = cc.Where(c => string.IsNullOrEmpty(c.DefaultProductCode));
+
+            foreach (var c in cells)
+            {
+                lock (c)
+                {
+                    var targetStorage = Locker.LockSingleArea(c);
+                    if (sourceStorage != null && targetStorage != null
+                        && (string.IsNullOrEmpty(targetStorage.ProductCode)
+                            || targetStorage.ProductCode == sourceStorage.ProductCode
+                            || (targetStorage.Quantity == 0
+                                && targetStorage.InFrozenQuantity == 0)))
+                    {
+                        decimal moveQuantity = Math.Floor((sourceStorage.Quantity - sourceStorage.OutFrozenQuantity)
+                                                    / sourceStorage.Product.Unit.Count)
+                                                   * sourceStorage.Product.Unit.Count;
+                        decimal targetAbleQuantity = Math.Floor((c.MaxQuantity
+                                                        * sourceStorage.Product.Unit.Count
+                                                        - targetStorage.Quantity
+                                                        - targetStorage.InFrozenQuantity
+                                                        + targetStorage.OutFrozenQuantity)/sourceStorage.Product.Unit.Count)
+                                                        * sourceStorage.Product.Unit.Count;
+                        moveQuantity = moveQuantity <= targetAbleQuantity ? moveQuantity : targetAbleQuantity;
+                        AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, moveQuantity);
+                    }
+                    if (targetStorage != null)
+                    {
+                        targetStorage.LockTag = string.Empty;
+                    }
+                }
+            }
         }
 
         public bool CheckIsNeedSyncMoveBill(string warehouseCode)
@@ -87,11 +255,11 @@ namespace THOK.Wms.SignalR.Common
                                             && ((s.Quantity - s.OutFrozenQuantity) / s.Product.Unit.Count) > 1);
             if (ss.Count() > 0 && storageQuery.Where(s=>s.Cell.Area.AreaType == "2").Count() > 0) { return true; }
 
-            //主库区件烟库区条烟移到条烟区
-            areaTypes = new string[] { "1", "2" };
-            ss = storages.Where(s => areaTypes.Any(a => a == s.Cell.Area.AreaType)
-                                        && (s.Quantity - s.OutFrozenQuantity) % s.Product.Unit.Count > 0);
-            if (ss.Count() > 0 && storageQuery.Where(s => s.Cell.Area.AreaType == "3").Count() > 0) { return true; }
+            ////主库区件烟库区条烟移到条烟区
+            //areaTypes = new string[] { "1", "2" };
+            //ss = storages.Where(s => areaTypes.Any(a => a == s.Cell.Area.AreaType)
+            //                            && (s.Quantity - s.OutFrozenQuantity) % s.Product.Unit.Count > 0);
+            //if (ss.Count() > 0 && storageQuery.Where(s => s.Cell.Area.AreaType == "3").Count() > 0) { return true; }
 
             return false;
         }
@@ -100,112 +268,39 @@ namespace THOK.Wms.SignalR.Common
         {
             if (moveBillMaster != null)
             {
-                foreach (var detail in moveBillMaster.MoveBillDetails)
-                {
-                    var sourceStorage = Locker.LockStorage(detail.OutStorage, detail.Product);
-                    var targetStorage = Locker.LockStorage(detail.OutStorage, detail.Product);
-                    if (sourceStorage != null && targetStorage != null)
-                    {
-                        sourceStorage.OutFrozenQuantity -= detail.RealQuantity;
-                        sourceStorage.LockTag = string.Empty;
-                        targetStorage.InFrozenQuantity -= detail.RealQuantity;                        
-                        targetStorage.LockTag = string.Empty;
-                        detail.RealQuantity = 0;                        
-                    }
-                }
-                var details = moveBillMaster.MoveBillDetails.Where(d => d.RealQuantity == 0)
-                                                            .Select(d => d);
-                MoveBillDetailRepository.Delete(details.ToArray());
-                MoveBillDetailRepository.SaveChanges();
-            }            
-        }
+                var sourceStorages = moveBillMaster.MoveBillDetails.Select(m => m.OutStorage).ToArray();
+                var targetStorages = moveBillMaster.MoveBillDetails.Select(m => m.InStorage).ToArray();
 
-        private void MoveToPieceArea(MoveBillMaster moveBillMaster, IQueryable<Storage> ss)
-        {
-            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
-            //选择当前订单操作目标仓库；
-            var cells = cellQuery.Where(c => c.WarehouseCode == moveBillMaster.WarehouseCode);
-            //件烟区 货位是单一存储的空货位； 
-            var areaTypes = new string[] { "2" };
-            cells = cells.Where(c => areaTypes.Any(a => a == c.Area.AreaType)
-                                            && c.IsSingle == "1"
-                                        );
-            foreach (var s in ss.ToArray())
-            {
-                var cc = cells.Where(c => c.DefaultProductCode == s.ProductCode
-                                        || (c.Storages.Count() == 1
-                                            && c.Storages.FirstOrDefault().ProductCode == s.ProductCode));
-                foreach (var c in cc)
+                if (Locker.Lock(sourceStorages) && Locker.Lock(targetStorages))
                 {
-                    var sourceStorage = Locker.LockNoEmptyStorage(s, s.Product);
-                    var targetStorage = Locker.LockPiece(c, s.Product);
-                    if (sourceStorage != null && targetStorage != null)
-                    {
-                        decimal moveQuantity = Math.Floor((sourceStorage.Quantity - sourceStorage.OutFrozenQuantity) / sourceStorage.Product.Unit.Count)
-                                               * sourceStorage.Product.Unit.Count;
-                        decimal targetAbleQuantity = targetStorage.Cell.MaxQuantity * sourceStorage.Product.Unit.Count - targetStorage.Quantity - targetStorage.InFrozenQuantity + targetStorage.OutFrozenQuantity;
-                        moveQuantity = moveQuantity <= targetAbleQuantity ? moveQuantity : targetAbleQuantity;
-                        AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, moveQuantity);
-                    }
-                }
-
-                cc = cells.Where(c => string.IsNullOrEmpty(c.DefaultProductCode));
-                foreach (var c in cc)
-                {
-                    var sourceStorage = Locker.LockNoEmptyStorage(s, s.Product);
-                    var targetStorage = Locker.LockPiece(c, s.Product);
-                    if (sourceStorage != null && targetStorage != null)
-                    {                       
-                        decimal moveQuantity = Math.Floor((sourceStorage.Quantity - sourceStorage.OutFrozenQuantity) / sourceStorage.Product.Unit.Count)
-                                               * sourceStorage.Product.Unit.Count;
-                        decimal targetAbleQuantity = targetStorage.Cell.MaxQuantity * sourceStorage.Product.Unit.Count - targetStorage.Quantity - targetStorage.InFrozenQuantity + targetStorage.OutFrozenQuantity;
-                        moveQuantity = moveQuantity <= targetAbleQuantity ?moveQuantity:targetAbleQuantity;
-                        AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, moveQuantity);
-                    }
-                }
-            }
-        }
-
-        private void MoveToBarArea(MoveBillMaster moveBillMaster, IQueryable<Storage> ss)
-        {
-            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
-            //选择当前订单操作目标仓库；
-            var cells = cellQuery.Where(c => c.WarehouseCode == moveBillMaster.WarehouseCode);
-            //条烟区 货位是单一存储的货位； 
-            var areaTypes = new string[] { "3" };
-            cells = cells.Where(c => areaTypes.Any(a => a == c.Area.AreaType)
-                                            && c.IsSingle == "1"
-                                        );
-            foreach (var s in ss.ToArray())
-            {
-                var cc = cells.Where(c => c.DefaultProductCode == s.ProductCode
-                        || (c.Storages.Count() == 1
-                            && c.Storages.FirstOrDefault().ProductCode == s.ProductCode));
-                if (cc.Count() > 0)
-                {
-                    foreach (var c in cc.ToArray())
-                    {
-                        var storage = Locker.LockNoEmptyStorage(s, s.Product);
-                        if (storage != null)
+                    moveBillMaster.MoveBillDetails.AsParallel().ForAll(
+                        (Action<MoveBillDetail>)delegate(MoveBillDetail m)
                         {
-                            decimal moveQuantity = (storage.Quantity - storage.OutFrozenQuantity) % storage.Product.Unit.Count;
-                            AddToMoveBillDetail(moveBillMaster, storage, Locker.LockBar(c, s.Product), moveQuantity);
+                            if (m.InStorage.ProductCode == m.ProductCode
+                                && m.OutStorage.ProductCode == m.ProductCode
+                                && m.InStorage.InFrozenQuantity >= m.RealQuantity
+                                && m.OutStorage.OutFrozenQuantity >= m.RealQuantity)
+                            {
+                                m.InStorage.InFrozenQuantity -= m.RealQuantity;
+                                m.OutStorage.OutFrozenQuantity -= m.RealQuantity;
+                                m.InStorage.LockTag = string.Empty;
+                                m.OutStorage.LockTag = string.Empty;
+                            }
+                            else
+                            {
+                                throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能删除移库单！");
+                            }
                         }
-                    }
+                    );
+
+                    Locker.UnLock(sourceStorages);
+                    Locker.UnLock(targetStorages);
                 }
                 else
-                {
-                    cc = cells.Where(c => string.IsNullOrEmpty(c.DefaultProductCode));
-                    foreach (var c in cc.ToArray())
-                    {
-                        var storage = Locker.LockNoEmptyStorage(s, s.Product);
-                        if (storage != null)
-                        {
-                            decimal moveQuantity = (storage.Quantity - storage.OutFrozenQuantity) % storage.Product.Unit.Count;
-                            AddToMoveBillDetail(moveBillMaster, storage, Locker.LockBar(c, s.Product), moveQuantity);
-                        }
-                    }
-                }
+                    throw new Exception("锁定储位失败，其他人可能正在操作，请稍候重试!");
+
+                MoveBillDetailRepository.Delete(moveBillMaster.MoveBillDetails.ToArray());
+                MoveBillDetailRepository.SaveChanges();
             }
         }
 
@@ -231,7 +326,6 @@ namespace THOK.Wms.SignalR.Common
                 targetStorage.ProductCode = sourceStorage.ProductCode;
                 targetStorage.InFrozenQuantity += moveQuantity;
                 targetStorage.LockTag = string.Empty;
-                MoveBillMasterRepository.SaveChanges();
             }
         }
 

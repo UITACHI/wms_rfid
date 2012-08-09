@@ -1,6 +1,12 @@
 ﻿<script type="text/javascript">
     function ProductQueryClick() {
-        $('#productDetail').datagrid({ url: '/StockInBill/GetProductDetails/?QueryString=' + $('#queryType').combobox('getValue') + '&Value=' + $('#ProductInfo').val() });
+        var productname = "";
+        var productcode = "";
+        if ($('#queryType').combobox('getValue') == "ProductCode")
+            productcode = $('#ProductInfo').val();
+        else if($('#queryType').combobox('getValue') == "ProductName")
+            productname = $('#ProductInfo').val();
+        $('#productDetail').datagrid({ url: '/Product/CheckFindProduct/?ProductName=' + productname + '&ProductCode=' + productcode });
         $("#productDetail").datagrid('reload');
     };
 
@@ -21,6 +27,7 @@
             $('#unitCode').val(productRow.UnitCode);
             $('#unitName').val(productRow.UnitName);
             $('#price').val(productRow.BuyPrice);
+            $('#storageQuantity').val(productRow.Quantity);            
             $('#productData').dialog('close');
         }
     }
@@ -37,7 +44,7 @@
     padding: 0px 0px" closed="true" buttons="#dlgProduct-buttons">
     <div split="true" border="false" style="width: 486px; height: 430px">
         <table id="productDetail" class="easyui-datagrid" border="false" toolbar="#btn-query"
-            singleselect="true" fit="true" fitcolumns="true" pagination="true" rownumbers="true">
+            singleselect="true" fit="true" fitcolumns="true" rownumbers="true">
             <thead>
                 <tr>
                     <th field="ProductCode" width="80">
@@ -55,11 +62,8 @@
                     <th field="BuyPrice" width="80">
                         购入价
                     </th>
-                    <th field="IsActive" width="80">
-                        是否可用
-                    </th>
-                    <th field="UpdateTime" width="80">
-                        更新时间
+                    <th field="Quantity" width="80">
+                        数量
                     </th>
                 </tr>
             </thead>
@@ -72,10 +76,10 @@
         取消</a>
 </div>
 <div id="btn-query">
-<select id="queryType" name="QueryString" class="easyui-combobox" style="width: 100px;" readonly="true">
+@*<select id="queryType" name="QueryString" class="easyui-combobox" style="width: 100px;" readonly="true">
 		                <option value="ProductCode">产品代码</option>
 		                <option value="ProductName">产品名称</option>
 	                </select>
                     <input id="ProductInfo">
  <a href="#" class="easyui-linkbutton" iconcls="icon-search" plain="true" onclick="ProductQueryClick()" id="ProductQuery">查询</a>
-</div>
+</div>*@

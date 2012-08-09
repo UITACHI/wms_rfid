@@ -296,5 +296,106 @@ namespace THOK.Wms.SignalR.Common
                 CellRepository.Detach(cell);
             }
         }
+
+        public bool Lock(Storage[] storages)
+        {
+            if (storages.All(s => string.IsNullOrEmpty(s.LockTag)))
+            {
+                try
+                {
+                    storages.AsParallel().ForAll(s => s.LockTag = this.LockKey);
+                    StorageRepository.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        public void UnLock(Storage[] storages)
+        {
+            try
+            {
+                storages.AsParallel().ForAll(s => s.LockTag = string.Empty);
+                StorageRepository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
+        public bool Lock(Cell[] cells)
+        {
+            if (cells.All(c => string.IsNullOrEmpty(c.LockTag)))
+            {
+                try
+                {
+                    cells.AsParallel().ForAll(c => c.LockTag = this.LockKey);
+                    StorageRepository.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        public Storage LockSingleArea(Cell cell)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(cell.LockTag))
+                {
+                    if (cell.Storages.Any())
+                    {
+                        var s = cell.Storages.Single();
+                        if (string.IsNullOrEmpty(s.LockTag))
+                        {
+                            s.LockTag = this.LockKey;
+                            return s;
+                        }
+                        else
+                            return null;
+                    }
+                    else
+                    {
+                        var s = new Storage()
+                        {
+                            StorageCode = Guid.NewGuid().ToString(),
+                            CellCode = cell.CellCode,
+                            IsLock = "0",
+                            LockTag = this.LockKey,
+                            IsActive = "0",
+                            StorageTime = DateTime.Now,
+                            UpdateTime = DateTime.Now
+                        };
+                        cell.Storages.Add(s);
+                        return s;
+                    }
+                }
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
     }
 }

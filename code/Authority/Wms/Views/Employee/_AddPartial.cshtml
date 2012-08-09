@@ -101,17 +101,11 @@
             success: function (result) {
                 var result = eval('(' + result + ')');
                 if (result.success) {
-                    $.messager.show({
-                        title: '³É¹¦',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                     $('#dlg').dialog('close'); 
                     $('#details').datagrid('reload'); 
                 } else {
-                    $.messager.show({
-                        title: '´íÎó',
-                        msg: result.msg
-                    });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#details').datagrid('reload');
                 }
             }

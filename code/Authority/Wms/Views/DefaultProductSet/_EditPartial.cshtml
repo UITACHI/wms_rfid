@@ -1,7 +1,6 @@
 ﻿<script type="text/javascript">
     function editClick() {
         $('#dlg').dialog('open').dialog('setTitle', '编辑');
-        enterSave();
 
         var productRow = $('#details').datagrid('getSelected');
         if (productRow) {
@@ -9,9 +8,6 @@
             $('#productName').val(productRow.ProductName);
             $('#productData').dialog('close');
         }
-        $('#productTree').tree({ url: '/Cell/GetCheckDetails/?id=' + productRow.ProductCode }); //加载树形数据
-        
+        $('#productTree').tree({ url: '/DefaultProductSet/CellCodeSet/?productId=' + productRow.ProductCode });  //加载树形数据
     }
 </script>
-
-

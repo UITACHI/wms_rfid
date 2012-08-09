@@ -42,13 +42,16 @@ namespace THOK.Wms.Bll.Service
             switch (status)
             {
                 case "1":
-                    statusStr = "未调度";
+                    statusStr = "已调度";
                     break;
                 case "2":
-                    statusStr = "调度中";
+                    statusStr = "已审核";
                     break;
                 case "3":
-                    statusStr = "已调度";
+                    statusStr = "已执行";
+                    break;
+                case "4":
+                    statusStr = "已结单";
                     break;
             }
             return statusStr;

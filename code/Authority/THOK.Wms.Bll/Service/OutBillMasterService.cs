@@ -120,64 +120,101 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = temp.ToArray() };
         }
 
-        public bool Add(OutBillMaster outBillMaster, string userName)
+        public bool Add(OutBillMaster outBillMaster, string userName, out string errorInfo)
         {
+            errorInfo = string.Empty;
             var outbm = new OutBillMaster();
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             if (employee != null)
             {
-                outbm.BillNo = outBillMaster.BillNo;
-                outbm.BillDate = outBillMaster.BillDate;
-                outbm.BillTypeCode = outBillMaster.BillTypeCode;
-                outbm.WarehouseCode = outBillMaster.WarehouseCode;
-                outbm.OperatePersonID = employee.ID;
-                outbm.Status = "1";
-                outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
-                outbm.VerifyDate = outBillMaster.VerifyDate;
-                outbm.Description = outBillMaster.Description;
-                outbm.IsActive = outBillMaster.IsActive;
-                outbm.UpdateTime = DateTime.Now;
+                try
+                {
+                    outbm.BillNo = outBillMaster.BillNo;
+                    outbm.BillDate = outBillMaster.BillDate;
+                    outbm.BillTypeCode = outBillMaster.BillTypeCode;
+                    outbm.WarehouseCode = outBillMaster.WarehouseCode;
+                    outbm.OperatePersonID = employee.ID;
+                    outbm.Status = "1";
+                    outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
+                    outbm.VerifyDate = outBillMaster.VerifyDate;
+                    outbm.Description = outBillMaster.Description;
+                    outbm.IsActive = outBillMaster.IsActive;
+                    outbm.UpdateTime = DateTime.Now;
 
-                OutBillMasterRepository.Add(outbm);
-                OutBillMasterRepository.SaveChanges();
-                return true;
+                    OutBillMasterRepository.Add(outbm);
+                    OutBillMasterRepository.SaveChanges();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    errorInfo = "添加失败！原因：" + e.Message;
+                    return false;
+                }
             }
-            return false;
+            else
+            {
+                errorInfo = "找不到当前登陆用户！请重新登陆！";
+                return false;
+            }
         }
 
-        public bool Delete(string BillNo)
+        public bool Delete(string BillNo, out string errorInfo)
         {
+            errorInfo = string.Empty;
             var ibm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
             if (ibm != null)
             {
-                //Del(OutBillDetailRepository, ibm.OutBillAllots);
-                Del(OutBillDetailRepository, ibm.OutBillDetails);
-                OutBillMasterRepository.Delete(ibm);
-                OutBillMasterRepository.SaveChanges();
+                try
+                {
+                    //Del(OutBillDetailRepository, ibm.OutBillAllots);
+                    Del(OutBillDetailRepository, ibm.OutBillDetails);
+                    OutBillMasterRepository.Delete(ibm);
+                    OutBillMasterRepository.SaveChanges();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    errorInfo = "删除失败！原因：" + e.Message;
+                    return false;
+                }
             }
-            return true;
+            else
+            {
+                errorInfo = "删除失败！未找到当前需要删除的数据！";
+                return false;
+            }
         }
 
-        public bool Save(OutBillMaster outBillMaster)
+        public bool Save(OutBillMaster outBillMaster, out string errorInfo)
         {
             bool result = false;
+            errorInfo = string.Empty;
             var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == outBillMaster.BillNo && i.Status == "1");
             if (outbm != null)
             {
-                outbm.BillDate = outBillMaster.BillDate;
-                outbm.BillTypeCode = outBillMaster.BillTypeCode;
-                outbm.WarehouseCode = outBillMaster.WarehouseCode;
-                outbm.OperatePersonID = outBillMaster.OperatePersonID;
-                outbm.Status = "1";
-                outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
-                outbm.VerifyDate = outBillMaster.VerifyDate;
-                outbm.Description = outBillMaster.Description;
-                outbm.IsActive = outBillMaster.IsActive;
-                outbm.UpdateTime = DateTime.Now;
+                try
+                {
+                    outbm.BillDate = outBillMaster.BillDate;
+                    outbm.BillTypeCode = outBillMaster.BillTypeCode;
+                    outbm.WarehouseCode = outBillMaster.WarehouseCode;
+                    outbm.OperatePersonID = outBillMaster.OperatePersonID;
+                    outbm.Status = "1";
+                    outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
+                    outbm.VerifyDate = outBillMaster.VerifyDate;
+                    outbm.Description = outBillMaster.Description;
+                    outbm.IsActive = outBillMaster.IsActive;
+                    outbm.UpdateTime = DateTime.Now;
 
-                OutBillMasterRepository.SaveChanges();
-                result = true;
+                    OutBillMasterRepository.SaveChanges();
+                    result = true;
+                }
+                catch (Exception e)
+                {
+                    errorInfo = "删除失败！原因：" + e.Message;
+                }
             }
+            else
+                errorInfo = "保存失败！没有找到这条数据！";
             return result;
         }
 
@@ -227,9 +264,10 @@ namespace THOK.Wms.Bll.Service
         /// <param name="billNo">单据号</param>
         /// <param name="userName">登陆用户</param>
         /// <returns></returns>
-        public bool Audit(string billNo, string userName)
+        public bool Audit(string billNo, string userName, out string errorInfo)
         {
             bool result = false;
+            errorInfo = string.Empty;
             var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             if (outbm != null && outbm.Status == "1")
@@ -249,19 +287,37 @@ namespace THOK.Wms.Bll.Service
         /// </summary>
         /// <param name="billNo">单据号</param>
         /// <returns></returns>
-        public bool AntiTrial(string billNo)
+        public bool AntiTrial(string billNo, out string errorInfo)
         {
             bool result = false;
-            var outbm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo);
-            if (outbm != null && outbm.Status == "2")
+            errorInfo = string.Empty;
+            var outbm = OutBillMasterRepository.GetQueryable().Where(i => billNo.Contains(i.BillNo));
+            if (outbm.Count() > 0)
             {
-                outbm.Status = "1";
-                outbm.VerifyDate = null;
-                outbm.UpdateTime = DateTime.Now;
-                outbm.VerifyPersonID = null;
-                OutBillMasterRepository.SaveChanges();
-                result = true;
+                foreach (var item in outbm.ToArray())
+                {
+                    if (item.Status == "2")
+                    {
+                        try
+                        {
+                            item.Status = "1";
+                            item.VerifyDate = null;
+                            item.UpdateTime = DateTime.Now;
+                            item.VerifyPersonID = null;
+                            OutBillMasterRepository.SaveChanges();
+                            result = true;
+                        }
+                        catch (Exception e)
+                        {
+                            errorInfo = item.BillNo + "其他人员正在操作！无法保存！" + e.Message;
+                        }
+                    }
+                    else
+                        errorInfo = item.BillNo + "这条单据状态不是已审核！";
+                }
             }
+            else
+                errorInfo = "保存失败！没有找到这些数据！";
             return result;
         }
 
@@ -283,58 +339,117 @@ namespace THOK.Wms.Bll.Service
                     try
                     {
                         //结单移库单，修改冻结量
-                        var moveDetail = MoveBillDetailRepository.GetQueryable().Where(m => m.BillNo == outbm.MoveBillMasterBillNo && m.Status != "2");
-                        if (moveDetail.Count() > 0)
-                        {
-                            foreach (var item in moveDetail.ToArray())
-                            {
-                                Storage InStorage = Locker.LockNoEmptyStorage(item.InStorage, item.Product);
-                                Storage OutStorage = Locker.LockNoEmptyStorage(item.OutStorage, item.Product);
-                                if (OutStorage != null && InStorage != null)//锁库存
-                                {
-                                    item.InStorage.InFrozenQuantity -= item.RealQuantity;
-                                    item.OutStorage.OutFrozenQuantity -= item.RealQuantity;
-                                    item.InStorage.LockTag = string.Empty;
-                                    item.OutStorage.LockTag = string.Empty;
-                                }
-                                else
-                                {
-                                    errorInfo = "出库单生成的移库单其他人员正在操作！无法结单！";
-                                    return false;
-                                }
-                            }
-                        }
+                        var moveDetail = MoveBillDetailRepository.GetQueryable()
+                                                                 .Where(m => m.BillNo == outbm.MoveBillMasterBillNo 
+                                                                     && m.Status != "2");
 
-                        //修改分配出库冻结量
-                        var outAllot = OutBillAllotRepository.GetQueryable().Where(o => o.BillNo == outbm.BillNo && o.Status != "2");
-                        foreach (var item in outAllot.ToArray())
+                        var sourceStorages = moveDetail.Select(m => m.OutStorage).ToArray();
+                        var targetStorages = moveDetail.Select(m => m.InStorage).ToArray();
+
+                        if (sourceStorages.All(s => string.IsNullOrEmpty(s.LockTag))
+                            && targetStorages.All(t=>string.IsNullOrEmpty(t.LockTag)))
                         {
-                            if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
+                            try
                             {
-                                item.Storage.OutFrozenQuantity -= item.AllotQuantity;
-                                item.Storage.LockTag = string.Empty;
+                                sourceStorages.AsParallel().ForAll(s => s.LockTag = Locker.LockKey);
+                                targetStorages.AsParallel().ForAll(s => s.LockTag = Locker.LockKey);
+                                MoveBillDetailRepository.SaveChanges();
                             }
-                            else
+                            catch (Exception)
                             {
-                                errorInfo = "出库货位其他人员正在操作！无法结单！";
+                                errorInfo = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
                                 return false;
                             }
                         }
+                        else
+                        {
+                            errorInfo = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
+                            return false;
+                        }
+
+                        moveDetail.AsParallel().ForAll(
+                            (Action<MoveBillDetail>)delegate(MoveBillDetail m)
+                            {
+                                if (m.InStorage.ProductCode == m.ProductCode
+                                    && m.OutStorage.ProductCode == m.ProductCode
+                                    && m.InStorage.InFrozenQuantity >= m.RealQuantity
+                                    && m.OutStorage.OutFrozenQuantity >= m.RealQuantity)
+                                {
+                                    m.InStorage.InFrozenQuantity -= m.RealQuantity;
+                                    m.OutStorage.OutFrozenQuantity -= m.RealQuantity;
+                                    m.InStorage.LockTag = string.Empty;
+                                    m.OutStorage.LockTag = string.Empty;
+                                }
+                                else
+                                {
+                                    throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能结单！");
+                                }
+                            }
+                        );
+
+                        MoveBillDetailRepository.SaveChanges();
+                                               
+
+                        //修改分配出库冻结量
+                        var outAllot = OutBillAllotRepository.GetQueryable()
+                                                             .Where(o => o.BillNo == outbm.BillNo 
+                                                                 && o.Status != "2");
+
+                        var storages = outAllot.Select(o => o.Storage).ToArray();
+
+                        if (storages.All(s => string.IsNullOrEmpty(s.LockTag)))
+                        {
+                            try
+                            {
+                                storages.AsParallel().ForAll(s => s.LockTag = Locker.LockKey);
+                                OutBillAllotRepository.SaveChanges();
+                            }
+                            catch (Exception)
+                            {
+                                errorInfo = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            errorInfo = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
+                            return false;
+                        }
+
+                        outAllot.AsParallel().ForAll(
+                            (Action<OutBillAllot>)delegate(OutBillAllot o)
+                            {
+                                if (o.Storage.ProductCode == o.ProductCode
+                                    && o.Storage.OutFrozenQuantity >= o.AllotQuantity)
+                                {
+                                    o.Storage.OutFrozenQuantity -= o.AllotQuantity;
+                                    o.Storage.LockTag = string.Empty;
+                                }
+                                else
+                                {
+                                    throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能结单！");
+                                }
+                            }
+                        );                       
+                        
+ 
                         if (outbm.MoveBillMaster != null)
                         {
                             outbm.MoveBillMaster.Status = "4";
                             outbm.MoveBillMaster.UpdateTime = DateTime.Now;
                         }
+
                         outbm.Status = "6";
                         outbm.UpdateTime = DateTime.Now;
                         OutBillMasterRepository.SaveChanges();
+                        scope.Complete();
                         result = true;
                     }
                     catch (Exception e)
                     {
                         errorInfo = "出库单结单出错！原因：" + e.Message;
-                    }
-                    scope.Complete();
+                        return false;
+                    }                    
                 }
             }
             return result;

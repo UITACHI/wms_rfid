@@ -18,7 +18,7 @@
         if (dispatchParameter != "" && dispatchParameter != null) {
             $.asyncProcessing.Start('/allotSortWork', $.toJSON({ ActionType: 'start', workDispatchId: dispatchParameter }));
         } else {
-            $.messager.confirm('错误', '请选择需要作业调度的线路！');
+            $.messager.alert('错误', '请选择需要作业调度的线路！');
         }
     }
 </script>
