@@ -156,5 +156,58 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = temp.ToArray() };
         }
         #endregion
+
+        #region IStorageService 成员
+
+
+        public object GetMoveInStorgeDetails(int page, int rows, string type, string id, string cellCode, string productCode)
+        {
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
+            var storages = storageQuery.OrderBy(s => s.StorageCode).Where(s => s.StorageCode != null);
+            if (type == "ware")
+            {
+                storages = storages.Where(s => s.Cell.Shelf.Area.Warehouse.WarehouseCode == id&&s.CellCode!=cellCode);
+            }
+            else if (type == "area")
+            {
+                storages = storageQuery.Where(s => s.Cell.Shelf.Area.AreaCode == id && s.CellCode != cellCode);
+            }
+            else if (type == "shelf")
+            {
+                storages = storageQuery.Where(s => s.Cell.Shelf.ShelfCode == id && s.CellCode != cellCode);
+            }
+            else if (type == "cell")
+            {
+                storages = storageQuery.Where(s => s.Cell.CellCode == id && s.CellCode != cellCode);
+            }
+
+            var storage = storages.Where(s => s.Quantity == 0
+                || (s.Cell.IsSingle == "1" && s.ProductCode == productCode
+                   && ((s.Cell.MaxQuantity * s.Product.Unit.Count) - s.InFrozenQuantity - s.Quantity) > 0)
+                || (s.Cell.IsSingle == "0" && string.IsNullOrEmpty(s.Cell.LockTag)))
+                .GroupBy(s => new { s.Cell })
+                .Select(s => new
+                {
+                    s.Key.Cell.CellCode,
+                    s.Key.Cell.CellName,
+                    //s.Key.Product.ProductCode,
+                    //s.Key.Product.ProductName,
+                    //s.Key.Unit.UnitCode,
+                    //s.Key.Unit.UnitName,
+                    //Quantity = s.Sum(q => (q.Cell.MaxQuantity * q.Product.Unit.Count - q.Quantity - q.InFrozenQuantity) / q.Product.Unit.Count),
+                    //storagecode = s.Key.storage.StorageCode
+                });
+
+            if (!storages.Any())
+            {
+                return null;
+            }
+
+            int total = storage.Count();
+            storage = storage.OrderBy(s=>s.CellCode).Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = storage.ToArray() };
+        }
+
+        #endregion
     }
 }

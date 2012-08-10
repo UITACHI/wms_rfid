@@ -36,5 +36,13 @@ namespace Authority.Controllers.Wms.WarehouseInfo
             var storage = StorageService.GetMoveStorgeDetails(page, rows, type, id,inOrOut,productCode);
             return Json(storage, "text", JsonRequestBehavior.AllowGet);
         }
+
+        //查询库存信息用于移库时-移库用
+        // POST: /Storage/Details/
+        public ActionResult GetMoveInStorgeDetails(int page, int rows, string type, string id, string cellCode, string productCode)
+        {
+            var storage = StorageService.GetMoveInStorgeDetails(page, rows, type, id, cellCode, productCode);
+            return Json(storage, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

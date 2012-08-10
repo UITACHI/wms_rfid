@@ -2,15 +2,30 @@
     //判断是移出的货位还是移入的货位out为移出，in为移入
     var cellInOrOut;
     //加载仓库树形结构数据数据根据cType（in或者out）加载不同的树形结构的数据
-    function loadData(cType,pCode) {
+    function loadData(cType,cellCode,pCode) {
         cellInOrOut = cType;
         $('#cellDetail').datagrid('loadData', { total: 0, rows: [] }); //清空库存列表
         $('#warehouseTree').tree({ url: '/Cell/GetMoveCellDetails/?inOrOut=' + cType + '&productCode=' + pCode }); //加载树形数据
         $('#warehouseTree').tree({
             onClick: function (node) {
                 if (node) {
-                    $('#cellDetail').datagrid('options').url = '/Storage/GetMoveStorgeDetails/?type=' + node.attributes + '&id=' + node.id + '&inOrOut=' + cType + '&productCode=' + pCode;
+                    if (cType == "out") {
+                        $('#cellDetail').datagrid('options').url = '/Storage/GetMoveStorgeDetails/?type=' + node.attributes + '&id=' + node.id + '&inOrOut=' + cType + '&productCode=' + pCode;
+                    } else {
+                        $('#cellDetail').datagrid('options').url = '/Storage/GetMoveInStorgeDetails/?type=' + node.attributes + '&id=' + node.id + '&cellCode=' + cellCode + '&productCode=' + pCode;
+                    }
+
                     $('#cellDetail').datagrid('load');
+                }
+            }
+        });
+        //双击选择移入货位
+        $('#warehouseTree').tree({
+            onDblClick: function (node) {
+                if (node.attributes == "cell") {
+                    $('#inCellCode').val(node.id);
+                    $('#inCellName').val(node.text);
+                    $('#cellData').dialog('close');
                 }
             }
         });
@@ -36,7 +51,15 @@
                 $('#inStorageCode').val(cellRow.StorageCode);
                 $('#cellData').dialog('close');
             }
+        } else {
+        if (cellInOrOut == "out") {
+            $.messager.alert(g_MsgBoxTitle, "请选择要移出的货位", "info");
         }
+        else if(cellInOrOut=="in"){
+            $.messager.alert(g_MsgBoxTitle, "请选择要移入的货位", "info");
+        }
+        }
+
     }
 
     //货位列表点击事件点击选中的行并将选中行的值赋给相应的控件
