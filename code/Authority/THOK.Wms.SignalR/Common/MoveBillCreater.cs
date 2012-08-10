@@ -126,7 +126,7 @@ namespace THOK.Wms.SignalR.Common
             {
                 lock (c)
                 {
-                    var targetStorage = Locker.LockSingleArea(c);
+                    var targetStorage = Locker.LockStorage(c);
                     if (sourceStorage != null && targetStorage != null
                         && (string.IsNullOrEmpty(targetStorage.ProductCode)
                             || targetStorage.ProductCode == sourceStorage.ProductCode
@@ -150,7 +150,7 @@ namespace THOK.Wms.SignalR.Common
             {
                 lock (c)
                 {
-                    var targetStorage = Locker.LockSingleArea(c);
+                    var targetStorage = Locker.LockStorage(c);
                     if (sourceStorage != null && targetStorage != null
                         && (string.IsNullOrEmpty(targetStorage.ProductCode)
                             || targetStorage.ProductCode == sourceStorage.ProductCode
@@ -177,7 +177,7 @@ namespace THOK.Wms.SignalR.Common
             {
                 lock (c)
                 {
-                    var targetStorage = Locker.LockSingleArea(c);
+                    var targetStorage = Locker.LockStorage(c);
                     if (sourceStorage != null && targetStorage != null
                         && (string.IsNullOrEmpty(targetStorage.ProductCode)
                             || targetStorage.ProductCode == sourceStorage.ProductCode
@@ -210,7 +210,7 @@ namespace THOK.Wms.SignalR.Common
             {
                 lock (c)
                 {
-                    var targetStorage = Locker.LockSingleArea(c);
+                    var targetStorage = Locker.LockStorage(c);
                     if (sourceStorage != null && targetStorage != null
                         && (string.IsNullOrEmpty(targetStorage.ProductCode)
                             || targetStorage.ProductCode == sourceStorage.ProductCode

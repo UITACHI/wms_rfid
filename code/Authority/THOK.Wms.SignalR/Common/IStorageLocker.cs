@@ -15,11 +15,12 @@ namespace THOK.Wms.SignalR.Common
         Storage LockStorage(Storage storage, Product product);
 
         bool Lock(Storage[] storages);
+        void UnLock(Storage[] storages);
 
-        bool Lock(Cell[] cc);
+        bool Lock(Cell[] cells);
+        void UnLock(Cell[] cells);
 
-        Storage LockSingleArea(Cell cell);
-
-        void UnLock(Storage[] ss);
+        Storage LockStorage(Cell cell);
+        void UnLockStorage(Storage storage);
     }
 }
