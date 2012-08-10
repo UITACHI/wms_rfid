@@ -22,10 +22,12 @@
         //双击选择移入货位
         $('#warehouseTree').tree({
             onDblClick: function (node) {
-                if (node.attributes == "cell") {
-                    $('#inCellCode').val(node.id);
-                    $('#inCellName').val(node.text);
-                    $('#cellData').dialog('close');
+                if (cellInOrOut=="in") {
+                    if (node.attributes == "cell") {
+                        $('#inCellCode').val(node.id);
+                        $('#inCellName').val(node.text);
+                        $('#cellData').dialog('close');
+                    }
                 }
             }
         });
@@ -52,14 +54,13 @@
                 $('#cellData').dialog('close');
             }
         } else {
-        if (cellInOrOut == "out") {
-            $.messager.alert(g_MsgBoxTitle, "请选择要移出的货位", "info");
+            if (cellInOrOut == "out") {
+                $.messager.alert(g_MsgBoxTitle, "请选择要移出的货位", "info");
+            }
+            else if (cellInOrOut == "in") {
+                $.messager.alert(g_MsgBoxTitle, "请选择要移入的货位", "info");
+            }
         }
-        else if(cellInOrOut=="in"){
-            $.messager.alert(g_MsgBoxTitle, "请选择要移入的货位", "info");
-        }
-        }
-
     }
 
     //货位列表点击事件点击选中的行并将选中行的值赋给相应的控件
