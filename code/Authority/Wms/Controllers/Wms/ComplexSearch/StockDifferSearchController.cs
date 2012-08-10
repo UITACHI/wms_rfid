@@ -31,11 +31,15 @@ namespace Authority.Controllers.Wms.ComplexSearch
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string BillNo = collection["BillNo"] ?? "";
-            string BillDate = collection["BillDate"] ?? "";
-            string OperatePersonCode = collection["OperatePersonCode"] ?? "";
-            string Status = collection["Status"] ?? "";
-            var DifferBillMaster = StockDifferSearchService.GetDetails(page, rows, BillNo, BillDate, OperatePersonCode, Status);
-            return Json(DifferBillMaster, "text", JsonRequestBehavior.AllowGet);
+            string WarehouseCode = collection["WarehouseCode"] ?? "";
+            string CheckBillNo = collection["CheckBillNo"] ?? "";
+            string BeginDate = collection["BeginDate"] ?? "";
+            string EndDate = collection["EndDate"] ?? "";
+            string OperatePersonCode = collection["OperatePerson"] ?? "";
+            string CheckPersonCode = collection["CheckPerson"] ?? "";
+            string Operate_Status = collection["Operate_Status"] ?? "";
+            var differBillMaster = StockDifferSearchService.GetDetails(page, rows, BillNo, CheckBillNo, WarehouseCode, BeginDate, EndDate, OperatePersonCode, CheckPersonCode, Operate_Status);
+            return Json(differBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
         //
         // GET: /StockDifferSearch/InfoDetails/

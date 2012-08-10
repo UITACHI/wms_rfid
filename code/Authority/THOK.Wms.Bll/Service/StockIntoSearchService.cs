@@ -44,7 +44,7 @@ namespace THOK.Wms.Bll.Service
                     statusStr = "执行中";
                     break;
                 case "6":
-                    statusStr = "已入库";
+                    statusStr = "已结单";
                     break;
             }
             return statusStr;
