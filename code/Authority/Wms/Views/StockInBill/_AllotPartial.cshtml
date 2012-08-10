@@ -48,6 +48,26 @@
         }
     }
 
+    //新增入库单明细分配
+    function allotAdd() {
+        var detailRow = $('#inAllotBillDetails').datagrid('getSelected');
+        if (detailRow) {
+            if (detailRow.AllotQuantity < detailRow.BillQuantity) {
+                $('#fm_allot').form('clear');
+                $('#dlg_allot_modify').dialog('open').dialog('setTitle', '新增');
+                $('#fm_allot').form('load', detailRow);
+                $('form input').removeAttr("disabled");
+                $('form textarea').removeAttr("disabled");
+                $('#allQuantity').attr("value", '')
+                modifyUrl = '/StockInBillAllot/AllotAdd/';
+            } else {
+                $.messager.confirm('错误', '所选卷烟已分配完成！');
+            }
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+
     //修改入库单明细    
     function allotEdit() {
         var detailRow = $('#allotBillDetails').datagrid('getSelected');
