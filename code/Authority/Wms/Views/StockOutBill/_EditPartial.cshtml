@@ -4,8 +4,6 @@
         if (row) {
             DataLoad();
             billno = row.BillNo;
-            isInBillMasterSaved = false;
-            isInBillMasterCanEdit = true;
             if (row.Status != "已录入") {
                 $.messager.alert('错误', '该记录状态不是已录入状态无法编辑！');
             } else {
