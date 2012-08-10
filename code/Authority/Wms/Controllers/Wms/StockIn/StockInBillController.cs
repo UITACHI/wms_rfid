@@ -41,11 +41,14 @@ namespace Authority.Controllers.Wms.StockIn
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string BillNo = collection["BillNo"] ?? "";
-            string BillDate = collection["BillDate"] ?? "";
-            string OperatePersonCode = collection["OperatePersonCode"] ?? "";
+            string WareHouseCode = collection["WareHouseCode"] ?? "";
+            string BeginDate = collection["BeginDate"] ?? "";
+            string EndDate = collection["EndDate"] ?? "";
+            string OperatePersonCode = collection["OperatePersonCode"] ?? string.Empty;
+            string CheckPersonCode = collection["CheckPersonCode"] ?? string.Empty;
             string Status = collection["Status"] ?? "";
             string IsActive = collection["IsActive"] ?? "";
-            var inBillMaster = InBillMasterService.GetDetails(page,rows,BillNo,BillDate,OperatePersonCode,Status,IsActive);
+            var inBillMaster = InBillMasterService.GetDetails(page, rows, BillNo, WareHouseCode, BeginDate, EndDate,OperatePersonCode,CheckPersonCode, Status, IsActive);
             return Json(inBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
 

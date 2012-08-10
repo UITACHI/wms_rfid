@@ -76,12 +76,12 @@
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.BillNo = $('#searchBillNo').val();
-        queryParams.WarehouseCode = $('#warehouse_In').combo('getValue');
+        queryParams.WareHouseCode = $('#warehouse_In').combo('getValue');
         queryParams.BeginDate = $('#beginDate').datebox('getValue');
         queryParams.EndDate = $('#endDate').datebox('getValue');
-        queryParams.OperatePerson = $('#operatePerson').combo('getValue');
-        queryParams.CheckPerson = $('#checkPerson').combo('getValue');
-        queryParams.Operate_Status = $('#operate_Status').combo('getValue');
+        queryParams.OperatePersonCode = $('#operatePerson').combo('getValue');
+        queryParams.CheckPersonCode = $('#checkPerson').combo('getValue');
+        queryParams.Status = $('#operate_Status').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
