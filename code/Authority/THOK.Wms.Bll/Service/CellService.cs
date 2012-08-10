@@ -622,10 +622,5 @@ namespace THOK.Wms.Bll.Service
 
         #endregion
 
-
-        public object GetCellCheck(string shelfCode)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -59,7 +59,7 @@ namespace THOK.Wms.Allot.Service
 
         public object Search(string billNo, int page, int rows)
         {
-            var allotQuery = InBillAllotRepository.GetParallelQuery();
+            var allotQuery = InBillAllotRepository.GetQueryable();
             var query = allotQuery.Where(a => a.BillNo == billNo)
                                   .OrderBy(a => a.ID)
                                   .Select(a => new { 
