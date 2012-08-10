@@ -17,7 +17,7 @@
 //            $('#productTable').datagrid('loadData', ldata);
 //        });
         $('#checkProductTable').datagrid('loadData', { total: 0, rows: [] }); //清空盘点的卷烟
-        $('#chanedCheckTable').datagrid({ url: '/CheckBill/CheckChangedDetails/' }); //加载异动数据
+        //$('#chanedCheckTable').datagrid({ url: '/CheckBill/CheckChangedDetails/' }); //加载异动数据
     }
 
     function DataLoad() {
@@ -35,24 +35,6 @@
             columns: [[
                     { field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
                     { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 30 },
-                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
-                ]]
-        });
-
-        $('#biiTypeadd').combogrid({
-            required: true,
-            disabled: false,
-            width: 130,
-            panelWidth: 340,
-            url: '/StockInBill/GetBillTypeDetail/?BillClass=0004&IsActive=1',
-            idField: 'BillTypeCode',
-            textField: 'BillTypeName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-                    { field: 'BillTypeCode', title: '订单类型编码', align: 'left', width: 40 },
-                    { field: 'BillTypeName', title: '订单类型名称', align: 'left', width: 30 },
                     { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
                 ]]
         });

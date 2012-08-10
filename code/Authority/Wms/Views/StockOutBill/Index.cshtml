@@ -6,7 +6,7 @@
                 if (row) {
                     $('#outBillDetails').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + row.BillNo });//                   
                 } else {
-                    $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                 }
             }
         })
