@@ -41,6 +41,8 @@ namespace THOK.Wms.Bll.Interfaces
         object GetCellCheck(string shelfCode);
         object GetCellCheck(string shelfCode,string productCode);
 
+        object GetCellCheck(string productCode);
+
         bool DeleteCell(string productCodes);
     }
 }
