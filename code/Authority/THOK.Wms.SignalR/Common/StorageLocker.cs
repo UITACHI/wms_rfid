@@ -318,7 +318,6 @@ namespace THOK.Wms.SignalR.Common
             }
         }
 
-
         public void UnLock(Storage[] storages)
         {
             try
@@ -353,27 +352,70 @@ namespace THOK.Wms.SignalR.Common
             }
         }
 
+        public void UnLock(Cell[] cells)
+        {
+            try
+            {
+                cells.AsParallel().ForAll(c => c.LockTag = string.Empty);
+                CellRepository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
 
-        public Storage LockSingleArea(Cell cell)
+        public Storage LockStorage(Cell cell)
         {
             try
             {
                 if (string.IsNullOrEmpty(cell.LockTag))
                 {
+                    Storage storage = null;
                     if (cell.Storages.Any())
-                    {
-                        var s = cell.Storages.Single();
-                        if (string.IsNullOrEmpty(s.LockTag))
+                    {                        
+                        if (cell.IsSingle == "1")
                         {
-                            s.LockTag = this.LockKey;
-                            return s;
+                            storage = cell.Storages.Single();
+                            if (string.IsNullOrEmpty(storage.LockTag))
+                            {
+                                storage.LockTag = this.LockKey;
+                                return storage;
+                            }
+                            else
+                                return null;
                         }
                         else
-                            return null;
+                        {
+                            storage = cell.Storages.FirstOrDefault(s=>string.IsNullOrEmpty(s.LockTag));
+
+                            if (storage != null 
+                                && string.IsNullOrEmpty(storage.LockTag)
+                                && storage.Quantity == 0
+                                && storage.InFrozenQuantity == 0)
+                            {
+                                return storage;
+                            }
+                            else
+                            {
+                                storage = new Storage()
+                                {
+                                    StorageCode = Guid.NewGuid().ToString(),
+                                    CellCode = cell.CellCode,
+                                    IsLock = "0",
+                                    LockTag = this.LockKey,
+                                    IsActive = "0",
+                                    StorageTime = DateTime.Now,
+                                    UpdateTime = DateTime.Now
+                                };
+                                cell.Storages.Add(storage);
+                                return storage;
+                            }
+                        }
                     }
                     else
                     {
-                        var s = new Storage()
+                        storage = new Storage()
                         {
                             StorageCode = Guid.NewGuid().ToString(),
                             CellCode = cell.CellCode,
@@ -383,8 +425,8 @@ namespace THOK.Wms.SignalR.Common
                             StorageTime = DateTime.Now,
                             UpdateTime = DateTime.Now
                         };
-                        cell.Storages.Add(s);
-                        return s;
+                        cell.Storages.Add(storage);
+                        return storage;
                     }
                 }
                 else
@@ -396,6 +438,12 @@ namespace THOK.Wms.SignalR.Common
             }
         }
 
-
+        public void UnLockStorage(Storage storage)
+        {
+            if (storage.LockTag == this.LockKey)
+            {
+                storage.LockTag = string.Empty;
+            }
+        }
     }
 }

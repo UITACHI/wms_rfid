@@ -69,7 +69,6 @@ namespace Authority.Controllers.Wms.StockOut
 
         //新增主单
         // POST: /StockOutBill/Create/
-        [HttpPost]
         public ActionResult Create(OutBillMaster outBillMaster)
         {
             string errorInfo = string.Empty;
@@ -80,8 +79,6 @@ namespace Authority.Controllers.Wms.StockOut
 
         //修改主单
         // POST: /StockOutBill/Edit/
-
-        [HttpPost]
         public ActionResult Edit(OutBillMaster outBillMaster)
         {
             string errorInfo = string.Empty;
@@ -92,7 +89,6 @@ namespace Authority.Controllers.Wms.StockOut
 
         //删除主单
         // POST: /StockOutBill/Delete/
-        [HttpPost]
         public ActionResult Delete(string BillNo)
         {
             string errorInfo = string.Empty;
@@ -103,7 +99,6 @@ namespace Authority.Controllers.Wms.StockOut
 
         //新增细单
         // POST: /StockOutBill/OutBillDetailCreate/
-        [HttpPost]
         public ActionResult OutBillDetailCreate(OutBillDetail outBillDetail)
         {
             string errorInfo = string.Empty;
@@ -124,7 +119,6 @@ namespace Authority.Controllers.Wms.StockOut
 
         //修改细单
         // POST: /StockOutBill/editOutBillDelete
-        [HttpPost]
         public ActionResult editOutBillDelete(OutBillDetail outBillDetail)
         {
             string errorInfo = string.Empty;
