@@ -751,7 +751,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Content\Scripts\jquery-easyui-1.2.6\themes\default\images\Thumbs.db" />
     <None Include="Content\Scripts\jquery-easyui-1.2.6\themes\gray\images\Thumbs.db" />
     <Content Include="Views\Home\_ChangeCityPartial.cshtml" />
