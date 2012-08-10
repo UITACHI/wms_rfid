@@ -271,7 +271,7 @@ namespace THOK.Wms.Bll.Service
         /// <param name="cell">货位</param>
         /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
-        public bool CellAdd(string ware, string area, string shelf, string cell, string UserName, out string info)
+        public bool CellAdd(string ware, string area, string shelf, string cell, string UserName, string billType, out string info)
         {
             bool result = false;
             info = string.Empty;
@@ -317,7 +317,7 @@ namespace THOK.Wms.Bll.Service
                                     var check = new CheckBillMaster();
                                     check.BillNo = billNo;
                                     check.BillDate = DateTime.Now;
-                                    check.BillTypeCode = "4001";
+                                    check.BillTypeCode = billType;
                                     check.WarehouseCode = item.WarehouseCode;
                                     check.OperatePersonID = employee.ID;
                                     check.Status = "1";
@@ -347,6 +347,7 @@ namespace THOK.Wms.Bll.Service
                                         var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
                                         storage.IsLock = "1";
                                         StorageRepository.SaveChanges();
+                                        scope.Complete();
                                     }
                                     result = true;
                                 }
@@ -396,7 +397,7 @@ namespace THOK.Wms.Bll.Service
                                     var check = new CheckBillMaster();
                                     check.BillNo = billNo;
                                     check.BillDate = DateTime.Now;
-                                    check.BillTypeCode = "4001";
+                                    check.BillTypeCode = billType;
                                     check.WarehouseCode = item.WarehouseCode;
                                     check.OperatePersonID = employee.ID;
                                     check.Status = "1";
@@ -425,11 +426,11 @@ namespace THOK.Wms.Bll.Service
                                         var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
                                         storage.IsLock = "1";
                                         StorageRepository.SaveChanges();
+                                        scope.Complete();
                                     }
                                     result = true;
                                 }
                             }
-
                         }
                         #endregion
 
@@ -491,7 +492,7 @@ namespace THOK.Wms.Bll.Service
         /// <param name="products">产品数据</param>
         /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
-        public bool ProductAdd(string products, string UserName, out string info)
+        public bool ProductAdd(string products, string UserName, string billType, out string info)
         {
             bool result = false;
             info = string.Empty;
@@ -534,7 +535,7 @@ namespace THOK.Wms.Bll.Service
                                     var check = new CheckBillMaster();
                                     check.BillNo = billNo;
                                     check.BillDate = DateTime.Now;
-                                    check.BillTypeCode = "4001";
+                                    check.BillTypeCode = billType;
                                     check.WarehouseCode = item.WarehouseCode;
                                     check.OperatePersonID = employee.ID;
                                     check.Status = "1";
@@ -649,7 +650,7 @@ namespace THOK.Wms.Bll.Service
         /// <param name="endDate">结束时间</param>
         /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
-        public bool ChangedAdd(string beginDate, string endDate, string UserName, out string info)
+        public bool ChangedAdd(string beginDate, string endDate, string UserName, string billType, out string info)
         {
             bool result = false;
             info = string.Empty;
@@ -706,7 +707,7 @@ namespace THOK.Wms.Bll.Service
                                 var check = new CheckBillMaster();
                                 check.BillNo = billNo;
                                 check.BillDate = DateTime.Now;
-                                check.BillTypeCode = "4001";
+                                check.BillTypeCode = billType;
                                 check.WarehouseCode = item.WarehouseCode;
                                 check.OperatePersonID = employee.ID;
                                 check.Status = "1";

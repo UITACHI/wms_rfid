@@ -45,23 +45,20 @@ namespace THOK.Wms.SignalR.Allot.Service
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
 
             InBillMaster billMaster = inBillMasterQuery.Single(b => b.BillNo == billNo);
-
             if (!CheckAndLock(billMaster, ps)){return;}
 
-            //选择未分配的细单；
-            var billDetails = billMaster.InBillDetails.Where(b => (b.BillQuantity - b.AllotQuantity) > 0);
+            //选择未分配的细单数组；
+            var billDetails = billMaster.InBillDetails
+                                        .Where(b => (b.BillQuantity - b.AllotQuantity) > 0)
+                                        .ToArray();
             //选择当前订单操作目标仓库；
-            var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode); 
-            if (areaCodes.Length > 0)
-            {
-                //选择指定库区；
-                cells = cells.Where(c => areaCodes.Any(a => a == c.AreaCode));
-            }
-            else
-            {
-                cells = cells.Where(c => c.Area.AllotInOrder > 0);
-            }
-            
+            var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode
+                                        && (areaCodes.Any(a => a == c.AreaCode) 
+                                            || c.Area.AllotInOrder> 0))
+                                 .ToArray();
+
+            //var storages = cells.Select(c => c.Storages.Select(s=>s).ToArray()).ToArray();
+
             //1：主库区；2：件烟区；
             //3；条烟区；4：暂存区；
             //5：备货区；6：残烟区；
@@ -120,7 +117,7 @@ namespace THOK.Wms.SignalR.Allot.Service
             //非货位管理区
             var cellQueryFromList4 = cellList4.OrderBy(c => c.Area.AllotInOrder);
             
-            foreach (var billDetail in billDetails.ToArray())
+            foreach (var billDetail in billDetails)
             {
                 //分配预设当前卷烟的货位；
                 var cs = cellQueryFromList1.Where(c => c.DefaultProductCode == billDetail.ProductCode);

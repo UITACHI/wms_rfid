@@ -32,12 +32,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{47999AD9-AB4
 		..\..\doc\jquery.easyui-1.2.2.chm = ..\..\doc\jquery.easyui-1.2.2.chm
 		..\..\doc\jquery1.7.2_20120420.chm = ..\..\doc\jquery1.7.2_20120420.chm
 		..\..\doc\menu.txt = ..\..\doc\menu.txt
+		..\..\doc\new_data.doc = ..\..\doc\new_data.doc
 		..\..\doc\old_data.vsd = ..\..\doc\old_data.vsd
 		..\..\doc\xgjs.txt = ..\..\doc\xgjs.txt
 		..\..\doc\zyxxb.xls = ..\..\doc\zyxxb.xls
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THOK.Wms.SignalR", "THOK.Wms.SignalR\THOK.Wms.SignalR.csproj", "{04A2C9B1-0F35-42CF-A6A7-4319D7C6E95F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities.Extensions", "Entities.Extensions\Entities.Extensions.csproj", "{D629856F-6F11-4A87-8440-A5B66383A26A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +100,10 @@ Global
 		{04A2C9B1-0F35-42CF-A6A7-4319D7C6E95F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04A2C9B1-0F35-42CF-A6A7-4319D7C6E95F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04A2C9B1-0F35-42CF-A6A7-4319D7C6E95F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D629856F-6F11-4A87-8440-A5B66383A26A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D629856F-6F11-4A87-8440-A5B66383A26A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D629856F-6F11-4A87-8440-A5B66383A26A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D629856F-6F11-4A87-8440-A5B66383A26A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

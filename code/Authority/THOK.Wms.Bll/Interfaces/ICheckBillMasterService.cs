@@ -12,11 +12,11 @@ namespace THOK.Wms.Bll.Interfaces
 
         bool Add(string billNo,string wareCode);
 
-        bool CellAdd(string ware, string area, string shelf, string cell, string UserName, out string info);
+        bool CellAdd(string ware, string area, string shelf, string cell, string UserName,string billType, out string info);
 
-        bool ProductAdd(string products, string UserName, out string info);
+        bool ProductAdd(string products, string UserName, string billType, out string info);
 
-        bool ChangedAdd(string beginDate, string endDate, string UserName, out string info);
+        bool ChangedAdd(string beginDate, string endDate, string UserName, string billType, out string info);
 
         object GetCellDetails(int page, int rows, string ware, string area, string shelf, string cell);
 

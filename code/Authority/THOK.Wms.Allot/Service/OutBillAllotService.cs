@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Transactions;
 using THOK.Wms.SignalR.Common;
+using Entities.Extensions;
 
 namespace THOK.Wms.Allot.Service
 {
@@ -100,26 +101,42 @@ namespace THOK.Wms.Allot.Service
                     {
                         using (var scope = new TransactionScope())
                         {
-                            var outAllot = OutBillAllotRepository.GetQueryable().Where(o => o.BillNo == ibm.BillNo);
-                            try
+                            var outAllot = OutBillAllotRepository.GetQueryable()
+                                                                 .Where(o => o.BillNo == ibm.BillNo)
+                                                                 .ToArray();
+
+                            var storages = outAllot.Select(i => i.Storage).ToArray();
+
+                            if (!Locker.Lock(storages))
                             {
-                                foreach (var item in outAllot.ToArray())
-                                {
-                                    if (Locker.LockStorage(item.Storage, item.Product) != null)//锁库存
-                                    {
-                                        item.Storage.OutFrozenQuantity -= item.AllotQuantity;//修改分配数量
-                                        item.Storage.LockTag = string.Empty;
-                                        item.OutBillDetail.AllotQuantity -= item.AllotQuantity;//修改出库细单数量
-                                    }
-                                    OutBillAllotRepository.Delete(item);
-                                }
-                                OutBillAllotRepository.SaveChanges();
-                            }
-                            catch (Exception)
-                            {
-                                strResult = "当前货位其他人正在操作，请稍候重试！";
+                                strResult = "锁定储位失败，储位其他人正在操作，无法取消分配请稍候重试！";
                                 return false;
                             }
+
+                            outAllot.AsParallel().ForAll(
+                                (Action<OutBillAllot>)delegate(OutBillAllot o)
+                                {
+                                    if (o.Storage.ProductCode == o.ProductCode
+                                        && o.Storage.OutFrozenQuantity >= o.AllotQuantity)
+                                    {
+                                        lock (o.OutBillDetail)
+                                        {
+                                            o.OutBillDetail.AllotQuantity -= o.AllotQuantity;
+                                        }
+                                        o.Storage.OutFrozenQuantity -= o.AllotQuantity;
+                                        o.Storage.LockTag = string.Empty;
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("储位的卷烟或出库冻结量与当前分配不符，信息可能被异常修改，不能取消当前出库分配！");
+                                    }
+                                }
+                            );
+
+                            OutBillAllotRepository.SaveChanges();
+
+                            OutBillAllotRepository.GetObjectSet()
+                                .DeleteEntity(i => i.BillNo == ibm.BillNo);
 
                             ibm.Status = "2";
                             ibm.UpdateTime = DateTime.Now;
@@ -130,9 +147,9 @@ namespace THOK.Wms.Allot.Service
                             scope.Complete();
                         }
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-                        strResult = "当前订单其他人正在操作，请稍候重试！";
+                        strResult = "取消分配失败，详情：" + e.Message;
                     }
                 }
                 else
