@@ -97,63 +97,65 @@
 
     //单击添加细表保存主表单据
     function outBillMasterSave() {
-        if (isOutBillMasterAdd) {//判断是否可以添加主单
-            $('#fm').form('submit', {
-                url: url,
-                onSubmit: function () {
-                    return $(this).form('validate');
-                },
-                success: function (result) {
-                    var result = eval('(' + result + ')');
-                    if (result.success) {
-                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
-                        url = '/StockOutBill/Edit/';
-                        isShowOutBillDetail = true;
-                        isOutBillMasterAdd = false;
-                        outBillDetailShoew();
-                        $('#details').datagrid('reload');
-                    } else {
-                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
-                        $('#dlg-AddBillDetail').dialog('close');
-                        $('#details').datagrid('reload');
-                    }
+        $('#fm').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    isShowOutBillDetail = true;
+                    isOutBillMasterAdd = false;
+                    outBillDetailShoew();
+                    $('#details').datagrid('reload');
+                } else {
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                    $('#dlg-AddBillDetail').dialog('close');
+                    $('#details').datagrid('reload');
                 }
-            });
-        }
+            }
+        });
     }
 
     //保存主单
     function save() {
-        if (isOutBillMasterAdd == false) {//false 表示主表未保存
-            $('#fm').form('submit', {
-                url: url,
-                onSubmit: function () {
-                    return $(this).form('validate');
-                },
-                success: function (result) {
-                    var result = eval('(' + result + ')');
-                    if (result.success) {
-                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
-                        isInBillMasterSaved = false;
-                        $('#dlg').dialog('close');
-                        $('#details').datagrid('reload');
-                        $('#outBillDeatil').datagrid('load');
-                    } else {
-                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
-                        $('#details').datagrid('reload');
-                    }
-                }
-            });
+        if (isOutBillMasterAdd == true) {//false 表示主表未保存
+            masterSave();
         } else {
-            outBillMasterSave();
-            $('#dlg-AddBillDetail').dialog('close');
+            url = '/StockOutBill/Edit/';
+            masterSave();            
         }
         $('#outBillDetails').datagrid('loadData', { total: 0, rows: [] }); //清空细单
     }
 
+    function masterSave() {
+        $('#fm').form('submit', {
+            url: url,
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function (result) {
+                var result = eval('(' + result + ')');
+                if (result.success) {
+                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                    $('#dlg').dialog('close');
+                    $('#details').datagrid('reload');
+                    $('#outBillDeatil').datagrid('load');
+                } else {
+                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                    $('#details').datagrid('reload');
+                }
+            }
+        });
+    }
+
     //新增明细
     function addBillDetailClick() {
-        outBillMasterSave();
+        if (isOutBillMasterAdd) {
+            outBillMasterSave();
+        }
         if (isShowOutBillDetail) {
             outBillDetailShoew();
         }
@@ -220,6 +222,7 @@
                     $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                     $('#dlg-AddBillDetail').dialog('close');
                     $('#outBillDeatil').datagrid({ url: '/StockOutBill/OutBillDetails/?BillNo=' + billno });
+                    isOutBillMasterAdd=false;
                 } else {
                     $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                     $('#outBillDetail').datagrid('reload');

@@ -37,7 +37,6 @@ namespace Authority.Controllers.Wms.StockCheckInfo
 
         //获取盘点BIllNO
         // POST: /CheckBill/GetCheckBillNo
-        [HttpPost]
         public ActionResult GetCheckBillNo()
         {
             var area = CheckBillMasterService.GetCheckBillNo();
