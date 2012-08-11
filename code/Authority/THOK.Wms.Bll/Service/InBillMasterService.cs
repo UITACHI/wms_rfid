@@ -13,7 +13,7 @@ using System.Transactions;
 
 namespace THOK.Wms.Bll.Service
 {
-    public class InBillMasterService:ServiceBase<InBillMaster>,IInBillMasterService
+    public class InBillMasterService : ServiceBase<InBillMaster>, IInBillMasterService
     {
         [Dependency]
         public IInBillMasterRepository InBillMasterRepository { get; set; }
@@ -39,7 +39,7 @@ namespace THOK.Wms.Bll.Service
 
         public string WhatStatus(string status)
         {
-            string statusStr="";
+            string statusStr = "";
             switch (status)
             {
                 case "1":
@@ -64,11 +64,16 @@ namespace THOK.Wms.Bll.Service
             return statusStr;
         }
 
-        public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive)
+        public object GetDetails(int page, int rows, string BillNo, string WareHouseCode, string BeginDate, string EndDate, string OperatePersonCode, string CheckPersonCode, string Status, string IsActive)
         {
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
             var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)
-                && i.Status != "6").OrderByDescending(t => t.BillDate)
+                    && i.Status != "6"
+                    && i.WarehouseCode.Contains(WareHouseCode)
+                    && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
+                    //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
+                    && i.Status.Contains(Status)
+                ).OrderByDescending(t => t.BillDate)
                                    .OrderByDescending(t => t.BillNo)
                                    .AsEnumerable().Select(i => new
                 {
@@ -79,10 +84,10 @@ namespace THOK.Wms.Bll.Service
                     i.BillTypeCode,
                     i.BillType.BillTypeName,
                     i.Warehouse.WarehouseName,
-                    OperatePersonCode=i.OperatePerson.EmployeeCode,
+                    OperatePersonCode = i.OperatePerson.EmployeeCode,
                     OperatePersonName = i.OperatePerson.EmployeeName,
-                    VerifyPersonID=i.VerifyPersonID==null?string.Empty:i.VerifyPerson.EmployeeCode,
-                    VerifyPersonName =i.VerifyPersonID==null?string.Empty:i.VerifyPerson.EmployeeName,
+                    VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
+                    VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
                     VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
                     Status = WhatStatus(i.Status),
                     IsActive = i.IsActive == "1" ? "可用" : "不可用",
@@ -116,6 +121,17 @@ namespace THOK.Wms.Bll.Service
                         UpdateTime = i.UpdateTime
                     });
             }
+            if (!BeginDate.Equals(string.Empty))
+            {
+                DateTime begin = Convert.ToDateTime(BeginDate);
+                inBillMaster = inBillMaster.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
+            }
+
+            if (!EndDate.Equals(string.Empty))
+            {
+                DateTime end = Convert.ToDateTime(EndDate).AddDays(1);
+                inBillMaster = inBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+            }
             int total = inBillMaster.Count();
             inBillMaster = inBillMaster.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = inBillMaster.ToArray() };
@@ -123,10 +139,10 @@ namespace THOK.Wms.Bll.Service
 
         public bool Add(InBillMaster inBillMaster, string userName)
         {
-            bool result=false;
+            bool result = false;
             var ibm = new InBillMaster();
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            if (employee!=null)
+            if (employee != null)
             {
                 ibm.BillNo = inBillMaster.BillNo;
                 ibm.BillDate = inBillMaster.BillDate;
@@ -143,18 +159,18 @@ namespace THOK.Wms.Bll.Service
 
                 InBillMasterRepository.Add(ibm);
                 InBillMasterRepository.SaveChanges();
-                result= true;
+                result = true;
             }
             return result;
         }
 
         public bool Delete(string BillNo)
         {
-            bool result=false;
-            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i=>i.BillNo==BillNo&&i.Status=="1");
-            if (ibm!=null)
+            bool result = false;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
+            if (ibm != null)
             {
-                Del(InBillDetailRepository,ibm.InBillDetails);
+                Del(InBillDetailRepository, ibm.InBillDetails);
                 InBillMasterRepository.Delete(ibm);
                 InBillMasterRepository.SaveChanges();
                 result = true;
@@ -164,9 +180,9 @@ namespace THOK.Wms.Bll.Service
 
         public bool Save(InBillMaster inBillMaster)
         {
-            bool result=false;
-            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo ==inBillMaster.BillNo&&i.Status=="1");
-            if (ibm!=null)
+            bool result = false;
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == inBillMaster.BillNo && i.Status == "1");
+            if (ibm != null)
             {
                 ibm.BillDate = inBillMaster.BillDate;
                 ibm.BillTypeCode = inBillMaster.BillTypeCode;
@@ -181,7 +197,7 @@ namespace THOK.Wms.Bll.Service
                 ibm.UpdateTime = DateTime.Now;
 
                 InBillMasterRepository.SaveChanges();
-                result=true;
+                result = true;
             }
             return result;
         }
@@ -198,9 +214,9 @@ namespace THOK.Wms.Bll.Service
             string billNo = "";
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
-            if (inBillMaster.Count()==0)
+            if (inBillMaster.Count() == 0)
             {
-                billNo= System.DateTime.Now.ToString("yyMMdd") + "0001" + "IN";
+                billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "IN";
             }
             else
             {
@@ -212,13 +228,13 @@ namespace THOK.Wms.Bll.Service
                 {
                     newcode = "0" + newcode;
                 }
-                billNo= System.DateTime.Now.ToString("yyMMdd") + newcode + "IN";
+                billNo = System.DateTime.Now.ToString("yyMMdd") + newcode + "IN";
             }
             var findBillInfo = new
             {
                 BillNo = billNo,
                 billNoDate = DateTime.Now.ToString("yyyy-MM-dd"),
-                employeeID = employee==null?"":employee.ID.ToString(),
+                employeeID = employee == null ? "" : employee.ID.ToString(),
                 employeeCode = employee == null ? "" : employee.EmployeeCode.ToString(),
                 employeeName = employee == null ? "" : employee.EmployeeName.ToString()
             };
@@ -233,7 +249,7 @@ namespace THOK.Wms.Bll.Service
         public bool Audit(string BillNo, string userName)
         {
             bool result = false;
-            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo ==BillNo && i.Status == "1");
+            var ibm = InBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == BillNo && i.Status == "1");
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             if (ibm != null)
             {
@@ -259,7 +275,7 @@ namespace THOK.Wms.Bll.Service
             if (ibm != null)
             {
                 ibm.Status = "1";
-                ibm.VerifyDate =null;
+                ibm.VerifyDate = null;
                 ibm.UpdateTime = DateTime.Now;
                 ibm.VerifyPersonID = null;
                 InBillMasterRepository.SaveChanges();
@@ -278,7 +294,7 @@ namespace THOK.Wms.Bll.Service
         /// <param name="BillClass">订单类别</param>
         /// <param name="IsActive">是否可用</param>
         /// <returns></returns>
-        public object GetBillTypeDetail( string BillClass, string IsActive)
+        public object GetBillTypeDetail(string BillClass, string IsActive)
         {
             IQueryable<BillType> billtypeQuery = BillTypeRepository.GetQueryable();
             var billtype = billtypeQuery.Where(b => b.BillClass == BillClass
@@ -306,7 +322,7 @@ namespace THOK.Wms.Bll.Service
         public object GetWareHouseDetail(string IsActive)
         {
             IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
-            var warehouse = wareQuery.Where(w=>w.IsActive==IsActive).OrderBy(w =>w.WarehouseCode).AsEnumerable().Select(w => new
+            var warehouse = wareQuery.Where(w => w.IsActive == IsActive).OrderBy(w => w.WarehouseCode).AsEnumerable().Select(w => new
                 {
                     w.WarehouseCode,
                     w.WarehouseName,
@@ -342,30 +358,31 @@ namespace THOK.Wms.Bll.Service
                     {
                         //修改分配入库冻结量
                         var inAllot = InBillAllotRepository.GetQueryable()
-                                                           .Where(o => o.BillNo == ibm.BillNo 
+                                                           .Where(o => o.BillNo == ibm.BillNo
                                                                && o.Status != "2")
                                                            .ToArray();
                         var storages = inAllot.Select(i => i.Storage).ToArray();
 
                         if (!Locker.Lock(storages))
-                        {                           
+                        {
                             strResult = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
                             return false;
                         }
 
                         inAllot.AsParallel().ForAll(
-                            (Action<InBillAllot>)delegate(InBillAllot i){
-                                if (i.Storage.ProductCode == i.ProductCode
-                                    && i.Storage.InFrozenQuantity >= i.AllotQuantity)
-                                {
-                                    i.Storage.InFrozenQuantity -= i.AllotQuantity;
-                                    i.Storage.LockTag = string.Empty;
-                                }
-                                else
-                                {
-                                    throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能结单！");
-                                }
+                            (Action<InBillAllot>)delegate(InBillAllot i)
+                        {
+                            if (i.Storage.ProductCode == i.ProductCode
+                                && i.Storage.InFrozenQuantity >= i.AllotQuantity)
+                            {
+                                i.Storage.InFrozenQuantity -= i.AllotQuantity;
+                                i.Storage.LockTag = string.Empty;
                             }
+                            else
+                            {
+                                throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能结单！");
+                            }
+                        }
                         );
 
                         ibm.Status = "6";
@@ -377,7 +394,7 @@ namespace THOK.Wms.Bll.Service
                     catch (Exception e)
                     {
                         strResult = "入库单结单出错！原因：" + e.Message;
-                    }                    
+                    }
                 }
             }
             return result;

@@ -66,11 +66,15 @@ namespace THOK.Wms.Bll.Service
         /// <param name="Status">状态</param>
         /// <param name="IsActive">是否可用</param>
         /// <returns></returns>
-        public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive)
+        public object GetDetails(int page, int rows, string BillNo, string WareHouseCode, string BeginDate, string EndDate, string OperatePersonCode, string CheckPersonCode, string Status, string IsActive)
         {
             IQueryable<ProfitLossBillMaster> ProfitLossBillMasterQuery = ProfitLossBillMasterRepository.GetQueryable();
             var ProfitLossBillMaster = ProfitLossBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)
-                && i.Status != "3").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                    && i.Status != "3"
+                    && i.WarehouseCode.Contains(WareHouseCode)
+                    && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
+                    //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
+                    && i.Status.Contains(Status)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
                 {
                     i.BillNo,
                     BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
@@ -116,6 +120,18 @@ namespace THOK.Wms.Bll.Service
                         UpdateTime = i.UpdateTime
                     });
             }
+            if (!BeginDate.Equals(string.Empty))
+            {
+                DateTime begin = Convert.ToDateTime(BeginDate);
+                ProfitLossBillMaster = ProfitLossBillMaster.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
+            }
+
+            if (!EndDate.Equals(string.Empty))
+            {
+                DateTime end = Convert.ToDateTime(EndDate).AddDays(1);
+                ProfitLossBillMaster = ProfitLossBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+            }
+
             int total = ProfitLossBillMaster.Count();
             ProfitLossBillMaster = ProfitLossBillMaster.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = ProfitLossBillMaster.ToArray() };
