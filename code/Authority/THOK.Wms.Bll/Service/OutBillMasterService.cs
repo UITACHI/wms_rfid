@@ -36,8 +36,6 @@ namespace THOK.Wms.Bll.Service
             get { return this.GetType(); }
         }
 
-        #region IOutBillMasterService 成员
-
         public string WhatStatus(string status)
         {
             string statusStr = "";
@@ -341,32 +339,24 @@ namespace THOK.Wms.Bll.Service
                 {
                     try
                     {
-                        //结单移库单，修改冻结量
+                        //结单移库单,修改冻结量
                         var moveDetail = MoveBillDetailRepository.GetQueryable()
-                                                                 .Where(m => m.BillNo == outbm.MoveBillMasterBillNo 
+                                                                 .Where(m => m.BillNo == outbm.MoveBillMasterBillNo
                                                                      && m.Status != "2");
+                        //结单出库单,修改冻结量
+                        var outAllot = OutBillAllotRepository.GetQueryable()
+                                                             .Where(o => o.BillNo == outbm.BillNo
+                                                                 && o.Status != "2");
 
                         var sourceStorages = moveDetail.Select(m => m.OutStorage).ToArray();
                         var targetStorages = moveDetail.Select(m => m.InStorage).ToArray();
+                        var storages = outAllot.Select(i => i.Storage).ToArray();
 
-                        if (sourceStorages.All(s => string.IsNullOrEmpty(s.LockTag))
-                            && targetStorages.All(t=>string.IsNullOrEmpty(t.LockTag)))
+                        if (!Locker.Lock(storages)
+                            || !Locker.Lock(sourceStorages)
+                            || !Locker.Lock(targetStorages))
                         {
-                            try
-                            {
-                                sourceStorages.AsParallel().ForAll(s => s.LockTag = Locker.LockKey);
-                                targetStorages.AsParallel().ForAll(s => s.LockTag = Locker.LockKey);
-                                MoveBillDetailRepository.SaveChanges();
-                            }
-                            catch (Exception)
-                            {
-                                errorInfo = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
-                                return false;
-                            }
-                        }
-                        else
-                        {
-                            errorInfo = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
+                            errorInfo = "锁定储位失败，储位其他人正在操作，无法取消分配请稍候重试！";
                             return false;
                         }
 
@@ -389,35 +379,7 @@ namespace THOK.Wms.Bll.Service
                                 }
                             }
                         );
-
                         MoveBillDetailRepository.SaveChanges();
-                                               
-
-                        //修改分配出库冻结量
-                        var outAllot = OutBillAllotRepository.GetQueryable()
-                                                             .Where(o => o.BillNo == outbm.BillNo 
-                                                                 && o.Status != "2");
-
-                        var storages = outAllot.Select(o => o.Storage).ToArray();
-
-                        if (storages.All(s => string.IsNullOrEmpty(s.LockTag)))
-                        {
-                            try
-                            {
-                                storages.AsParallel().ForAll(s => s.LockTag = Locker.LockKey);
-                                OutBillAllotRepository.SaveChanges();
-                            }
-                            catch (Exception)
-                            {
-                                errorInfo = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
-                                return false;
-                            }
-                        }
-                        else
-                        {
-                            errorInfo = "锁定储位失败，储位其他人正在操作，无法结单请稍候重试！";
-                            return false;
-                        }
 
                         outAllot.AsParallel().ForAll(
                             (Action<OutBillAllot>)delegate(OutBillAllot o)
@@ -433,9 +395,8 @@ namespace THOK.Wms.Bll.Service
                                     throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能结单！");
                                 }
                             }
-                        );                       
-                        
- 
+                        );
+
                         if (outbm.MoveBillMaster != null)
                         {
                             outbm.MoveBillMaster.Status = "4";
@@ -452,12 +413,10 @@ namespace THOK.Wms.Bll.Service
                     {
                         errorInfo = "出库单结单出错！原因：" + e.Message;
                         return false;
-                    }                    
+                    }
                 }
             }
             return result;
         }
-
-        #endregion
     }
 }

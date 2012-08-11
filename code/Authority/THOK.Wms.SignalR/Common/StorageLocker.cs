@@ -114,29 +114,22 @@ namespace THOK.Wms.SignalR.Common
 
         public Storage LockNoEmptyStorage(Storage storage, Product product)
         {
-            var cell = storage.Cell;
-            if (Lock(cell))
+            try
             {
-                try
+                if (storage != null
+                    && string.IsNullOrEmpty(storage.LockTag)
+                    && storage.ProductCode == product.ProductCode
+                    && storage.Quantity - storage.OutFrozenQuantity > 0)
                 {
-                    if (storage != null
-                        && storage.ProductCode == product.ProductCode
-                        && storage.Quantity - storage.OutFrozenQuantity > 0)
-                    {
-                        storage.LockTag = this.LockKey;
-                        StorageRepository.SaveChanges();
-                    }
-                    else
-                        storage = null;
+                    return storage;
                 }
-                catch (Exception)
-                {
-                    if (storage != null) { StorageRepository.Detach(storage); }
-                    storage = null;
-                }
+                else
+                    return null;
             }
-            UnLock(cell);
-            return storage;
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public Storage LockBar(Cell cell, Product product)

@@ -107,11 +107,11 @@ namespace THOK.Wms.Allot.Service
 
                             var storages = outAllot.Select(i => i.Storage).ToArray();
 
-                            //if (!Locker.Lock(storages))
-                            //{
-                            //    strResult = "锁定储位失败，储位其他人正在操作，无法取消分配请稍候重试！";
-                            //    return false;
-                            //}
+                            if (!Locker.Lock(storages))
+                            {
+                                strResult = "锁定储位失败，储位其他人正在操作，无法取消分配请稍候重试！";
+                                return false;
+                            }
 
                             outAllot.AsParallel().ForAll(
                                 (Action<OutBillAllot>)delegate(OutBillAllot o)
