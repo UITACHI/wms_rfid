@@ -43,7 +43,11 @@ namespace THOK.Wms.SignalR.Allot.Service
             NotifyConnection(ps.Clone());
 
             IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
+            
+            //IQueryable<Warehouse> wareHouseQuery = WarehouseRepository.GetQueryable();
+            //IQueryable<Area> areaQuery = AreaRepository.GetQueryable();
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+            //IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
 
             InBillMaster billMaster = inBillMasterQuery.Single(b => b.BillNo == billNo);
             if (!CheckAndLock(billMaster, ps)){return;}
@@ -52,11 +56,35 @@ namespace THOK.Wms.SignalR.Allot.Service
             var billDetails = billMaster.InBillDetails
                                         .Where(b => (b.BillQuantity - b.AllotQuantity) > 0)
                                         .ToArray();
+            //var tmp = cellQuery.Join(wareHouseQuery,
+            //            c => c.WarehouseCode,
+            //            w => w.WarehouseCode,
+            //            (c, w) => new { c.WarehouseCode, c.AreaCode, c.CellCode, c, IsActive = w.IsActive == "1" && c.IsActive == "1" }
+            //       ).Join(areaQuery,
+            //            c => c.AreaCode,
+            //            a => a.AreaCode,
+            //            (c, a) => new { c.WarehouseCode, c.AreaCode, a.AreaType, c.CellCode, a.AllotInOrder, Cell = c.c, IsActive = c.IsActive && a.IsActive == "1" }
+            //       ).Join(storageQuery,
+            //            c=>c.CellCode,
+            //            s=>s.CellCode,
+            //            (c, s) => new { c.WarehouseCode, c.AreaCode, c.AreaType, c.CellCode, c.AllotInOrder, Cell = c.Cell,s.StorageCode, IsActive = c.IsActive }    
+            //       )
+            //       .Where(r => r.WarehouseCode == billMaster.WarehouseCode
+            //                    && r.IsActive
+            //                    && (areaCodes.Any(a => a == r.AreaCode)
+            //                        || (!areaCodes.Any() && r.AllotInOrder > 0)));
+
+            //var arr = tmp.ToArray();
+
+            //foreach (var item in arr)
+            //{
+            //    var a = storageQuery.Where(s=>s.CellCode == item.CellCode).ToArray();
+            //}
+
             //选择当前订单操作目标仓库；
             var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode
                                         && (areaCodes.Any(a => a == c.AreaCode)
-                                            || (!areaCodes.Any() && c.Area.AllotInOrder > 0)))
-                                 .ToArray();
+                                            || (!areaCodes.Any() && c.Area.AllotInOrder > 0)));            
 
             //1：主库区；2：件烟区；
             //3；条烟区；4：暂存区；
@@ -171,7 +199,12 @@ namespace THOK.Wms.SignalR.Allot.Service
                 //分配未分配卷烟到其他非货位管理货位；
                 while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
                 {
-                    var c = cellQueryFromList4.FirstOrDefault();
+                    var c = cellQueryFromList4.Where(i => !i.Storages.Any()
+                                                        || i.Storages.Count() < i.MaxPalletQuantity
+                                                            || i.Storages.Any(s=> string.IsNullOrEmpty(s.LockTag)
+                                                                && s.Quantity == 0
+                                                                && s.InFrozenQuantity == 0))
+                                              .FirstOrDefault();
                     lock (c)
                     {                       
                         if (c != null)
@@ -208,17 +241,14 @@ namespace THOK.Wms.SignalR.Allot.Service
             {
                 ps.State = StateType.Info;
                 ps.Messages.Add("分配完成,开始保存请稍候!");
-                NotifyConnection(ps.Clone());
-
-                cellQuery.Select(c => c.Storages.Where(s => s.LockTag == billNo).Select(s => s))
-                         .AsParallel().ForAll(s => s.AsParallel().ForAll(i => i.LockTag = string.Empty));
-                billMaster.LockTag = string.Empty;
+                NotifyConnection(ps.Clone());                
 
                 billMaster.Status = "3";
                 try
                 {
                     if (!cancellationToken.IsCancellationRequested)
                     {
+                        billMaster.LockTag = string.Empty;
                         CellRepository.SaveChanges();
                         ps.State = StateType.Info;
                         ps.Messages.Clear();

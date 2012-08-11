@@ -62,7 +62,7 @@ namespace THOK.Wms.Allot.Service
 
         public object Search(string billNo, int page, int rows)
         {
-            var allotQuery = OutBillAllotRepository.GetParallelQuery();
+            var allotQuery = OutBillAllotRepository.GetQueryable();
             var query = allotQuery.Where(a => a.BillNo == billNo)
                                   .OrderBy(a => a.ID)
                                   .Select(a => new
@@ -81,7 +81,7 @@ namespace THOK.Wms.Allot.Service
                                       a.OperatePersonID,
                                       a.StartTime,
                                       a.FinishTime,
-                                      Status = WhatStatus(a.Status)
+                                      a.Status
                                   });
 
             int total = query.Count();
@@ -107,11 +107,11 @@ namespace THOK.Wms.Allot.Service
 
                             var storages = outAllot.Select(i => i.Storage).ToArray();
 
-                            if (!Locker.Lock(storages))
-                            {
-                                strResult = "锁定储位失败，储位其他人正在操作，无法取消分配请稍候重试！";
-                                return false;
-                            }
+                            //if (!Locker.Lock(storages))
+                            //{
+                            //    strResult = "锁定储位失败，储位其他人正在操作，无法取消分配请稍候重试！";
+                            //    return false;
+                            //}
 
                             outAllot.AsParallel().ForAll(
                                 (Action<OutBillAllot>)delegate(OutBillAllot o)

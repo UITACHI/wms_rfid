@@ -64,6 +64,9 @@ namespace THOK.Wms.DbModel.Mapping
                 .IsFixedLength()
                 .HasMaxLength(1);
 
+            this.Property(t => t.MaxPalletQuantity)
+                .IsRequired();
+
             this.Property(t => t.Description)
                 .HasMaxLength(100);
 
@@ -93,6 +96,7 @@ namespace THOK.Wms.DbModel.Mapping
             this.Property(t => t.DefaultProductCode).HasColumnName(ColumnMap.Value.To("DefaultProductCode"));
             this.Property(t => t.MaxQuantity).HasColumnName(ColumnMap.Value.To("MaxQuantity"));
             this.Property(t => t.IsSingle).HasColumnName(ColumnMap.Value.To("IsSingle"));
+            this.Property(t => t.MaxPalletQuantity).HasColumnName(ColumnMap.Value.To("MaxPalletQuantity"));
             this.Property(t => t.Description).HasColumnName(ColumnMap.Value.To("Description"));
             this.Property(t => t.LockTag).HasColumnName(ColumnMap.Value.To("LockTag"));
             this.Property(t => t.IsActive).HasColumnName(ColumnMap.Value.To("IsActive"));

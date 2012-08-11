@@ -379,7 +379,6 @@ namespace THOK.Wms.SignalR.Common
                             storage = cell.Storages.Single();
                             if (string.IsNullOrEmpty(storage.LockTag))
                             {
-                                storage.LockTag = this.LockKey;
                                 return storage;
                             }
                             else
@@ -387,23 +386,21 @@ namespace THOK.Wms.SignalR.Common
                         }
                         else
                         {
-                            storage = cell.Storages.FirstOrDefault(s=>string.IsNullOrEmpty(s.LockTag));
+                            storage = cell.Storages.FirstOrDefault(s=>string.IsNullOrEmpty(s.LockTag)
+                                                                      && s.Quantity == 0
+                                                                      && s.InFrozenQuantity == 0);
 
-                            if (storage != null 
-                                && string.IsNullOrEmpty(storage.LockTag)
-                                && storage.Quantity == 0
-                                && storage.InFrozenQuantity == 0)
+                            if (storage != null)
                             {
                                 return storage;
                             }
-                            else
+                            else if (cell.Storages.Count < cell.MaxPalletQuantity)
                             {
                                 storage = new Storage()
                                 {
                                     StorageCode = Guid.NewGuid().ToString(),
                                     CellCode = cell.CellCode,
                                     IsLock = "0",
-                                    LockTag = this.LockKey,
                                     IsActive = "0",
                                     StorageTime = DateTime.Now,
                                     UpdateTime = DateTime.Now
@@ -411,6 +408,8 @@ namespace THOK.Wms.SignalR.Common
                                 cell.Storages.Add(storage);
                                 return storage;
                             }
+                            else
+                                return null;
                         }
                     }
                     else
@@ -420,7 +419,6 @@ namespace THOK.Wms.SignalR.Common
                             StorageCode = Guid.NewGuid().ToString(),
                             CellCode = cell.CellCode,
                             IsLock = "0",
-                            LockTag = this.LockKey,
                             IsActive = "0",
                             StorageTime = DateTime.Now,
                             UpdateTime = DateTime.Now

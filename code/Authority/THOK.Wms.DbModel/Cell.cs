@@ -31,6 +31,7 @@ namespace THOK.Wms.DbModel
         public string DefaultProductCode { get; set; }
         public int MaxQuantity { get; set; }
         public string IsSingle { get; set; }
+        public int MaxPalletQuantity { get; set; }
         public string Description { get; set; }
         public string LockTag { get; set; }
         public string IsActive { get; set; }
