@@ -69,7 +69,7 @@
 
     function searchClick() {
         SearchLoad();
-        $('#dlg-search').dialog('open').dialog('setTitle', '入库单查询');
+        $('#dlg-search').dialog('open').dialog('setTitle', '移库单查询');
         $("input[type=text]").attr("value", "");
         $('#beginDate').datebox({ editable: false });
         $('#endDate').datebox({ editable: false });
@@ -108,7 +108,7 @@
 		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
             <table align="left" width="250">
               <tr>
-                <td width="60">入库单号:</td>
+                <td width="60">移库单号:</td>
                 <td><input id="searchBillNo" type="text" style="width: 140px"></td>
               </tr>
               <tr style="padding-top:10px;">
@@ -158,4 +158,3 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
 </div>
-

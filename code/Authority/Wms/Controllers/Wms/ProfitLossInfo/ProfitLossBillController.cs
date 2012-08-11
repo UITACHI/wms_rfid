@@ -38,11 +38,14 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string BillNo = collection["BillNo"] ?? "";
-            string BillDate = collection["BillDate"] ?? "";
+            string WareHouseCode = collection["WareHouseCode"] ?? "";
+            string beginDate = collection["beginDate"] ?? "";
+            string endDate = collection["endDate"] ?? "";
             string OperatePersonCode = collection["OperatePersonCode"] ?? "";
+            string CheckPersonCode = collection["CheckPersonCode"] ?? "";
             string Status = collection["Status"] ?? "";
             string IsActive = collection["IsActive"] ?? "";
-            var profitLossBillMaster = ProfitLossBillMasterService.GetDetails(page, rows, BillNo, BillDate, OperatePersonCode, Status, IsActive);
+            var profitLossBillMaster = ProfitLossBillMasterService.GetDetails(page, rows, BillNo,WareHouseCode,beginDate,endDate,OperatePersonCode,CheckPersonCode, Status, IsActive);
             return Json(profitLossBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
 

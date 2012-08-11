@@ -121,6 +121,17 @@ namespace THOK.Wms.Bll.Service
                         UpdateTime = i.UpdateTime
                     });
             }
+            if (!BeginDate.Equals(string.Empty))
+            {
+                DateTime begin = Convert.ToDateTime(BeginDate);
+                inBillMaster = inBillMaster.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
+            }
+
+            if (!EndDate.Equals(string.Empty))
+            {
+                DateTime end = Convert.ToDateTime(EndDate).AddDays(1);
+                inBillMaster = inBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+            }
             int total = inBillMaster.Count();
             inBillMaster = inBillMaster.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = inBillMaster.ToArray() };

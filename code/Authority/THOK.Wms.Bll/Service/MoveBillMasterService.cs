@@ -61,11 +61,18 @@ namespace THOK.Wms.Bll.Service
 
         #region IMoveBillMasterService 成员
 
-        public object GetDetails(int page, int rows, string BillNo, string beginDate, string endDate, string OperatePersonCode, string Status, string IsActive)
+        public object GetDetails(int page, int rows, string BillNo, string WareHouseCode, string beginDate, string endDate, string OperatePersonCode, string Status, string IsActive)
         {
             IQueryable<MoveBillMaster> moveBillMasterQuery = MoveBillMasterRepository.GetQueryable();
-            var moveBillMaster = moveBillMasterQuery.OrderBy(i => i.BillNo)
-                                                    .AsEnumerable().Select(i => new
+            var moveBillMaster = moveBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)
+                    && i.Status != "4"
+                    && i.WarehouseCode.Contains(WareHouseCode)
+                    && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
+                    //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
+                    && i.Status.Contains(Status))
+                .OrderByDescending(t => t.BillDate)
+                                   .OrderByDescending(t => t.BillNo)
+                                   .AsEnumerable().Select(i => new
                   {
                       i.BillNo,
                       BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
@@ -85,19 +92,6 @@ namespace THOK.Wms.Bll.Service
                       UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
                   });
 
-            if (!BillNo.Equals(string.Empty) && BillNo != null)
-            {
-                moveBillMaster = moveBillMaster.Where(i => i.BillNo.Contains(BillNo));
-            }
-            if (!OperatePersonCode.Equals(string.Empty) && OperatePersonCode != null)
-            {
-                moveBillMaster = moveBillMaster.Where(i => i.OperatePersonCode.Contains(OperatePersonCode));
-            }
-            if (!Status.Equals(string.Empty) && Status != null)
-            {
-                moveBillMaster = moveBillMaster.Where(i => i.Status.Contains(Status) && i.Status != "4");
-            }
-
             if (!beginDate.Equals(string.Empty))
             {
                 DateTime begin = Convert.ToDateTime(beginDate);
@@ -106,7 +100,7 @@ namespace THOK.Wms.Bll.Service
 
             if (!endDate.Equals(string.Empty))
             {
-                DateTime end = Convert.ToDateTime(endDate);
+                DateTime end = Convert.ToDateTime(endDate).AddDays(1);
                 moveBillMaster = moveBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
             }
             int total = moveBillMaster.Count();
