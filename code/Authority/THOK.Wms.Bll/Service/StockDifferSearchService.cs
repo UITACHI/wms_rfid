@@ -33,13 +33,7 @@ namespace THOK.Wms.Bll.Service
                     statusStr = "已审核";
                     break;
                 case "3":
-                    statusStr = "执行中";
-                    break;
-                case "4":
-                    statusStr = "已结单";
-                    break;
-                case "5":
-                    statusStr = "已生成损益";
+                    statusStr = "已更新库存";
                     break;
             }
             return statusStr;
@@ -52,7 +46,7 @@ namespace THOK.Wms.Bll.Service
                                                          && i.CheckBillNo.Contains(CheckBillNo)
                                                          && i.WarehouseCode.Contains(WarehouseCode)
                                                          && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
-                                                         && i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
+                                                         //&& i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
                                                          && i.Status.Contains(Operate_Status))
                                                 .OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
                                                 {
