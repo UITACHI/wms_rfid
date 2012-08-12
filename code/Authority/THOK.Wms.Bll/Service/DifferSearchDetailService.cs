@@ -33,10 +33,10 @@ namespace THOK.Wms.Bll.Service
                     i.ProductCode,
                     i.UnitCode,
                     i.Unit.UnitName,
-                    //i.BillQuantity,
-                    //i.RealQuantity,
-                    //i.Price,
-                    //i.Description 
+                    i.Product.ProductName,
+                    i.CellCode,
+                    i.Storage.Cell.CellName,
+                    i.Quantity
                 });
                 int total = DifferBillDetail.Count();
                 DifferBillDetail = DifferBillDetail.Skip((page - 1) * rows).Take(rows);

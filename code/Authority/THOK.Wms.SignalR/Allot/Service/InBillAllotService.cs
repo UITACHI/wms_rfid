@@ -9,7 +9,7 @@ using THOK.Wms.SignalR.Connection;
 using System.Threading;
 using THOK.Wms.SignalR.Model;
 using THOK.Wms.SignalR.Common;
-
+using Entities.Extensions;
 namespace THOK.Wms.SignalR.Allot.Service
 {
     public class InBillAllotService : Notifier<AllotStockInConnection>, IInBillAllotService
@@ -39,29 +39,30 @@ namespace THOK.Wms.SignalR.Allot.Service
             Locker.LockKey = billNo;
             ConnectionId = connectionId;
             ps.State = StateType.Start;
+            ps.Messages.Add("开始分配!");
             NotifyConnection(ps.Clone());
 
-            IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
+            IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();            
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
 
             InBillMaster billMaster = inBillMasterQuery.Single(b => b.BillNo == billNo);
-
             if (!CheckAndLock(billMaster, ps)){return;}
 
-            //选择未分配的细单；
-            var billDetails = billMaster.InBillDetails.Where(b => (b.BillQuantity - b.AllotQuantity) > 0);
+            //选择未分配的细单数组；
+            var billDetails = billMaster.InBillDetails
+                                        .Where(b => (b.BillQuantity - b.AllotQuantity) > 0)
+                                        .ToArray();
+
+
             //选择当前订单操作目标仓库；
-            var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode); 
-            if (areaCodes.Length > 0)
-            {
-                //选择指定库区；
-                cells = cells.Where(c => areaCodes.Any(a => a == c.AreaCode));
-            }
-            else
-            {
-                cells = cells.Where(c => c.Area.AllotInOrder > 0);
-            }
-            
+            var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode
+                                            && c.Warehouse.IsActive == "1"
+                                            && c.Area.IsActive == "1"
+                                            && c.IsActive == "1"
+                                            && (areaCodes.Any(a => a == c.AreaCode)
+                                                || (!areaCodes.Any() && c.Area.AllotInOrder > 0)))
+                                 .ToArray();            
+
             //1：主库区；2：件烟区；
             //3；条烟区；4：暂存区；
             //5：备货区；6：残烟区；
@@ -120,7 +121,7 @@ namespace THOK.Wms.SignalR.Allot.Service
             //非货位管理区
             var cellQueryFromList4 = cellList4.OrderBy(c => c.Area.AllotInOrder);
             
-            foreach (var billDetail in billDetails.ToArray())
+            foreach (var billDetail in billDetails)
             {
                 //分配预设当前卷烟的货位；
                 var cs = cellQueryFromList1.Where(c => c.DefaultProductCode == billDetail.ProductCode);
@@ -175,34 +176,115 @@ namespace THOK.Wms.SignalR.Allot.Service
                 //分配未分配卷烟到其他非货位管理货位；
                 while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
                 {
-                    var c = cellQueryFromList4.FirstOrDefault();
-                    if (c != null)
-                    {
-                        decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
-                        decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
-                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                        Allot(billMaster, billDetail, c, Locker.LockEmpty(c), allotQuantity, ps);
+                    var c = cellQueryFromList4.Where(i => !i.Storages.Any()
+                                                        || i.Storages.Count() < i.MaxPalletQuantity
+                                                            || i.Storages.Any(s=> string.IsNullOrEmpty(s.LockTag)
+                                                                && s.Quantity == 0
+                                                                && s.InFrozenQuantity == 0))
+                                              .FirstOrDefault();
+                    lock (c)
+                    {                       
+                        if (c != null)
+                        {
+                            decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
+                            decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
+                            allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+                            var targetStorage = Locker.LockStorage(c);
+                            if (targetStorage != null
+                                && targetStorage.Quantity == 0
+                                && targetStorage.InFrozenQuantity == 0)
+                            {
+                                Allot(billMaster, billDetail, c, targetStorage, allotQuantity, ps);
+                                Locker.UnLockStorage(targetStorage);
+                            }
+                        }
+                        else break;
                     }
-                    else break;
                 }
-            }            
-            
-            cellQuery.Select(c => c.Storages.Where(s => s.LockTag == billNo).Select(s => s))
-                     .AsParallel().ForAll(s=>s.AsParallel().ForAll(i=>i.LockTag = string.Empty));
-            billMaster.LockTag = string.Empty;
-            billMaster.Status = "3";
-            CellRepository.SaveChanges();
+            }
 
+            string billno = billMaster.BillNo;
             if (billMaster.InBillDetails.Any(i => i.BillQuantity - i.AllotQuantity > 0))
             {
                 ps.State = StateType.Warning;
                 ps.Errors.Add("分配未全部完成，没有储位可分配！");
                 NotifyConnection(ps.Clone());
+                
+                InBillMasterRepository.GetObjectSet()
+                    .UpdateEntity(i => i.BillNo == billno,
+                    i => new InBillMaster() { LockTag = ""});
             }
             else
             {
                 ps.State = StateType.Info;
-                ps.Messages.Add("分配完成!");
+                ps.Messages.Add("分配完成,开始保存请稍候!");
+                NotifyConnection(ps.Clone());                
+
+                billMaster.Status = "3";
+                try
+                {
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        billMaster.LockTag = string.Empty;
+                        CellRepository.SaveChanges();
+                        ps.State = StateType.Info;
+                        ps.Messages.Clear();
+                        ps.Messages.Add("分配成功!");
+                        NotifyConnection(ps.Clone());
+                    }
+                }
+                catch (Exception e)
+                {
+                    ps.State = StateType.Error;
+                    ps.Messages.Add("保存失败，详情：" + e.Message);
+                    NotifyConnection(ps.Clone());
+                }
+                finally
+                {
+                    InBillMasterRepository.GetObjectSet()
+                        .UpdateEntity(i => i.BillNo == billno,
+                        i => new InBillMaster() { LockTag = "" });
+                }
+            }
+        }
+
+        private void Allot(InBillMaster billMaster, InBillDetail billDetail, Cell cell, Storage storage, decimal allotQuantity, ProgressState ps)
+        {
+            if (storage != null && allotQuantity > 0)
+            {
+                InBillAllot billAllot = null;
+                billDetail.AllotQuantity += allotQuantity;
+                storage.ProductCode = billDetail.ProductCode;
+                storage.LockTag = billDetail.BillNo;
+                storage.InFrozenQuantity += allotQuantity;
+
+                billAllot = new InBillAllot()
+                {
+                    BillNo = billMaster.BillNo,
+                    InBillDetailId = billDetail.ID,
+                    ProductCode = billDetail.ProductCode,
+                    CellCode = cell.CellCode,
+                    StorageCode = storage.StorageCode,
+                    UnitCode = billDetail.UnitCode,
+                    AllotQuantity = allotQuantity,
+                    RealQuantity = 0,
+                    Status = "0"
+                };
+                billMaster.InBillAllots.Add(billAllot);
+
+                decimal sumBillQuantity = billMaster.InBillDetails.Sum(d => d.BillQuantity);
+                decimal sumAllotQuantity = billMaster.InBillDetails.Sum(d => d.AllotQuantity);
+
+                decimal sumBillProductQuantity = billMaster.InBillDetails.Where(d => d.ProductCode == billDetail.ProductCode)
+                                                                         .Sum(d => d.BillQuantity);
+                decimal sumAllotProductQuantity = billMaster.InBillDetails.Where(d => d.ProductCode == billDetail.ProductCode)
+                                                                          .Sum(d => d.AllotQuantity);
+
+                ps.State = StateType.Processing;
+                ps.TotalProgressName = "分配入库单：" + billMaster.BillNo;
+                ps.TotalProgressValue = (int)(sumAllotQuantity / sumBillQuantity * 100);
+                ps.CurrentProgressName = "分配卷烟：" + billDetail.Product.ProductName;
+                ps.CurrentProgressValue = (int)(sumAllotProductQuantity / sumBillProductQuantity * 100);
                 NotifyConnection(ps.Clone());
             }
         }
@@ -212,16 +294,27 @@ namespace THOK.Wms.SignalR.Allot.Service
         {
             foreach (var c in cs)
             {
-                if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                lock (c)
                 {
-                    decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
-                    decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
-                        / billDetail.Product.Unit.Count)
-                        * billDetail.Product.Unit.Count;
-                    allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                    Allot(billMaster, billDetail, c, Locker.LockEmpty(c), allotQuantity, ps); 
+                    if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                    {
+                        decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
+                        decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
+                            / billDetail.Product.Unit.Count)
+                            * billDetail.Product.Unit.Count;
+                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+
+                        var targetStorage = Locker.LockStorage(c);
+                        if (targetStorage != null
+                            && targetStorage.Quantity == 0
+                            && targetStorage.InFrozenQuantity == 0)
+                        {
+                            Allot(billMaster, billDetail, c, targetStorage, allotQuantity, ps);
+                            Locker.UnLockStorage(targetStorage);
+                        }
+                    }
+                    else break;
                 }
-                else break;
             }
         }
 
@@ -230,14 +323,25 @@ namespace THOK.Wms.SignalR.Allot.Service
         {
             foreach (var c in cs)
             {
-                if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                lock (c)
                 {
-                    decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
-                    decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
-                    allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
-                    Allot(billMaster, billDetail, c, Locker.LockEmpty(c), allotQuantity, ps); 
+                    if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                    {
+                        decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
+                        decimal billQuantity = billDetail.BillQuantity - billDetail.AllotQuantity;
+                        allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+
+                        var targetStorage = Locker.LockStorage(c);
+                        if (targetStorage != null
+                            && targetStorage.Quantity == 0
+                            && targetStorage.InFrozenQuantity == 0)
+                        {
+                            Allot(billMaster, billDetail, c, targetStorage, allotQuantity, ps);
+                            Locker.UnLockStorage(targetStorage);
+                        }
+                    }
+                    else break;
                 }
-                else break;
             }
         }
 
@@ -246,37 +350,59 @@ namespace THOK.Wms.SignalR.Allot.Service
         {
             foreach (var c in cs)
             {
-                if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                lock (c)
                 {
-                    decimal billQuantity = (billDetail.BillQuantity - billDetail.AllotQuantity) % billDetail.Product.Unit.Count;
-                    if (billQuantity > 0)
+                    if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
                     {
-                        Allot(billMaster, billDetail, c, Locker.LockBar(c, billDetail.Product), billQuantity, ps);
+                        decimal billQuantity = (billDetail.BillQuantity - billDetail.AllotQuantity) % billDetail.Product.Unit.Count;
+                        if (billQuantity > 0)
+                        {
+                            var targetStorage = Locker.LockStorage(c);
+                            if (targetStorage != null
+                                && (string.IsNullOrEmpty(targetStorage.ProductCode)
+                                || targetStorage.ProductCode == billDetail.ProductCode
+                                || (targetStorage.Quantity == 0
+                                    && targetStorage.InFrozenQuantity == 0)))
+                            {
+                                Allot(billMaster, billDetail, c, targetStorage, billQuantity, ps);
+                                Locker.UnLockStorage(targetStorage);
+                            }
+                        }
+                        else break;
                     }
                     else break;
                 }
-                else break;
             }
         }
 
         //分配整盘
         private void AllotPallet(InBillMaster billMaster, InBillDetail billDetail, IEnumerable<Cell> cs, CancellationToken cancellationToken, ProgressState ps)
-        {       
+        {
             foreach (var c in cs)
             {
-                if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
+                lock (c)
                 {
-                    decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
-                    decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
-                        / billDetail.Product.Unit.Count)
-                        * billDetail.Product.Unit.Count;
-                    if (billQuantity >= allotQuantity)
+                    if (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
                     {
-                        Allot(billMaster, billDetail, c, Locker.LockEmpty(c), allotQuantity, ps);
+                        decimal allotQuantity = c.MaxQuantity * billDetail.Product.Unit.Count;
+                        decimal billQuantity = Math.Floor((billDetail.BillQuantity - billDetail.AllotQuantity)
+                            / billDetail.Product.Unit.Count)
+                            * billDetail.Product.Unit.Count;
+                        if (billQuantity >= allotQuantity)
+                        {
+                            var targetStorage = Locker.LockStorage(c);
+                            if (targetStorage != null
+                                && targetStorage.Quantity == 0
+                                && targetStorage.InFrozenQuantity == 0)
+                            {
+                                Allot(billMaster, billDetail, c,targetStorage, allotQuantity, ps);
+                                Locker.UnLockStorage(targetStorage);
+                            }
+                        }
+                        else break;
                     }
                     else break;
                 }
-                else break;
             }
         }
 
@@ -312,7 +438,7 @@ namespace THOK.Wms.SignalR.Allot.Service
                 {
                     billMaster.LockTag = ConnectionId;
                     InBillMasterRepository.SaveChanges();
-                    ps.Messages.Add("完成锁定当前订单");
+                    ps.Messages.Add("锁定当前订单成功！");
                     NotifyConnection(ps.Clone());
                     return true;
                 }
@@ -324,48 +450,6 @@ namespace THOK.Wms.SignalR.Allot.Service
                     return false;
                 }
             }
-        }
-
-        private void Allot(InBillMaster billMaster, InBillDetail billDetail, Cell cell, Storage storage, decimal allotQuantity,ProgressState ps)
-        {
-            if (storage != null && allotQuantity > 0)
-            {
-                InBillAllot billAllot = null;
-                billDetail.AllotQuantity += allotQuantity;                
-                storage.ProductCode = billDetail.ProductCode;
-                storage.LockTag = billDetail.BillNo;
-                storage.InFrozenQuantity += allotQuantity;
-
-                billAllot = new InBillAllot()
-                {
-                    BillNo = billMaster.BillNo,
-                    InBillDetailId = billDetail.ID,
-                    ProductCode = billDetail.ProductCode,
-                    CellCode = cell.CellCode,
-                    StorageCode = storage.StorageCode,
-                    UnitCode = billDetail.UnitCode,
-                    AllotQuantity = allotQuantity,
-                    RealQuantity = 0,
-                    Status = "0"
-                };
-                billMaster.InBillAllots.Add(billAllot);
-                StorageRepository.SaveChanges();
-
-                decimal sumBillQuantity = billMaster.InBillDetails.Sum(d => d.BillQuantity);
-                decimal sumAllotQuantity = billMaster.InBillDetails.Sum(d => d.AllotQuantity);
-
-                decimal sumBillProductQuantity = billMaster.InBillDetails.Where(d => d.ProductCode == billDetail.ProductCode)
-                                                                         .Sum(d => d.BillQuantity);
-                decimal sumAllotProductQuantity = billMaster.InBillDetails.Where(d => d.ProductCode == billDetail.ProductCode)
-                                                                          .Sum(d => d.AllotQuantity);
-
-                ps.State = StateType.Processing;
-                ps.TotalProgressName = "分配入库单：" + billMaster.BillNo;
-                ps.TotalProgressValue = (int)(sumAllotQuantity / sumBillQuantity * 100);
-                ps.CurrentProgressName = "分配卷烟：" + billDetail.Product.ProductName;
-                ps.CurrentProgressValue = (int)(sumAllotProductQuantity / sumBillProductQuantity * 100);
-                NotifyConnection(ps.Clone());
-            }
-        }
+        }        
     }
 }

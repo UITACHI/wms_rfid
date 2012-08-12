@@ -31,10 +31,13 @@ namespace Authority.Controllers.Wms.ComplexSearch
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string BillNo = collection["BillNo"] ?? "";
-            string BillDate = collection["BillDate"] ?? "";
-            string OperatePersonCode = collection["OperatePersonCode"] ?? "";
-            string Status = collection["Status"] ?? "";
-            var checkBillMaster = StockCheckSearchService.GetDetails(page, rows, BillNo, BillDate, OperatePersonCode, Status);
+            string WarehouseCode = collection["WarehouseCode"] ?? "";
+            string BeginDate = collection["BeginDate"] ?? "";
+            string EndDate = collection["EndDate"] ?? "";
+            string OperatePersonCode = collection["OperatePerson"] ?? "";
+            string CheckPersonCode = collection["CheckPerson"] ?? "";
+            string Operate_Status = collection["Operate_Status"] ?? "";
+            var checkBillMaster = StockCheckSearchService.GetDetails(page, rows, BillNo, WarehouseCode, BeginDate, EndDate, OperatePersonCode, CheckPersonCode, Operate_Status);
             return Json(checkBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
         //

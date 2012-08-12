@@ -36,5 +36,10 @@ namespace THOK.Wms.Bll.Interfaces
 
         object GetCellCode(string productCode);
 
+        object GetSortCell(string areaType);
+
+        object GetCellCheck(string productCode);
+
+        bool DeleteCell(string productCodes);
     }
 }

@@ -15,13 +15,14 @@
 
     function enterSave() {
         var ware="", area="", shelf="", cell="";
-        var roots = $('#productTree').tree('getRoots');
+        var roots = $('#productTree').tree('getRoots'); //根节点集合
         var areaChildren, shelfChildren, cellChildren;
         //仓库
         for (i = 0; i < roots.length; i++) {
             if (roots[i].attributes == "ware" && roots[i].checked == true) {
                 ware += roots[i].id + ",";
-            } else {
+            }
+            else {
                 areaChildren = $('#productTree').tree('getChildren', roots[i].target);
                 //库区
                 for (j = 0; j < areaChildren.length; j++) {
@@ -39,6 +40,7 @@
                                 for (k = 0; k < cellChildren.length; k++) {
                                     if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
                                         cell += cellChildren[k].id + ",";
+                                        }
                                     }
                                 }
                             }
@@ -47,12 +49,16 @@
                 }
             }
         }
-        if ((ware != "" || area != "" || shelf != "" || cell != "") && ($('#productCode').val() != "")) {
+        if ($('#productCode').val() != "") {
             $.getJSON('/DefaultProductSet/CellInsertCode/?wareCodes=' + ware + '&areaCodes=' + area + '&shelfCodes=' + shelf + '&cellCodes=' + cell + '&defaultProductCode=' + $("#productCode").val(), function (json) {
                 if (json) {
                     if (json.success) {
                         $.messager.show({ title: '成功', msg: json.msg });
                         $('#details').datagrid('reload');
+                        $("#productCode").attr("value", "");
+                        $("#productName").attr("value", "");
+                        $('#dlg').dialog('close'); 
+
                     } else {
                         $.messager.show({ title: '错误', msg: result.msg });
                         $('#details').datagrid('reload');
@@ -64,7 +70,7 @@
             });
         }
         else {
-            $.messager.show({ title: '系统提示', msg: '失败！无法获取信息！' });
+            $.messager.show({ title: '系统提示', msg: '失败！输入的信息不完整！' });
         }
     }
     

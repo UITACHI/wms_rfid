@@ -4,30 +4,30 @@
         if (row) {
             DataLoad();
             billno = row.BillNo;
-            isInBillMasterSaved = false;
-            isInBillMasterCanEdit = true;
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法编辑！');
             } else {
+            isInBillMasterAdd = false;
+            isShowInBillDetail = true;
             $('#dlg').dialog('open').dialog('setTitle', '编辑入库主单信息');
             $('#fm').form('load', row);
             $('#inBillDetail').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + row.BillNo });
             $('#fm .easyui-validatebox').validatebox({
                 required: true
             });
-            if (row.IsActive == '可用') {
-                $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
-            } else {
-                $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
-            }
+//            if (row.IsActive == '可用') {
+//                $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
+//            } else {
+//                $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
+//            }
             $('form input').removeAttr("disabled");
             $('form textarea').removeAttr("disabled");
             $('#btnAddBillDetail').css('display', 'inline'); //设置新增明细按钮的可见性
             $('#btnDeleteBillDetail').css('display', 'inline'); //设置删除明细按钮的可见性
             $('#btnEditBillDetail').css('display', 'inline'); //设置修改明细按钮的可见性
-            $('#cc').combo({
-                hasDownArrow: true
-            });
+//            $('#cc').combo({
+//                hasDownArrow: true
+//            });
             url = '/StockInBill/Edit/';
             detailUrl = '/StockInBill/InBillDetailEdit/';
         }

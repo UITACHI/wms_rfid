@@ -29,7 +29,7 @@ namespace Wms
 
             routes.MapConnection<AllotStockInConnection>("allotStockIn", "allotStockIn/{*operation}");
             routes.MapConnection<AllotStockOutConnection>("allotStockOut", "allotStockOut/{*operation}");
-
+            routes.MapConnection<DispatchSortWorkConnection>("allotSortWork", "allotSortWork/{*operation}");
             routes.MapRoute(
                 "Default", // 路由名称
                 "{controller}/{action}/{SystemID}", // 带有参数的 URL

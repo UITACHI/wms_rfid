@@ -2,11 +2,11 @@
     function antitrialClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
-            isInBillMasterSaved = false;
-            isInBillMasterCanEdit = true;
             if (row.Status != "已审核") {
                 $.messager.confirm('错误', '该记录的状态不是已审核无法反审！');
             } else {
+                isInBillMasterAdd = false;
+                isShowInBillDetail = true;
                 $('#dlg').dialog('open').dialog('setTitle', '反审入库单据信息');
                 $('#fm').form('load', row);
                 $('#inBillDetail').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + row.BillNo });

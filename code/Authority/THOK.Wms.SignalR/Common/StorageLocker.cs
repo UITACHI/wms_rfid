@@ -114,29 +114,22 @@ namespace THOK.Wms.SignalR.Common
 
         public Storage LockNoEmptyStorage(Storage storage, Product product)
         {
-            var cell = storage.Cell;
-            if (Lock(cell))
+            try
             {
-                try
+                if (storage != null
+                    && string.IsNullOrEmpty(storage.LockTag)
+                    && storage.ProductCode == product.ProductCode
+                    && storage.Quantity - storage.OutFrozenQuantity > 0)
                 {
-                    if (storage != null
-                        && storage.ProductCode == product.ProductCode
-                        && storage.Quantity - storage.OutFrozenQuantity > 0)
-                    {
-                        storage.LockTag = this.LockKey;
-                        StorageRepository.SaveChanges();
-                    }
-                    else
-                        storage = null;
+                    return storage;
                 }
-                catch (Exception)
-                {
-                    if (storage != null) { StorageRepository.Detach(storage); }
-                    storage = null;
-                }
+                else
+                    return null;
             }
-            UnLock(cell);
-            return storage;
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public Storage LockBar(Cell cell, Product product)
@@ -235,22 +228,12 @@ namespace THOK.Wms.SignalR.Common
             var cell = storage.Cell;
             if (Lock(cell))
             {
-                if (string.IsNullOrEmpty(storage.LockTag))
+                if (string.IsNullOrEmpty(storage.LockTag) && storage.ProductCode == product.ProductCode)
                 {
                     try
                     {
-                        if (cell.Storages.Count == 1)
-                        {
-                            storage = cell.Storages.Where(s => s.ProductCode == product.ProductCode)
-                                                   .FirstOrDefault();
-                            if (storage != null)
-                            {
-                                if (string.IsNullOrEmpty(storage.LockTag)) { storage.LockTag = this.LockKey; }
-                                else storage = null;
-                            }
-
-                            StorageRepository.SaveChanges();
-                        }
+                        storage.LockTag = this.LockKey;
+                        StorageRepository.SaveChanges();
                     }
                     catch (Exception)
                     {
@@ -304,6 +287,153 @@ namespace THOK.Wms.SignalR.Common
             catch (Exception)
             {
                 CellRepository.Detach(cell);
+            }
+        }
+
+        public bool Lock(Storage[] storages)
+        {
+            if (storages.All(s => string.IsNullOrEmpty(s.LockTag)))
+            {
+                try
+                {
+                    storages.AsParallel().ForAll(s => s.LockTag = this.LockKey);
+                    StorageRepository.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void UnLock(Storage[] storages)
+        {
+            try
+            {
+                storages.AsParallel().ForAll(s => s.LockTag = string.Empty);
+                StorageRepository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
+        public bool Lock(Cell[] cells)
+        {
+            if (cells.All(c => string.IsNullOrEmpty(c.LockTag)))
+            {
+                try
+                {
+                    cells.AsParallel().ForAll(c => c.LockTag = this.LockKey);
+                    StorageRepository.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void UnLock(Cell[] cells)
+        {
+            try
+            {
+                cells.AsParallel().ForAll(c => c.LockTag = string.Empty);
+                CellRepository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
+        public Storage LockStorage(Cell cell)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(cell.LockTag))
+                {
+                    Storage storage = null;
+                    if (cell.Storages.Any())
+                    {                        
+                        if (cell.IsSingle == "1")
+                        {
+                            storage = cell.Storages.Single();
+                            if (string.IsNullOrEmpty(storage.LockTag))
+                            {
+                                return storage;
+                            }
+                            else
+                                return null;
+                        }
+                        else
+                        {
+                            storage = cell.Storages.FirstOrDefault(s=>string.IsNullOrEmpty(s.LockTag)
+                                                                      && s.Quantity == 0
+                                                                      && s.InFrozenQuantity == 0);
+
+                            if (storage != null)
+                            {
+                                return storage;
+                            }
+                            else if (cell.Storages.Count < cell.MaxPalletQuantity)
+                            {
+                                storage = new Storage()
+                                {
+                                    StorageCode = Guid.NewGuid().ToString(),
+                                    CellCode = cell.CellCode,
+                                    IsLock = "0",
+                                    IsActive = "0",
+                                    StorageTime = DateTime.Now,
+                                    UpdateTime = DateTime.Now
+                                };
+                                cell.Storages.Add(storage);
+                                return storage;
+                            }
+                            else
+                                return null;
+                        }
+                    }
+                    else
+                    {
+                        storage = new Storage()
+                        {
+                            StorageCode = Guid.NewGuid().ToString(),
+                            CellCode = cell.CellCode,
+                            IsLock = "0",
+                            IsActive = "0",
+                            StorageTime = DateTime.Now,
+                            UpdateTime = DateTime.Now
+                        };
+                        cell.Storages.Add(storage);
+                        return storage;
+                    }
+                }
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public void UnLockStorage(Storage storage)
+        {
+            if (storage.LockTag == this.LockKey)
+            {
+                storage.LockTag = string.Empty;
             }
         }
     }

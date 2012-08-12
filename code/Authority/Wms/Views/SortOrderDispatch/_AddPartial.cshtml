@@ -15,7 +15,7 @@
             $('#sortingOrderAllot').datagrid({ url: '/SortingOrder/GetOrderMaster/?orderDate=' + orderDate }); //加载线路分配信息
             $('#checkQuantitySum').text(0);
         } else {
-            $.messager.confirm('错误', '请选择需要查询的时间！');
+            $.messager.alert('错误', '请选择需要查询的时间！');
         }
     }
 
@@ -40,30 +40,24 @@
                 for (var i = 0; i < rows.length; i++) {
                     deliverLineCode += rows[i].DeliverLineCode + ",";
                 }
-                $.getJSON('/SortOrderDispatch/Create/', { SortingLineCode: sortlineCode, DeliverLineCodes: deliverLineCode }, function (json) {
-                    if (json) {
-                        if (json.success) {
-                            $.messager.show({
-                                title: '成功',
-                                msg: json.msg
-                            });
+                $.getJSON('/SortOrderDispatch/Create/', { SortingLineCode: sortlineCode, DeliverLineCodes: deliverLineCode }, function (result) {
+                    if (result) {
+                        if (result.success) {
+                            $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                             $('#dlg').dialog('close');
                             $('#details').datagrid('reload');
                         } else {
-                            $.messager.show({
-                                title: '错误',
-                                msg: json.msg
-                            });
+                            $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                             $('#dlg').dialog('close');
                             $('#details').datagrid('reload');
                         }
                     }
                 });
             } else {
-                $.messager.confirm('错误', '请选择需要分配的线路！');
+                $.messager.alert('错误', '请选择需要分配的线路！');
             }
         } else {
-            $.messager.confirm('错误', '请选择分拣线！');
+            $.messager.alert('错误', '请选择分拣线！');
         }
     }
 

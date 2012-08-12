@@ -3,10 +3,11 @@
     function deleteClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
-            isInBillMasterCanEdit = true;
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
             } else {
+                isInBillMasterAdd = false;
+                isShowInBillDetail = true;
                 $('#dlg').dialog('open').dialog('setTitle', '删除入库主单信息');
                 $('#inBillDetail').datagrid({ url: '/StockInBill/InBillDetails/?BillNo=' + row.BillNo });
                 $('#fm .easyui-validatebox').validatebox({
@@ -17,15 +18,15 @@
                 $('#btnAddBillDetail').css('display', 'none'); //设置新增明细按钮的可见性
                 $('#btnDeleteBillDetail').css('display', 'none'); //设置删除明细按钮的可见性
                 $('#btnEditBillDetail').css('display', 'none'); //设置修改明细按钮的可见性
-                $('#cc').combo({
-                    hasDownArrow: false
-                });
+//                $('#cc').combo({
+//                    hasDownArrow: false
+//                });
                 $('#fm').form('load', row);
-                if (row.IsActive == '可用') {
-                    $('#cc').combo('setValue', true).combo('setText', row.IsActive);
-                } else {
-                    $('#cc').combo('setValue', false).combo('setText', row.IsActive);
-                }
+//                if (row.IsActive == '可用') {
+//                    $('#cc').combo('setValue', true).combo('setText', row.IsActive);
+//                } else {
+//                    $('#cc').combo('setValue', false).combo('setText', row.IsActive);
+//                }
                 url = '/StockInBill/Delete/?BillNo=' + row.BillNo;
             }
         } else {

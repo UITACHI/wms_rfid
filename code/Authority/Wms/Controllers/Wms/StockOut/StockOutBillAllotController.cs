@@ -59,5 +59,13 @@ namespace Authority.Controllers.Wms.StockOut
             string msg = bResult ? "取消分配成功" : "取消分配失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult AllotAdd(string billNo, long id, string productCode, string cellCode, int allotQuantity)
+        {
+            string strResult = string.Empty;
+            bool bResult = OutBillAllotService.AllotAdd(billNo, id, productCode, cellCode, allotQuantity, out strResult);
+            string msg = bResult ? "添加分配成功" : "添加分配失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }

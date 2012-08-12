@@ -8,7 +8,7 @@ namespace THOK.Wms.Bll.Interfaces
 {
     public interface IInBillMasterService:IService<InBillMaster>
     {
-        object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive);
+        object GetDetails(int page, int rows, string BillNo, string WareHouseCode,string BeginDate,string EndDate, string OperatePersonCode,string CheckPersonCode,string Status, string IsActive);
 
         bool Add(InBillMaster inBillMaster, string userName);
 

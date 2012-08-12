@@ -2,6 +2,7 @@
 function editClick() {
     var row = $('#details').datagrid('getSelected');
     if (row) {
+        addLoad();
         $('#dlg').dialog('open').dialog('setTitle', '编辑');
         $('#sortingLinefm').form('load', row);
         $('#sortingLinefm .easyui-validatebox').validatebox({
@@ -27,7 +28,7 @@ function editClick() {
         $('form textarea').removeAttr("disabled");        
         url = '/SortingLine/Edit/';
     } else {
-        $.messager.confirm('错误', '没有选择行！');
+        $.messager.alert('错误', '没有选择行！');
     }
 };
 </script>

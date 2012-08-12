@@ -48,22 +48,40 @@ namespace THOK.Wms.Bll.Service
             return statusStr;
         }
 
-        public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status)
+        public object GetDetails(int page, int rows, string BillNo, string WarehouseCode, string BeginDate, string EndDate, string OperatePersonCode, string CheckPersonCode, string Operate_Status)
         {
             IQueryable<MoveBillMaster> StockMoveQuery = StockMoveSearchRepository.GetQueryable();
-            var StockMoveSearch = StockMoveQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+            var StockMoveSearch = StockMoveQuery.Where(i => i.BillNo.Contains(BillNo)
+                                                         && i.WarehouseCode.Contains(WarehouseCode)
+                                                         && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
+                                                         //&& i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
+                                                         && i.Status.Contains(Operate_Status))
+                                                .OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                                                {
+                                                    i.BillNo,
+                                                    i.Warehouse.WarehouseName,
+                                                    BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
+                                                    OperatePersonName = i.OperatePerson.EmployeeName,
+                                                    i.OperatePersonID,
+                                                    Status = WhatStatus(i.Status),
+                                                    VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
+                                                    VerifyDate = (i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss")),
+                                                    Description = i.Description,
+                                                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                                                });
+
+            if (!BeginDate.Equals(string.Empty))
             {
-                i.BillNo,
-                i.Warehouse.WarehouseName,
-                BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
-                OperatePersonName = i.OperatePerson.EmployeeName,
-                i.OperatePersonID,
-                Status = WhatStatus(i.Status),
-                VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                VerifyDate = (i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss")),
-                Description = i.Description,
-                UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
-            });
+                DateTime begin = Convert.ToDateTime(BeginDate);
+                StockMoveSearch = StockMoveSearch.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
+            }
+
+            if (!EndDate.Equals(string.Empty))
+            {
+                DateTime end = Convert.ToDateTime(EndDate);
+                StockMoveSearch = StockMoveSearch.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+            }
+
             int total = StockMoveSearch.Count();
             StockMoveSearch = StockMoveSearch.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = StockMoveSearch.ToArray() };

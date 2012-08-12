@@ -40,11 +40,13 @@ namespace Authority.Controllers.Wms.StockMove
         public ActionResult Details(int page, int rows, FormCollection collection)
         {
             string BillNo = collection["BillNo"] ?? "";
-            string BillDate = collection["BillDate"] ?? "";
+            string WareHouseCode = collection["WareHouseCode"] ?? "";
+            string beginDate = collection["beginDate"] ?? "";
+            string endDate = collection["endDate"] ?? "";
             string OperatePersonCode = collection["OperatePersonCode"] ?? "";
             string Status = collection["Status"] ?? "";
             string IsActive = collection["IsActive"] ?? "";
-            var moveBillMaster = MoveBillMasterService.GetDetails(page, rows, BillNo, BillDate, OperatePersonCode, Status, IsActive);
+            var moveBillMaster = MoveBillMasterService.GetDetails(page, rows, BillNo, WareHouseCode, beginDate, endDate, OperatePersonCode, Status, IsActive);
             return Json(moveBillMaster, "text", JsonRequestBehavior.AllowGet);
         }
 

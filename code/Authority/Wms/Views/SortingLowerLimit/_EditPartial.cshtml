@@ -19,7 +19,7 @@ function editClick() {
         $('form textarea').removeAttr("disabled");    
         url = '/SortingLowerLimit/Edit/';
     } else {
-        $.messager.confirm('错误', '没有选择行！');
+        $.messager.alert('错误', '没有选择行！');
     }
 };
 </script>

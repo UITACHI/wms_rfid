@@ -121,7 +121,7 @@ namespace THOK.Wms.Bll.Service
             return true;
         }
 
-        /// <summary>修改货位 git_jun</summary>
+        /// <summary>修改货位</summary>
         public bool SaveCell(string wareCodes, string areaCodes, string shelfCodes, string cellCodes, string defaultProductCode)
         {
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
@@ -143,20 +143,32 @@ namespace THOK.Wms.Bll.Service
                 cellCodes = cellCodes.Substring(0, cellCodes.Length - 1);
             }
 
-            var cell = cellQuery.Where(c => c.Warehouse.WarehouseCode == wareCodes || c.Area.AreaCode == areaCodes || shelfCodes.Contains(c.ShelfCode) || cellCodes.Contains(c.CellCode));
+            var cell = cellQuery.Where(c => wareCodes.Contains(c.Warehouse.WarehouseCode) || areaCodes.Contains(c.Area.AreaCode) || shelfCodes.Contains(c.ShelfCode) || cellCodes.Contains(c.CellCode));
 
             foreach (var item in cell.ToArray())
             {
                 var cellSave = cellQuery.FirstOrDefault(c => c.CellCode == item.CellCode);
                 cellSave.DefaultProductCode = defaultProductCode;
-                if (cellSave != null)
-                {
-                    CellRepository.SaveChanges();
-                }
-                else
-                {
-                    return false;
-                }
+                CellRepository.SaveChanges();
+            }
+            return true;
+        }
+        /// <summary>删除货位数量的信息</summary>
+        public bool DeleteCell(string productCodes)
+        {
+            if (productCodes != string.Empty && productCodes != null)
+            {
+                productCodes = productCodes.Substring(0, productCodes.Length - 1);
+            }
+            var cell = CellRepository.GetQueryable().Where(c => productCodes.Contains(c.DefaultProductCode));
+
+            foreach (var item in cell.ToArray())
+            {
+
+                var cellSave = CellRepository.GetQueryable().FirstOrDefault(c => c.DefaultProductCode == item.DefaultProductCode);
+                cellSave.Product = null;
+                cellSave.DefaultProductCode = null;
+                CellRepository.SaveChanges();
             }
             return true;
         }
@@ -196,6 +208,75 @@ namespace THOK.Wms.Bll.Service
             var cellInfo = cellQuery.Where(c1 => c1.DefaultProductCode == productCode);
             return cellInfo;
         }
+        /// <summary>编辑储位货位树形菜单</summary>
+        public object GetCellCheck(string productCode)
+        {
+            var warehouses = WarehouseRepository.GetQueryable().AsEnumerable();
+            HashSet<Tree> wareSet = new HashSet<Tree>();
+
+            foreach (var warehouse in warehouses)//仓库
+            {
+                Tree wareTree = new Tree();
+                wareTree.id = warehouse.WarehouseCode;
+                wareTree.text = "仓库：" + warehouse.WarehouseName;
+                wareTree.state = "open";
+                wareTree.attributes = "ware";
+
+                var areas = AreaRepository.GetQueryable().Where(a => a.Warehouse.WarehouseCode == warehouse.WarehouseCode)
+                                                         .OrderBy(a => a.AreaCode).Select(a => a);
+                HashSet<Tree> areaSet = new HashSet<Tree>();
+                foreach (var area in areas)//库区
+                {
+                    Tree areaTree = new Tree();
+                    areaTree.id = area.AreaCode;
+                    areaTree.text = "库区：" + area.AreaName;
+                    areaTree.state = "open";
+                    areaTree.attributes = "area";
+
+                    var shelfs = ShelfRepository.GetQueryable().Where(s => s.Area.AreaCode == area.AreaCode)
+                                                               .OrderBy(s => s.ShelfCode).Select(s => s);
+                    HashSet<Tree> shelfSet = new HashSet<Tree>();
+                    foreach (var shelf in shelfs)//货架
+                    {
+                        Tree shelfTree = new Tree();
+                        shelfTree.id = shelf.ShelfCode;
+                        shelfTree.text = "货架：" + shelf.ShelfName;
+                        shelfTree.state = "open";
+                        shelfTree.attributes = "shelf";
+
+                        var cells = CellRepository.GetQueryable().Where(c => c.Shelf.ShelfCode == shelf.ShelfCode)
+                                                                .OrderBy(c => c.CellCode).Select(c => c);
+                        HashSet<Tree> cellSet = new HashSet<Tree>();
+                        foreach (var cell in cells)
+                        {
+                            Tree cellTree = new Tree();
+                            cellTree.id = cell.CellCode;
+                            cellTree.text = "货位" + cell.CellName;
+                            if (cell.DefaultProductCode == productCode)
+                            {
+                                cellTree.@checked = true;
+                                //shelfTree.state = "open";
+                            }
+                            else
+                            {
+                                cellTree.@checked = false;
+                                shelfTree.state = "closed";
+                            }
+                            cellTree.attributes = "cell";
+                            cellSet.Add(cellTree);
+                        }
+                        shelfTree.children = cellSet.ToArray();
+                        shelfSet.Add(shelfTree);
+                    }
+                    areaTree.children = shelfSet.ToArray();
+                    areaSet.Add(areaTree);
+                }
+                wareTree.children = areaSet.ToArray();
+                wareSet.Add(wareTree);
+            }
+            return wareSet.ToArray();
+        }
+
 
         /// <summary>
         /// 盘点时用的树形结构数据，可根据货架Code查询
@@ -455,17 +536,25 @@ namespace THOK.Wms.Bll.Service
                 var cells = CellRepository.GetQueryable().Where(c => c.CellCode == c.CellCode);
                 if (inOrOut == "out")// 查询出可以移出卷烟的货位
                 {
-                    var storages = StorageRepository.GetQueryable().Where(s => s.Quantity > 0 && string.IsNullOrEmpty(s.Cell.LockTag)).Select(s => s.CellCode);
+                    var storages = StorageRepository.GetQueryable().Where(s => (s.Quantity - s.OutFrozenQuantity) > 0 && string.IsNullOrEmpty(s.Cell.LockTag)).Select(s => s.CellCode);
                     cells = cells.Where(c => c.Shelf.ShelfCode == shelfCode && storages.Any(s => s == c.CellCode))
                                                          .OrderBy(s => s.CellCode);
                 }
-                else//查询出可以移入卷烟的货位
+                else if(inOrOut=="in")//查询出可以移入卷烟的货位
                 {
                     var storages = StorageRepository.GetQueryable().Where(s => s.Quantity == 0
-                        || (s.Cell.IsSingle == "1" && s.ProductCode == productCode && s.Quantity < s.Cell.MaxQuantity*s.Product.Unit.Count)
+                        || (s.Cell.IsSingle == "1" && s.ProductCode == productCode && ((s.Cell.MaxQuantity*s.Product.Unit.Count)-s.InFrozenQuantity-s.Quantity)>0)
                         || (s.Cell.IsSingle == "0" && string.IsNullOrEmpty(s.Cell.LockTag))).Select(s => s.CellCode);
-                    cells = cells.Where(c => c.Shelf.ShelfCode == shelfCode)
+                    cells = cells.Where(c => c.Shelf.ShelfCode == shelfCode && storages.Any(s => s == c.CellCode))
                                                          .OrderBy(c => c.CellCode).Select(c => c);
+                }
+                else if (inOrOut == "stockOut")//查询可以出库的数量 --出库使用
+                {
+                    var storages = StorageRepository.GetQueryable().Where(s => (s.Quantity - s.OutFrozenQuantity) > 0 
+                                                                    && string.IsNullOrEmpty(s.Cell.LockTag) 
+                                                                    && s.ProductCode == productCode)
+                                                                    .Select(s => s.CellCode);
+                    cells = cells.Where(c => c.Shelf.ShelfCode == shelfCode && storages.Any(s => s == c.CellCode)).OrderBy(c => c.CellCode);
                 }
                 foreach (var cell in cells)//货位
                 {
@@ -481,6 +570,57 @@ namespace THOK.Wms.Bll.Service
             return wareSet.ToArray();
         }
 
+        /// <summary>
+        /// 查询库区，用于分拣设置货位
+        /// </summary>
+        /// <param name="areaType">库区类型</param>
+        /// <returns></returns>
+        public object GetSortCell(string areaType)
+        {
+            var areas = AreaRepository.GetQueryable().Where(a => a.AreaType == areaType)
+                                                     .OrderBy(a => a.AreaCode).Select(a => a);
+            HashSet<Tree> areaSet = new HashSet<Tree>();
+            foreach (var area in areas)//库区
+            {
+                Tree areaTree = new Tree();
+                areaTree.id = area.AreaCode;
+                areaTree.text = "库区：" + area.AreaName;
+                areaTree.state = "open";
+                areaTree.attributes = "area";
+
+                var shelfs = ShelfRepository.GetQueryable().Where(s => s.Area.AreaCode == area.AreaCode)
+                                                           .OrderBy(s => s.ShelfCode).Select(s => s);
+                HashSet<Tree> shelfSet = new HashSet<Tree>();
+                foreach (var shelf in shelfs)//货架
+                {
+                    Tree shelfTree = new Tree();
+                    shelfTree.id = shelf.ShelfCode;
+                    shelfTree.text = "货架：" + shelf.ShelfName;
+                    shelfTree.attributes = "shelf";
+
+
+                    var cells = CellRepository.GetQueryable().Where(c => c.Shelf.ShelfCode == shelf.ShelfCode)
+                                                             .OrderBy(c => c.CellCode).Select(c => c);
+                    HashSet<Tree> cellSet = new HashSet<Tree>();
+                    foreach (var cell in cells)//货位
+                    {
+                        Tree cellTree = new Tree();
+                        cellTree.id = cell.CellCode;
+                        cellTree.text = cell.CellName;
+                        cellTree.state = "open";
+                        cellTree.attributes = "cell";
+                        cellSet.Add(cellTree);
+                    }
+                    shelfTree.children = cellSet.ToArray();
+                    shelfSet.Add(shelfTree);
+                }
+                areaTree.children = shelfSet.ToArray();
+                areaSet.Add(areaTree);
+            }
+            return areaSet.ToArray();
+        }
+
         #endregion
+
     }
 }

@@ -26,8 +26,14 @@ namespace THOK.Wms.SignalR
 
         public void NotifyConnection(object message)
         {
-            var context = GlobalHost.ConnectionManager.GetConnectionContext<TPersistentConnection>();
-            context.Connection.Send(ConnectionId, message);
+            try
+            {
+                var context = GlobalHost.ConnectionManager.GetConnectionContext<TPersistentConnection>();
+                context.Connection.Send(ConnectionId, message);
+            }
+            catch (System.Exception)
+            {
+            }
         }
     }
 }

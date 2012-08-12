@@ -74,31 +74,8 @@ namespace THOK.Wms.Bll.Service
         public object GetDetails(int page, int rows, string BillNo, string beginDate, string endDate, string OperatePersonCode, string Status, string IsActive)
         {
             IQueryable<CheckBillMaster> CheckBillMasterQuery = CheckBillMasterRepository.GetQueryable();
-            var checkBillMasters = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeName.Contains(OperatePersonCode));
-            if (!beginDate.Equals(string.Empty))
-            {
-                DateTime begin = Convert.ToDateTime(beginDate);
-                checkBillMasters = checkBillMasters.Where(i => i.BillDate >= begin);
-            }
-
-            if (!endDate.Equals(string.Empty))
-            {
-                DateTime end = Convert.ToDateTime(endDate).AddDays(+1);
-                checkBillMasters = checkBillMasters.Where(i => i.BillDate <= end);
-            }
-
-            if (!Status.Equals(string.Empty))
-            {
-                checkBillMasters = checkBillMasters.Where(i => i.Status.Contains(Status) && i.Status != "6");
-            }
-
-            if (!IsActive.Equals(string.Empty))
-            {
-                checkBillMasters = checkBillMasters.Where(i => i.IsActive.Contains(IsActive));
-            }
-
-            var temp = checkBillMasters.Where(t => t.BillNo.Contains(BillNo))
-                .AsEnumerable().OrderBy(t => t.BillNo).Select(i => new
+            //var checkBillMasters = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeName.Contains(OperatePersonCode));
+            var checkBillMasters = CheckBillMasterQuery.AsEnumerable().OrderBy(t => t.BillNo).Select(i => new
             {
                 i.BillNo,
                 BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
@@ -116,10 +93,36 @@ namespace THOK.Wms.Bll.Service
                 Description = i.Description,
                 UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
             });
+            if (!BillNo.Equals(string.Empty) && BillNo != null)
+            {
+                checkBillMasters = checkBillMasters.Where(i => i.BillNo.Contains(BillNo));
+            }
+            if (!beginDate.Equals(string.Empty))
+            {
+                DateTime begin = Convert.ToDateTime(beginDate);
+                checkBillMasters = checkBillMasters.Where(i =>Convert.ToDateTime(i.BillDate) >= begin);
+            }
+            if (!endDate.Equals(string.Empty))
+            {
+                DateTime end = Convert.ToDateTime(endDate);
+                checkBillMasters = checkBillMasters.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+            }
+            if (!OperatePersonCode.Equals(string.Empty) && OperatePersonCode != null)
+            {
+                checkBillMasters = checkBillMasters.Where(i => i.OperatePersonCode.Contains(OperatePersonCode));
+            }
+            if (!Status.Equals(string.Empty))
+            {
+                checkBillMasters = checkBillMasters.Where(i => i.Status.Contains(Status) && i.Status != "6");
+            }
+            if (!IsActive.Equals(string.Empty))
+            {
+                checkBillMasters = checkBillMasters.Where(i => i.IsActive.Contains(IsActive));
+            }
 
-            int total = temp.Count();
-            temp = temp.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = temp.ToArray() };
+            int total = checkBillMasters.Count();
+            checkBillMasters = checkBillMasters.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = checkBillMasters.ToArray() };
         }
 
         public bool Add(string billNo, string wareCode)
@@ -147,6 +150,10 @@ namespace THOK.Wms.Bll.Service
             if (checkbm != null)
             {
                 //Del(OutBillDetailRepository, ibm.OutBillAllots);
+                foreach (var item in checkbm.CheckBillDetails.ToArray())
+                {
+                    item.Storage.IsLock = "0";
+                }
                 Del(CheckBillDetailRepository, checkbm.CheckBillDetails);
                 CheckBillMasterRepository.Delete(checkbm);
                 CheckBillMasterRepository.SaveChanges();
@@ -267,7 +274,7 @@ namespace THOK.Wms.Bll.Service
         /// <param name="cell">货位</param>
         /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
-        public bool CellAdd(string ware, string area, string shelf, string cell, string UserName, out string info)
+        public bool CellAdd(string ware, string area, string shelf, string cell, string UserName, string billType, out string info)
         {
             bool result = false;
             info = string.Empty;
@@ -313,7 +320,7 @@ namespace THOK.Wms.Bll.Service
                                     var check = new CheckBillMaster();
                                     check.BillNo = billNo;
                                     check.BillDate = DateTime.Now;
-                                    check.BillTypeCode = "4001";
+                                    check.BillTypeCode = billType;
                                     check.WarehouseCode = item.WarehouseCode;
                                     check.OperatePersonID = employee.ID;
                                     check.Status = "1";
@@ -343,6 +350,7 @@ namespace THOK.Wms.Bll.Service
                                         var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
                                         storage.IsLock = "1";
                                         StorageRepository.SaveChanges();
+                                        scope.Complete();
                                     }
                                     result = true;
                                 }
@@ -392,7 +400,7 @@ namespace THOK.Wms.Bll.Service
                                     var check = new CheckBillMaster();
                                     check.BillNo = billNo;
                                     check.BillDate = DateTime.Now;
-                                    check.BillTypeCode = "4001";
+                                    check.BillTypeCode = billType;
                                     check.WarehouseCode = item.WarehouseCode;
                                     check.OperatePersonID = employee.ID;
                                     check.Status = "1";
@@ -421,11 +429,11 @@ namespace THOK.Wms.Bll.Service
                                         var storage = storageQuery.FirstOrDefault(s => s.StorageCode == stor.StorageCode);
                                         storage.IsLock = "1";
                                         StorageRepository.SaveChanges();
+                                        scope.Complete();
                                     }
                                     result = true;
                                 }
                             }
-
                         }
                         #endregion
 
@@ -458,7 +466,7 @@ namespace THOK.Wms.Bll.Service
             {
                 products = products.Substring(0, products.Length - 1);
 
-                var storages = storageQuery.ToList().Where(s => products.Contains(s.Product.ProductCode) && s.Quantity > 0 && s.IsLock == "0")
+                var storages = storageQuery.ToList().Where(s => s.ProductCode != null && products.Contains(s.ProductCode) && s.Quantity > 0 && s.IsLock == "0")
                                       .OrderBy(s => s.StorageCode).AsEnumerable()
                                       .Select(s => new
                                       {
@@ -487,7 +495,7 @@ namespace THOK.Wms.Bll.Service
         /// <param name="products">产品数据</param>
         /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
-        public bool ProductAdd(string products, string UserName, out string info)
+        public bool ProductAdd(string products, string UserName, string billType, out string info)
         {
             bool result = false;
             info = string.Empty;
@@ -507,7 +515,7 @@ namespace THOK.Wms.Bll.Service
                             var warehouses = wareQuery.OrderBy(w => w.WarehouseCode);
                             foreach (var item in warehouses.ToArray())
                             {
-                                var storages = storageQuery.Where(s => products.Contains(s.Product.ProductCode) && s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
+                                var storages = storageQuery.Where(s =>s.ProductCode!=null&& products.Contains(s.ProductCode) && s.Cell.Shelf.Area.Warehouse.WarehouseCode == item.WarehouseCode && s.Quantity > 0 && s.IsLock == "0")
                                                            .OrderBy(s => s.StorageCode).AsEnumerable()
                                                            .Select(s => new
                                                             {
@@ -530,7 +538,7 @@ namespace THOK.Wms.Bll.Service
                                     var check = new CheckBillMaster();
                                     check.BillNo = billNo;
                                     check.BillDate = DateTime.Now;
-                                    check.BillTypeCode = "4001";
+                                    check.BillTypeCode = billType;
                                     check.WarehouseCode = item.WarehouseCode;
                                     check.OperatePersonID = employee.ID;
                                     check.Status = "1";
@@ -645,7 +653,7 @@ namespace THOK.Wms.Bll.Service
         /// <param name="endDate">结束时间</param>
         /// <param name="UserName">登陆用户</param>
         /// <returns></returns>
-        public bool ChangedAdd(string beginDate, string endDate, string UserName, out string info)
+        public bool ChangedAdd(string beginDate, string endDate, string UserName, string billType, out string info)
         {
             bool result = false;
             info = string.Empty;
@@ -702,7 +710,7 @@ namespace THOK.Wms.Bll.Service
                                 var check = new CheckBillMaster();
                                 check.BillNo = billNo;
                                 check.BillDate = DateTime.Now;
-                                check.BillTypeCode = "4001";
+                                check.BillTypeCode = billType;
                                 check.WarehouseCode = item.WarehouseCode;
                                 check.OperatePersonID = employee.ID;
                                 check.Status = "1";

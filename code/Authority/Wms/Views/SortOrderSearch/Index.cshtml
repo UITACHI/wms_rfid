@@ -4,7 +4,7 @@
             onClickRow: function () {
                 var row = $('#details').datagrid('getSelected');
                 if (row) {
-                    $('#infodetails').datagrid({ url: '/SortOrderSearch/InfoDetails/?OrderID=' + row.OrderID });
+                    $('#infoDetails').datagrid({ url: '/SortOrderSearch/InfoDetails/?OrderID=' + row.OrderID });
                 } else {
                     $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
                 }
@@ -36,9 +36,9 @@
         fit="true"  pagination="true" rownumbers="true">
         <thead>
             <tr>
-                <th field="OrderID" width="140" align="center">序号</th>
-                <th field="ProduceCode" width="140" align="center">商品代码</th>
-                <th field="ProduceName" width="140" align="center">商品名称</th>         
+                <th field="OrderDetailID" width="140" align="center">序号</th>
+                <th field="ProductCode" width="140" align="center">商品代码</th>
+                <th field="ProductName" width="140" align="center">商品名称</th>         
                 <th field="RealQuantity" width="140" align="center">数量</th>
                 <th field="UnitName" width="140" align="center">单位</th>
                 <th field="Price" width="140" align="center">单价</th>

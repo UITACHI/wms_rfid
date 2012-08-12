@@ -7,25 +7,27 @@
             if (row.Status != "已录入") {
                 $.messager.confirm('错误', '该记录状态不是已录入状态无法编辑！');
             } else {
+                isProfitLossBillMasterAdd = false;
+                isShowProfitLossBillDetail = true;
                 $('#dlg').dialog('open').dialog('setTitle', '编辑损益主单信息');
                 $('#fm').form('load', row);
                 $('#profitLossBillDetail').datagrid({ url: '/ProfitLossBill/ProfitLossBillDetails/?BillNo=' + row.BillNo });
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
-                if (row.IsActive == '可用') {
-                    $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
-                } else {
-                    $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
-                }
+//                if (row.IsActive == '可用') {
+//                    $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
+//                } else {
+//                    $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
+//                }
                 $('form input').removeAttr("disabled");
                 $('form textarea').removeAttr("disabled");
                 $('#btnAddBillDetail').css('display', 'inline'); //设置新增明细按钮的可见性
                 $('#btnDeleteBillDetail').css('display', 'inline'); //设置删除明细按钮的可见性
                 $('#btnEditBillDetail').css('display', 'inline'); //设置修改明细按钮的可见性
-                $('#cc').combo({
-                    hasDownArrow: true
-                });
+//                $('#cc').combo({
+//                    hasDownArrow: true
+//                });
                 url = '/ProfitLossBill/Edit/';
             }
         } else {

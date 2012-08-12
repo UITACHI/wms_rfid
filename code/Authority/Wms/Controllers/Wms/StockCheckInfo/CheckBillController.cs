@@ -37,7 +37,6 @@ namespace Authority.Controllers.Wms.StockCheckInfo
 
         //获取盘点BIllNO
         // POST: /CheckBill/GetCheckBillNo
-        [HttpPost]
         public ActionResult GetCheckBillNo()
         {
             var area = CheckBillMasterService.GetCheckBillNo();
@@ -46,30 +45,30 @@ namespace Authority.Controllers.Wms.StockCheckInfo
 
         //根据货位生成盘点单主表和细表数据
         // POST: /CheckBill/CheckCellCreate/       
-        public ActionResult CheckCellCreate(string wareCodes, string areaCodes, string shelfCodes, string cellCodes)
+        public ActionResult CheckCellCreate(string wareCodes, string areaCodes, string shelfCodes, string cellCodes,string billType)
         {
             string info = string.Empty;
-            bool bResult = CheckBillMasterService.CellAdd(wareCodes, areaCodes, shelfCodes, cellCodes,this.User.Identity.Name.ToString(),out info);
+            bool bResult = CheckBillMasterService.CellAdd(wareCodes, areaCodes, shelfCodes, cellCodes,this.User.Identity.Name.ToString(),billType, out info);
             string msg = bResult ? "新增成功" : "新增失败";            
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, info), "text", JsonRequestBehavior.AllowGet);
         }
 
         //根据产品生成盘点单主表和细表数据
         // POST: /CheckBill/CheckProductCreate/       
-        public ActionResult CheckProductCreate(string products)
+        public ActionResult CheckProductCreate(string products,string billType)
         {
             string info = string.Empty;
-            bool bResult = CheckBillMasterService.ProductAdd(products, this.User.Identity.Name.ToString(), out info);
+            bool bResult = CheckBillMasterService.ProductAdd(products, this.User.Identity.Name.ToString(),billType, out info);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, info), "text", JsonRequestBehavior.AllowGet);
         }
 
         //根据产品生成盘点单主表和细表数据
         // POST: /CheckBill/CheckChangedCreate/       
-        public ActionResult CheckChangedCreate(string beginDate, string endDate)
+        public ActionResult CheckChangedCreate(string beginDate, string endDate,string billType)
         {
             string info = string.Empty;
-            bool bResult = CheckBillMasterService.ChangedAdd(beginDate, endDate, this.User.Identity.Name.ToString(), out info);
+            bool bResult = CheckBillMasterService.ChangedAdd(beginDate, endDate, this.User.Identity.Name.ToString(),billType, out info);
             string msg = bResult ? "新增成功" : "新增失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, info), "text", JsonRequestBehavior.AllowGet);
         }

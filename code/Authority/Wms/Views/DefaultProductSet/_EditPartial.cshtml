@@ -1,17 +1,16 @@
 ﻿<script type="text/javascript">
     function editClick() {
-        $('#dlg').dialog('open').dialog('setTitle', '编辑');
-        enterSave();
-
         var productRow = $('#details').datagrid('getSelected');
+        if (!productRow || productRow.length == 0) {
+            $.messager.alert('提示', '请选择要编辑的数据!', 'info');
+            return;
+        }
+        $('#dlg').dialog('open').dialog('setTitle', '编辑');
         if (productRow) {
             $('#productCode').val(productRow.ProductCode);
             $('#productName').val(productRow.ProductName);
             $('#productData').dialog('close');
         }
-        $('#productTree').tree({ url: '/Cell/GetCheckDetails/?id=' + productRow.ProductCode }); //加载树形数据
-        
+        $('#productTree').tree({ url: '/DefaultProductSet/CellCodeSet/?productId=' + productRow.ProductCode });  //加载树形数据
     }
 </script>
-
-

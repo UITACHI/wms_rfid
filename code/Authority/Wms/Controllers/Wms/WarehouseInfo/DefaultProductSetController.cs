@@ -47,12 +47,14 @@ namespace Wms.Controllers.Wms.WarehouseInfo
             return Json(product, "text", JsonRequestBehavior.AllowGet);
         }
         //查找卷烟信息
+        //POST: /DefaultProductSet/SearchProductCell/
         public ActionResult SearchProductCell(string productCode)
         {
             var product = CellService.GetCellInfo(productCode);
             return Json(product, "text", JsonRequestBehavior.AllowGet);
         }
         //获得货位的ID
+        //POST: /DefaultProductSet/GetCellCode/
         public ActionResult GetCellCode(string productCode)
         {
             var product = CellService.GetCellCode(productCode);
@@ -64,6 +66,22 @@ namespace Wms.Controllers.Wms.WarehouseInfo
         {
             bool bResult = CellService.SaveCell(wareCodes, areaCodes, shelfCodes, cellCodes, defaultProductCode);
             string msg = bResult ? "保存成功" : "保存失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+        //获得货位勾选状态
+        // GET: /DefaultProductSet/CellCodeSet/
+        public ActionResult CellCodeSet(string productId)
+        {
+            var wareCell = CellService.GetCellCheck(productId);
+            return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //删除货位信息
+        //POST: /DefaultProductSet/CellDel/
+        public ActionResult CellDel(string productCodes)
+        {
+            bool bResult = CellService.DeleteCell(productCodes);
+            string msg = bResult ? "删除成功" : "删除失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }

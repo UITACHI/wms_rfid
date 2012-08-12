@@ -61,53 +61,47 @@ namespace THOK.Wms.Bll.Service
 
         #region IMoveBillMasterService 成员
 
-        public object GetDetails(int page, int rows, string BillNo, string BillDate, string OperatePersonCode, string Status, string IsActive)
+        public object GetDetails(int page, int rows, string BillNo, string WareHouseCode, string beginDate, string endDate, string OperatePersonCode, string Status, string IsActive)
         {
             IQueryable<MoveBillMaster> moveBillMasterQuery = MoveBillMasterRepository.GetQueryable();
             var moveBillMaster = moveBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)
-                && i.Status != "4").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
-                {
-                    i.BillNo,
-                    BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    i.OperatePersonID,
-                    i.WarehouseCode,
-                    i.BillTypeCode,
-                    i.BillType.BillTypeName,
-                    i.Warehouse.WarehouseName,
-                    OperatePersonCode = i.OperatePerson.EmployeeCode,
-                    OperatePersonName = i.OperatePerson.EmployeeName,
-                    VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
-                    VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                    VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
-                    Status = WhatStatus(i.Status),
-                    IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                    Description = i.Description,
-                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
-                });
-            if (!IsActive.Equals(""))
+                    && i.Status != "4"
+                    && i.WarehouseCode.Contains(WareHouseCode)
+                    && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
+                    //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
+                    && i.Status.Contains(Status))
+                .OrderByDescending(t => t.BillDate)
+                                   .OrderByDescending(t => t.BillNo)
+                                   .AsEnumerable().Select(i => new
+                  {
+                      i.BillNo,
+                      BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                      i.OperatePersonID,
+                      i.WarehouseCode,
+                      i.BillTypeCode,
+                      i.BillType.BillTypeName,
+                      i.Warehouse.WarehouseName,
+                      OperatePersonCode = i.OperatePerson.EmployeeCode,
+                      OperatePersonName = i.OperatePerson.EmployeeName,
+                      VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
+                      VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
+                      VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
+                      Status = WhatStatus(i.Status),
+                      IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                      Description = i.Description,
+                      UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+                  });
+
+            if (!beginDate.Equals(string.Empty))
             {
-                moveBillMaster = moveBillMaster.Where(i =>
-                    i.BillNo.Contains(BillNo)
-                    && i.IsActive.Contains(IsActive)
-                    && i.Status != "4").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
-                    {
-                        i.BillNo,
-                        i.BillDate,
-                        i.OperatePersonID,
-                        i.WarehouseCode,
-                        i.BillTypeCode,
-                        i.BillTypeName,
-                        i.WarehouseName,
-                        i.OperatePersonCode,
-                        i.OperatePersonName,
-                        i.VerifyPersonID,
-                        i.VerifyPersonName,
-                        i.VerifyDate,
-                        Status = WhatStatus(i.Status),
-                        IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                        Description = i.Description,
-                        UpdateTime = i.UpdateTime
-                    });
+                DateTime begin = Convert.ToDateTime(beginDate);
+                moveBillMaster = moveBillMaster.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
+            }
+
+            if (!endDate.Equals(string.Empty))
+            {
+                DateTime end = Convert.ToDateTime(endDate).AddDays(1);
+                moveBillMaster = moveBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
             }
             int total = moveBillMaster.Count();
             moveBillMaster = moveBillMaster.Skip((page - 1) * rows).Take(rows);
@@ -130,7 +124,8 @@ namespace THOK.Wms.Bll.Service
                 mbm.VerifyPersonID = moveBillMaster.VerifyPersonID;
                 mbm.VerifyDate = moveBillMaster.VerifyDate;
                 mbm.Description = moveBillMaster.Description;
-                mbm.IsActive = moveBillMaster.IsActive;
+                //mbm.IsActive = moveBillMaster.IsActive;
+                mbm.IsActive = "1";
                 mbm.UpdateTime = DateTime.Now;
 
                 MoveBillMasterRepository.Add(mbm);
@@ -179,9 +174,11 @@ namespace THOK.Wms.Bll.Service
                     mbm.VerifyPersonID = moveBillMaster.VerifyPersonID;
                     mbm.VerifyDate = moveBillMaster.VerifyDate;
                     mbm.Description = moveBillMaster.Description;
-                    mbm.IsActive = moveBillMaster.IsActive;
+                    //mbm.IsActive = moveBillMaster.IsActive;
+                    mbm.IsActive = "1";
                     mbm.UpdateTime = DateTime.Now;
 
+                    mbm.LockTag = string.Empty;
                     MoveBillMasterRepository.SaveChanges();
                     result = true;
                 }
@@ -241,6 +238,7 @@ namespace THOK.Wms.Bll.Service
                     mbm.VerifyDate = DateTime.Now;
                     mbm.UpdateTime = DateTime.Now;
                     mbm.VerifyPersonID = employee.ID;
+                    mbm.LockTag = string.Empty;
                     MoveBillMasterRepository.SaveChanges();
                     result = true;
                 }
@@ -265,6 +263,7 @@ namespace THOK.Wms.Bll.Service
                     mbm.VerifyDate = null;
                     mbm.UpdateTime = DateTime.Now;
                     mbm.VerifyPersonID = null;
+                    mbm.LockTag = string.Empty;
                     MoveBillMasterRepository.SaveChanges();
                     result = true;
                 }
@@ -291,7 +290,7 @@ namespace THOK.Wms.Bll.Service
         public bool LockBillMaster(string BillNo)
         {
             bool result = false;
-            var pbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(p => p.BillNo == BillNo && p.Status == "1");
+            var pbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(p => p.BillNo == BillNo);
             if (pbm != null)
             {
                 if (string.IsNullOrEmpty(pbm.LockTag))

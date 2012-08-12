@@ -41,7 +41,28 @@
         if (detailRow) {
             $('#dlg_allot_modify').dialog('open').dialog('setTitle', '删除');
             $('#fm_allot').form('load', detailRow);
+            $('#allotQuantity').attr("readonly", true);
             modifyUrl = '/StockInBillAllot/AllotDelete/';
+        } else {
+            $.messager.confirm('错误', '没有选择行！');
+        }
+    }
+
+    //新增入库单明细分配
+    function allotAdd() {
+        var detailRow = $('#inAllotBillDetails').datagrid('getSelected');
+        if (detailRow) {
+            if (detailRow.AllotQuantity < detailRow.BillQuantity) {
+                $('#fm_allot').form('clear');
+                $('#dlg_allot_modify').dialog('open').dialog('setTitle', '新增');
+                $('#fm_allot').form('load', detailRow);
+                $('form input').removeAttr("disabled");
+                $('form textarea').removeAttr("disabled");
+                $('#allQuantity').attr("value", '')
+                modifyUrl = '/StockInBillAllot/AllotAdd/';
+            } else {
+                $.messager.confirm('错误', '所选卷烟已分配完成！');
+            }
         } else {
             $.messager.confirm('错误', '没有选择行！');
         }
@@ -53,6 +74,9 @@
         if (detailRow) {
             $('#dlg_allot_modify').dialog('open').dialog('setTitle', '修改');
             $('#fm_allot').form('load', detailRow);
+            $('form input').removeAttr("disabled");
+            $('form textarea').removeAttr("disabled");
+            $('#allotQuantity').attr("readonly", false);
             modifyUrl = '/StockInBillAllot/AllotEdit/';
         } else {
             $.messager.confirm('错误', '没有选择行！');
@@ -61,26 +85,14 @@
 
     function AllotModifySave() {
         if ($('#fm_allot').form('validate')) {
-            var j_waitDialog = ShowWaitMessageDialog();
-            $.ajax({
-                url: modifyUrl, type: "GET", dataType: "text",
-                data: $('#fm_allot').serializeArray(),
-                complete: function () { HideWaitMessageDialog(j_waitDialog); },
-                success: function (responseText) {
-                    var result = $.evalJSON(responseText);
-                    if (result.success) {
-                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
-                        $('#details').datagrid('reload');
-                        $('#inAllotBillDetails').datagrid('reload');
-                        $('#allotBillDetails').datagrid('reload');
-                        $('#dlg_allot_modify').dialog('close');
-                    } else {
-                        $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
-                    }
-                }
-            });
-        };
-    };
+            $.ajaxSender.send(modifyUrl, $('#fm_allot').serializeArray(), function (data) {
+                $('#details').datagrid('reload');
+                $('#inAllotBillDetails').datagrid('reload');
+                $('#allotBillDetails').datagrid('reload');
+                $('#dlg_allot_modify').dialog('close');
+            });       
+        }
+    }
 
     function confirmAllot() {
         var j_waitDialog = ShowWaitMessageDialog();
@@ -130,6 +142,9 @@
                 if (result.success) {
                     $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                     $('#details').datagrid('reload');
+                    $('#inBillDetails').datagrid('reload');
+                    $('#inAllotBillDetails').datagrid('reload');
+                    $('#allotBillDetails').datagrid('reload');
                 } else {
                     $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
                 }
@@ -249,7 +264,7 @@
                   </tr>
                   <tr>
                     <td >分配数量</td>
-                    <td align="left"><input type="text" name="AllotQuantity" class="easyui-numberbox" required="true"/></td>
+                    <td align="left"><input type="text" name="AllotQuantity" class="easyui-numberbox" id="allotQuantity" required="true"/></td>
                   </tr>
                 </table>
         </form>

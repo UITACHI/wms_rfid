@@ -1,4 +1,18 @@
 ﻿<script type="text/javascript">
+
+    function formatAction(value, row, index) {
+        var e = '<a href="#" onclick="detail( ' + index + ')">查询明细</a> ';
+        return e
+    }
+
+    function detail(index) {
+        var row = $('#details').datagrid('getSelected');
+        if (row) {
+            $('#infos').datagrid({ url: '/StockIntoSearch/DetailInfos/?BillNo=' + row.BillNo });
+            $('#InfoDetails').dialog('open').dialog('setTitle', '入库单'+row.BillNo+'明细');
+        }
+    }
+
     $(function () {
         $('#details').datagrid({
             onClickRow: function () {
@@ -25,6 +39,7 @@
                 <th field="Status" width="120" align="center">处理状态</th>
                 <th field="VerifyPersonName" width="120" align="center">审核人</th>
                 <th field="VerifyDate" width="120" align="center">审核日期</th>
+                <th  id="detailformatAction" field="detail" width="80" align="center" formatter="formatAction">商品明细</th>
                 <th field="Description" width="120" align="center">备注</th>
             </tr>
         </thead>
@@ -37,15 +52,16 @@
         <thead>
             <tr>
                 <th field="ID" width="80" align="center">序号</th>
-                <th field="ProduceCode" width="100" align="center">产品代码</th>
-                <th field="ProduceName" width="140" align="center">产品名称</th>
-                <th field="PlaceCode" width="100" align="center">货位编码</th>
-                <th field="PlaceName" width="140" align="center">货位名称</th>
-                <th field="StorageCode" width="100" align="center">单位编码</th>
-                <th field="StorageName" width="140" align="center">单位名称</th>
-                <th field="AllotQuantity" width="80" align="center">分配数量</th>
+                <th field="ProductCode" width="100" align="center">产品代码</th>
+                <th field="ProductName" width="140" align="center">产品名称</th>
+                <th field="CellCode" width="100" align="center">货位编码</th>
+                <th field="CellName" width="140" align="center">货位名称</th>
+                <th field="UnitCode" width="100" align="center">单位编码</th>
+                <th field="UnitName" width="140" align="center">单位名称</th>
+                <th field="RealQuantity" width="80" align="center">分配数量</th>
                 <th field="Status" width="80" align="center">作业状态</th>
-            </tr>
+            </tr> 
         </thead>
     </table>
-</div>    
+</div>
+@Html.Partial("_Detail") 

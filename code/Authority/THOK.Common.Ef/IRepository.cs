@@ -15,6 +15,9 @@ namespace THOK.Common.Ef.Interfaces
         System.Collections.Generic.IList<T> GetAll();
         System.Collections.Generic.IList<T> GetAll(System.Linq.Expressions.Expression<Func<T, bool>> whereCondition);
         System.Linq.IQueryable<T> GetQueryable();
+        System.Linq.ParallelQuery<T> GetParallelQuery();
+        System.Data.Objects.ObjectSet<T> GetObjectSet();
+        System.Data.Objects.ObjectContext GetObjectContext();
         T GetSingle();
         T GetSingle(System.Linq.Expressions.Expression<Func<T, bool>> whereCondition);
         THOK.Common.Ef.Interfaces.IRepositoryContext RepositoryContext { get; set; }

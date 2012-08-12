@@ -11,13 +11,13 @@
 
     function productLoad() {
         $('#warehouseTree').tree({ url: '/Cell/GetCheckDetails/' }); //加载树形数据
-        $('#productTable').datagrid({ url: '/Product/CheckFindProduct/' }); //加载产品数据
+       // $('#productTable').datagrid({ url: '/Product/CheckFindProduct/' }); //加载产品数据
 //        $.getJSON("/Product/CheckFindProduct/", function (json) {
 //            ldata = json;
 //            $('#productTable').datagrid('loadData', ldata);
 //        });
         $('#checkProductTable').datagrid('loadData', { total: 0, rows: [] }); //清空盘点的卷烟
-        $('#chanedCheckTable').datagrid({ url: '/CheckBill/CheckChangedDetails/' }); //加载异动数据
+        //$('#chanedCheckTable').datagrid({ url: '/CheckBill/CheckChangedDetails/' }); //加载异动数据
     }
 
     function DataLoad() {
@@ -35,24 +35,6 @@
             columns: [[
                     { field: 'WarehouseCode', title: '仓库编码', align: 'left', width: 40 },
                     { field: 'WarehouseName', title: '仓库名称', align: 'left', width: 30 },
-                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
-                ]]
-        });
-
-        $('#biiTypeadd').combogrid({
-            required: true,
-            disabled: false,
-            width: 130,
-            panelWidth: 340,
-            url: '/StockInBill/GetBillTypeDetail/?BillClass=0004&IsActive=1',
-            idField: 'BillTypeCode',
-            textField: 'BillTypeName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-                    { field: 'BillTypeCode', title: '订单类型编码', align: 'left', width: 40 },
-                    { field: 'BillTypeName', title: '订单类型名称', align: 'left', width: 30 },
                     { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
                 ]]
         });
@@ -80,7 +62,7 @@
                     $('#beginDate').datebox({ editable: false });
                     $('#endDate').datebox({ editable: false });
                 } else {
-                    $.messager.confirm('错误', '请选关闭页面重新打开或重新选择类型盘点！');
+                    $.messager.alert('错误', '请选关闭页面重新打开或重新选择类型盘点！');
                 }
             }
         });
@@ -129,7 +111,7 @@
                 $('#nextShowTable').datagrid('load');
                 $('#nextShowDiv').dialog('open').dialog('setTitle', '货位盘点数据预览');
             } else {
-                $.messager.confirm('错误', '请选择需盘点的货位！');
+                $.messager.alert('错误', '请选择需盘点的货位！');
             }
         } else if (tabsRow.panel('options').id == "productCheck") {//选择产品盘点
             productCheckParameter = "";
@@ -142,7 +124,7 @@
                 $('#nextShowTable').datagrid('load');
                 $('#nextShowDiv').dialog('open').dialog('setTitle', '产品盘点数据预览');
             } else {
-                $.messager.confirm('错误', '请选择需盘点的产品！');
+                $.messager.alert('错误', '请选择需盘点的产品！');
             }
         } else if (tabsRow.panel('options').id == "changedCheck") {//选择异动盘点
             begin = $('#beginDate').datebox('getValue');
@@ -152,7 +134,7 @@
             $('#nextShowTable').datagrid('load');
             $('#nextShowDiv').dialog('open').dialog('setTitle', '产品盘点数据预览');
         } else {
-            $.messager.confirm('错误', '没选择盘点方式！请关闭页面从新打开！');
+            $.messager.alert('错误', '没选择盘点方式！请关闭页面从新打开！');
         }
     }
 </script>

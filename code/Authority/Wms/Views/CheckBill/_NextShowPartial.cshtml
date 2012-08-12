@@ -5,73 +5,93 @@
 
     //生成盘点单
     function generateCheckClick() {
+        var checkBillType = $('#checkBiiTypeAdd').combo('getValue');
         var tabsRow = $('#checkTabs').tabs('getSelected');
-        if (tabsRow.panel('options').id == "cellCheck") {//生成货位盘点数据
-            $.getJSON('/CheckBill/CheckCellCreate/', { wareCodes: ware, areaCodes: area, shelfCodes: shelf, cellCodes: cell }, function (json) {
-                if (json) {
-                    if (json.success) {
-                        $.messager.show({
-                            title: '成功',
-                            msg: json.msg
-                        });
-                        $('#nextShowDiv').dialog('close');
-                        $('#addCheck').dialog('close');
-                        $('#details').datagrid('load');
-                    } else {
-                        $.messager.show({
-                            title: '错误',
-                            msg: json.msg
-                        });
-                        $('#nextShowDiv').dialog('close');
-                        $('#details').datagrid('load');
+        if (checkBillType != "" && checkBillType != null) {
+            $('#fm_bill_type_check').form('clear');
+            $('#dlg_bill_type').dialog('close');
+            if (tabsRow.panel('options').id == "cellCheck") {//生成货位盘点数据           
+                var j_waitDialog = ShowWaitMessageDialog();
+                $.ajax({
+                    url: '/CheckBill/CheckCellCreate/', type: "GET", dataType: "text",
+                    data: { 'wareCodes': ware, 'areaCodes': area, 'shelfCodes': shelf, 'cellCodes': cell, "billType": checkBillType },
+                    complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                    success: function (responseText) {
+                        var result = $.evalJSON(responseText);
+                        if (result.success) {
+                            $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                            $('#nextShowDiv').dialog('close');
+                            $('#addCheck').dialog('close');
+                            $('#details').datagrid('load');
+                        } else {
+                            $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                        }
                     }
-                }
-            });
-        } else if (tabsRow.panel('options').id == "productCheck") {//生成产品盘点数据
-            $.getJSON('/CheckBill/CheckProductCreate/', { products: productCheckParameter }, function (json) {
-                if (json) {
-                    if (json.success) {
-                        $.messager.show({
-                            title: '成功',
-                            msg: json.msg
-                        });
-                        $('#nextShowDiv').dialog('close');
-                        $('#addCheck').dialog('close');
-                        $('#details').datagrid('load');
-                    } else {
-                        $.messager.show({
-                            title: '错误',
-                            msg: json.msg
-                        });
-                        $('#nextShowDiv').dialog('close');
-                        $('#details').datagrid('load');
+                });
+            } else if (tabsRow.panel('options').id == "productCheck") {//生成产品盘点数据
+                var j_waitDialog = ShowWaitMessageDialog();
+                $.ajax({
+                    url: '/CheckBill/CheckProductCreate/', type: "GET", dataType: "text",
+                    data: { 'products': productCheckParameter, "billType": checkBillType },
+                    complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                    success: function (responseText) {
+                        var result = $.evalJSON(responseText);
+                        if (result.success) {
+                            $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                            $('#nextShowDiv').dialog('close');
+                            $('#addCheck').dialog('close');
+                            $('#details').datagrid('load');
+                        } else {
+                            $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                        }
                     }
-                }
-            });
-        } else if (tabsRow.panel('options').id == "changedCheck") {//生成异动盘点数据
-            $.getJSON('/CheckBill/CheckChangedCreate/', { beginDate: begin, endDate: end }, function (json) {
-                if (json) {
-                    if (json.success) {
-                        $.messager.show({
-                            title: '成功',
-                            msg: json.msg
-                        });
-                        $('#nextShowDiv').dialog('close');
-                        $('#addCheck').dialog('close');
-                        $('#details').datagrid('load');
-                    } else {
-                        $.messager.show({
-                            title: '错误',
-                            msg: json.msg
-                        });
-                        $('#nextShowDiv').dialog('close');
-                        $('#details').datagrid('load');
+                });
+            } else if (tabsRow.panel('options').id == "changedCheck") {//生成异动盘点数据
+                var j_waitDialog = ShowWaitMessageDialog();
+                $.ajax({
+                    url: '/CheckBill/CheckChangedCreate/', type: "GET", dataType: "text",
+                    data: { 'beginDate': begin, 'endDate': end, "billType": checkBillType },
+                    complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                    success: function (responseText) {
+                        var result = $.evalJSON(responseText);
+                        if (result.success) {
+                            $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                            $('#nextShowDiv').dialog('close');
+                            $('#addCheck').dialog('close');
+                            $('#details').datagrid('load');
+                        } else {
+                            $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                $.messager.alert('错误', '没选择盘点方式！请关闭页面从新打开！');
+            }
         } else {
-            $.messager.confirm('错误', '没选择盘点方式！请关闭页面从新打开！');
+            $.messager.alert('错误', '请选择盘点类型！');
         }
+    }
+
+    function billTypeShow() {
+        $('#checkBiiTypeAdd').combogrid({
+            required: true,
+            disabled: false,
+            width: 130,
+            panelWidth: 340,
+            url: '/StockInBill/GetBillTypeDetail/?BillClass=0004&IsActive=1',
+            idField: 'BillTypeCode',
+            textField: 'BillTypeName',
+            mode: 'local',
+            editable: false,
+            fitColumns: true,
+            columns: [[
+                    { field: 'BillTypeCode', title: '订单类型编码', align: 'left', width: 40 },
+                    { field: 'BillTypeName', title: '订单类型名称', align: 'left', width: 30 },
+                    { field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
+                ]]
+        });
+
+        $('#dlg_bill_type').dialog('open').dialog('setTitle', '请选择盘点类型');
     }
 </script>
 <div id="nextShowDiv" class="easyui-dialog" modal="true" closed="true" style="width: 620px; height: 400px; 
@@ -108,7 +128,24 @@
             </thead>
         </table>
  </div>
- <div id="upDiv">
-        <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="generateCheckClick()">生成盘点单</a>
+<div id="upDiv">
+        <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="billTypeShow()">生成盘点单</a>
         <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="upDivClick()">取消</a>        
 </div>
+<div id="dlg_bill_type" class="easyui-dialog" modal="true"
+        style="width:290px;height:120px;padding:4px 4px"
+        closed="true" buttons="#dlg_allot_modify_buttons" align="center">
+        <form id="fm_bill_type_check" method="post" novalidate>           
+             <table>
+                <tr>
+                <td width="60">盘点类型</td>
+                <td width="168"><input id="checkBiiTypeAdd" type="text" missingmessage="请选择订单类型" /></td>
+                </tr>
+            </table>
+        </form>
+</div>
+<div id="dlg_allot_modify_buttons">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="generateCheckClick()">确定</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_bill_type').dialog('close')">取消</a>
+</div>
+
