@@ -38,7 +38,6 @@ namespace THOK.Wms.SignalR.Common
             moveBillMaster.IsActive = "1";
             moveBillMaster.UpdateTime = DateTime.Now;
             MoveBillMasterRepository.Add(moveBillMaster);
-            MoveBillMasterRepository.SaveChanges();
             return moveBillMaster;
         }
 
@@ -324,12 +323,9 @@ namespace THOK.Wms.SignalR.Common
                 detail.RealQuantity = moveQuantity;
                 detail.Status = "0";
                 moveBillMaster.MoveBillDetails.Add(detail);
-
                 sourceStorage.OutFrozenQuantity += moveQuantity;
-                sourceStorage.LockTag = string.Empty;
                 targetStorage.ProductCode = sourceStorage.ProductCode;
                 targetStorage.InFrozenQuantity += moveQuantity;
-                targetStorage.LockTag = string.Empty;
             }
         }
 

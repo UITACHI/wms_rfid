@@ -6,6 +6,7 @@ using Microsoft.Practices.Unity;
 using System.Collections.Generic;
 using System.Threading;
 using THOK.Wms.SignalR.Model;
+using System.Web;
 
 namespace THOK.Wms.SignalR.Connection
 {
@@ -36,6 +37,7 @@ namespace THOK.Wms.SignalR.Connection
 
         protected override Task OnReceivedAsync(IRequest request, string connectionId, string data)
         {
+            string userName = HttpContext.Current.User != null ? HttpContext.Current.User.Identity.Name : string.Empty;
             ProgressState ps = new ProgressState();
             //try
             //{
@@ -44,7 +46,7 @@ namespace THOK.Wms.SignalR.Connection
                 switch (ad.ActionType)
                 {
                     case "start":
-                        Execute(connectionId,data,ps,GetCancellationTokenSource(connectionId).Token);
+                        Execute(connectionId,data,ps,GetCancellationTokenSource(connectionId).Token,userName);
                         break;
                     case "stop":
                         GetCancellationTokenSource(connectionId).Cancel();
@@ -69,7 +71,7 @@ namespace THOK.Wms.SignalR.Connection
             return Connection.Send(connectionId, ps.Clone());
         }
 
-        protected virtual void Execute(string connectionId, string data, ProgressState ps, CancellationToken cancellationToken)
+        protected virtual void Execute(string connectionId, string data, ProgressState ps, CancellationToken cancellationToken,string userName)
         {
             throw new NotImplementedException();
         }
