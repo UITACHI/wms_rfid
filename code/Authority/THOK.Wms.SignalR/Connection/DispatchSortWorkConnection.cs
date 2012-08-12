@@ -20,10 +20,10 @@ namespace THOK.Wms.SignalR.Connection
         [Dependency]
         public ISortOrderWorkDispatchService SortOrderWorkDispatchService { get; set; }
 
-        protected override void Execute(string connectionId, string data, ProgressState ps, CancellationToken cancellationToken)
-        {
+        protected override void Execute(string connectionId, string data, ProgressState ps, CancellationToken cancellationToken,string userName)
+        {            
             ActionData ad = jns.Parse<ActionData>(data);
-            SortOrderWorkDispatchService.Dispatch(connectionId, ps, cancellationToken, ad.workDispatchId);
+            SortOrderWorkDispatchService.Dispatch(connectionId, ps, cancellationToken, ad.workDispatchId,userName);
         }      
     }
 }

@@ -21,7 +21,7 @@ namespace THOK.Wms.SignalR.Connection
         [Dependency]
         public IOutBillAllotService OutBillAllotService { get; set; }
 
-        protected override void Execute(string connectionId, string data, ProgressState ps, CancellationToken cancellationToken)
+        protected override void Execute(string connectionId, string data, ProgressState ps, CancellationToken cancellationToken,string userName)
         {
             ActionData ad = jns.Parse<ActionData>(data);
             OutBillAllotService.Allot(connectionId, ps, cancellationToken, ad.BillNo, ad.AreaCodes);

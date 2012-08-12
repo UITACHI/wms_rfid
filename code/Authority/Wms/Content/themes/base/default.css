@@ -19,6 +19,18 @@ a:hover{ color:Red; text-decoration:underline;}
 .easyui-accordion ul li div.selected{border:1px solid #99BBE8; background:#E0ECFF;cursor:default;}
 .easyui-accordion ul li div.selected a{color:#416AA3; font-weight:bold;}
 
+.fullscreen {
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:2147483647;
+  background:black;
+  width:100%;
+  height:100%;
+}
+
 .dock
 {
     width: 100%;
