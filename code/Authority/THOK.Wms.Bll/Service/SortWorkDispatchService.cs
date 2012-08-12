@@ -48,7 +48,7 @@ namespace THOK.Wms.Bll.Service
                     statusStr = "已审核";
                     break;
                 case "3":
-                    statusStr = "已执行";
+                    statusStr = "执行中";
                     break;
                 case "4":
                     statusStr = "已结单";

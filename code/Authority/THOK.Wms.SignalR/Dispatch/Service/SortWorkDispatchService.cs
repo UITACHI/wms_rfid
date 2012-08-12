@@ -107,14 +107,15 @@ namespace THOK.Wms.SignalR.Dispatch.Service
 
             decimal sumAllotQuantity = 0;
             decimal sumAllotLineQuantity = 0;
-            using (var scope = new TransactionScope())
+
+            bool hasError = false;
+            string strErrors = "";
+            MoveBillMaster lastMoveBillMaster = null;
+            foreach (var item in temp)
             {
-                bool hasError = false;
-                string strErrors = "";
-                MoveBillMaster lastMoveBillMaster = null;
-                foreach (var item in temp)
+                try
                 {
-                    try
+                    using (var scope = new TransactionScope())
                     {
                         if (item.Products.Count() > 0)
                         {
@@ -135,10 +136,10 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                             foreach (var product in item.Products.ToArray())
                             {
 
-                                decimal sumBillQuantity = temp.Sum(t=>t.Products.Sum(p=>p.SumQuantity));
+                                decimal sumBillQuantity = temp.Sum(t => t.Products.Sum(p => p.SumQuantity));
                                 sumAllotQuantity += product.SumQuantity;
 
-                                decimal sumBillProductQuantity = item.Products.Sum(p=>p.SumQuantity);
+                                decimal sumBillProductQuantity = item.Products.Sum(p => p.SumQuantity);
                                 sumAllotLineQuantity += product.SumQuantity;
 
                                 ps.State = StateType.Processing;
@@ -151,10 +152,10 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                 //获取分拣线下限数据
                                 var sortingLowerlimitQuantity = sortingLowerlimitQuery.Where(s => s.ProductCode == product.Product.ProductCode
                                                                                                     && s.SortingLineCode == product.SortingLine.SortingLineCode);
-                                decimal lowerlimitQuantity=0;
-                                if (sortingLowerlimitQuantity.Count()>0)
+                                decimal lowerlimitQuantity = 0;
+                                if (sortingLowerlimitQuantity.Count() > 0)
                                 {
-                                    lowerlimitQuantity = sortingLowerlimitQuantity.Sum(s=>s.Quantity);
+                                    lowerlimitQuantity = sortingLowerlimitQuantity.Sum(s => s.Quantity);
                                 }
 
                                 //获取分拣备货区库存                    
@@ -166,7 +167,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                                                   )
                                                                   .Where(r => r.SortingLineCode == product.SortingLine.SortingLineCode);
                                 decimal storQuantity = 0;
-                                if (storageQuantity.Count()>0)
+                                if (storageQuantity.Count() > 0)
                                 {
                                     storQuantity = storageQuantity.Sum(s => s.Quantity);
                                 }
@@ -177,15 +178,15 @@ namespace THOK.Wms.SignalR.Dispatch.Service
 
                                 AlltoMoveBill(moveBillMaster, product.Product, item.SortingLine.Cell, ref quantity);
 
-                                if (quantity > 0)
-                                {
-                                    //生成移库不完整；
-                                    hasError = true;
-                                    ps.State = StateType.Info;
-                                    ps.CurrentProgressName = "生成移库不完整";
-                                    NotifyConnection(ps.Clone());
-                                    break;
-                                }
+                                //if (quantity > 0)
+                                //{
+                                //    //生成移库不完整；
+                                //    hasError = true;
+                                //    ps.State = StateType.Error;
+                                //    ps.Errors.Add("生成移库不完整");
+                                //    NotifyConnection(ps.Clone());
+                                //    break;
+                                //}
                             }
 
                             if (!hasError)
@@ -212,35 +213,32 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                 {
                                     sortDisp.SortWorkDispatchID = sortWorkDisp.ID;
                                     sortDisp.WorkStatus = "2";
-                                    
+
                                 }
                                 SortWorkDispatchRepository.SaveChanges();
                                 scope.Complete();
                             }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        ps.State = StateType.Info;
-                        ps.Errors.Add(item.SortingLine.SortingLineName + "作业调度失败！ 详情：" + e.Message);
-                        NotifyConnection(ps.Clone());
-                        return;
-                    }
                 }
-
-                if (MoveBillCreater.CheckIsNeedSyncMoveBill(lastMoveBillMaster.WarehouseCode))
+                catch (Exception e)
                 {
-                    MoveBillCreater.CreateSyncMoveBillDetail(lastMoveBillMaster);
+                    ps.State = StateType.Info;
+                    ps.Errors.Add(item.SortingLine.SortingLineName + "作业调度失败！ 详情：" + e.Message);
+                    NotifyConnection(ps.Clone());
+                    return;
                 }
-
-                MoveBillMasterRepository.SaveChanges();
-                scope.Complete();
             }
+
+            if (MoveBillCreater.CheckIsNeedSyncMoveBill(lastMoveBillMaster.WarehouseCode))
+            {
+                MoveBillCreater.CreateSyncMoveBillDetail(lastMoveBillMaster);
+            }
+            MoveBillMasterRepository.SaveChanges();
 
             ps.State = StateType.Info;
             ps.Messages.Add("分配完成!");
             NotifyConnection(ps.Clone());
-
         }
 
         private SortWorkDispatch AddSortWorkDispMaster(MoveBillMaster moveBillMaster, OutBillMaster outBillMaster, string sortingLineCode, string orderDate)
@@ -256,7 +254,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             sortWorkDispatch.DispatchBatch = workDispatch == null ? "1" : (Convert.ToInt32(workDispatch.DispatchBatch) + 1).ToString();
             sortWorkDispatch.OutBillNo = outBillMaster.BillNo;
             sortWorkDispatch.MoveBillNo = moveBillMaster.BillNo;
-            sortWorkDispatch.DispatchStatus = "2";
+            sortWorkDispatch.DispatchStatus = "1";
             sortWorkDispatch.IsActive = "1";
             sortWorkDispatch.UpdateTime = DateTime.Now;
             SortWorkDispatchRepository.Add(sortWorkDispatch);
