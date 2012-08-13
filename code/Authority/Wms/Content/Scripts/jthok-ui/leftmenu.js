@@ -3,8 +3,7 @@
 (function ($) {
     var menus_root = {};
     $(function () {
-        window.onbeforeunload = function ()  
-        {
+        window.onbeforeunload = function () {
             var n = window.event.screenX - window.screenLeft;
             var b = n > document.documentElement.scrollWidth - 20;
             if (b && window.event.clientY < 0 || window.event.altKey) {
@@ -27,9 +26,16 @@
                     hide('#c');
                     initMenu();
                     $('#welcome').html('欢迎：' + data.Identity.Name);
-                    //init_changecity(data.Identity.Name);
-                    //init_changesystem(data.Identity.Name);
-                    //init_changeserver(data.Identity.Name);
+
+                    if (window.ActiveXObject) {
+                        var WsShell = new ActiveXObject('WScript.Shell')
+                        WsShell.SendKeys('{F11}');
+                    }
+//                    if (window.name == "fullscreen") return;
+//                    var a = window.open("", "fullscreen", "fullscreen=yes")
+//                    a.location = window.location.href
+//                    window.opener = null
+//                    window.close()
                 }
             }
             else {

@@ -15,6 +15,7 @@ namespace THOK.Wms.DbModel
         public string BillNo { get; set; }
         public DateTime BillDate { get; set; }
         public string BillTypeCode { get; set; }
+        public string Origin { get; set; }
         public string WarehouseCode { get; set; }
         public Guid OperatePersonID { get; set; }
         public string Status { get; set; }

@@ -10,6 +10,7 @@ using THOK.Wms.DbModel;
 using THOK.Wms.SignalR.Common;
 using System.Transactions;
 using THOK.Wms.SignalR.Model;
+using System.Threading;
 
 namespace THOK.Wms.SignalR.Dispatch.Service
 {
@@ -54,7 +55,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
         [Dependency]
         public IOutBillCreater OutBillCreater { get; set; }
 
-        public void Dispatch(string connectionId, Model.ProgressState ps, System.Threading.CancellationToken cancellationToken, string workDispatchId)
+        public void Dispatch(string connectionId, Model.ProgressState ps, CancellationToken cancellationToken, string workDispatchId, string userName)
         {
             Locker.LockKey = workDispatchId;
             ConnectionId = connectionId;
@@ -92,21 +93,40 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                            ).GroupBy(r => new { r.OrderDate, r.SortingLine, r.Product, r.UnitCode, r.Price })
                                             .Select(r => new { r.Key.OrderDate, r.Key.SortingLine, r.Key.Product, r.Key.UnitCode, r.Key.Price, SumQuantity = r.Sum(p => p.RealQuantity * r.Key.Product.UnitList.Unit02.Count) })
                                             .GroupBy(r => new { r.OrderDate, r.SortingLine })
-                                            .Select(r => new { r.Key.OrderDate, r.Key.SortingLine, Products = r });
+                                            .Select(r => new { r.Key.OrderDate, r.Key.SortingLine, Products = r })
+                                            .ToArray();
+
+            var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+            string operatePersonID = employee != null ? employee.ID.ToString() : "";
+            if (employee == null)
+            {
+                ps.State = StateType.Error;
+                ps.Errors.Add("未找到当前用户，或当前用户不可用！");
+                NotifyConnection(ps.Clone());
+                return;
+            }
 
             decimal sumAllotQuantity = 0;
             decimal sumAllotLineQuantity = 0;
-            //using (var scope = new TransactionScope())
-            //{
-                bool hasError = false;
-                string strErrors = "";
-                MoveBillMaster lastMoveBillMaster = null;
-                foreach (var item in temp.ToArray())
+
+            MoveBillMaster lastMoveBillMaster = null;
+            foreach (var item in temp)
+            {
+                try
                 {
-                    try
+                    if (cancellationToken.IsCancellationRequested) return;
+
+                    bool hasError = false;
+                    ps.State = StateType.Info;
+                    ps.Messages.Add("开始调度" + item.SortingLine.SortingLineName);
+                    NotifyConnection(ps.Clone());
+
+                    using (var scope = new TransactionScope())
                     {
                         if (item.Products.Count() > 0)
                         {
+                            if (cancellationToken.IsCancellationRequested) return;
+
                             if (lastMoveBillMaster != null && lastMoveBillMaster.WarehouseCode != item.SortingLine.Cell.WarehouseCode)
                             {
                                 if (MoveBillCreater.CheckIsNeedSyncMoveBill(lastMoveBillMaster.WarehouseCode))
@@ -116,35 +136,41 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                             }
 
                             sumAllotLineQuantity = 0;
-                            //todo
-                            MoveBillMaster moveBillMaster = MoveBillCreater.CreateMoveBillMaster(item.SortingLine.Cell.WarehouseCode, "3001", "2c0a649d-5f44-4a33-8e83-2b6f1b5a06d8");
+
+                            if (cancellationToken.IsCancellationRequested) return;
+                            MoveBillMaster moveBillMaster = MoveBillCreater.CreateMoveBillMaster(item.SortingLine.Cell.WarehouseCode,
+                                                                                                    item.SortingLine.MoveBillTypeCode,
+                                                                                                    operatePersonID);
+                            moveBillMaster.Origin = "2";
                             lastMoveBillMaster = moveBillMaster;
                             foreach (var product in item.Products.ToArray())
                             {
+                                if (cancellationToken.IsCancellationRequested) return;
 
-                                decimal sumBillQuantity = temp.Sum(t=>t.Products.Sum(p=>p.SumQuantity));
+                                decimal sumBillQuantity = temp.Sum(t => t.Products.Sum(p => p.SumQuantity));
                                 sumAllotQuantity += product.SumQuantity;
 
-                                decimal sumBillProductQuantity = item.Products.Sum(p=>p.SumQuantity);
+                                decimal sumBillProductQuantity = item.Products.Sum(p => p.SumQuantity);
                                 sumAllotLineQuantity += product.SumQuantity;
 
                                 ps.State = StateType.Processing;
                                 ps.TotalProgressName = "分拣作业调度";
                                 ps.TotalProgressValue = (int)(sumAllotQuantity / sumBillQuantity * 100);
-                                ps.CurrentProgressName = "分配卷烟：" + product.Product.ProductName;
+                                ps.CurrentProgressName = "正在调度：" + item.SortingLine.SortingLineName;
                                 ps.CurrentProgressValue = (int)(sumAllotLineQuantity / sumBillProductQuantity * 100);
                                 NotifyConnection(ps.Clone());
 
+                                if (cancellationToken.IsCancellationRequested) return;
                                 //获取分拣线下限数据
                                 var sortingLowerlimitQuantity = sortingLowerlimitQuery.Where(s => s.ProductCode == product.Product.ProductCode
                                                                                                     && s.SortingLineCode == product.SortingLine.SortingLineCode);
-                                                                                                    //.Sum(l => l.Quantity);
-                                decimal lowerlimitQuantity=0;
-                                if (sortingLowerlimitQuantity.Count()>0)
+                                decimal lowerlimitQuantity = 0;
+                                if (sortingLowerlimitQuantity.Count() > 0)
                                 {
-                                    lowerlimitQuantity = sortingLowerlimitQuantity.Sum(s=>s.Quantity);
+                                    lowerlimitQuantity = sortingLowerlimitQuantity.Sum(s => s.Quantity);
                                 }
 
+                                if (cancellationToken.IsCancellationRequested) return;
                                 //获取分拣备货区库存                    
                                 var storageQuantity = storageQuery.Where(s => s.ProductCode == product.Product.ProductCode)
                                                                   .Join(sortingLineQuery,
@@ -153,38 +179,46 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                                                         (s, l) => new { l.SortingLineCode, s.Quantity }
                                                                   )
                                                                   .Where(r => r.SortingLineCode == product.SortingLine.SortingLineCode);
-                                                                  //.Sum(s => s.Quantity);
                                 decimal storQuantity = 0;
-                                if (storageQuantity.Count()>0)
+                                if (storageQuantity.Count() > 0)
                                 {
                                     storQuantity = storageQuantity.Sum(s => s.Quantity);
                                 }
+
+                                if (cancellationToken.IsCancellationRequested) return;
                                 //获取移库量（按整件计）
                                 decimal quantity = Math.Ceiling((product.SumQuantity + lowerlimitQuantity - storQuantity) / product.Product.Unit.Count)
                                                    * product.Product.Unit.Count;
 
-                                AlltoMoveBill(moveBillMaster, product.Product, item.SortingLine.Cell, ref quantity);
+                                if (cancellationToken.IsCancellationRequested) return;
+                                AlltoMoveBill(moveBillMaster, product.Product, item.SortingLine.Cell, ref quantity,cancellationToken);
+
                                 if (quantity > 0)
                                 {
-                                    //生成移库不完整；
+                                    //生成移库不完整,可能是库存不足；
                                     hasError = true;
-                                    ps.State = StateType.Info;
-                                    ps.CurrentProgressName = "生成移库不完整";
-                                    NotifyConnection(ps.Clone());
-                                    break;
+                                    ps.State = StateType.Error;
+                                    ps.Errors.Add(product.Product.ProductCode +  " " + product.Product.ProductName + " 库存不足！");
+                                    NotifyConnection(ps.Clone()); 
                                 }
                             }
 
                             if (!hasError)
                             {
-                                //todo
-                                OutBillMaster outBillMaster = OutBillCreater.CreateOutBillMaster(item.SortingLine.Cell.WarehouseCode, "2001", "2c0a649d-5f44-4a33-8e83-2b6f1b5a06d8");
+                                if (cancellationToken.IsCancellationRequested) return;
+
+                                OutBillMaster outBillMaster = OutBillCreater.CreateOutBillMaster(item.SortingLine.Cell.WarehouseCode,
+                                                                                                    item.SortingLine.OutBillTypeCode,
+                                                                                                    operatePersonID);
+                                outBillMaster.Origin = "2";
                                 //添加出库单细单
                                 foreach (var product in item.Products.ToArray())
                                 {
+                                    if (cancellationToken.IsCancellationRequested) return;
                                     OutBillCreater.AddToOutBillDetail(outBillMaster, product.Product, product.Price, product.SumQuantity);
                                 }
 
+                                if (cancellationToken.IsCancellationRequested) return;
                                 //添加出库、移库主单和作业调度表
                                 SortWorkDispatch sortWorkDisp = AddSortWorkDispMaster(moveBillMaster, outBillMaster, item.SortingLine.SortingLineCode, item.OrderDate);
 
@@ -195,34 +229,45 @@ namespace THOK.Wms.SignalR.Dispatch.Service
 
                                 foreach (var sortDisp in sortDispTemp.ToArray())
                                 {
+                                    if (cancellationToken.IsCancellationRequested) return;
                                     sortDisp.SortWorkDispatchID = sortWorkDisp.ID;
                                     sortDisp.WorkStatus = "2";
-                                    SortOrderDispatchRepository.SaveChanges();
+
                                 }
-                                //scope.Complete();
+                                if (cancellationToken.IsCancellationRequested) return;
+                                SortWorkDispatchRepository.SaveChanges();
+                                scope.Complete();
+                                ps.Messages.Add(item.SortingLine.SortingLineName + " 调度成功！");
+                            }
+                            else
+                            {
+                                ps.State = StateType.Info;
+                                ps.Messages.Add(item.SortingLine.SortingLineName + " 调度失败！");
+                                NotifyConnection(ps.Clone());
+                                return;
                             }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        ps.State = StateType.Info;
-                        ps.Errors.Add(item.SortingLine.SortingLineName + "作业调度失败！ 详情：" + e.Message);
-                        NotifyConnection(ps.Clone());
-                        return;
-                    }
                 }
-
-                if (MoveBillCreater.CheckIsNeedSyncMoveBill(lastMoveBillMaster.WarehouseCode))
+                catch (Exception e)
                 {
-                    MoveBillCreater.CreateSyncMoveBillDetail(lastMoveBillMaster);
+                    ps.State = StateType.Info;
+                    ps.Errors.Add(item.SortingLine.SortingLineName + "作业调度失败！ 详情：" + e.Message);
+                    NotifyConnection(ps.Clone());
+                    return;
                 }
-                //scope.Complete();
-            //}
+            }
+
+            if (cancellationToken.IsCancellationRequested) return;
+            if (MoveBillCreater.CheckIsNeedSyncMoveBill(lastMoveBillMaster.WarehouseCode))
+            {
+                MoveBillCreater.CreateSyncMoveBillDetail(lastMoveBillMaster);
+            }
+            MoveBillMasterRepository.SaveChanges();
 
             ps.State = StateType.Info;
-            ps.Messages.Add("分配完成!");
+            ps.Messages.Add("调度完成!");
             NotifyConnection(ps.Clone());
-
         }
 
         private SortWorkDispatch AddSortWorkDispMaster(MoveBillMaster moveBillMaster, OutBillMaster outBillMaster, string sortingLineCode, string orderDate)
@@ -238,16 +283,14 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             sortWorkDispatch.DispatchBatch = workDispatch == null ? "1" : (Convert.ToInt32(workDispatch.DispatchBatch) + 1).ToString();
             sortWorkDispatch.OutBillNo = outBillMaster.BillNo;
             sortWorkDispatch.MoveBillNo = moveBillMaster.BillNo;
-            sortWorkDispatch.DispatchStatus = "2";
+            sortWorkDispatch.DispatchStatus = "1";
             sortWorkDispatch.IsActive = "1";
             sortWorkDispatch.UpdateTime = DateTime.Now;
-
             SortWorkDispatchRepository.Add(sortWorkDispatch);
-            SortWorkDispatchRepository.SaveChanges();
             return sortWorkDispatch;
         }
 
-        private void AlltoMoveBill(MoveBillMaster moveBillMaster, Product product,Cell cell,ref decimal quantity)
+        private void AlltoMoveBill(MoveBillMaster moveBillMaster, Product product, Cell cell, ref decimal quantity, CancellationToken cancellationToken)
         {
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
             //选择当前订单操作目标仓库；
@@ -255,46 +298,51 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             storages = storages.Where(s => s.Quantity - s.OutFrozenQuantity > 0);
 
             //分配整盘；排除 件烟区 条烟区
+            if (cancellationToken.IsCancellationRequested) return;
             string[] areaTypes = new string[] { "2", "3" };
             var ss = storages.Where(s => areaTypes.All(a => a != s.Cell.Area.AreaType)
                                         && s.ProductCode == product.ProductCode)
                              .OrderBy(s => s.StorageTime)
                              .OrderBy(s => s.Cell.Area.AllotOutOrder);
-            AllotPallet(moveBillMaster, ss, cell, ref quantity);
+            if (quantity > 0) AllotPallet(moveBillMaster, ss, cell, ref quantity, cancellationToken);
 
             //分配件烟；件烟区 
+            if (cancellationToken.IsCancellationRequested) return;
             areaTypes = new string[] { "2" };
             ss = storages.Where(s => areaTypes.Any(a => a == s.Cell.Area.AreaType)
                                         && s.ProductCode == product.ProductCode)
                              .OrderBy(s => s.StorageTime)
                              .OrderBy(s => s.Cell.Area.AllotOutOrder);
-            AllotPiece(moveBillMaster, ss, cell, ref quantity);
+            if (quantity > 0) AllotPiece(moveBillMaster, ss, cell, ref quantity, cancellationToken);
 
             //分配件烟 (下层储位)；排除 件烟区 条烟区 
+            if (cancellationToken.IsCancellationRequested) return;
             areaTypes = new string[] { "2", "3" };
             ss = storages.Where(s => areaTypes.All(a => a != s.Cell.Area.AreaType)
                                         && s.ProductCode == product.ProductCode
                                         && s.Cell.Layer == 1)
                              .OrderBy(s => s.StorageTime)
                              .OrderBy(s => s.Cell.Area.AllotOutOrder);
-            AllotPiece(moveBillMaster, ss, cell, ref quantity);
+            if (quantity > 0) AllotPiece(moveBillMaster, ss, cell, ref quantity, cancellationToken);
 
             //分配件烟 (非下层储位)；排除 件烟区 条烟区 
+            if (cancellationToken.IsCancellationRequested) return;
             areaTypes = new string[] { "2", "3" };
             ss = storages.Where(s => areaTypes.All(a => a != s.Cell.Area.AreaType)
                                         && s.ProductCode == product.ProductCode
                                         && s.Cell.Layer != 1)
                              .OrderBy(s => s.StorageTime)
                              .OrderBy(s => s.Cell.Area.AllotOutOrder);
-            AllotPiece(moveBillMaster, ss, cell, ref quantity);
+            if (quantity > 0) AllotPiece(moveBillMaster, ss, cell, ref quantity, cancellationToken);
 
             //分配条烟；条烟区
+            if (cancellationToken.IsCancellationRequested) return;
             areaTypes = new string[] { "3" };
             ss = storages.Where(s => areaTypes.Any(a => a == s.Cell.Area.AreaType)
                                         && s.ProductCode == product.ProductCode)
                              .OrderBy(s => s.StorageTime)
                              .OrderBy(s => s.Cell.Area.AllotOutOrder);
-            AllotBar(moveBillMaster, ss, cell, ref quantity);
+            if (quantity > 0) AllotBar(moveBillMaster, ss, cell, ref quantity, cancellationToken);
 
             //分配条烟；件烟区
             areaTypes = new string[] { "2" };
@@ -302,31 +350,34 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                         && s.ProductCode == product.ProductCode)
                              .OrderBy(s => s.StorageTime)
                              .OrderBy(s => s.Cell.Area.AllotOutOrder);
-            AllotBar(moveBillMaster, ss, cell, ref quantity);
+            if (quantity > 0) AllotBar(moveBillMaster, ss, cell, ref quantity, cancellationToken);
 
-            //分配条烟 (下层储位)；排除 件烟区 条烟区 
+            //分配条烟 (下层储位)；排除 件烟区 条烟区
+            if (cancellationToken.IsCancellationRequested) return;
             areaTypes = new string[] { "2", "3" };
             ss = storages.Where(s => areaTypes.All(a => a != s.Cell.Area.AreaType)
                                         && s.ProductCode == product.ProductCode
                                         && s.Cell.Layer == 1)
                              .OrderBy(s => s.StorageTime)
                              .OrderBy(s => s.Cell.Area.AllotOutOrder);
-            AllotBar(moveBillMaster, ss, cell, ref quantity);
+            if (quantity > 0) AllotBar(moveBillMaster, ss, cell, ref quantity, cancellationToken);
 
-            //分配条烟 (非下层储位)；排除 件烟区 条烟区 
+            //分配条烟 (非下层储位)；排除 件烟区 条烟区
+            if (cancellationToken.IsCancellationRequested) return;
             areaTypes = new string[] { "2", "3" };
             ss = storages.Where(s => areaTypes.All(a => a != s.Cell.Area.AreaType)
                                         && s.ProductCode == product.ProductCode
                                         && s.Cell.Layer != 1)
                              .OrderBy(s => s.StorageTime)
                              .OrderBy(s => s.Cell.Area.AllotOutOrder);
-            AllotBar(moveBillMaster, ss, cell, ref quantity);
+            if (quantity > 0) AllotBar(moveBillMaster, ss, cell, ref quantity,cancellationToken);
         }
 
-        private void AllotBar(MoveBillMaster moveBillMaster, IOrderedQueryable<Storage> ss, Cell cell, ref decimal quantity)
+        private void AllotBar(MoveBillMaster moveBillMaster, IOrderedQueryable<Storage> ss, Cell cell, ref decimal quantity, CancellationToken cancellationToken)
         {
             foreach (var s in ss.ToArray())
             {
+                if (cancellationToken.IsCancellationRequested) return;
                 if (quantity > 0)
                 {
                     decimal allotQuantity = s.Quantity - s.OutFrozenQuantity;
@@ -335,13 +386,12 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                     if (allotQuantity > 0)
                     {
                         var sourceStorage = Locker.LockNoEmptyStorage(s, s.Product);
-                        var targetStorage = Locker.LockEmpty(cell);
+                        var targetStorage = Locker.LockStorage(cell);
                         if (sourceStorage != null && targetStorage != null)
                         {
                             MoveBillCreater.AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, allotQuantity);
                             quantity -= allotQuantity;
                         }
-                        //解锁Storage；
                     }
                     else break;
                 }
@@ -349,10 +399,11 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             }
         }
 
-        private void AllotPiece(MoveBillMaster moveBillMaster, IOrderedQueryable<Storage> ss, Cell cell, ref decimal quantity)
+        private void AllotPiece(MoveBillMaster moveBillMaster, IOrderedQueryable<Storage> ss, Cell cell, ref decimal quantity, CancellationToken cancellationToken)
         {
             foreach (var s in ss.ToArray())
             {
+                if (cancellationToken.IsCancellationRequested) return;
                 if (quantity > 0)
                 {
                     decimal allotQuantity = s.Quantity - s.OutFrozenQuantity;
@@ -362,13 +413,12 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                     if (allotQuantity > 0)
                     {
                         var sourceStorage = Locker.LockNoEmptyStorage(s, s.Product);
-                        var targetStorage = Locker.LockEmpty(cell);
+                        var targetStorage = Locker.LockStorage(cell);
                         if (sourceStorage != null && targetStorage != null)
                         {
                             MoveBillCreater.AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, allotQuantity);
                             quantity -= allotQuantity;
                         }
-                        //解锁Storage；
                     }
                     else break;
                 }
@@ -376,10 +426,11 @@ namespace THOK.Wms.SignalR.Dispatch.Service
             }
         }
 
-        private void AllotPallet(MoveBillMaster moveBillMaster, IOrderedQueryable<Storage> ss,Cell cell,ref decimal quantity)
+        private void AllotPallet(MoveBillMaster moveBillMaster, IOrderedQueryable<Storage> ss, Cell cell, ref decimal quantity, CancellationToken cancellationToken)
         {
             foreach (var s in ss.ToArray())
             {
+                if (cancellationToken.IsCancellationRequested) return;
                 if (quantity > 0)
                 {
                     decimal allotQuantity = s.Quantity - s.OutFrozenQuantity;
@@ -388,13 +439,12 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                     if (billQuantity >= allotQuantity)
                     {
                         var sourceStorage = Locker.LockNoEmptyStorage(s, s.Product);
-                        var targetStorage = Locker.LockEmpty(cell);
+                        var targetStorage = Locker.LockStorage(cell);
                         if (sourceStorage != null && targetStorage != null)
                         {
                             MoveBillCreater.AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, allotQuantity);
                             quantity -= allotQuantity;
                         }
-                        //解锁Storage；
                     }
                     else break;
                 }
