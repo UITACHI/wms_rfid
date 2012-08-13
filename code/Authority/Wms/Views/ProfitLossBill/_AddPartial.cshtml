@@ -138,11 +138,14 @@
                 success: function (result) {
                     var result = eval('(' + result + ')');
                     if (result.success) {
-                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                         url = '/ProfitLossBill/Edit/';
                         isShowProfitLossBillDetail = true;
                         isProfitLossBillMasterAdd = false;
-                        profitLossBillDetailShow();
+                        $.messager.confirm(g_MsgBoxTitle, '损益主单' + result.msg + '<br />' + '是否添加细单？', function (r) {
+                            if (r) {
+                                profitLossBillDetailShow();
+                            }
+                        });
                         $('#details').datagrid('reload');
                     } else {
                         $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");

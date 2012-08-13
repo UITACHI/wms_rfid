@@ -127,11 +127,14 @@
                 success: function (result) {
                     var result = eval('(' + result + ')');
                     if (result.success) {
-                        $.messager.alert(g_MsgBoxTitle, result.msg, "info");
                         url = '/StockInBill/Edit/';
                         isShowInBillDetail = true;
                         isInBillMasterAdd = false;
-                        inBillDetailShow();
+                        $.messager.confirm(g_MsgBoxTitle, '入库主单' + result.msg + '<br />' + '是否添加细单？', function (r) {
+                            if (r) {
+                                inBillDetailShow();
+                            }
+                        });
                         $('#details').datagrid('reload');
                     } else {
                         $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
