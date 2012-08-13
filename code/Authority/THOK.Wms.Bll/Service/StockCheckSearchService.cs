@@ -51,7 +51,7 @@ namespace THOK.Wms.Bll.Service
             var StockCheckSearch = StockCheckQuery.Where(i => i.BillNo.Contains(BillNo)
                                                          && i.WarehouseCode.Contains(WarehouseCode)
                                                          && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
-                                                         && i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
+                                                         //&& i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
                                                          && i.Status.Contains(Operate_Status))
                                                 .OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
                  { 

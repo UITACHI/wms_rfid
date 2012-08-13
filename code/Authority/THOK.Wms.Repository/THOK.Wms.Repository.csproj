@@ -193,6 +193,10 @@
     <Compile Include="Migrations\201208071121321_modify_sorting_out_move_type.Designer.cs">
       <DependentUpon>201208071121321_modify_sorting_out_move_type.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201208110627574_modify_cell_max.cs" />
+    <Compile Include="Migrations\201208110627574_modify_cell_max.Designer.cs">
+      <DependentUpon>201208110627574_modify_cell_max.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -14,7 +14,7 @@
             required: false
         });
 
-        $('#warehouse_Check').combogrid({
+        $('#warehouse_Differ').combogrid({
             disabled: false,
             width: 140,
             panelWidth: 340,
@@ -71,13 +71,18 @@
         SearchLoad();
         $('#dlg-search').dialog('open').dialog('setTitle', '盘点单查询');
         $("input[type=text]").attr("value", "");
+        $('#operatePerson').combogrid('clear');
+        $('#checkPerson').combogrid('clear');
+        $('#warehouse_Differ').combogrid('clear');
+        $('#beginDate').datebox('setValue', "");
+        $('#endDate').datebox('setValue', "");
     };
 
     function select() {
         var queryParams = $('#details').datagrid('options').queryParams;
         queryParams.BillNo = $('#billNo').val();
         queryParams.CheckBillNo = $('#checkBillNo').val();
-        queryParams.WarehouseCode = $('#warehouse_Check').combo('getValue');
+        queryParams.WarehouseCode = $('#warehouse_Differ').combo('getValue');
         queryParams.BeginDate = $('#beginDate').datebox('getValue');
         queryParams.EndDate = $('#endDate').datebox('getValue');
         queryParams.OperatePerson = $('#operatePerson').combo('getValue');
@@ -110,7 +115,7 @@
               <tr style="padding-top:10px;">
                 <td width="60">仓库名称:</td>
                 <td align="left">      
-		            <input type="text" id="warehouse_Check"/>
+		            <input type="text" id="warehouse_Differ"/>
 	            </td>
               </tr>
               <tr>
@@ -129,13 +134,11 @@
               </tr>
               <tr>
                 <td width="60">处理状态:</td>
-                <td><select id="operate_Status" class="easyui-combobox" style="width: 140px">
+                <td><select id="operate_Status" class="easyui-combobox" style="width: 140px" editable="false">
                             <option value="">请选择</option>                       
                             <option value="1">已录入</option>
                             <option value="2">已审核</option>
-                            <option value="3">执行中</option>
-                            <option value="4">已结单</option>
-                            <option value="5">已生成损益</option>
+                            <option value="3">已更新库存</option>
                         </select></td>
               </tr>
               <tr style="padding-top:10px;">

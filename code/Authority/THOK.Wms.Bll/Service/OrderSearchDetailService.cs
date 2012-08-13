@@ -29,13 +29,14 @@ namespace THOK.Wms.Bll.Service
                 var OrderOrderDetail = OrderOrderDetailQuery.Where(i => i.OrderID.Contains(OrderID)).OrderBy(i => i.OrderID).AsEnumerable().Select(i => new
                 {
                     i.OrderID,
+                    i.Price,
                     i.ProductCode,
+                    i.Product.ProductName,
+                    i.OrderDetailID,
+                    i.RealQuantity,
                     i.UnitCode,
-                    i.Unit.UnitName,
-                    //i.OrderQuantity,
-                    //i.RealQuantity,
-                    //i.Price,
-                    //i.Description 
+                    i.UnitName,
+                    i.Amount
                 });
                 int total = OrderOrderDetail.Count();
                 OrderOrderDetail = OrderOrderDetail.Skip((page - 1) * rows).Take(rows);

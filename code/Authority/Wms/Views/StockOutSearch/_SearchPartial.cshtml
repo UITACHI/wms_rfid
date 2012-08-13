@@ -71,6 +71,11 @@
         SearchLoad();
         $('#dlg-search').dialog('open').dialog('setTitle', '出库单查询');
         $("input[type=text]").attr("value", "");
+        $('#operatePerson').combogrid('clear');
+        $('#checkPerson').combogrid('clear');
+        $('#warehouse_Out').combogrid('clear');
+        $('#beginDate').datebox('setValue', "");
+        $('#endDate').datebox('setValue', "");
     };
 
     function select() {
@@ -124,7 +129,7 @@
               </tr>
               <tr>
                 <td width="60">处理状态:</td>
-                <td><select id="operate_Status" class="easyui-combobox" style="width: 140px">
+                <td><select id="operate_Status" class="easyui-combobox" style="width: 140px" editable="false">
                             <option value="">请选择</option>                       
                             <option value="1">已录入</option>
                             <option value="2">已审核</option>

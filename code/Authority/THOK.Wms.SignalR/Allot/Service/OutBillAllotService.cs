@@ -49,7 +49,7 @@ namespace THOK.Wms.SignalR.Allot.Service
             if (!CheckAndLock(billMaster, ps)) { return; }
 
             //选择未分配的细单；
-            var billDetails = billMaster.OutBillDetails.Where(b => (b.BillQuantity - b.AllotQuantity) > 0);
+            var billDetails = billMaster.OutBillDetails.Where(b => (b.BillQuantity - b.AllotQuantity) > 0).ToArray();
             //选择当前订单操作目标仓库；
             var storages = storageQuery.Where(s => s.Cell.WarehouseCode == billMaster.WarehouseCode);
             if (areaCodes.Length > 0)
@@ -61,8 +61,10 @@ namespace THOK.Wms.SignalR.Allot.Service
             {
                 storages = storages.Where(s => s.Cell.Area.AllotOutOrder > 0);
             }
-            storages = storages.Where(s => s.Quantity - s.OutFrozenQuantity > 0);
-            foreach (var billDetail in billDetails.ToArray())
+            storages = storages.Where(s => string.IsNullOrEmpty(s.LockTag)
+                                            && s.Quantity - s.OutFrozenQuantity > 0);
+
+            foreach (var billDetail in billDetails)
             {
                 //1：主库区 1；2：件烟区 2；
                 //3；条烟区 3；4：暂存区 4；
@@ -217,7 +219,6 @@ namespace THOK.Wms.SignalR.Allot.Service
             {
                 OutBillAllot billAllot = null;
                 billDetail.AllotQuantity += allotQuantity;
-                storage.LockTag = billDetail.BillNo;
                 storage.OutFrozenQuantity += allotQuantity;
 
                 billAllot = new OutBillAllot()
@@ -233,7 +234,6 @@ namespace THOK.Wms.SignalR.Allot.Service
                     Status = "0"
                 };
                 billMaster.OutBillAllots.Add(billAllot);
-                StorageRepository.SaveChanges();
 
                 decimal sumBillQuantity = billMaster.OutBillDetails.Sum(d => d.BillQuantity);
                 decimal sumAllotQuantity = billMaster.OutBillDetails.Sum(d => d.AllotQuantity);

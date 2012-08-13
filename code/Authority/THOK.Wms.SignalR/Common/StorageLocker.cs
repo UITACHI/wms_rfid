@@ -110,34 +110,7 @@ namespace THOK.Wms.SignalR.Common
             }
             UnLock(cell);
             return storage;
-        }
-
-        public Storage LockNoEmptyStorage(Storage storage, Product product)
-        {
-            var cell = storage.Cell;
-            if (Lock(cell))
-            {
-                try
-                {
-                    if (storage != null
-                        && storage.ProductCode == product.ProductCode
-                        && storage.Quantity - storage.OutFrozenQuantity > 0)
-                    {
-                        storage.LockTag = this.LockKey;
-                        StorageRepository.SaveChanges();
-                    }
-                    else
-                        storage = null;
-                }
-                catch (Exception)
-                {
-                    if (storage != null) { StorageRepository.Detach(storage); }
-                    storage = null;
-                }
-            }
-            UnLock(cell);
-            return storage;
-        }
+        }        
 
         public Storage LockBar(Cell cell, Product product)
         {
@@ -297,6 +270,10 @@ namespace THOK.Wms.SignalR.Common
             }
         }
 
+
+
+        #region 锁储位，库存，并更新数据库 (用于快速锁定已知目标库记录）
+
         public bool Lock(Storage[] storages)
         {
             if (storages.All(s => string.IsNullOrEmpty(s.LockTag)))
@@ -365,6 +342,15 @@ namespace THOK.Wms.SignalR.Common
             }
         }
 
+        #endregion
+
+        #region 锁储位上的库存，但不更新数据库        
+        
+        /// <summary>
+        /// 用于选择可入库目标库存记录
+        /// </summary>
+        /// <param name="cell">目标储位</param>
+        /// <returns>目标储位上可入库的库存记录</returns>
         public Storage LockStorage(Cell cell)
         {
             try
@@ -379,7 +365,6 @@ namespace THOK.Wms.SignalR.Common
                             storage = cell.Storages.Single();
                             if (string.IsNullOrEmpty(storage.LockTag))
                             {
-                                storage.LockTag = this.LockKey;
                                 return storage;
                             }
                             else
@@ -387,23 +372,21 @@ namespace THOK.Wms.SignalR.Common
                         }
                         else
                         {
-                            storage = cell.Storages.FirstOrDefault(s=>string.IsNullOrEmpty(s.LockTag));
+                            storage = cell.Storages.FirstOrDefault(s=>string.IsNullOrEmpty(s.LockTag)
+                                                                      && s.Quantity == 0
+                                                                      && s.InFrozenQuantity == 0);
 
-                            if (storage != null 
-                                && string.IsNullOrEmpty(storage.LockTag)
-                                && storage.Quantity == 0
-                                && storage.InFrozenQuantity == 0)
+                            if (storage != null)
                             {
                                 return storage;
                             }
-                            else
+                            else if (cell.Storages.Count < cell.MaxPalletQuantity)
                             {
                                 storage = new Storage()
                                 {
                                     StorageCode = Guid.NewGuid().ToString(),
                                     CellCode = cell.CellCode,
                                     IsLock = "0",
-                                    LockTag = this.LockKey,
                                     IsActive = "0",
                                     StorageTime = DateTime.Now,
                                     UpdateTime = DateTime.Now
@@ -411,6 +394,8 @@ namespace THOK.Wms.SignalR.Common
                                 cell.Storages.Add(storage);
                                 return storage;
                             }
+                            else
+                                return null;
                         }
                     }
                     else
@@ -420,7 +405,6 @@ namespace THOK.Wms.SignalR.Common
                             StorageCode = Guid.NewGuid().ToString(),
                             CellCode = cell.CellCode,
                             IsLock = "0",
-                            LockTag = this.LockKey,
                             IsActive = "0",
                             StorageTime = DateTime.Now,
                             UpdateTime = DateTime.Now
@@ -438,6 +422,10 @@ namespace THOK.Wms.SignalR.Common
             }
         }
 
+        /// <summary>
+        /// 解锁当前锁锁定的库存记录
+        /// </summary>
+        /// <param name="storage"></param>
         public void UnLockStorage(Storage storage)
         {
             if (storage.LockTag == this.LockKey)
@@ -445,5 +433,34 @@ namespace THOK.Wms.SignalR.Common
                 storage.LockTag = string.Empty;
             }
         }
+
+        /// <summary>
+        /// 用于选择可出库目标库存记录
+        /// </summary>
+        /// <param name="storage">目标库存记录</param>
+        /// <param name="product">要出库的产品</param>
+        /// <returns>可出库的库存记录</returns>
+        public Storage LockNoEmptyStorage(Storage storage, Product product)
+        {
+            try
+            {
+                if (storage != null
+                    && string.IsNullOrEmpty(storage.LockTag)
+                    && storage.ProductCode == product.ProductCode
+                    && storage.Quantity - storage.OutFrozenQuantity > 0)
+                {
+                    return storage;
+                }
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
     }
 }

@@ -37,7 +37,6 @@ namespace THOK.Wms.SignalR.Common
             outBillMaster.IsActive = "1";
             outBillMaster.UpdateTime = DateTime.Now;
             OutBillMasterRepository.Add(outBillMaster);
-            OutBillMasterRepository.SaveChanges();
             return outBillMaster;
         }
 
@@ -57,7 +56,6 @@ namespace THOK.Wms.SignalR.Common
                 detail.RealQuantity = 0;
 
                 outBillMaster.OutBillDetails.Add(detail);
-                OutBillMasterRepository.SaveChanges();
             }
         }
 

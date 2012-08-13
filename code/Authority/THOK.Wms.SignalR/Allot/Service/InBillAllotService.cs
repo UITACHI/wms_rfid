@@ -42,7 +42,7 @@ namespace THOK.Wms.SignalR.Allot.Service
             ps.Messages.Add("开始分配!");
             NotifyConnection(ps.Clone());
 
-            IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();
+            IQueryable<InBillMaster> inBillMasterQuery = InBillMasterRepository.GetQueryable();            
             IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
 
             InBillMaster billMaster = inBillMasterQuery.Single(b => b.BillNo == billNo);
@@ -52,11 +52,16 @@ namespace THOK.Wms.SignalR.Allot.Service
             var billDetails = billMaster.InBillDetails
                                         .Where(b => (b.BillQuantity - b.AllotQuantity) > 0)
                                         .ToArray();
+
+
             //选择当前订单操作目标仓库；
             var cells = cellQuery.Where(c => c.WarehouseCode == billMaster.WarehouseCode
-                                        && (areaCodes.Any(a => a == c.AreaCode)
-                                            || (!areaCodes.Any() && c.Area.AllotInOrder > 0)))
-                                 .ToArray();
+                                            && c.Warehouse.IsActive == "1"
+                                            && c.Area.IsActive == "1"
+                                            && c.IsActive == "1"
+                                            && (areaCodes.Any(a => a == c.AreaCode)
+                                                || (!areaCodes.Any() && c.Area.AllotInOrder > 0)))
+                                 .ToArray();            
 
             //1：主库区；2：件烟区；
             //3；条烟区；4：暂存区；
@@ -171,7 +176,12 @@ namespace THOK.Wms.SignalR.Allot.Service
                 //分配未分配卷烟到其他非货位管理货位；
                 while (!cancellationToken.IsCancellationRequested && (billDetail.BillQuantity - billDetail.AllotQuantity) > 0)
                 {
-                    var c = cellQueryFromList4.FirstOrDefault();
+                    var c = cellQueryFromList4.Where(i => !i.Storages.Any()
+                                                        || i.Storages.Count() < i.MaxPalletQuantity
+                                                            || i.Storages.Any(s=> string.IsNullOrEmpty(s.LockTag)
+                                                                && s.Quantity == 0
+                                                                && s.InFrozenQuantity == 0))
+                                              .FirstOrDefault();
                     lock (c)
                     {                       
                         if (c != null)
@@ -208,17 +218,14 @@ namespace THOK.Wms.SignalR.Allot.Service
             {
                 ps.State = StateType.Info;
                 ps.Messages.Add("分配完成,开始保存请稍候!");
-                NotifyConnection(ps.Clone());
-
-                cellQuery.Select(c => c.Storages.Where(s => s.LockTag == billNo).Select(s => s))
-                         .AsParallel().ForAll(s => s.AsParallel().ForAll(i => i.LockTag = string.Empty));
-                billMaster.LockTag = string.Empty;
+                NotifyConnection(ps.Clone());                
 
                 billMaster.Status = "3";
                 try
                 {
                     if (!cancellationToken.IsCancellationRequested)
                     {
+                        billMaster.LockTag = string.Empty;
                         CellRepository.SaveChanges();
                         ps.State = StateType.Info;
                         ps.Messages.Clear();

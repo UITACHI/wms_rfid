@@ -62,7 +62,7 @@ namespace THOK.Wms.Allot.Service
 
         public object Search(string billNo, int page, int rows)
         {
-            var allotQuery = OutBillAllotRepository.GetParallelQuery();
+            var allotQuery = OutBillAllotRepository.GetQueryable();
             var query = allotQuery.Where(a => a.BillNo == billNo)
                                   .OrderBy(a => a.ID)
                                   .Select(a => new
@@ -81,7 +81,7 @@ namespace THOK.Wms.Allot.Service
                                       a.OperatePersonID,
                                       a.StartTime,
                                       a.FinishTime,
-                                      Status = WhatStatus(a.Status)
+                                      a.Status
                                   });
 
             int total = query.Count();

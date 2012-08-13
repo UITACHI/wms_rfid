@@ -9,6 +9,6 @@ namespace THOK.Wms.SignalR.Dispatch.Interfaces
 {
     public interface ISortOrderWorkDispatchService
     {
-        void Dispatch(string connectionId, ProgressState ps, CancellationToken cancellationToken, string workDispatchId);
+        void Dispatch(string connectionId, ProgressState ps, CancellationToken cancellationToken, string workDispatchId, string userName);
     }
 }

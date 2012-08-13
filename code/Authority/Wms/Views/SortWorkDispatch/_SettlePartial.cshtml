@@ -2,7 +2,7 @@
     function settleClick() {
         var row = $('#details').datagrid('getSelected');
         if (row) {
-            if (row.DispatchStatus != "作业中") {
+            if (row.DispatchStatus != "执行中") {
                 $.messager.alert('错误', '该记录状态不是作业中状态无法结单！');
             } else {
                 $.messager.confirm('结单', '确认要结单吗？未作业的数据结单后将无法在操作！结单有风险！操作需谨慎！', function (r) {
