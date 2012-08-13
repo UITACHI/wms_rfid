@@ -83,8 +83,6 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
 
         //
         // POST: /ProfitLossBillMaster/Delete/
-
-        [HttpPost]
         public ActionResult Delete(string BillNo)
         {
             string strResult = string.Empty;
@@ -95,8 +93,6 @@ namespace Authority.Controllers.Wms.ProfitLossInfo
 
         //
         // POST: /ProfitLossBillMaster/Audit/
-
-        [HttpPost]
         public ActionResult Audit(string BillNo)
         {
             string strResult = string.Empty;
