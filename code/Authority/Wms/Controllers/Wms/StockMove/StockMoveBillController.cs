@@ -93,8 +93,6 @@ namespace Authority.Controllers.Wms.StockMove
 
         //
         // POST: /MoveBillMaster/Delete/
-
-        [HttpPost]
         public ActionResult Delete(string BillNo)
         {
             string strResult = string.Empty;
@@ -105,8 +103,6 @@ namespace Authority.Controllers.Wms.StockMove
 
         //
         // POST: /MoveBillMaster/Audit/
-
-        [HttpPost]
         public ActionResult Audit(string BillNo)
         {
             string strResult = string.Empty;
@@ -117,8 +113,6 @@ namespace Authority.Controllers.Wms.StockMove
 
         //
         // POST: /MoveBillMaster/AntiTrial/
-
-        [HttpPost]
         public ActionResult AntiTrial(string BillNo)
         {
             string strResult = string.Empty;
