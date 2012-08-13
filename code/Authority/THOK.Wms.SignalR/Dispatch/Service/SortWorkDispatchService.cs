@@ -232,7 +232,6 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                     if (cancellationToken.IsCancellationRequested) return;
                                     sortDisp.SortWorkDispatchID = sortWorkDisp.ID;
                                     sortDisp.WorkStatus = "2";
-
                                 }
                                 if (cancellationToken.IsCancellationRequested) return;
                                 SortWorkDispatchRepository.SaveChanges();
