@@ -197,6 +197,10 @@
     <Compile Include="Migrations\201208110627574_modify_cell_max.Designer.cs">
       <DependentUpon>201208110627574_modify_cell_max.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201208120953296_modify_out_move_master_origin.cs" />
+    <Compile Include="Migrations\201208120953296_modify_out_move_master_origin.Designer.cs">
+      <DependentUpon>201208120953296_modify_out_move_master_origin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="AuthorizeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

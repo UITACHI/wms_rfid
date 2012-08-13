@@ -15,7 +15,7 @@
                     $('#messages').append('<li>' + n + '</li>');
                 });
                 $.each(progressState.Errors, function (i, n) {
-                    $('#messages').append('<li>' + n + '</li>');
+                    $('#messages').append('<li style="color: #FF0000">' + n + '</li>');
                 });
 
                 //处理返回结果
@@ -43,7 +43,7 @@
                     case 7: //Confirm
                         break;
                     case 8: //Complete
-                        $.messager.confirm(g_MsgBoxTitle, progressState.Messages + progressState.Errors, function (r) {
+                        $.messager.confirm(g_MsgBoxTitle, progressState.Messages, function (r) {
                             g_connection.stop();
                             $.asyncProcessing.OnProgressComplete();
                             $.asyncProcessing.HideProgressDialog(g_progressDialog);
