@@ -196,7 +196,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                 if (quantity > 0)
                                 {
                                     //生成移库不完整,可能是库存不足；
-                                    //hasError = true;
+                                    hasError = true;
                                     ps.State = StateType.Error;
                                     ps.Errors.Add(product.Product.ProductCode +  " " + product.Product.ProductName + " 库存不足！");
                                     NotifyConnection(ps.Clone()); 
