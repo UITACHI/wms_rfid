@@ -682,5 +682,11 @@ namespace THOK.Wms.Bll.Service
 
         #endregion
 
+
+
+        public object GetCellCode(string productCode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

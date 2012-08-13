@@ -61,6 +61,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\PlainConcepts.EntityFramework.Extensions\PlainConcepts.EntityFramework.Extensions.csproj">
+      <Project>{2C767736-B180-4552-8D4B-BAC8053EA462}</Project>
+      <Name>PlainConcepts.EntityFramework.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Entities.Extensions\Entities.Extensions.csproj">
       <Project>{D629856F-6F11-4A87-8440-A5B66383A26A}</Project>
       <Name>Entities.Extensions</Name>
