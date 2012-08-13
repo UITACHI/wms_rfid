@@ -34,6 +34,7 @@ namespace THOK.Wms.Bll.Interfaces
 
         object GetCellInfo(string productCode);
 
+
         object GetCellCode(string productCode);
 
         object GetSortCell(string areaType);
@@ -41,5 +42,9 @@ namespace THOK.Wms.Bll.Interfaces
         object GetCellCheck(string productCode);
 
         bool DeleteCell(string productCodes);
+
+        bool SetTree2(string strId, string proCode);
+
+        object GetCellBy(int page, int rows, string QueryString, string Value);
     }
 }
