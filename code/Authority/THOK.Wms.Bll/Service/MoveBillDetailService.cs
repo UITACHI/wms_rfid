@@ -128,31 +128,42 @@ namespace THOK.Wms.Bll.Service
                 bool isOutQuantityRight = IsQuntityRight(moveBillDetail.RealQuantity, outStorage.InFrozenQuantity, outStorage.OutFrozenQuantity, outCell.MaxQuantity, outStorage.Quantity, "out");
                 //判断移入数量是否合理
                 bool isInQuantityRight = IsQuntityRight(moveBillDetail.RealQuantity, inStorage.InFrozenQuantity, inStorage.OutFrozenQuantity, inCell.MaxQuantity, inStorage.Quantity, "in");
-                if (inStorage != null && Locker.LockStorage(outStorage, product) != null)
+                if (Locker.LockStorage(outStorage, product) != null)
                 {
-                    if (isInQuantityRight && isOutQuantityRight)
+                    if (inStorage != null)
                     {
-                        var mbd = new MoveBillDetail();
-                        mbd.BillNo = moveBillDetail.BillNo;
-                        mbd.ProductCode = moveBillDetail.ProductCode;
-                        mbd.OutCellCode = moveBillDetail.OutCellCode;
-                        mbd.OutStorageCode = moveBillDetail.OutStorageCode;
-                        mbd.InCellCode = moveBillDetail.InCellCode;
-                        mbd.InStorageCode = inStorage.StorageCode;
-                        mbd.UnitCode = moveBillDetail.UnitCode;
-                        mbd.RealQuantity = moveBillDetail.RealQuantity * unit.Count;
-                        outStorage.OutFrozenQuantity += moveBillDetail.RealQuantity * unit.Count;
-                        inStorage.InFrozenQuantity += moveBillDetail.RealQuantity * unit.Count;
-                        mbd.Status = "0";
+                        if (isInQuantityRight && isOutQuantityRight)
+                        {
+                            var mbd = new MoveBillDetail();
+                            mbd.BillNo = moveBillDetail.BillNo;
+                            mbd.ProductCode = moveBillDetail.ProductCode;
+                            mbd.OutCellCode = moveBillDetail.OutCellCode;
+                            mbd.OutStorageCode = moveBillDetail.OutStorageCode;
+                            mbd.InCellCode = moveBillDetail.InCellCode;
+                            mbd.InStorageCode = inStorage.StorageCode;
+                            mbd.UnitCode = moveBillDetail.UnitCode;
+                            mbd.RealQuantity = moveBillDetail.RealQuantity * unit.Count;
+                            outStorage.OutFrozenQuantity += moveBillDetail.RealQuantity * unit.Count;
+                            inStorage.InFrozenQuantity += moveBillDetail.RealQuantity * unit.Count;
+                            mbd.Status = "0";
 
-                        MoveBillDetailRepository.Add(mbd);
-                        MoveBillDetailRepository.SaveChanges();
-                        result = true;
+                            MoveBillDetailRepository.Add(mbd);
+                            MoveBillDetailRepository.SaveChanges();
+                            result = true;
+                        }
+                        else
+                        {
+                            result = false;
+                        }
                     }
                     else
                     {
-                        result = false;
+                        resultStr = "移入库存加锁失败";
                     }
+                }
+                else
+                {
+                    resultStr = "移出库存加锁失败";
                 }
             }
             catch (Exception ex)

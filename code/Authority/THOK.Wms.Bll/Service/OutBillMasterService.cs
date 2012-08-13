@@ -102,7 +102,7 @@ namespace THOK.Wms.Bll.Service
             if (!endDate.Equals(string.Empty))
             {
                 DateTime end = Convert.ToDateTime(endDate);
-                outBillMaster = outBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+                outBillMaster = outBillMaster.Where(i => Convert.ToDateTime(i.BillDate).AddDays(1) <= end);
             }
             if (!OperatePersonCode.Equals(string.Empty) && OperatePersonCode != null)
             {
@@ -141,6 +141,7 @@ namespace THOK.Wms.Bll.Service
                     outbm.Description = outBillMaster.Description;
                     outbm.IsActive = outBillMaster.IsActive;
                     outbm.UpdateTime = DateTime.Now;
+                    outbm.Origin = "1";
 
                     OutBillMasterRepository.Add(outbm);
                     OutBillMasterRepository.SaveChanges();
