@@ -79,7 +79,6 @@
         var node = $('#userRoleSystem').tree('getRoot');
         var data = $('#userRoleSystem').tree('getData', node.target);
 
-        alert($.toJSON(data, { 'id': null, 'text': null, 'attributes': null, 'children': null }));
         for (i = 0; i < roots.length; i++) {
             info += roots[i].attributes + "^" + roots[i].id + "^" + roots[i].checked + ",";
             children = $('#userRoleSystem').tree('getChildren', roots[i].target);
