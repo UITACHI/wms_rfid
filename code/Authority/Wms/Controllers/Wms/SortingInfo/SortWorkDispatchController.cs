@@ -57,27 +57,30 @@ namespace Authority.Controllers.Wms.SortingInfo
         // POST: /SortWorkDispatch/Delete/
         public ActionResult Delete(string id)
         {
-            bool bResult = SortWorkDispatchService.Delete(id);
+            string errorInfo = string.Empty;
+            bool bResult = SortWorkDispatchService.Delete(id,ref errorInfo);
             string msg = bResult ? "删除成功" : "删除失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //订单审核(出库审核，移库审核，分拣作业审核)
         // POST: /SortWorkDispatch/Audit/
         public ActionResult Audit(string id)
         {
-            bool bResult = SortWorkDispatchService.Audit(id, this.User.Identity.Name.ToString());
+            string errorInfo = string.Empty;
+            bool bResult = SortWorkDispatchService.Audit(id, this.User.Identity.Name.ToString(),ref errorInfo);
             string msg = bResult ? "审核成功" : "审核失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //订单反审(出库审核，移库审核，分拣作业审核)
         // POST: /SortWorkDispatch/AntiTrial/
         public ActionResult AntiTrial(string id)
         {
-            bool bResult = SortWorkDispatchService.AntiTrial(id);
+            string errorInfo = string.Empty;
+            bool bResult = SortWorkDispatchService.AntiTrial(id,ref errorInfo);
             string msg = bResult ? "反审成功" : "反审失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
 
         //订单结单(出库结单，移库结单，分拣作业结单)
@@ -85,7 +88,7 @@ namespace Authority.Controllers.Wms.SortingInfo
         public ActionResult Settle(string id)
         {
             string errorInfo = string.Empty;
-            bool bResult = SortWorkDispatchService.Settle(id, out errorInfo);
+            bool bResult = SortWorkDispatchService.Settle(id, ref errorInfo);
             string msg = bResult ? "反审成功" : "反审失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
