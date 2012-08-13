@@ -89,8 +89,8 @@ namespace Authority.Controllers.Wms.SortingInfo
         {
             string errorInfo = string.Empty;
             bool bResult = SortWorkDispatchService.Settle(id, ref errorInfo);
-            string msg = bResult ? "反审成功" : "反审失败";
-            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+            string msg = bResult ? "结单成功" : "结单失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, errorInfo), "text", JsonRequestBehavior.AllowGet);
         }
     }
 }

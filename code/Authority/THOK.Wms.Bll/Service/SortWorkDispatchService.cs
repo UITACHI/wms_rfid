@@ -384,7 +384,46 @@ namespace THOK.Wms.Bll.Service
                         sortWork.OutBillMaster.OutBillDetails.AsParallel().ForAll(
                             (Action<OutBillDetail>)delegate(OutBillDetail o)
                             {
+                                var ss = storages.Where(s => s.ProductCode == o.ProductCode).ToArray();
+                                foreach (var s in ss)
+                                {
+                                    lock (s)
+                                    {
+                                        if (o.BillQuantity - o.AllotQuantity > 0)
+                                        {
+                                            decimal allotQuantity = s.Quantity;
+                                            decimal billQuantity = o.BillQuantity - o.AllotQuantity;
+                                            allotQuantity = allotQuantity < billQuantity ? allotQuantity : billQuantity;
+                                            o.AllotQuantity += allotQuantity;
+                                            o.RealQuantity += allotQuantity;
+                                            s.Quantity -= allotQuantity;
 
+                                            var billAllot = new OutBillAllot()
+                                            {
+                                                BillNo = sortWork.OutBillMaster.BillNo,
+                                                OutBillDetailId = o.ID,
+                                                ProductCode = o.ProductCode,
+                                                CellCode = s.CellCode,
+                                                StorageCode = s.StorageCode,
+                                                UnitCode = o.UnitCode,
+                                                AllotQuantity = allotQuantity,
+                                                RealQuantity = allotQuantity,
+                                                Status = "2"
+                                            };
+                                            lock (sortWork.OutBillMaster.OutBillAllots)
+                                            {
+                                                sortWork.OutBillMaster.OutBillAllots.Add(billAllot);
+                                            }
+                                        }
+                                        else
+                                            break;
+                                    }
+                                }
+
+                                if (o.BillQuantity - o.AllotQuantity > 0)
+                                {
+                                    throw new Exception(sortWork.SortingLine.SortingLineName + " " + o.ProductCode + " " + o.Product.ProductName + "分拣备货区库存不足，未能结单！");
+                                }
                             }
                         );
 
@@ -394,12 +433,12 @@ namespace THOK.Wms.Bll.Service
                     //出库结单
                     var outMaster = OutBillMasterRepository.GetQueryable()
                         .FirstOrDefault(o => o.BillNo == sortWork.OutBillNo);
-                    outMaster.Status = "7";
+                    outMaster.Status = "6";
                     outMaster.UpdateTime = DateTime.Now;
                     //移库结单
                     var moveMater = MoveBillMasterRepository.GetQueryable()
                         .FirstOrDefault(m => m.BillNo == sortWork.MoveBillNo);
-                    moveMater.Status = "5";
+                    moveMater.Status = "4";
                     moveMater.UpdateTime = DateTime.Now;
                     //分拣作业结单
                     sortWork.DispatchStatus = "4";
@@ -408,6 +447,11 @@ namespace THOK.Wms.Bll.Service
                     scope.Complete();
                     return true;
                 }
+            }
+            catch (AggregateException ex)
+            {
+                errorInfo = "结单失败，详情：" + ex.InnerExceptions.Select(i => i.Message).Aggregate((m, n) => m + n);
+                return false;
             }
             catch (Exception e)
             {
