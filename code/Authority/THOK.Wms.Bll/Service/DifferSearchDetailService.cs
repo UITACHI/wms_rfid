@@ -26,7 +26,7 @@ namespace THOK.Wms.Bll.Service
             if (BillNo != "" && BillNo != null)
             {
                 IQueryable<ProfitLossBillDetail> DifferBillDetailQuery = DifferSearchDetailRepository.GetQueryable();
-                var DifferBillDetail = DifferBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                var DifferBillDetail = DifferBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).Select(i => new
                 {
                     i.ID,
                     i.BillNo,

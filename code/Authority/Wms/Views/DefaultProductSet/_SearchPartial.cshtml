@@ -1,49 +1,41 @@
 ﻿<script type="text/javascript">
+    $(function () {
+        //属性初始化
+        $('#productChoose').combo({
+            required: true,
+            editable: false,
+            panelHeight: 45,
+            panelWidth: 100
+        })
+    })
     //点击弹出查询框
     function searchClick() {
         $('#dlgSearch').dialog('open').dialog('setTitle', '查询');
         searchLoad();
-    }
-    function searchLoad() {
-        $('#productChoose').combogrid({
-            width: 130,
-            panelWidth: 340,
-            url: '/DefaultProductSet/GetProductCell/' ,
-            idField: 'ProductCode',
-            textField: 'ProductName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-					{ field: 'ProductCode', title: '卷烟编码', align: 'left', width: 100 },
-					{ field: 'ProductName', title: '卷烟名称', align: 'left', width: 200 }
-				]]
-        });
-    }
+    }   
     //点击查询结果
     function searchResult() {
         $("#details").datagrid({
-            url: '/DefaultProductSet/SearchProductCell/?productCode=' + $('#productChoose').combogrid('getValue')
+            url: '/DefaultProductSet/GetCellBy/?QueryString=' + $('#productChoose').combogrid('getValue') + '&Value=' + $('#cellInfo').val()
         });
         $("#details").datagrid('reload');
         $('#dlgSearch').dialog('close');
     }
     
 </script>
-<div id="dlgSearch" class="easyui-dialog" modal="true" style="width: 290px; height: 130px;
+<div id="dlgSearch" class="easyui-dialog" modal="true" style="width: 300px; height: 130px;
     padding: 2px 2px;" closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
         <div region="center" border="false" style="padding: 10px 10px; background: #fff;
             border: 1px solid #ccc;">
             <table width="250">
-                <tr>
-                    <td>
-                        选择卷烟:
-                    </td>
-                    <td colspan="3" align="left">
-                        <input id="productChoose" name="ProductCode" type="text" width="300px" />
-                    </td>
-                </tr>
+                <div id="btnSearch">
+                    <select id="productChoose" class="easyui-combobox" style="width: 100px;" readonly="true">
+                        <option value="ProductCode">卷烟编码</option>
+                        <option value="ProductName">卷烟名称</option>
+                    </select>
+                    <input id="cellInfo">
+                </div>
             </table>
         </div>
     </div>

@@ -65,7 +65,7 @@ namespace THOK.Wms.Bll.Service
 
         public object GetDetails(int page, int rows, string BillNo, string beginDate, string endDate, string OperatePersonCode, string Status, string IsActive)
         {
-            IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable();
+            IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable().Where(o=>o.Status!="6");
 
             var outBillMaster = OutBillMasterQuery.AsEnumerable()
                                     .OrderByDescending(t => t.BillDate)
@@ -139,7 +139,8 @@ namespace THOK.Wms.Bll.Service
                     outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
                     outbm.VerifyDate = outBillMaster.VerifyDate;
                     outbm.Description = outBillMaster.Description;
-                    outbm.IsActive = outBillMaster.IsActive;
+                    //outbm.IsActive = outBillMaster.IsActive;
+                    outbm.IsActive = "1";
                     outbm.UpdateTime = DateTime.Now;
                     outbm.Origin = "1";
 

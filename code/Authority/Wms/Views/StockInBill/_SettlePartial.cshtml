@@ -7,7 +7,7 @@
             } else {
                 $.messager.confirm('结单', '确认要结单吗？未完成的入库单结单后将无法在操作！结单有风险！操作需谨慎！', function (r) {
                     if (r) {
-                        $.ajaxSender.send('/StockInBill/inBillMasterSettle/', { BillNo: row.BillNo }, function () {
+                        $.ajaxSender.send('/StockInBill/InBillMasterSettle/', { BillNo: row.BillNo }, function () {
                             $('#details').datagrid('load');
                         });
                     }

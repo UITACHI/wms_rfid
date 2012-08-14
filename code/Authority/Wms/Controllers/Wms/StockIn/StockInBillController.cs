@@ -193,7 +193,7 @@ namespace Authority.Controllers.Wms.StockIn
         //
         // POST: /InBillMaster/inBillMasterSettle/
 
-        public ActionResult inBillMasterSettle(string BillNo)
+        public ActionResult InBillMasterSettle(string BillNo)
         {
             string strResult = string.Empty;
             bool bResult = InBillMasterService.Settle(BillNo, out strResult);

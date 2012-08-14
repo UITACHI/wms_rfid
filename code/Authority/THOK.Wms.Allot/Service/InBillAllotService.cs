@@ -9,7 +9,7 @@ using System.Transactions;
 using THOK.Wms.SignalR;
 using THOK.Wms.SignalR.Common;
 using Entities.Extensions;
-
+using PlainConcepts.EntityFramework.Extensions.ObjectQueryExtensions;
 namespace THOK.Wms.Allot.Service
 {
     public class InBillAllotService : ServiceBase<InBillAllot>, IInBillAllotService
@@ -134,10 +134,12 @@ namespace THOK.Wms.Allot.Service
                             );
 
                             InBillAllotRepository.SaveChanges();
-        
+
                             InBillAllotRepository.GetObjectSet()
                                 .DeleteEntity(i => i.BillNo == ibm.BillNo);
-
+                            //InBillAllotRepository.GetObjectQuery()
+                            //    .DeleteAll(i => i.BillNo == ibm.BillNo,null);
+                            
                             ibm.Status = "2";
                             ibm.UpdateTime = DateTime.Now;
                             InBillMasterRepository.SaveChanges();
