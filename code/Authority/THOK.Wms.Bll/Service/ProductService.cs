@@ -258,16 +258,37 @@ namespace THOK.Wms.Bll.Service
             return storage.ToArray();
         }
 
-        /// <summary>
-        /// 浏览加载卷烟信息 git_jun 12-07-31
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="rows"></param>
-        /// <returns></returns>
+        /// <summary>浏览加载卷烟信息</summary>
         public object LoadProduct(int page, int rows)
         {
             IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
             var product = ProductQuery.OrderBy(p => p.ProductCode).Select(p => new { p.ProductCode, p.ProductName });
+            int total = product.Count();
+            product = product.Skip((page - 1) * rows).Take(rows);
+            return new { total, rows = product.ToArray() };
+        }
+        
+
+        /// <summary>获取卷烟信息</summary>
+        public object GetProductBy(int page, int rows, string QueryString, string Value)
+        {
+            string productCode = "", productName = "";
+            
+            if (QueryString == "ProductCode")
+            {
+                productCode = Value;
+            }
+            else
+            {
+                productName = Value;
+            }
+            IQueryable<Product> ProductQuery = ProductRepository.GetQueryable();
+            var product = ProductQuery.Where(c => c.ProductCode.Contains(productCode) && c.ProductName.Contains(productName))
+                .OrderBy(c => c.ProductCode).AsEnumerable()
+                .Select(c => new { 
+                    c.ProductCode,
+                    c.ProductName
+                });
             int total = product.Count();
             product = product.Skip((page - 1) * rows).Take(rows);
             return new { total, rows = product.ToArray() };

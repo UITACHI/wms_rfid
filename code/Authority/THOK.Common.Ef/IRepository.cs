@@ -17,6 +17,7 @@ namespace THOK.Common.Ef.Interfaces
         System.Linq.IQueryable<T> GetQueryable();
         System.Linq.ParallelQuery<T> GetParallelQuery();
         System.Data.Objects.ObjectSet<T> GetObjectSet();
+        System.Data.Objects.ObjectQuery<T> GetObjectQuery();
         System.Data.Objects.ObjectContext GetObjectContext();
         T GetSingle();
         T GetSingle(System.Linq.Expressions.Expression<Func<T, bool>> whereCondition);
