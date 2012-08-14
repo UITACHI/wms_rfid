@@ -101,6 +101,7 @@ namespace THOK.Wms.Bll.Service
                 i.UnitCode,
                 i.Unit.UnitName,
                 i.BillQuantity,
+                i.AllotQuantity,
                 i.RealQuantity,
                 i.Price,
                 i.Description

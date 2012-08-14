@@ -1101,7 +1101,16 @@
     <Content Include="Views\StockInBill\_SearchPartial.cshtml" />
     <Content Include="Views\StockOutSearch\_Detail.cshtml" />
     <Content Include="Views\StockMoveBill\_SearchPartial.cshtml" />
+
     <Content Include="Views\StockMoveBill\_SettlePartial.cshtml" />
+
+    <Content Include="Views\UnitList\_UnitSearchPartial.cshtml" />
+    <Content Include="Views\UnitList\_UnitPartial.cshtml" />
+    <Content Include="Views\UnitList\_UnitPartial1.cshtml" />
+    <Content Include="Views\UnitList\_UnitPartial2.cshtml" />
+    <Content Include="Views\UnitList\_UnitPartial3.cshtml" />
+    <Content Include="Views\UnitList\_UnitPartial4.cshtml" />
+
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

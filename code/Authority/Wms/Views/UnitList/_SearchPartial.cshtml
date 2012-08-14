@@ -5,6 +5,27 @@
         });
     })
 
+    function unitSelect1() {
+        $('#unitData1').dialog('open').dialog('setTitle', '选择一级单位');
+        $('#unitDetail1').datagrid({ url: '/Unit/Details/' });
+        $("#unitDetail1").datagrid('reload');
+    }
+    function unitSelect2() {
+        $('#unitData2').dialog('open').dialog('setTitle', '选择二级单位');
+        $('#unitDetail2').datagrid({ url: '/Unit/Details/' });
+        $("#unitDetail2").datagrid('reload');
+    }
+    function unitSelect3() {
+        $('#unitData3').dialog('open').dialog('setTitle', '选择三级单位');
+        $('#unitDetail3').datagrid({ url: '/Unit/Details/' });
+        $("#unitDetail3").datagrid('reload');
+    }
+    function unitSelect4() {
+        $('#unitData4').dialog('open').dialog('setTitle', '选择四级单位');
+        $('#unitDetail4').datagrid({ url: '/Unit/Details/' });
+        $("#unitDetail4").datagrid('reload');
+    }
+
     function searchClick() {
         $('#dlg-search').dialog('open').dialog('setTitle', '计量单位系列查询');
         $("input[type=text]").attr("value", "");
@@ -35,45 +56,48 @@
 
 </script>
 
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width:500px;height:350px;padding:2px 2px"
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:280px;height:320px;padding:2px 2px"
 		closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
 		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " >   
-            <table align="left" width="460">    
-              <tr>
+            <table align="left" width="250">    
+                 <tr>
                     <td width="100">计量单位系列编码:</td>
                     <td><input id="UnitListCode" name="UnitListCode" type="text" style="width: 100px"></td>
+                  </tr>
+                  <tr>
                     <td width="100">计量单位系列名称:</td>
                     <td><input id="unitListName" name="UnitListName" type="text" style="width: 100px"></td>
                   </tr>
                   <tr>
-                    <td width="100">计量单位编码_01:</td>
-                    <td><input id="unitCode01" name="UnitCode01" type="text" style="width: 100px"></td>
-                    <td width="100">计量单位名称_01:</td>
-                    <td><input id="unitName01" name="UnitName01" type="text" style="width: 100px"></td> 
-                     
-                   </tr>
+                    <td width="100">一级单位（件）:</td>
+                    <td><input name="unitName01" id="unitName01" type="text" style="width: 100px"">
+                        <a href="#" onclick="unitSelect1()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                    </td>
+                  </tr> 
                   <tr>
-                    <td width="100">计量单位编码_02:</td>
-                    <td><input id="unitCode02" name="UnitCode02" type="text" style="width: 100px"></td>
-                    <td width="100">计量单位名称_02:</td>
-                    <td><input id="unitName02" name="UnitName02" type="text" style="width: 100px"></td>
-                  </tr>
-                  <tr> 
-                    <td width="100">计量单位编码_03:</td>
-                    <td><input id="unitCode03" name="UnitCode03" type="text" style="width: 100px"></td>
-                    <td width="100">计量单位名称_03:</td>
-                    <td><input id="unitName03" name="UnitName03" type="text" style="width: 100px"></td> 
+                    <td width="100">二级单位（条）:</td>
+                    <td><input name="unitName02" id="unitName02" type="text" style="width: 100px"">
+                        <a href="#" onclick="unitSelect2()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                        </td>
                   </tr>
                   <tr>
-                    <td width="100">计量单位编码_04:</td>
-                    <td><input id="unitCode04" name="UnitCode04" type="text" style="width: 100px"></td>
-                    <td width="100">计量单位名称_04:</td>
-                    <td><input id="unitName04" name="UnitName04" type="text" style="width: 100px"></td> 
+                    <td width="100">三级单位（包）:</td>
+                    <td><input name="unitName03" id="unitName03" type="text" style="width: 100px"">
+                        <a href="#" onclick="unitSelect3()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="100">四级单位（支）:</td>
+                    <td><input name="unitName04" id="unitName04" type="text" style="width: 100px"">
+                        <a href="#" onclick="unitSelect4()" class="easyui-linkbutton" iconcls="icon-search" plain="true"></a>
+                    </td>
                   </tr>
                   <tr> 
                     <td width="60">统一编码:</td>
                     <td><input id="uniformCode" name="UniformCode" type="text" style="width: 100px"></td>
+                   </tr>
+                   <tr> 
                     <td width="60">是否可用:</td>
                     <td><select id="isActive" name="IsActive" class="easyui-combobox" style="width: 100px">
                       <option value="">请选择</option>
@@ -81,7 +105,7 @@
                       <option value="0">不可用</option>
                      </select></td>
                    </tr>
-                 </table>
+            </table>
         </div>
     </div>
 </div>
@@ -89,3 +113,7 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
 </div>
+@Html.Partial("_UnitPartial1") 
+@Html.Partial("_UnitPartial2") 
+@Html.Partial("_UnitPartial3") 
+@Html.Partial("_UnitPartial4") 
