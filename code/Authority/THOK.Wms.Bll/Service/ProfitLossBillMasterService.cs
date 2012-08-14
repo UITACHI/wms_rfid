@@ -70,7 +70,7 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<ProfitLossBillMaster> ProfitLossBillMasterQuery = ProfitLossBillMasterRepository.GetQueryable();
             var ProfitLossBillMaster = ProfitLossBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)
-                    && i.Status != "3"
+                    && i.Status != "2"
                     && i.WarehouseCode.Contains(WareHouseCode)
                     && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
                     //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
