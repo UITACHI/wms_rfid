@@ -7,6 +7,7 @@ using THOK.Wms.SignalR.Model;
 using System.Linq;
 using THOK.Wms.DbModel;
 using System;
+using Entities.Extensions;
 
 namespace THOK.Wms.SignalR.Allot.Service
 {
@@ -141,23 +142,48 @@ namespace THOK.Wms.SignalR.Allot.Service
                 AllotBar(billMaster, billDetail, ss, cancellationToken, ps);
             }
 
-            cellQuery.Select(c => c.Storages.Where(s => s.LockTag == billNo).Select(s => s))
-                     .AsParallel().ForAll(s => s.AsParallel().ForAll(i => i.LockTag = string.Empty));
-            billMaster.LockTag = string.Empty;
-            billMaster.Status = "3";
-            CellRepository.SaveChanges();
-
+            string billno = billMaster.BillNo;
             if (billMaster.OutBillDetails.Any(i => i.BillQuantity - i.AllotQuantity > 0))
             {
                 ps.State = StateType.Warning;
-                ps.Errors.Add("分配未全部完成，没有储位可分配,储位其他人正在操作或库存不足！");
+                ps.Errors.Add("分配未全部完成，没有储位可分配！");
                 NotifyConnection(ps.Clone());
+
+                OutBillMasterRepository.GetObjectSet()
+                    .UpdateEntity(i => i.BillNo == billno,
+                    i => new OutBillMaster() { LockTag = "" });
             }
             else
             {
                 ps.State = StateType.Info;
-                ps.Messages.Add("分配完成!");
+                ps.Messages.Add("分配完成,开始保存请稍候!");
                 NotifyConnection(ps.Clone());
+
+                billMaster.Status = "3";
+                try
+                {
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        billMaster.LockTag = string.Empty;
+                        CellRepository.SaveChanges();
+                        ps.State = StateType.Info;
+                        ps.Messages.Clear();
+                        ps.Messages.Add("分配成功!");
+                        NotifyConnection(ps.Clone());
+                    }
+                }
+                catch (Exception e)
+                {
+                    ps.State = StateType.Error;
+                    ps.Messages.Add("保存失败，详情：" + e.Message);
+                    NotifyConnection(ps.Clone());
+                }
+                finally
+                {
+                    OutBillMasterRepository.GetObjectSet()
+                        .UpdateEntity(i => i.BillNo == billno,
+                        i => new OutBillMaster() { LockTag = "" });
+                }
             }
         }
 
