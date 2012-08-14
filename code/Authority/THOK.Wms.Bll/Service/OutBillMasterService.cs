@@ -234,7 +234,7 @@ namespace THOK.Wms.Bll.Service
             string billno = "";
             IQueryable<OutBillMaster> outBillMasterQuery = OutBillMasterRepository.GetQueryable();
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
-            var outBillMaster = outBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var outBillMaster = outBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             if (outBillMaster.Count() == 0)
             {

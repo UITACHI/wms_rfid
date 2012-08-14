@@ -920,7 +920,7 @@ namespace THOK.Wms.Bll.Service
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
             string billNo = "";
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            var profitLossBillMaster = profitLossBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var profitLossBillMaster = profitLossBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             if (profitLossBillMaster.Count() == 0)
             {
                 billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "PL";

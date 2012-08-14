@@ -189,7 +189,7 @@ namespace THOK.Wms.Bll.Service
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
             string billNo = "";
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             if (inBillMaster.Count() == 0)
             {
                 billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "IN";
@@ -274,7 +274,7 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<BillType> billtypeQuery = BillTypeRepository.GetQueryable();
             var billtype = billtypeQuery.Where(b => b.BillClass == BillClass
-                && b.IsActive.Contains(IsActive)).OrderBy(b => b.BillTypeCode).AsEnumerable().Select(b => new
+                && b.IsActive.Contains(IsActive)).ToArray().OrderBy(b => b.BillTypeCode).Select(b => new
             {
                 b.BillTypeCode,
                 b.BillTypeName,
@@ -298,7 +298,7 @@ namespace THOK.Wms.Bll.Service
         public object GetWareHouseDetail(string IsActive)
         {
             IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
-            var warehouse = wareQuery.Where(w => w.IsActive == IsActive).OrderBy(w => w.WarehouseCode).AsEnumerable().Select(w => new
+            var warehouse = wareQuery.Where(w => w.IsActive == IsActive).OrderBy(w => w.WarehouseCode).ToArray().Select(w => new
                 {
                     w.WarehouseCode,
                     w.WarehouseName,
