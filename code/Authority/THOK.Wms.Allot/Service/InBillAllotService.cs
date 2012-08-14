@@ -134,11 +134,11 @@ namespace THOK.Wms.Allot.Service
                             );
 
                             InBillAllotRepository.SaveChanges();
-        
-                            //InBillAllotRepository.GetObjectSet()
-                            //    .DeleteEntity(i => i.BillNo == ibm.BillNo);
-                            InBillAllotRepository.GetObjectQuery()
-                                .DeleteAll(i => i.BillNo == ibm.BillNo,null);
+
+                            InBillAllotRepository.GetObjectSet()
+                                .DeleteEntity(i => i.BillNo == ibm.BillNo);
+                            //InBillAllotRepository.GetObjectQuery()
+                            //    .DeleteAll(i => i.BillNo == ibm.BillNo,null);
                             
                             ibm.Status = "2";
                             ibm.UpdateTime = DateTime.Now;
