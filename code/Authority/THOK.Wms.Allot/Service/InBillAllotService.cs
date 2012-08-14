@@ -4,9 +4,7 @@ using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.Allot.Interfaces;
 using System.Linq;
-using System.Collections.Generic;
 using System.Transactions;
-using THOK.Wms.SignalR;
 using THOK.Wms.SignalR.Common;
 using Entities.Extensions;
 namespace THOK.Wms.Allot.Service

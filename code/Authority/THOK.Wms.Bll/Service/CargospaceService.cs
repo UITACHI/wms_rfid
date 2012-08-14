@@ -42,7 +42,10 @@ namespace THOK.Wms.Bll.Service
                 storages = storageQuery.Where(s => s.Cell.CellCode == id);
             }
 
-            var temp = storages.AsEnumerable().Where(s => s.Quantity > 0).Select(s => new
+            var temp = storages.OrderBy(s => s.Product.ProductName).Where(s => s.Quantity > 0);
+            int total = temp.Count();
+            temp = temp.Skip((page - 1) * rows).Take(rows);
+            var Storage = temp.ToArray().AsEnumerable().Select(s => new
             {
                 s.StorageCode,
                 s.Cell.CellCode,
@@ -56,12 +59,8 @@ namespace THOK.Wms.Bll.Service
                 StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
                 UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
             });
-
-            int total = temp.Count();
-            temp = temp.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = temp.ToArray() };
+            return new { total, rows = Storage.ToArray() };
         }
-
         #endregion
     }
 }

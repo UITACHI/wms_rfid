@@ -44,7 +44,7 @@ namespace Authority.Controllers.Wms.ComplexSearch
         //
         // GET: /StockIntoSearch/InfoDetails/
 
-        public ActionResult InfoDetails(int page, int rows, string BillNo)
+        public ActionResult DetailInfos(int page, int rows, string BillNo)
         {
             var inBillDetail = IntoSearchDetailService.GetDetails(page, rows, BillNo);
             return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
@@ -53,7 +53,7 @@ namespace Authority.Controllers.Wms.ComplexSearch
         //
         // GET: /StockIntoSearch/DetailInfos/
 
-        public ActionResult DetailInfos(int page, int rows, string BillNo)
+        public ActionResult InfoDetails(int page, int rows, string BillNo)
         {
             var inBillDetail = StockIntoSearchService.GetDetailInfos(page, rows, BillNo);
             return Json(inBillDetail, "text", JsonRequestBehavior.AllowGet);
