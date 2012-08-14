@@ -41,8 +41,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THOK.Wms.SignalR", "THOK.Wm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities.Extensions", "Entities.Extensions\Entities.Extensions.csproj", "{D629856F-6F11-4A87-8440-A5B66383A26A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlainConcepts.EntityFramework.Extensions", "..\..\..\PlainConcepts.EntityFramework.Extensions\PlainConcepts.EntityFramework.Extensions.csproj", "{2C767736-B180-4552-8D4B-BAC8053EA462}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,10 +103,6 @@ Global
 		{D629856F-6F11-4A87-8440-A5B66383A26A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D629856F-6F11-4A87-8440-A5B66383A26A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D629856F-6F11-4A87-8440-A5B66383A26A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C767736-B180-4552-8D4B-BAC8053EA462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C767736-B180-4552-8D4B-BAC8053EA462}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C767736-B180-4552-8D4B-BAC8053EA462}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C767736-B180-4552-8D4B-BAC8053EA462}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
