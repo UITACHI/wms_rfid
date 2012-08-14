@@ -127,6 +127,7 @@ namespace THOK.Wms.Bll.Service
                 //mbm.IsActive = moveBillMaster.IsActive;
                 mbm.IsActive = "1";
                 mbm.UpdateTime = DateTime.Now;
+                mbm.Origin = "1";
 
                 MoveBillMasterRepository.Add(mbm);
                 MoveBillMasterRepository.SaveChanges();

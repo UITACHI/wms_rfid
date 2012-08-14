@@ -10,16 +10,12 @@ namespace THOK.Wms.Bll.Interfaces
     {
         object GetDetails(int page, int rows, string OrderDate, string SortingLineCode, string DispatchStatus);
 
-        bool Add(SortWorkDispatch sortWorkDisp);
+        bool Delete(string id,ref string errorInfo);
 
-        bool Delete(string id);
+        bool Audit(string id, string userName,ref string errorInfo);
 
-        bool Save(SortWorkDispatch sortWorkDisp);
+        bool AntiTrial(string id, ref string errorInfo);
 
-        bool Audit(string id, string userName);
-
-        bool AntiTrial(string id);
-
-        bool Settle(string id, out string errorInfo);
+        bool Settle(string id, ref string errorInfo);
     }
 }
