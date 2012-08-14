@@ -374,16 +374,16 @@ namespace THOK.Wms.Allot.Service
                             {
                                 if (MoveBillCreater.CheckIsNeedSyncMoveBill(ibm.WarehouseCode))
                                 {
-                                    var moveBillMaster = MoveBillCreater.CreateMoveBillMaster(ibm.WarehouseCode, "3001", "0e566f01-bbb3-486d-b28a-d5fc33f93d40");
+                                    //todo,test
+
+                                    var moveBillMaster = MoveBillCreater.CreateMoveBillMaster(ibm.WarehouseCode, "3001", "2c0a649d-5f44-4a33-8e83-2b6f1b5a06d8");
+                                    //var moveBillMaster = MoveBillCreater.CreateMoveBillMaster(ibm.WarehouseCode, "3001", "0e566f01-bbb3-486d-b28a-d5fc33f93d40");
                                     MoveBillCreater.CreateSyncMoveBillDetail(moveBillMaster);
                                     moveBillMaster.Status = "2";
                                     moveBillMaster.VerifyDate = DateTime.Now;
                                     moveBillMaster.VerifyPersonID = Guid.Parse("0e566f01-bbb3-486d-b28a-d5fc33f93d40");
                                     if (MoveBillCreater.CheckIsNeedSyncMoveBill(ibm.WarehouseCode))
                                     {
-                                        MoveBillCreater.DeleteMoveBillDetail(moveBillMaster);
-                                        MoveBillMasterRepository.Delete(moveBillMaster);
-                                        MoveBillMasterRepository.SaveChanges();
                                         strResult = "生成同步移库单不完整，请重新确认！";
                                         return false;
                                     }

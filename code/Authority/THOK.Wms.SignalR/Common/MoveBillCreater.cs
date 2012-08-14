@@ -31,6 +31,7 @@ namespace THOK.Wms.SignalR.Common
             moveBillMaster.BillNo = billNo;
             moveBillMaster.BillDate = DateTime.Now;
             moveBillMaster.BillTypeCode = billTypeCode;
+            moveBillMaster.Origin = "1";
             moveBillMaster.WarehouseCode = warehouseCode;
             moveBillMaster.OperatePersonID = Guid.Parse(operatePersonID);
             moveBillMaster.Status = "1";
