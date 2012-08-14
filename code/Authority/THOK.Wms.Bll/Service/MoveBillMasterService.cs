@@ -74,41 +74,43 @@ namespace THOK.Wms.Bll.Service
                     //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
                     && i.Status.Contains(Status))
                 .OrderByDescending(t => t.BillDate)
-                                   .OrderByDescending(t => t.BillNo)
-                                   .AsEnumerable().Select(i => new
-                  {
-                      i.BillNo,
-                      BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                      i.OperatePersonID,
-                      i.WarehouseCode,
-                      i.BillTypeCode,
-                      i.BillType.BillTypeName,
-                      i.Warehouse.WarehouseName,
-                      OperatePersonCode = i.OperatePerson.EmployeeCode,
-                      OperatePersonName = i.OperatePerson.EmployeeName,
-                      VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
-                      VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                      VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
-                      Status = WhatStatus(i.Status),
-                      IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                      Description = i.Description,
-                      UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
-                  });
+                .OrderByDescending(t => t.BillNo)
+                .Select(i =>i);
 
             if (!beginDate.Equals(string.Empty))
             {
                 DateTime begin = Convert.ToDateTime(beginDate);
-                moveBillMaster = moveBillMaster.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
+                moveBillMaster = moveBillMaster.Where(i => i.BillDate >= begin);
             }
 
             if (!endDate.Equals(string.Empty))
             {
                 DateTime end = Convert.ToDateTime(endDate).AddDays(1);
-                moveBillMaster = moveBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+                moveBillMaster = moveBillMaster.Where(i => i.BillDate <= end);
             }
             int total = moveBillMaster.Count();
             moveBillMaster = moveBillMaster.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = moveBillMaster.ToArray() };
+
+            var temp =moveBillMaster.ToArray().AsEnumerable().Select(i=>new
+            {
+                i.BillNo,
+                BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                i.OperatePersonID,
+                i.WarehouseCode,
+                i.BillTypeCode,
+                i.BillType.BillTypeName,
+                i.Warehouse.WarehouseName,
+                OperatePersonCode = i.OperatePerson.EmployeeCode,
+                OperatePersonName = i.OperatePerson.EmployeeName,
+                VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
+                VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
+                VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
+                Status = WhatStatus(i.Status),
+                IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                Description = i.Description,
+                UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+            });
+            return new { total, rows = temp.ToArray() };
         }
 
         public bool Add(MoveBillMaster moveBillMaster, string userName)
