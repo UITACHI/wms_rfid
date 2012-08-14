@@ -9,7 +9,6 @@ using System.Transactions;
 using THOK.Wms.SignalR;
 using THOK.Wms.SignalR.Common;
 using Entities.Extensions;
-using PlainConcepts.EntityFramework.Extensions.ObjectQueryExtensions;
 namespace THOK.Wms.Allot.Service
 {
     public class InBillAllotService : ServiceBase<InBillAllot>, IInBillAllotService

@@ -74,8 +74,27 @@ namespace THOK.Wms.Bll.Service
                     && i.WarehouseCode.Contains(WareHouseCode)
                     && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
                     //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
-                    && i.Status.Contains(Status)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
-                {
+                    && i.Status.Contains(Status))
+                    .OrderByDescending(t => t.BillDate)
+                    .OrderByDescending(t => t.BillNo)
+                    .Select(p => p);
+            if (!BeginDate.Equals(string.Empty))
+            {
+                DateTime begin = Convert.ToDateTime(BeginDate);
+                ProfitLossBillMaster = ProfitLossBillMaster.Where(i => i.BillDate >= begin);
+            }
+
+            if (!EndDate.Equals(string.Empty))
+            {
+                DateTime end = Convert.ToDateTime(EndDate).AddDays(1);
+                ProfitLossBillMaster = ProfitLossBillMaster.Where(i => i.BillDate <= end);
+            }
+
+            int total = ProfitLossBillMaster.Count();
+            ProfitLossBillMaster = ProfitLossBillMaster.Skip((page - 1) * rows).Take(rows);
+
+            var temp=ProfitLossBillMaster.ToArray().AsEnumerable().Select(i=>new
+            {
                     i.BillNo,
                     BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
                     i.OperatePersonID,
@@ -94,47 +113,7 @@ namespace THOK.Wms.Bll.Service
                     Description = i.Description,
                     UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
                 });
-            if (!IsActive.Equals(""))
-            {
-                ProfitLossBillMaster = ProfitLossBillMaster.Where(i =>
-                    i.BillNo.Contains(BillNo)
-                    && i.IsActive.Contains(IsActive)
-                    && i.Status != "3").OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
-                    {
-                        i.BillNo,
-                        i.BillDate,
-                        i.OperatePersonID,
-                        i.WarehouseCode,
-                        i.BillTypeCode,
-                        i.BillTypeName,
-                        i.CheckBillNo,
-                        i.WarehouseName,
-                        i.OperatePersonCode,
-                        i.OperatePersonName,
-                        i.VerifyPersonID,
-                        i.VerifyPersonName,
-                        i.VerifyDate,
-                        Status = WhatStatus(i.Status),
-                        IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                        Description = i.Description,
-                        UpdateTime = i.UpdateTime
-                    });
-            }
-            if (!BeginDate.Equals(string.Empty))
-            {
-                DateTime begin = Convert.ToDateTime(BeginDate);
-                ProfitLossBillMaster = ProfitLossBillMaster.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
-            }
-
-            if (!EndDate.Equals(string.Empty))
-            {
-                DateTime end = Convert.ToDateTime(EndDate).AddDays(1);
-                ProfitLossBillMaster = ProfitLossBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
-            }
-
-            int total = ProfitLossBillMaster.Count();
-            ProfitLossBillMaster = ProfitLossBillMaster.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = ProfitLossBillMaster.ToArray() };
+            return new { total, rows = temp.ToArray() };
         }
 
         /// <summary>
