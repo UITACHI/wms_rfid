@@ -216,20 +216,6 @@ namespace THOK.Wms.Bll.Service
         public object GetCellDetails(int page, int rows, string ware, string area, string shelf, string cell)
         {
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
-            var storages = storageQuery.OrderBy(s => s.StorageCode).AsEnumerable().Select(s => new
-            {
-                s.StorageCode,
-                s.Cell.CellCode,
-                s.Cell.CellName,
-                s.Product.ProductCode,
-                s.Product.ProductName,
-                s.Product.Unit.UnitCode,
-                s.Product.Unit.UnitName,
-                Quantity = s.Quantity / s.Product.Unit.Count,
-                IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-            });
             if (ware != null && ware != string.Empty || area != null && area != string.Empty || shelf != null && shelf != string.Empty || cell != null && cell != string.Empty)
             {
                 if (ware != string.Empty)
@@ -248,10 +234,15 @@ namespace THOK.Wms.Bll.Service
                 {
                     cell = cell.Substring(0, cell.Length - 1);
                 }
+            }
+            var storages = storageQuery.Where(s => (ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)) && s.Quantity > 0 && s.IsLock == "0")
+                                       .OrderBy(s => s.StorageCode)
+                                       .Select(s=>s);
 
-                storages = storageQuery.ToList().Where(s => (ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)) && s.Quantity > 0 && s.IsLock == "0")
-                                       .OrderBy(s => s.StorageCode).AsEnumerable()
-                                       .Select(s => new
+            int total = storages.Count();
+            storages = storages.Skip((page - 1) * rows).Take(rows);
+
+            var temp = storages.ToArray().Select(s => new
                                        {
                                            s.StorageCode,
                                            s.Cell.CellCode,
@@ -265,10 +256,7 @@ namespace THOK.Wms.Bll.Service
                                            StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
                                            UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
                                        });
-            }
-            int total = storages.Count();
-            storages = storages.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = storages.ToArray() };
+            return new { total, rows = temp.ToArray() };
         }
 
         /// <summary>

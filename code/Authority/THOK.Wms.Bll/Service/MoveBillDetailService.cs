@@ -70,30 +70,32 @@ namespace THOK.Wms.Bll.Service
             if (BillNo != "" && BillNo != null)
             {
                 IQueryable<MoveBillDetail> MoveBillDetailQuery = MoveBillDetailRepository.GetQueryable();
-                var moveBillDetail = MoveBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                var moveBillDetail = MoveBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).Select(i => i);
+                int total = moveBillDetail.Count();
+                moveBillDetail = moveBillDetail.Skip((page - 1) * rows).Take(rows);
+
+                var temp = moveBillDetail.ToArray().AsEnumerable().Select(i => new
                 {
                     i.ID,
                     i.BillNo,
                     i.ProductCode,
                     i.Product.ProductName,
                     i.OutCellCode,
-                    OutCellName=i.OutCell.CellName,
+                    OutCellName = i.OutCell.CellName,
                     i.OutStorageCode,
                     i.InCellCode,
-                    InCellName=i.InCell.CellName,
+                    InCellName = i.InCell.CellName,
                     i.InStorageCode,
                     i.UnitCode,
                     i.Unit.UnitName,
-                    RealQuantity=i.RealQuantity/i.Unit.Count,
-                    OperatePersonID=i.OperatePersonID == null ? string.Empty : i.OperatePersonID.ToString(),
-                    EmployeeName=i.OperatePerson==null?string.Empty:i.OperatePerson.EmployeeName,
-                    StartTime=i.StartTime==null?null:((DateTime)i.StartTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                    FinishTime=i.FinishTime==null?null:((DateTime)i.FinishTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                    Status=WhatStatus(i.Status)
+                    RealQuantity = i.RealQuantity / i.Unit.Count,
+                    OperatePersonID = i.OperatePersonID == null ? string.Empty : i.OperatePersonID.ToString(),
+                    EmployeeName = i.OperatePerson == null ? string.Empty : i.OperatePerson.EmployeeName,
+                    StartTime = i.StartTime == null ? null : ((DateTime)i.StartTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                    FinishTime = i.FinishTime == null ? null : ((DateTime)i.FinishTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                    Status = WhatStatus(i.Status)
                 });
-                int total = moveBillDetail.Count();
-                moveBillDetail = moveBillDetail.Skip((page - 1) * rows).Take(rows);
-                return new { total, rows = moveBillDetail.ToArray() };
+                return new { total, rows = temp.ToArray() };
             }
             return "";
         }
