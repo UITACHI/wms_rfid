@@ -238,7 +238,7 @@ namespace THOK.Wms.Bll.Service
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             if (outBillMaster.Count() == 0)
             {
-                billno = System.DateTime.Now.ToString("yyMMdd") + "0001" + "CK";
+                billno = System.DateTime.Now.ToString("yyMMdd") + "0001" + "OU";
             }
             else
             {
@@ -250,7 +250,7 @@ namespace THOK.Wms.Bll.Service
                 {
                     newcode = "0" + newcode;
                 }
-                billno = System.DateTime.Now.ToString("yyMMdd") + newcode + "CK";
+                billno = System.DateTime.Now.ToString("yyMMdd") + newcode + "OU";
             }
             var findBillInfo = new
             {

@@ -184,10 +184,10 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<CheckBillMaster> CheckMasterQuery = CheckBillMasterRepository.GetQueryable();
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
-            var inBillMaster = CheckMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var inBillMaster = CheckMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             if (inBillMaster.Count() == 0)
             {
-                return System.DateTime.Now.ToString("yyMMdd") + "0001" + "CK";
+                return System.DateTime.Now.ToString("yyMMdd") + "0001" + "CH";
             }
             else
             {
@@ -199,7 +199,7 @@ namespace THOK.Wms.Bll.Service
                 {
                     newcode = "0" + newcode;
                 }
-                return System.DateTime.Now.ToString("yyMMdd") + newcode + "CK";
+                return System.DateTime.Now.ToString("yyMMdd") + newcode + "CH";
             }
         }
 
