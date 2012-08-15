@@ -31,7 +31,8 @@
         queryParams.BeginDate = $('#beginDate').datebox('getValue');
         queryParams.EndDate = $('#endDate').datebox('getValue');
         queryParams.WarehouseCode = $('#wareHouse').combo('getValue');
-        queryParams.unitType = $('#unitType').combo('getValue');
+        queryParams.UnitType = $('#unit_Type').combo('getValue');
+        alert(queryParams.UnitType);
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -63,7 +64,7 @@
               <tr style="padding-top:10px;">
                 <td>换算单位:</td>
                 <td align="left">     
-		           <select id="unitType" class="easyui-combobox" style="width: 130px; height: 40px" editable="false">
+		           <select id="unit_Type" class="easyui-combobox" style="width: 130px; height: 40px" editable="false">
                       <option value="">请选择</option>                       
                       <option value="1">标准件</option>
                       <option value="2">标准条</option>

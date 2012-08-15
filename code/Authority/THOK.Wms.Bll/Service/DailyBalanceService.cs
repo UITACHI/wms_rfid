@@ -93,7 +93,7 @@ namespace THOK.Wms.Bll.Service
         public object GetInfoDetails(int page, int rows, string warehouseCode, string settleDate,string unitType)
         {
             DateTime date = Convert.ToDateTime(settleDate);
-            if (unitType==null)
+            if (unitType == null || unitType == "")
             {
                 unitType = "1";
             }
