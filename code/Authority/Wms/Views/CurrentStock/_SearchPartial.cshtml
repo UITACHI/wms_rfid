@@ -1,14 +1,18 @@
 ﻿<script type="text/javascript">
     function searchClick() {
+        $('#warehouseTree').combotree({
+            url: '/Area/GetDetailsTree/',
+            multiple: true,
+            width: 160
+        });
         SearchLoad();
-        $('#dlg-search').dialog('open').dialog('setTitle', ('当前 '+ $('#product').combo('getValue').toString() + ' 的当前库存量').toString());
-        $("input[type=text]").attr("value", "");
+        $('#dlg-search').dialog('open').dialog('setTitle', '当前库存查询');
+        $('#product').combogrid('clear');
     };
     function SearchLoad() {
         $('#product').combogrid({
-            required: true,
             disabled: false,
-            width: 140,
+            width: 160,
             panelWidth: 340,
             url: '/Product/Details/?page=1&rows=10',
             idField: 'ProductCode',
@@ -25,7 +29,7 @@
     }
     function select() {
         ware = "", area = "";
-        var roots = $('#warehouseTree').tree('getRoots');
+        var roots = $('#warehouseTree').combotree('tree').tree('getRoots');
         //仓库
         for (i = 0; i < roots.length; i++) {
             if (roots[i].attributes == "ware" && roots[i].checked == true) {
@@ -54,7 +58,7 @@
         $('#dlg-search').dialog('close');
     }
 </script>
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width:280px;height:320px;padding:2px 2px"
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:280px;height:160px;padding:2px 2px"
     closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
         <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " overflow: scroll; padding: 1px; margin: 1px">
@@ -65,7 +69,10 @@
                 </tr>
                 <tr>
                     <td>库区选择:</td>
-                    <td align="left"><ul id="warehouseTree" class="easyui-tree" checkbox="true" url='/Area/GetDetailsTree/'></ul></td>
+                    <td align="left">
+                        <select class="easyui-combotree" name="language" url=""valueField="id" textField="text" multiple="true" panelHeight="auto" panelWidth="160px" id="warehouseTree">
+                        </select>
+                    </td>
                 </tr>
             </table>
         </div>
