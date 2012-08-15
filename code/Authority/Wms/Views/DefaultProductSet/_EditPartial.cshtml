@@ -1,5 +1,6 @@
 ﻿<script type="text/javascript">
     function editClick() {
+        editType = 'edit';
         var productRow = $('#details').datagrid('getSelected');
         if (!productRow || productRow.length == 0) {
             $.messager.alert('提示', '请选择要编辑的数据!', 'info');

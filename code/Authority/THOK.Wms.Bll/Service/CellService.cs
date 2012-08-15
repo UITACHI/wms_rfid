@@ -120,46 +120,50 @@ namespace THOK.Wms.Bll.Service
         }
 
         /// <summary>修改货位</summary>
-        public bool SaveCell(string wareCodes, string areaCodes, string shelfCodes, string cellCodes, string defaultProductCode)
+        public bool SaveCell(string wareCodes, string areaCodes, string shelfCodes, string cellCodes, string defaultProductCode, string editType)
         {
-            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+            try
+            {
+                IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
 
-            if (wareCodes != string.Empty && wareCodes != null)
-            {
-                wareCodes = wareCodes.Substring(0, wareCodes.Length - 1);
-            }
-            else if (areaCodes != string.Empty && areaCodes != null)
-            {
-                areaCodes = areaCodes.Substring(0, areaCodes.Length - 1);
-            }
-            else if (shelfCodes != string.Empty && shelfCodes != null)
-            {
-                shelfCodes = shelfCodes.Substring(0, shelfCodes.Length - 1);
-            }
-            else if (cellCodes != string.Empty && cellCodes != null)
-            {
-                cellCodes = cellCodes.Substring(0, cellCodes.Length - 1);
-            }
-            var tmp = CellRepository.GetQueryable()
-                .Where(c => c.CellCode == "");
+                if (wareCodes != string.Empty && wareCodes != null)
+                {
+                    wareCodes = wareCodes.Substring(0, wareCodes.Length - 1);
+                }
+                else if (areaCodes != string.Empty && areaCodes != null)
+                {
+                    areaCodes = areaCodes.Substring(0, areaCodes.Length - 1);
+                }
+                else if (shelfCodes != string.Empty && shelfCodes != null)
+                {
+                    shelfCodes = shelfCodes.Substring(0, shelfCodes.Length - 1);
+                }
+                else if (cellCodes != string.Empty && cellCodes != null)
+                {
+                    cellCodes = cellCodes.Substring(0, cellCodes.Length - 1);
+                }
 
-            //var tmp = defaultProductCode;
-            //CellRepository.GetObjectSet()
-            //    .UpdateAll(c => new Cell() { DefaultProductCode = null },
-            //        c => wareCodes.Contains(c.Warehouse.WarehouseCode) 
-            //            || areaCodes.Contains(c.Area.AreaCode) 
-            //            || shelfCodes.Contains(c.ShelfCode) 
-            //            || cellCodes.Contains(c.CellCode),
-            //        null
-            //    );
-
-            //foreach (var item in cell.ToArray())
-            //{
-            //    var cellSave = cellQuery.FirstOrDefault(c => c.CellCode == item.CellCode);
-            //    cellSave.DefaultProductCode = defaultProductCode;
-            //    CellRepository.SaveChanges();
-            //}
-            return true;
+                if (editType == "edit")
+                {
+                    CellRepository.GetObjectSet()
+                        .UpdateEntity(
+                            c => c.DefaultProductCode == defaultProductCode,
+                            c => new Cell() { DefaultProductCode = null }
+                        );
+                }
+                CellRepository.GetObjectSet()
+                    .UpdateEntity(
+                        c => wareCodes.Contains(c.Warehouse.WarehouseCode)
+                            || areaCodes.Contains(c.Area.AreaCode)
+                            || shelfCodes.Contains(c.ShelfCode)
+                            || cellCodes.Contains(c.CellCode),
+                        c => new Cell() { DefaultProductCode = defaultProductCode }
+                    );
+                return true;
+            }catch(Exception e)
+            {
+                return false;
+            }            
         }
         
         //Test 
@@ -213,9 +217,10 @@ namespace THOK.Wms.Bll.Service
         public bool DeleteCell(string productCodes)
         {
             CellRepository.GetObjectSet()
-                .DeleteEntity(c=>c.CellCode == string.Empty);
-            CellRepository.GetObjectSet()
-                .UpdateEntity(c => productCodes.Contains(c.DefaultProductCode), c => new Cell() { DefaultProductCode = null });
+                .UpdateEntity(
+                    c => productCodes.Contains(c.DefaultProductCode),
+                    c => new Cell() { DefaultProductCode = null }
+                );
             return true;
         }
 
@@ -683,11 +688,6 @@ namespace THOK.Wms.Bll.Service
                 areaSet.Add(areaTree);
             }
             return areaSet.ToArray();
-        }
-
-        public object GetCellCode(string productCode)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -43,11 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TableMetadata.cs" />
-    <Compile Include="ConditionBuilder.cs" />
-    <Compile Include="ExpressionVisitor.cs" />
     <Compile Include="ObjectContextExtension.cs" />
-    <Compile Include="PartialEvaluator.cs" />
-    <Compile Include="PredicateExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
