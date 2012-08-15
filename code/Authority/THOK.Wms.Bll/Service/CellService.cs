@@ -6,7 +6,7 @@ using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.Bll.Models;
-
+using Entities.Extensions;
 namespace THOK.Wms.Bll.Service
 {
     public class CellService : ServiceBase<Cell>, ICellService
@@ -34,8 +34,6 @@ namespace THOK.Wms.Bll.Service
         {
             get { return this.GetType(); }
         }
-
-        #region ICellService 成员
 
         public object GetDetails(int page, int rows, string cellCode)
         {
@@ -142,17 +140,28 @@ namespace THOK.Wms.Bll.Service
             {
                 cellCodes = cellCodes.Substring(0, cellCodes.Length - 1);
             }
+            var tmp = CellRepository.GetQueryable()
+                .Where(c => c.CellCode == "");
 
-            var cell = cellQuery.Where(c => wareCodes.Contains(c.Warehouse.WarehouseCode) || areaCodes.Contains(c.Area.AreaCode) || shelfCodes.Contains(c.ShelfCode) || cellCodes.Contains(c.CellCode));
+            //var tmp = defaultProductCode;
+            //CellRepository.GetObjectSet()
+            //    .UpdateAll(c => new Cell() { DefaultProductCode = null },
+            //        c => wareCodes.Contains(c.Warehouse.WarehouseCode) 
+            //            || areaCodes.Contains(c.Area.AreaCode) 
+            //            || shelfCodes.Contains(c.ShelfCode) 
+            //            || cellCodes.Contains(c.CellCode),
+            //        null
+            //    );
 
-            foreach (var item in cell.ToArray())
-            {
-                var cellSave = cellQuery.FirstOrDefault(c => c.CellCode == item.CellCode);
-                cellSave.DefaultProductCode = defaultProductCode;
-                CellRepository.SaveChanges();
-            }
+            //foreach (var item in cell.ToArray())
+            //{
+            //    var cellSave = cellQuery.FirstOrDefault(c => c.CellCode == item.CellCode);
+            //    cellSave.DefaultProductCode = defaultProductCode;
+            //    CellRepository.SaveChanges();
+            //}
             return true;
         }
+        
         //Test 
         public bool SetTree2(string strId, string proCode)
         {
@@ -173,6 +182,7 @@ namespace THOK.Wms.Bll.Service
             }
             return result;
         }
+
         public bool UpdateTree(string type, string id,bool isCheck, string proCode2)
         {
             bool result = false;
@@ -198,25 +208,17 @@ namespace THOK.Wms.Bll.Service
             }
             return result;
         }
+        
         /// <summary>删除货位数量的信息</summary>
         public bool DeleteCell(string productCodes)
         {
-            if (productCodes != string.Empty && productCodes != null)
-            {
-                productCodes = productCodes.Substring(0, productCodes.Length - 1);
-            }
-            var cell = CellRepository.GetQueryable().Where(c => productCodes.Contains(c.DefaultProductCode));
-
-            foreach (var item in cell.ToArray())
-            {
-
-                var cellSave = CellRepository.GetQueryable().FirstOrDefault(c => c.DefaultProductCode == item.DefaultProductCode);
-                cellSave.Product = null;
-                cellSave.DefaultProductCode = null;
-                CellRepository.SaveChanges();
-            }
+            CellRepository.GetObjectSet()
+                .DeleteEntity(c=>c.CellCode == string.Empty);
+            CellRepository.GetObjectSet()
+                .UpdateEntity(c => productCodes.Contains(c.DefaultProductCode), c => new Cell() { DefaultProductCode = null });
             return true;
         }
+
         /// <summary>加载卷烟信息</summary>
         public object GetCellInfo()
         {
@@ -232,6 +234,7 @@ namespace THOK.Wms.Bll.Service
                 });
             return cellInfo;
         }
+
         public object GetCellBy(int page, int rows, string QueryString, string Value)
         {
             string productCode = "", productName = "";
@@ -255,6 +258,7 @@ namespace THOK.Wms.Bll.Service
                  });
             return cell;
         }
+        
         /// <summary>查找卷烟信息</summary>
         public object GetCellInfo(string productCode)
         {
@@ -269,6 +273,7 @@ namespace THOK.Wms.Bll.Service
                 });
             return cellInfo;
         }
+        
         /// <summary>编辑储位货位树形菜单</summary>
         public object GetCellCheck(string productCode)
         {
@@ -679,10 +684,6 @@ namespace THOK.Wms.Bll.Service
             }
             return areaSet.ToArray();
         }
-
-        #endregion
-
-
 
         public object GetCellCode(string productCode)
         {

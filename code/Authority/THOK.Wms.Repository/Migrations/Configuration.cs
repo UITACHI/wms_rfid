@@ -2545,7 +2545,7 @@ namespace THOK.Wms.Repository.Migrations
                     {
                         ModuleID = new Guid("FC344F88-08AD-4FDA-8F45-EAD3BB471188"),
                         ModuleName = "货位历史明细",
-                        ShowOrder = 6,
+                        ShowOrder = 7,
                         ModuleURL = "/CellHistorical/",
                         IndicateImage = "icon-son_StockOlddetails",
                         DeskTopImage = "image-son_StockOlddetails",

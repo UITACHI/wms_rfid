@@ -149,6 +149,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Entities.Extensions\Entities.Extensions.csproj">
+      <Project>{D629856F-6F11-4A87-8440-A5B66383A26A}</Project>
+      <Name>Entities.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\THOK.Common.Ef\THOK.Common.Ef.csproj">
       <Project>{59FB8EB5-F5B8-4423-8550-A7819C855CDE}</Project>
       <Name>THOK.Common.Ef</Name>
