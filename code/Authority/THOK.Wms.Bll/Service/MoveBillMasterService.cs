@@ -8,6 +8,7 @@ using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
 using THOK.Wms.SignalR;
 using THOK.Wms.SignalR.Common;
+using System.Transactions;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -25,6 +26,8 @@ namespace THOK.Wms.Bll.Service
         public IMoveBillDetailRepository MoveBillDetailRepository { get; set; }
         [Dependency]
         public IMoveBillCreater MoveBillCreater { get; set; }
+        [Dependency]
+        public IStorageLocker Locker { get; set; }
 
         protected override Type LogPrefix
         {
@@ -53,7 +56,7 @@ namespace THOK.Wms.Bll.Service
                     statusStr = "执行中";
                     break;
                 case "4":
-                    statusStr = "已移库";
+                    statusStr = "已结单";
                     break;
             }
             return statusStr;
@@ -71,41 +74,43 @@ namespace THOK.Wms.Bll.Service
                     //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
                     && i.Status.Contains(Status))
                 .OrderByDescending(t => t.BillDate)
-                                   .OrderByDescending(t => t.BillNo)
-                                   .AsEnumerable().Select(i => new
-                  {
-                      i.BillNo,
-                      BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                      i.OperatePersonID,
-                      i.WarehouseCode,
-                      i.BillTypeCode,
-                      i.BillType.BillTypeName,
-                      i.Warehouse.WarehouseName,
-                      OperatePersonCode = i.OperatePerson.EmployeeCode,
-                      OperatePersonName = i.OperatePerson.EmployeeName,
-                      VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
-                      VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                      VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
-                      Status = WhatStatus(i.Status),
-                      IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                      Description = i.Description,
-                      UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
-                  });
+                .OrderByDescending(t => t.BillNo)
+                .Select(i =>i);
 
             if (!beginDate.Equals(string.Empty))
             {
                 DateTime begin = Convert.ToDateTime(beginDate);
-                moveBillMaster = moveBillMaster.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
+                moveBillMaster = moveBillMaster.Where(i => i.BillDate >= begin);
             }
 
             if (!endDate.Equals(string.Empty))
             {
                 DateTime end = Convert.ToDateTime(endDate).AddDays(1);
-                moveBillMaster = moveBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+                moveBillMaster = moveBillMaster.Where(i => i.BillDate <= end);
             }
             int total = moveBillMaster.Count();
             moveBillMaster = moveBillMaster.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = moveBillMaster.ToArray() };
+
+            var temp =moveBillMaster.ToArray().AsEnumerable().Select(i=>new
+            {
+                i.BillNo,
+                BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                i.OperatePersonID,
+                i.WarehouseCode,
+                i.BillTypeCode,
+                i.BillType.BillTypeName,
+                i.Warehouse.WarehouseName,
+                OperatePersonCode = i.OperatePerson.EmployeeCode,
+                OperatePersonName = i.OperatePerson.EmployeeName,
+                VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
+                VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
+                VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
+                Status = WhatStatus(i.Status),
+                IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                Description = i.Description,
+                UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+            });
+            return new { total, rows = temp.ToArray() };
         }
 
         public bool Add(MoveBillMaster moveBillMaster, string userName)
@@ -310,6 +315,74 @@ namespace THOK.Wms.Bll.Service
             {
                 resultStr = "当前单据的状态不是已录入状态或者该单据已被删除无法编辑，请刷新页面！";
                 result = false;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region IMoveBillMasterService 成员
+
+        /// <summary>
+        /// 移库结单
+        /// </summary>
+        /// <param name="BillNo">单据号</param>
+        /// <param name="strResult">提示信息</param>
+        /// <returns></returns>
+        public bool Settle(string BillNo, out string strResult)
+        {
+            bool result=false;
+            strResult = string.Empty;
+            var mbm = MoveBillMasterRepository.GetQueryable().FirstOrDefault(m=>m.BillNo==BillNo);
+            if (mbm!=null&&mbm.Status=="3")
+            {
+                using (var scope = new TransactionScope())
+                {
+                    try
+                    {
+                        //结单移库单,修改冻结量
+                        var moveDetail = MoveBillDetailRepository.GetQueryable()
+                                                                     .Where(m => m.BillNo == BillNo
+                                                                         && m.Status != "2");
+                        var sourceStorages = moveDetail.Select(m => m.OutStorage).ToArray();
+                        var targetStorages = moveDetail.Select(m => m.InStorage).ToArray();
+                        if (!Locker.Lock(sourceStorages)|| !Locker.Lock(targetStorages))
+                        {
+                            strResult = "锁定储位失败，储位其他人正在操作，无法取消分配请稍候重试！";
+                            return false;
+                        }
+                        moveDetail.AsParallel().ForAll(
+                            (Action<MoveBillDetail>)delegate(MoveBillDetail m)
+                            {
+                                if (m.InStorage.ProductCode == m.ProductCode
+                                    && m.OutStorage.ProductCode == m.ProductCode
+                                    && m.InStorage.InFrozenQuantity >= m.RealQuantity
+                                    && m.OutStorage.OutFrozenQuantity >= m.RealQuantity)
+                                {
+                                    m.InStorage.InFrozenQuantity -= m.RealQuantity;
+                                    m.OutStorage.OutFrozenQuantity -= m.RealQuantity;
+                                    m.InStorage.LockTag = string.Empty;
+                                    m.OutStorage.LockTag = string.Empty;
+                                }
+                                else
+                                {
+                                    throw new Exception("储位的卷烟或入库冻结量与当前分配不符，信息可能被异常修改，不能结单！");
+                                }
+                            }
+                        );
+                        MoveBillDetailRepository.SaveChanges();
+                        mbm.Status = "4";
+                        mbm.UpdateTime = DateTime.Now;
+                        MoveBillMasterRepository.SaveChanges();
+                        result = true;
+                        scope.Complete();
+                    }
+                    catch (Exception e)
+                    {
+                        strResult = "移库单结单出错！原因：" + e.Message;
+                        return false;
+                    }
+                }
             }
             return result;
         }

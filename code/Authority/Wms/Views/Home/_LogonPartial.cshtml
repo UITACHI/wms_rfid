@@ -84,9 +84,67 @@
     }
 </script>
     <div id="login-bg">
-    <div id="c" class="login2" style="background:#FF6633; width: 350px; height: 350px;display: none;"  >
+    @*<div id="c" class="login2" style="background:#FF6633; width: 350px; height: 350px;display: none;"  >*@
     
-    <div id="dlg-logon" class="easyui-dialog" border="false" modal="true" title="登录"
+    <div id="c" class="login2" style=" background-image:url('/Content/Images/login_bg02.jpg'); background-repeat:no-repeat; text-align:center; width:551px; height:306px;">
+         <form id="fm-logon" action="/Account/LogOn" method="post">
+         <table style="width:100%;" cellpadding="0" cellspacing="0">
+            <tr style="height:100px;">
+               <td style="width:230px;">&nbsp;</td>
+               <td>&nbsp;</td>
+            </tr>
+            <tr>
+               <td></td>
+               <td>
+                    <table  border="0" cellpadding="0" cellspacing="0" style=" font-weight:bold; font-family:楷体_GB2312;">
+                              <tr>
+                                <td colspan="3" style="height: 30px";></td>
+                              </tr>
+                              <tr style="height: 25px";>
+                                <td style="height: 20px; color:White;">用户名:</td>
+                                <td style="height: 20px; text-align:left; width: 217px;"><input style="height: 22px;width: 180px"  name="username" type="text" required="true" class="easyui-validatebox"></td>
+                                <td></td>
+                              </tr>
+                              <tr style="height: 25px";>
+                                <td style="height: 20px; color:White;">密&nbsp;&nbsp;&nbsp;码:</td>
+                                <td style="height: 20px; text-align:left; width: 217px;"><input style="height: 22px;width: 180px" name="password" type="password" required="true" class="easyui-validatebox"></input></td>
+                                <td></td>
+                              </tr>
+                              <tr style="height: 25px";>
+					            <td style="height: 20px; color:White;">地&nbsp;&nbsp;&nbsp;市:</td>
+					            <td style="height: 20px; text-align:left; width: 217px;"><input style="height: 20px;width: 180px" name="cityid" type="text" id="cg-logon-changecity" /></td>
+				                <td></td>
+                              </tr>
+                            <tr style="height: 25px";>
+					            <td style="height: 20px; color:White;">系&nbsp;&nbsp;&nbsp;统:</td>
+					            <td style="height: 20px; text-align:left; width: 217px;"><input style="height: 20px;width: 180px" name="systemid" type="text" id="cg-logon-changesystem" /></td>
+				                <td></td>
+                            </tr>
+							<tr style="height: 25px";>								
+					            <td style="height: 20px; color:White;">服务器 :</td>
+					            <td style="height: 20px; text-align:left; width: 217px;"><input style="height: 20px;width: 180px" name="serverid" type="text" id="cg-logon-changeserver" /></td>
+				                <td></td>
+                            </tr>                     
+                    </table>
+                    <table  border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td  style="height: 25px; text-align:left; width: 50px;"></td>
+                                <td  style="text-align: left; width: 217px;height:30px">
+                                    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="login()">确定</a>
+                                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#fm-logon').form('clear')">取消</a>
+                                </td>
+                            </tr>
+                    </table>
+               </td>
+            </tr>    
+         </table>    
+         <table style="width:100%">
+            <tr><td style=" font-size:12px; text-align:center; padding:10px 8px 8px 8px; height: 60px;">版权所有：天海欧康科技信息（厦门）有限公司</td></tr>
+         </table>
+         </form>
+    </div> 
+
+    @*<div id="dlg-logon" class="easyui-dialog" border="false" modal="true" title="登录"
         style="width:328px;height:250px;padding:2px 2px"
         closed="true" buttons="#dlg-buttons-logon">
 		<div class="easyui-layout" fit="true">
@@ -122,8 +180,9 @@
 		            </form>
 			</div>
 		</div>
-	</div>
-    </div>
+	</div>*@
+
+ @*   </div>*@
     </div>
 
     <div id="dlg-buttons-logon">

@@ -171,12 +171,14 @@
     <Content Include="bin\THOK.Authority.Dal.pdb" />
     <Content Include="Content\Images\banner.jpg" />
     <Content Include="Content\Images\login_bg.jpg" />
+    <Content Include="Content\Images\login_bg02.jpg" />
     <Content Include="Content\Images\noscript.gif" />
     <Content Include="Content\Scripts\jquery.ajaxsetup.js" />
     <Content Include="Content\Scripts\jquery.json.js" />
     <Content Include="Content\Scripts\jthok-ui\JDiv.js" />
     <Content Include="Content\Scripts\jquery.fullscreen.js" />
     <Content Include="Content\Scripts\jquery.asyncProcessing.js" />
+    <Content Include="Content\Scripts\Native_FullScreen.js" />
     <Content Include="Content\themes\base\css\css.css" />
     <Content Include="Content\themes\base\icons\2Menu_Help.png" />
     <Content Include="Content\themes\base\icons\2Menu_Jurisdiction.png" />
@@ -1099,12 +1101,16 @@
     <Content Include="Views\StockInBill\_SearchPartial.cshtml" />
     <Content Include="Views\StockOutSearch\_Detail.cshtml" />
     <Content Include="Views\StockMoveBill\_SearchPartial.cshtml" />
+
+    <Content Include="Views\StockMoveBill\_SettlePartial.cshtml" />
+
     <Content Include="Views\UnitList\_UnitSearchPartial.cshtml" />
     <Content Include="Views\UnitList\_UnitPartial.cshtml" />
     <Content Include="Views\UnitList\_UnitPartial1.cshtml" />
     <Content Include="Views\UnitList\_UnitPartial2.cshtml" />
     <Content Include="Views\UnitList\_UnitPartial3.cshtml" />
     <Content Include="Views\UnitList\_UnitPartial4.cshtml" />
+
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

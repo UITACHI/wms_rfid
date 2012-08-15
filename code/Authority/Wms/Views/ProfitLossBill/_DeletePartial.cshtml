@@ -1,35 +1,37 @@
 <script type="text/javascript">
     function deleteClick() {
-        var row = $('#details').datagrid('getSelected');
-        if (row) {
-            if (row.Status != "已录入") {
-                $.messager.confirm('错误', '该记录状态不是已录入状态无法删除！');
-            } else {
-                isProfitLossBillMasterAdd = false;
-                isShowProfitLossBillDetail = true;
-                $('#dlg').dialog('open').dialog('setTitle', '删除损益主单信息');
-                $('#profitLossBillDetail').datagrid({ url: '/ProfitLossBill/ProfitLossBillDetails/?BillNo=' + row.BillNo });
-                $('#fm .easyui-validatebox').validatebox({
-                    required: false
-                });
-                $('form input').attr("disabled", "disabled");
-                $('form textarea').attr("disabled", "disabled");
-                $('#btnAddBillDetail').css('display', 'none'); //设置新增明细按钮的可见性
-                $('#btnDeleteBillDetail').css('display', 'none'); //设置删除明细按钮的可见性
-                $('#btnEditBillDetail').css('display', 'none'); //设置修改明细按钮的可见性
-//                $('#cc').combo({
-//                    hasDownArrow: false
-//                });
-                $('#fm').form('load', row);
-//                if (row.IsActive == '可用') {
-//                    $('#cc').combo('setValue', true).combo('setText', row.IsActive);
-//                } else {
-//                    $('#cc').combo('setValue', false).combo('setText', row.IsActive);
-//                }
-                url = '/ProfitLossBill/Delete/?BillNo=' + row.BillNo;
+        var billnoRow = "";
+        var rows = $('#details').datagrid('getSelections');
+        if (rows.length > 0) {
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].Status == "已录入") {
+                    //                    billnoRow += rows[i].BillNo + ",";\\多选时要启用
+                    billnoRow += rows[i].BillNo;
+                }
             }
-        } else {
-            $.messager.confirm('错误', '没有选择行！');
         }
-    };
+        if (billnoRow != "") {
+            $.messager.confirm('删除', '确认要删除该记录吗？', function (r) {
+                if (r) {
+                    var j_waitDialog = ShowWaitMessageDialog();
+                    $.ajax({
+                        url: '/ProfitLossBill/Delete/', type: "GET", dataType: "text",
+                        data: { 'BillNo': billnoRow },
+                        complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                        success: function (responseText) {
+                            var result = $.evalJSON(responseText);
+                            if (result.success) {
+                                $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                                $('#details').datagrid('reload');
+                            } else {
+                                $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                            }
+                        }
+                    });
+                }
+            });
+        } else {
+            $.messager.alert(g_MsgBoxTitle, '所选择的行没有已录入状态的单据！无法删除！', "error");
+        }
+    }
 </script>

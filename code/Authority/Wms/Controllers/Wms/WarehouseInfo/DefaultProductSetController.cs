@@ -31,6 +31,35 @@ namespace Wms.Controllers.Wms.WarehouseInfo
             ViewBag.ModuleID = moduleID;
             return View();
         }
+        //根据条件查找卷烟信息
+        //POST: /DefaultProductSet/GetProductBy/
+        public ActionResult GetProductBy(int page, int rows, string QueryString, string Value)
+        {
+            if (QueryString == null)
+            {
+                QueryString = "ProductCode";
+            }
+            if (Value == null)
+            {
+                Value = "";
+            }
+            var product = ProductService.GetProductBy(page, rows, QueryString, Value);
+            return Json(product, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetCellBy(int page ,int rows,string QueryString ,string Value)
+        {
+            if (QueryString == null)
+            {
+                QueryString = "ProductCode";
+            }
+            if (Value == null)
+            {
+                Value = "";
+            }
+            var cell = CellService.GetCellBy(page, rows, QueryString, Value);
+            return Json(cell, "text", JsonRequestBehavior.AllowGet);
+        }
 
         //加载烟卷信息表
         // POST: /DefaultProductSet/LoadProduct/
@@ -53,13 +82,7 @@ namespace Wms.Controllers.Wms.WarehouseInfo
             var product = CellService.GetCellInfo(productCode);
             return Json(product, "text", JsonRequestBehavior.AllowGet);
         }
-        //获得货位的ID
-        //POST: /DefaultProductSet/GetCellCode/
-        public ActionResult GetCellCode(string productCode)
-        {
-            var product = CellService.GetCellCode(productCode);
-            return Json(product, "text", JsonRequestBehavior.AllowGet);
-        }
+        
         //添加货位预设编码
         // POST: /DefaultProductSet/CellInsertCode/
         public ActionResult CellInsertCode(string wareCodes, string areaCodes, string shelfCodes, string cellCodes, string defaultProductCode)
@@ -82,6 +105,13 @@ namespace Wms.Controllers.Wms.WarehouseInfo
         {
             bool bResult = CellService.DeleteCell(productCodes);
             string msg = bResult ? "删除成功" : "删除失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
+        }
+        //POST: /DefaultProductSet/SetTree2/
+        public ActionResult SetTree2(string strId, string proCode)
+        {
+            bool bResult = CellService.SetTree2(strId, proCode);
+            string msg = bResult ? "修改成功" : "修改失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, null), "text", JsonRequestBehavior.AllowGet);
         }
     }

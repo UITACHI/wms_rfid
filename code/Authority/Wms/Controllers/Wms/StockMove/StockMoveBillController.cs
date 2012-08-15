@@ -93,8 +93,6 @@ namespace Authority.Controllers.Wms.StockMove
 
         //
         // POST: /MoveBillMaster/Delete/
-
-        [HttpPost]
         public ActionResult Delete(string BillNo)
         {
             string strResult = string.Empty;
@@ -105,8 +103,6 @@ namespace Authority.Controllers.Wms.StockMove
 
         //
         // POST: /MoveBillMaster/Audit/
-
-        [HttpPost]
         public ActionResult Audit(string BillNo)
         {
             string strResult = string.Empty;
@@ -117,8 +113,6 @@ namespace Authority.Controllers.Wms.StockMove
 
         //
         // POST: /MoveBillMaster/AntiTrial/
-
-        [HttpPost]
         public ActionResult AntiTrial(string BillNo)
         {
             string strResult = string.Empty;
@@ -159,6 +153,17 @@ namespace Authority.Controllers.Wms.StockMove
             string strResult = string.Empty;
             bool bResult = MoveBillDetailService.Save(moveBillDetail, out strResult);
             string msg = bResult ? "修改成功" : "修改失败";
+            return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //
+        // POST: /MoveBillMaster/moveBillMasterSettle/
+
+        public ActionResult MoveBillMasterSettle(string BillNo)
+        {
+            string strResult = string.Empty;
+            bool bResult = MoveBillMasterService.Settle(BillNo, out strResult);
+            string msg = bResult ? "结单成功" : "结单失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }
     }
