@@ -31,23 +31,25 @@ namespace THOK.Wms.Bll.Service
             {
                 IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
                 var outBillDetail = outBillDetailQuery.Where(i => i.BillNo.Contains(BillNo))
-                                                      .OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
-                                                      {
-                                                          i.ID,
-                                                          i.BillNo,
-                                                          i.ProductCode,
-                                                          i.Product.ProductName,
-                                                          i.UnitCode,
-                                                          i.Unit.UnitName,
-                                                          BillQuantity = i.BillQuantity / i.Unit.Count,
-                                                          AllotQuantity = i.AllotQuantity / i.Unit.Count,
-                                                          RealQuantity = i.RealQuantity / i.Unit.Count,
-                                                          i.Price,
-                                                          i.Description
-                                                      });
+                                                      .OrderBy(i => i.BillNo).Select(i => i);
                 int total = outBillDetail.Count();
                 outBillDetail = outBillDetail.Skip((page - 1) * rows).Take(rows);
-                return new { total, rows = outBillDetail.ToArray() };
+
+                var temp = outBillDetail.ToArray().AsEnumerable().Select(i => new
+                {
+                    i.ID,
+                    i.BillNo,
+                    i.ProductCode,
+                    i.Product.ProductName,
+                    i.UnitCode,
+                    i.Unit.UnitName,
+                    BillQuantity = i.BillQuantity / i.Unit.Count,
+                    AllotQuantity = i.AllotQuantity / i.Unit.Count,
+                    RealQuantity = i.RealQuantity / i.Unit.Count,
+                    i.Price,
+                    i.Description
+                });
+                return new { total, rows = temp.ToArray() };
             }
             return "";
         }
@@ -59,7 +61,7 @@ namespace THOK.Wms.Bll.Service
             IQueryable<OutBillDetail> outBillDetailQuery = OutBillDetailRepository.GetQueryable();
             var isExistProduct = outBillDetailQuery.FirstOrDefault(i => i.BillNo == outBillDetail.BillNo && i.ProductCode == outBillDetail.ProductCode);
             var unit = UnitRepository.GetQueryable().FirstOrDefault(u => u.UnitCode == outBillDetail.UnitCode);
-            var storage = StorageRepository.GetQueryable().Where(s => s.ProductCode == outBillDetail.ProductCode);//
+            var storage = StorageRepository.GetQueryable().Where(s => s.ProductCode == outBillDetail.ProductCode);
             var storageQuantity = storage.Sum(s => (s.Quantity - s.OutFrozenQuantity));
 
             if (isExistProduct == null)

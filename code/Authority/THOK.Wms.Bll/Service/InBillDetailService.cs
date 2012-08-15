@@ -30,7 +30,11 @@ namespace THOK.Wms.Bll.Service
             if (BillNo != "" && BillNo != null)
             {
                 IQueryable<InBillDetail> inBillDetailQuery = InBillDetailRepository.GetQueryable();
-                var inBillDetail = inBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                var inBillDetail = inBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).Select(i =>i);
+                int total = inBillDetail.Count();
+                inBillDetail = inBillDetail.Skip((page - 1) * rows).Take(rows);
+
+                var temp = inBillDetail.ToArray().AsEnumerable().Select(i => new
                 {
                     i.ID,
                     i.BillNo,
@@ -38,15 +42,13 @@ namespace THOK.Wms.Bll.Service
                     i.Product.ProductName,
                     i.UnitCode,
                     i.Unit.UnitName,
-                    BillQuantity=i.BillQuantity/i.Unit.Count,
-                    RealQuantity=i.RealQuantity/i.Unit.Count,
+                    BillQuantity = i.BillQuantity / i.Unit.Count,
+                    RealQuantity = i.RealQuantity / i.Unit.Count,
                     AllotQuantity = i.AllotQuantity / i.Unit.Count,
                     i.Price,
                     i.Description
                 });
-                int total = inBillDetail.Count();
-                inBillDetail = inBillDetail.Skip((page - 1) * rows).Take(rows);
-                return new { total, rows = inBillDetail.ToArray() };
+                return new { total, rows = temp.ToArray() };
             }
             return "";
         }
