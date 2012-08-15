@@ -1,7 +1,14 @@
-﻿<div id="InfoDetails" class="easyui-dialog" modal="true" style="width: 1000px; height: 500px;
+﻿<script type="text/javascript">
+    function UnitTypeClick() {
+        var unit_type = $('#unitType').combo('getValue');
+        $('#infos').datagrid({ url: '/DailyBalance/InfoDetails/?WarehouseCode=' + warehouse_Code + '&&SettleDate=' + settle_Date + '&&UnitType=' + unit_type });
+        $('#InfoDetails').dialog('open').dialog('setTitle', '日结明细');
+    }
+</script>
+<div id="InfoDetails" class="easyui-dialog" modal="true" style="width: 1000px; height: 500px;
     padding: 2px 2px" closed="true">
     <table id="infos" class="easyui-datagrid" url="" border="false" singleselect="true"
-        fit="true" fitcolumns="true" pagination="true" rownumbers="true">
+        fit="true" fitcolumns="true" pagination="true" rownumbers="true" toolbar="#chaxun">
         <thead>
             <tr>                
                <th field="SettleDate" width="80">
@@ -16,8 +23,9 @@
                 <th field="ProductName" width="120">
                     产品名称
                 </th>
-                <th field="UnitName" width="80">单位</th>
-
+                <th field="UnitName" width="80">
+                    单位
+                </th>
                 <th field="Beginning" width="70">
                     期初量
                 </th>
@@ -39,4 +47,15 @@
             </tr>
         </thead>
     </table>
+</div>
+<div id="chaxun" style="padding: 5px; height: auto">
+    转换单位:
+    <select id="unitType" class="easyui-combobox" style="width: 130px; height: 40px" editable="false">
+        <option value="1">请选择</option>                       
+        <option value="1">标准件</option>
+        <option value="2">标准条</option>
+        <option value="3">自然件</option>
+        <option value="4">自然条</option>
+    </select>
+ <a href="#" class="easyui-linkbutton" iconcls="icon-ok" plain="true" onclick="UnitTypeClick()">查询</a> 
 </div>
