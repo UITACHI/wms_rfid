@@ -35,7 +35,7 @@ namespace Wms.Controllers.Wms.Inventory
             string beginDate = collection["BeginDate"] ?? "";
             string endDate = collection["EndDate"] ?? "";
             string warehouseCode = collection["WarehouseCode"] ?? "";
-            string unitType = collection["unitType"] ?? "";
+            string unitType = collection["UnitType"] ?? "";
             var DailyBalance = DailyBalanceService.GetDetails(page, rows, beginDate, endDate, warehouseCode, unitType);
             return Json(DailyBalance, "text", JsonRequestBehavior.AllowGet);
         }

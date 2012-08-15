@@ -45,7 +45,7 @@ namespace THOK.Wms.Bll.Service
             var temp = storages.OrderBy(s => s.Product.ProductName).Where(s => s.Quantity > 0);
             int total = temp.Count();
             temp = temp.Skip((page - 1) * rows).Take(rows);
-            var Storage = temp.ToArray().AsEnumerable().Select(s => new
+            var Storage = temp.ToArray().ToArray().Select(s => new
             {
                 s.StorageCode,
                 s.Cell.CellCode,

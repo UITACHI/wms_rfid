@@ -21,8 +21,13 @@ namespace THOK.Wms.Bll.Service
 
         #region IDistributionService 成员
 
-        public object GetCellDetails(int page, int rows, string productCode, string ware, string area)
+        public object GetCellDetails(int page, int rows, string productCode, string ware, string area, string unitType)
         {
+            if (unitType == null || unitType == "")
+            {
+                unitType = "1";
+            }
+
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
             var storages = storageQuery.Where(s => s.Quantity > 0 && s.IsLock == "0");
             if (ware != null && ware != string.Empty || area != null && area != string.Empty)
@@ -45,22 +50,45 @@ namespace THOK.Wms.Bll.Service
             storages = storages.OrderBy(s => s.Product.ProductName);
             int total = storages.Count();
             storages = storages.Skip((page - 1) * rows).Take(rows);
-            var Storage = storages.ToArray().Select(s => new
+            if (unitType == "1")
             {
-                s.StorageCode,
-                s.Cell.CellCode,
-                s.Cell.CellName,
-                s.Product.ProductCode,
-                s.Product.ProductName,
-                s.Product.Unit.UnitCode,
-                s.Product.Unit.UnitName,
-                Quantity = s.Quantity / s.Product.Unit.Count
-                //,
-                //IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                //StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                //UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-            });
-            return new { total, rows = Storage.ToArray() };
+                string unitName1 = "标准件";
+                decimal count1 = 10000;
+                string unitName2 = "标准条";
+                decimal count2 = 200;
+                var currentstorage = storages.ToArray().Select(d => new
+                {
+                    ProductCode = d.ProductCode,
+                    ProductName = d.Product.ProductName,
+                    d.Cell.CellCode,
+                    d.Cell.CellName,
+                    UnitName1 = unitName1,
+                    UnitName2 = unitName2,
+                    Quantity1 = d.Quantity / count1,
+                    Quantity2 = d.Quantity / count2,
+                    Quantity = d.Quantity,
+                    StorageTime=d.StorageTime.ToString("yyyy-MM-dd")
+                });
+                return new { total, rows = currentstorage.ToArray() };
+            }
+            if (unitType == "2")
+            {
+                var currentstorage = storages.ToArray().Select(d => new
+                {
+                    ProductCode = d.ProductCode,
+                    ProductName = d.Product.ProductName,
+                    d.Cell.CellCode,
+                    d.Cell.CellName,
+                    UnitName1 = d.Product.UnitList.Unit01.UnitName,
+                    UnitName2 = d.Product.UnitList.Unit02.UnitName,
+                    Quantity1 = d.Quantity / d.Product.UnitList.Unit01.Count,
+                    Quantity2 = d.Quantity / d.Product.UnitList.Unit02.Count,
+                    Quantity = d.Quantity,
+                    StorageTime=d.StorageTime.ToString("yyyy-MM-dd")
+                });
+                return new { total, rows = currentstorage.ToArray() };
+            }
+            return new { total, rows = storages.ToArray() };
         }
 
         #endregion
