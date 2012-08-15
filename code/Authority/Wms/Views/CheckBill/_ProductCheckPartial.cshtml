@@ -75,7 +75,7 @@
                 $('#checkProductTable').datagrid('appendRow', rows[i]);
             }
         } else {
-            $.messager.alert('错误', '请选择需要盘点的卷烟移向右边！');
+            $.messager.alert(g_MsgBoxTitle, '请选择需要盘点的卷烟移向右边！', "error");
         }
     }
 
@@ -88,7 +88,7 @@
                 $('#productTable').datagrid('appendRow', rows[i]);
             }
         } else {
-            $.messager.alert('错误', '请选择不要盘点的卷烟移向左边！');
+            $.messager.alert(g_MsgBoxTitle, '请选择需要盘点的卷烟移向左边！', "error");
         }
     }
 </script>

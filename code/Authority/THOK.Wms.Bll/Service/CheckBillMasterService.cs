@@ -460,25 +460,27 @@ namespace THOK.Wms.Bll.Service
             {
                 products = products.Substring(0, products.Length - 1);
 
-                var storages = storageQuery.ToList().Where(s => s.ProductCode != null && products.Contains(s.ProductCode) && s.Quantity > 0 && s.IsLock == "0")
-                                      .OrderBy(s => s.StorageCode).AsEnumerable()
-                                      .Select(s => new
-                                      {
-                                          s.StorageCode,
-                                          s.Cell.CellCode,
-                                          s.Cell.CellName,
-                                          s.Product.ProductCode,
-                                          s.Product.ProductName,
-                                          s.Product.Unit.UnitCode,
-                                          s.Product.Unit.UnitName,
-                                          Quantity = s.Quantity / s.Product.Unit.Count,
-                                          IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                          StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                          UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                      });
+                var storages = storageQuery.Where(s => s.ProductCode != null && products.Contains(s.ProductCode) && s.Quantity > 0 && s.IsLock == "0")
+                                      .OrderBy(s => s.StorageCode)
+                                      .Select(s =>s);
                 int total = storages.Count();
                 storages = storages.Skip((page - 1) * rows).Take(rows);
-                return new { total, rows = storages.ToArray() };
+
+                var temp = storages.ToArray().Select(s => new
+                {
+                    s.StorageCode,
+                    s.Cell.CellCode,
+                    s.Cell.CellName,
+                    s.Product.ProductCode,
+                    s.Product.ProductName,
+                    s.Product.Unit.UnitCode,
+                    s.Product.Unit.UnitName,
+                    Quantity = s.Quantity / s.Product.Unit.Count,
+                    IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                    StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                    UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                });
+                return new { total, rows = temp.ToArray() };
             }
             return null;
         }
@@ -619,25 +621,27 @@ namespace THOK.Wms.Bll.Service
             var outCells = outAllotQuery.Where(o => o.FinishTime >= begin && o.FinishTime <= end).OrderBy(o => o.CellCode).Select(o => o.CellCode);
             var moveInCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end).OrderBy(m => m.InCell.CellCode).Select(m => m.InCell.CellCode);
             var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end).OrderBy(m => m.OutCell.CellCode).Select(m => m.OutCell.CellCode);
-            var storages = storageQuery.ToList().Where(s => s.Quantity > 0 && s.IsLock == "0" && (inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode)))
-                                       .OrderBy(s => s.ProductCode).AsEnumerable()
-                                       .Select(s => new
-                                       {
-                                           s.StorageCode,
-                                           s.Cell.CellCode,
-                                           s.Cell.CellName,
-                                           s.Product.ProductCode,
-                                           s.Product.ProductName,
-                                           s.Product.Unit.UnitCode,
-                                           s.Product.Unit.UnitName,
-                                           Quantity = s.Quantity / s.Product.Unit.Count,
-                                           IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                           StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                           UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                       });
+            var storages = storageQuery.Where(s => s.Quantity > 0 && s.IsLock == "0" && (inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode)))
+                                       .OrderBy(s => s.ProductCode)
+                                       .Select(s => s);
             int total = storages.Count();
             storages = storages.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = storages.ToArray() };
+
+            var temp = storages.ToArray().Select(s => new
+                {
+                    s.StorageCode,
+                    s.Cell.CellCode,
+                    s.Cell.CellName,
+                    s.Product.ProductCode,
+                    s.Product.ProductName,
+                    s.Product.Unit.UnitCode,
+                    s.Product.Unit.UnitName,
+                    Quantity = s.Quantity / s.Product.Unit.Count,
+                    IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                    StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                    UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                });
+            return new { total, rows = temp.ToArray() };
         }
 
         /// <summary>
