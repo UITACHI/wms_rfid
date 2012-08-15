@@ -142,6 +142,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                                                                                     item.SortingLine.MoveBillTypeCode,
                                                                                                     operatePersonID);
                             moveBillMaster.Origin = "2";
+                            moveBillMaster.Description = "分拣调度生成！";
                             lastMoveBillMaster = moveBillMaster;
                             foreach (var product in item.Products.ToArray())
                             {
@@ -221,6 +222,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                                                                                     item.SortingLine.OutBillTypeCode,
                                                                                                     operatePersonID);
                                 outBillMaster.Origin = "2";
+                                outBillMaster.Description = "分拣调度生成!";
                                 //添加出库单细单
                                 foreach (var product in item.Products.ToArray())
                                 {

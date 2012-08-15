@@ -46,7 +46,7 @@ namespace THOK.Wms.SignalR.Common
             Locker.LockKey = moveBillMaster.BillNo;
 
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
-            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryableIncludeStorages();
 
             var storages = storageQuery.Where(s => s.Cell.WarehouseCode == moveBillMaster.WarehouseCode
                                                    && s.Quantity - s.OutFrozenQuantity > 0

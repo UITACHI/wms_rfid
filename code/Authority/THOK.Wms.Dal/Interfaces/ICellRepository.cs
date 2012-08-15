@@ -9,5 +9,6 @@ namespace THOK.Wms.Dal.Interfaces
 {
     public interface ICellRepository : IRepository<Cell>
     {
+        IQueryable<Cell> GetQueryableIncludeStorages();
     }
 }
