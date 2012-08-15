@@ -182,6 +182,7 @@ namespace THOK.Wms.Bll.Service
                     mbm.Description = moveBillMaster.Description;
                     //mbm.IsActive = moveBillMaster.IsActive;
                     mbm.IsActive = "1";
+                    mbm.Origin = "1";
                     mbm.UpdateTime = DateTime.Now;
 
                     mbm.LockTag = string.Empty;
@@ -203,7 +204,7 @@ namespace THOK.Wms.Bll.Service
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
             string billNo = "";
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            var moveBillMaster = moveBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var moveBillMaster = moveBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             if (moveBillMaster.Count() == 0)
             {
                 billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "MO";

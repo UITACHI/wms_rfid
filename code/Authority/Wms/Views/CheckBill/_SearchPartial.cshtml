@@ -2,10 +2,10 @@
     function searchLoad() {
         $('#OperatePersonCode').combogrid({
             disabled: false,
-            width: 130,
+            width: 140,
             panelWidth: 340,
             url: '/Employee/Details/?page=1&rows=10',
-            idField: 'ID',
+            idField: 'EmployeeCode',
             textField: 'EmployeeName',
             mode: 'local',
             editable: false,
@@ -20,12 +20,15 @@
     }
 
     function searchClick() {
+        searchLoad();
         $('#dlg-search').dialog('open').dialog('setTitle', '查询');
         $("input[type=text]").attr("value", "");
         $('#billBeginDate').datebox({ editable: false });
         $('#billEndDate').datebox({ editable: false });
         $('#billBeginDate').datebox('setValue', "");
         $('#billEndDate').datebox('setValue', "");
+        $('#OperatePersonCode').combogrid('clear');
+        $('#operateStatus').combo('setValue', "");
     }
 
     function select() {
@@ -33,8 +36,8 @@
         queryParams.BillNo = $('#checkBillNo').val();
         queryParams.beginDate = $('#billBeginDate').datebox('getValue');
         queryParams.endDate = $('#billEndDate').datebox('getValue');
-        queryParams.OperatePersonCode = $('#OperatePersonCode').val();
-        queryParams.Status = $('#operateStatus').val();
+        queryParams.OperatePersonCode = $('#OperatePersonCode').combo('getValue');
+        queryParams.Status = $('#operateStatus').combo('getValue');
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -69,7 +72,13 @@
               </tr>
               <tr>
                 <td   width="60" style="text-align:right">处理状态:</td>
-                <td><input id="operateStatus" type="text" style="width: 140px" /></td>
+                    <td><select id="operateStatus" class="easyui-combobox" style="width: 140px">
+                    <option value="">请选择</option>
+                    <option value="1">已录入</option>
+                    <option value="2">已审核</option>
+                    <option value="3">执行中</option>
+                    <option value="4">已盘点</option>
+                </select></td>
               </tr>
             </table>
         </div>

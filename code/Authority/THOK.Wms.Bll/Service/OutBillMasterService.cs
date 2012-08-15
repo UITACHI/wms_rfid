@@ -65,31 +65,12 @@ namespace THOK.Wms.Bll.Service
 
         public object GetDetails(int page, int rows, string BillNo, string beginDate, string endDate, string OperatePersonCode, string Status, string IsActive)
         {
-            IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable().Where(o=>o.Status!="6");
+            IQueryable<OutBillMaster> OutBillMasterQuery = OutBillMasterRepository.GetQueryable().Where(o => o.Status != "6");
 
             var outBillMaster = OutBillMasterQuery.AsEnumerable()
                                     .OrderByDescending(t => t.BillDate)
                                     .OrderByDescending(t => t.BillNo)
-                                    .Select(i => new
-                                    {
-                                        i.BillNo,
-                                        BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                                        i.Warehouse.WarehouseCode,
-                                        i.Warehouse.WarehouseName,
-                                        i.OperatePersonID,
-                                        i.VerifyPersonID,
-                                        OperatePersonCode = i.OperatePerson.EmployeeCode,
-                                        OperatePersonName = i.OperatePerson.EmployeeName,
-                                        VerifyPersonCode = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
-                                        VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                                        BillTypeCode = i.BillType.BillTypeCode,
-                                        BillTypeName = i.BillType.BillTypeName,
-                                        VerifyDate = i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss"),
-                                        Status = WhatStatus(i.Status),
-                                        IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                                        Description = i.Description,
-                                        UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
-                                    });
+                                    .Select(i =>i);
             if (!BillNo.Equals(string.Empty) && BillNo != null)
             {
                 outBillMaster = outBillMaster.Where(i => i.BillNo.Contains(BillNo));
@@ -101,12 +82,12 @@ namespace THOK.Wms.Bll.Service
             }
             if (!endDate.Equals(string.Empty))
             {
-                DateTime end = Convert.ToDateTime(endDate);
-                outBillMaster = outBillMaster.Where(i => Convert.ToDateTime(i.BillDate).AddDays(1) <= end);
+                DateTime end = Convert.ToDateTime(endDate).AddDays(1);
+                outBillMaster = outBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
             }
             if (!OperatePersonCode.Equals(string.Empty) && OperatePersonCode != null)
             {
-                outBillMaster = outBillMaster.Where(i => i.OperatePersonCode.Contains(OperatePersonCode));
+                outBillMaster = outBillMaster.Where(i => i.OperatePerson.EmployeeCode.Contains(OperatePersonCode));
             }
             if (!Status.Equals(string.Empty))
             {
@@ -118,7 +99,28 @@ namespace THOK.Wms.Bll.Service
             }
             int total = outBillMaster.Count();
             outBillMaster = outBillMaster.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = outBillMaster.ToArray() };
+
+            var temp = outBillMaster.ToArray().AsEnumerable().Select(i => new
+                    {
+                        i.BillNo,
+                        BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                        i.Warehouse.WarehouseCode,
+                        i.Warehouse.WarehouseName,
+                        i.OperatePersonID,
+                        i.VerifyPersonID,
+                        OperatePersonCode = i.OperatePerson.EmployeeCode,
+                        OperatePersonName = i.OperatePerson.EmployeeName,
+                        VerifyPersonCode = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
+                        VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
+                        BillTypeCode = i.BillType.BillTypeCode,
+                        BillTypeName = i.BillType.BillTypeName,
+                        VerifyDate = i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss"),
+                        Status = WhatStatus(i.Status),
+                        IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                        Description = i.Description,
+                        UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+                    });
+            return new { total, rows = temp.ToArray() };
         }
 
         public bool Add(OutBillMaster outBillMaster, string userName, out string errorInfo)
@@ -205,8 +207,9 @@ namespace THOK.Wms.Bll.Service
                     outbm.VerifyPersonID = outBillMaster.VerifyPersonID;
                     outbm.VerifyDate = outBillMaster.VerifyDate;
                     outbm.Description = outBillMaster.Description;
-                    outbm.IsActive = outBillMaster.IsActive;
+                    outbm.IsActive = "1";
                     outbm.UpdateTime = DateTime.Now;
+                    outbm.Origin = "1";
 
                     OutBillMasterRepository.SaveChanges();
                     result = true;
@@ -231,7 +234,7 @@ namespace THOK.Wms.Bll.Service
             string billno = "";
             IQueryable<OutBillMaster> outBillMasterQuery = OutBillMasterRepository.GetQueryable();
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
-            var outBillMaster = outBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var outBillMaster = outBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
             if (outBillMaster.Count() == 0)
             {

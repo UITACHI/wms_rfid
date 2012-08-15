@@ -75,24 +75,11 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<CheckBillMaster> CheckBillMasterQuery = CheckBillMasterRepository.GetQueryable();
             //var checkBillMasters = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeName.Contains(OperatePersonCode));
-            var checkBillMasters = CheckBillMasterQuery.AsEnumerable().OrderBy(t => t.BillNo).Select(i => new
-            {
-                i.BillNo,
-                BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
-                i.Warehouse.WarehouseCode,
-                i.Warehouse.WarehouseName,
-                OperatePersonCode = i.OperatePerson.EmployeeCode,
-                OperatePersonName = i.OperatePerson.EmployeeName,
-                VerifyPersonCode = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
-                VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                BillTypeCode = i.BillType.BillTypeCode,
-                BillTypeName = i.BillType.BillTypeName,
-                VerifyDate = i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss"),
-                Status = WhatStatus(i.Status),
-                IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                Description = i.Description,
-                UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
-            });
+            var checkBillMasters = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)
+                && i.Status!="5")
+                .OrderByDescending(t => t.BillDate)
+                .OrderByDescending(t => t.BillNo)
+                .Select(i => i);
             if (!BillNo.Equals(string.Empty) && BillNo != null)
             {
                 checkBillMasters = checkBillMasters.Where(i => i.BillNo.Contains(BillNo));
@@ -109,11 +96,11 @@ namespace THOK.Wms.Bll.Service
             }
             if (!OperatePersonCode.Equals(string.Empty) && OperatePersonCode != null)
             {
-                checkBillMasters = checkBillMasters.Where(i => i.OperatePersonCode.Contains(OperatePersonCode));
+                checkBillMasters = checkBillMasters.Where(i => i.OperatePerson.EmployeeCode.Contains(OperatePersonCode));
             }
             if (!Status.Equals(string.Empty))
             {
-                checkBillMasters = checkBillMasters.Where(i => i.Status.Contains(Status) && i.Status != "6");
+                checkBillMasters = checkBillMasters.Where(i => i.Status.Contains(Status));
             }
             if (!IsActive.Equals(string.Empty))
             {
@@ -122,7 +109,26 @@ namespace THOK.Wms.Bll.Service
 
             int total = checkBillMasters.Count();
             checkBillMasters = checkBillMasters.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = checkBillMasters.ToArray() };
+
+            var temp=checkBillMasters.ToArray().AsEnumerable().Select(i => new
+                {
+                    i.BillNo,
+                    BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
+                    i.Warehouse.WarehouseCode,
+                    i.Warehouse.WarehouseName,
+                    OperatePersonCode = i.OperatePerson.EmployeeCode,
+                    OperatePersonName = i.OperatePerson.EmployeeName,
+                    VerifyPersonCode = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
+                    VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
+                    BillTypeCode = i.BillType.BillTypeCode,
+                    BillTypeName = i.BillType.BillTypeName,
+                    VerifyDate = i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss"),
+                    Status = WhatStatus(i.Status),
+                    IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                    Description = i.Description,
+                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                });
+            return new { total, rows = temp.ToArray() };
         }
 
         public bool Add(string billNo, string wareCode)
@@ -914,7 +920,7 @@ namespace THOK.Wms.Bll.Service
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
             string billNo = "";
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            var profitLossBillMaster = profitLossBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var profitLossBillMaster = profitLossBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             if (profitLossBillMaster.Count() == 0)
             {
                 billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "PL";
