@@ -678,6 +678,16 @@
     <Content Include="obj\Debug\Authority.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\Authority.dll" />
     <Content Include="obj\Debug\Authority.pdb" />
+    <Content Include="Scripts\jquery.ztree.all-3.3.js" />
+    <Content Include="Scripts\jquery.ztree.all-3.3.min.js" />
+    <Content Include="Scripts\jquery.ztree.core-3.3.js" />
+    <Content Include="Scripts\jquery.ztree.core-3.3.min.js" />
+    <Content Include="Scripts\jquery.ztree.excheck-3.3.js" />
+    <Content Include="Scripts\jquery.ztree.excheck-3.3.min.js" />
+    <Content Include="Scripts\jquery.ztree.exedit-3.3.js" />
+    <Content Include="Scripts\jquery.ztree.exedit-3.3.min.js" />
+    <Content Include="Scripts\jquery.ztree.exhide-3.3.js" />
+    <Content Include="Scripts\jquery.ztree.exhide-3.3.min.js" />
     <Content Include="Views\Module\_DeletePartial.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
