@@ -9,17 +9,13 @@
         for (var i = 0; i < productRows.length; i++) {
             pRows += productRows[i].ProductCode + ",";
         }
-        $.getJSON('/DefaultProductSet/CellDel/?productCodes=' + pRows, function (json) {
-            if (json) {
-                if (json.success) {
-                    $.messager.show({ title: '成功', msg: json.msg });
-                    $('#details').datagrid('reload');
-                }
-                else {
-                    $.messager.show({ title: '错误', msg: result.msg });
-                    $('#details').datagrid('reload');
-                }
-            }
-        });
+
+        $.ajaxSender.send('/DefaultProductSet/CellDel/',
+                        {
+                            'productCodes': pRows
+                        },
+                        function (data) {
+                            $('#details').datagrid('reload');
+                        });
     }
 </script>
