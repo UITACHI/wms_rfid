@@ -34,17 +34,17 @@
                 }
             }
         }
-        var queryParams = $('#details').datagrid('options').queryParams;
+        var queryParams = $('#listdetails').datagrid('options').queryParams;
         queryParams.ProductCode = $('#productCode').val();
         queryParams.Ware = ware;
         queryParams.Area = area;
         queryParams.UnitType = $('#unit_Type').combo('getValue');
-        $('#details').datagrid('options').queryParams = queryParams;
-        $('#details').datagrid({
+        $('#listdetails').datagrid('options').queryParams = queryParams;
+        $('#listdetails').datagrid({
             pageNumber: 1,
             pageSize: 10
         });
-        $("#details").datagrid('reload');
+        $("#listdetails").datagrid('reload');
         $('#dlg-search').dialog('close');
     }
 </script>

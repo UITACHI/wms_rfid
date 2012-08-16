@@ -9,5 +9,7 @@ namespace THOK.Wms.Bll.Interfaces
     public interface IDistributionService : IService<Storage>
     {
         object GetCellDetails(int page, int rows, string productCode, string ware, string area, string unitType);
+
+        object GetProductTree();
     }
 }

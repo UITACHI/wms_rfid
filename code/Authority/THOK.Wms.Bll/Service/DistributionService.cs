@@ -6,6 +6,7 @@ using THOK.Wms.Bll.Interfaces;
 using THOK.Wms.DbModel;
 using Microsoft.Practices.Unity;
 using THOK.Wms.Dal.Interfaces;
+using THOK.Wms.Bll.Models;
 
 namespace THOK.Wms.Bll.Service
 {
@@ -91,6 +92,88 @@ namespace THOK.Wms.Bll.Service
             return new { total, rows = storages.ToArray() };
         }
 
+        public object GetProductTree()
+        {
+            IQueryable<Storage> products = StorageRepository.GetQueryable().Where(p => p.Quantity > 0 && p.IsLock == "0")
+                                                                           .OrderBy(p => p.Product.ProductName);
+            var productRepository = products.ToArray().OrderBy(p => p.Product.ProductName).GroupBy(s => s.Product.ProductCode)
+                                                                           .Select(s => new
+                                                                           {
+                                                                               ProductCode = s.Max(p => p.Product.ProductCode),
+                                                                               ProductName = s.Max(p => p.Product.ProductName),
+                                                                               Quantity = s.Sum(p => p.Quantity)
+                                                                           });
+            HashSet<Tree> productSet = new HashSet<Tree>();
+            int aaa = productRepository.Count();
+            foreach (var product in productRepository)
+            {
+                Tree productTree = new Tree();
+                productTree.id = product.ProductCode;
+                productTree.text =product.ProductName+ "(  数量："+ product.Quantity +" )";
+                productTree.state = "open";
+                productTree.attributes = "product";
+
+                var warehouses = products.Where(w => w.ProductCode == product.ProductCode)
+                                         .OrderBy(w => w.Cell.Area.WarehouseCode)
+                                         .GroupBy(w => w.Cell.Area.WarehouseCode)
+                                         .Select(w => new
+                                         {
+                                             WarehouseCode = w.Max(p => p.Cell.Area.WarehouseCode),
+                                             WarehouseName = w.Max(p => p.Cell.Area.Warehouse.WarehouseName),
+                                             Quantity = w.Sum(p => p.Quantity)
+                                         });
+                HashSet<Tree> warehouseSet = new HashSet<Tree>();
+                int bbb = warehouses.Count();
+                foreach (var warehouse in warehouses)
+                {
+                    Tree warehouseTree = new Tree();
+                    warehouseTree.id = warehouse.WarehouseCode;
+                    warehouseTree.text = "仓库：" + warehouse.WarehouseName + "(  数量：" + warehouse.Quantity + " )";
+                    warehouseTree.state = "open";
+                    warehouseTree.attributes = "warehouse";
+                    var areas = products.Where(a => a.Cell.Area.WarehouseCode == warehouse.WarehouseCode &&  a.ProductCode == product.ProductCode)
+                                          .OrderBy(a => a.Cell.AreaCode)
+                                          .GroupBy(a => a.Cell.AreaCode)
+                                          .Select(a => new
+                                          {
+                                              AreaCode = a.Max(p => p.Cell.AreaCode),
+                                              AreaName = a.Max(p => p.Cell.Area.AreaName),
+                                              Quantity = a.Sum(p => p.Quantity)
+                                          });
+                    HashSet<Tree> areaSet = new HashSet<Tree>();
+                    int ccc = areas.Count();
+                    foreach (var area in areas)
+                    {
+                        Tree areaTree = new Tree();
+                        areaTree.id = area.AreaCode;
+                        areaTree.text = "库区：" + area.AreaName + "(  数量：" + area.Quantity + " )";
+                        areaTree.state = "close";
+                        areaTree.attributes = "area";
+                        //var shelfs = warehouses.Where(s => s.Cell.AreaCode == area.Cell.AreaCode)
+                        //                       .OrderBy(s => s.Cell.ShelfCode).Select(s => s);
+                        //HashSet<Tree> shelfSet = new HashSet<Tree>();
+                        //foreach (var shelf in shelfs)
+                        //{
+                        //    Tree shelfTree = new Tree();
+                        //    shelfTree.id = shelf.Cell.ShelfCode;
+                        //    shelfTree.text = "货架：" + shelf.Cell.Shelf.ShelfName;
+                        //    shelfTree.state = "close";
+                        //    shelfTree.attributes = "shelf";
+                        //    shelfSet.Add(shelfTree);
+                        //}
+                        //areaTree.children = shelfSet.ToArray();
+                        areaSet.Add(areaTree);
+                    }
+                    warehouseTree.children = areaSet.ToArray();
+                    warehouseSet.Add(warehouseTree);
+                }
+                productTree.children = warehouseSet.ToArray();
+                productSet.Add(productTree);
+            }
+            return productSet.ToArray();
+        }
+
         #endregion
+
     }
 }

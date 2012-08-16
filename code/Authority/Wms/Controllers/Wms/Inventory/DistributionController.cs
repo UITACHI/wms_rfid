@@ -38,5 +38,13 @@ namespace Authority.Controllers.Wms.Inventory
             var storage = DistributionService.GetCellDetails(page, rows, productCode, ware, area, unitType);
             return Json(storage, "text", JsonRequestBehavior.AllowGet);
         }
+
+        //获取库存商品分布树
+        // GET: /Distribution/GetProductTreeDetails/
+        public ActionResult GetProductTreeDetails()
+        {
+            var wareCell = DistributionService.GetProductTree();
+            return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
+        }
     }
 }
