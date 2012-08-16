@@ -31,10 +31,10 @@ namespace THOK.Wms.SignalR.Common
             moveBillMaster.BillNo = billNo;
             moveBillMaster.BillDate = DateTime.Now;
             moveBillMaster.BillTypeCode = billTypeCode;
+            moveBillMaster.Origin = "1";
             moveBillMaster.WarehouseCode = warehouseCode;
             moveBillMaster.OperatePersonID = Guid.Parse(operatePersonID);
-            moveBillMaster.Status = "1";
-            moveBillMaster.Description = "出库生成同步移库单！";
+            moveBillMaster.Status = "1";            
             moveBillMaster.IsActive = "1";
             moveBillMaster.UpdateTime = DateTime.Now;
             MoveBillMasterRepository.Add(moveBillMaster);
@@ -46,7 +46,7 @@ namespace THOK.Wms.SignalR.Common
             Locker.LockKey = moveBillMaster.BillNo;
 
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
-            IQueryable<Cell> cellQuery = CellRepository.GetQueryable();
+            IQueryable<Cell> cellQuery = CellRepository.GetQueryableIncludeStorages();
 
             var storages = storageQuery.Where(s => s.Cell.WarehouseCode == moveBillMaster.WarehouseCode
                                                    && s.Quantity - s.OutFrozenQuantity > 0

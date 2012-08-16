@@ -94,8 +94,6 @@ namespace Authority.Controllers.Wms.StockIn
 
         //
         // POST: /InBillMaster/Delete/
-
-        [HttpPost]
         public ActionResult Delete(string BillNo)
         {
             bool bResult = InBillMasterService.Delete(BillNo);
@@ -127,8 +125,6 @@ namespace Authority.Controllers.Wms.StockIn
 
         //
         // POST: /InBillMaster/Audit/
-
-        [HttpPost]
         public ActionResult Audit(string BillNo)
         {
             bool bResult = InBillMasterService.Audit(BillNo, this.User.Identity.Name.ToString());
@@ -138,8 +134,6 @@ namespace Authority.Controllers.Wms.StockIn
 
         //
         // POST: /InBillMaster/AntiTria/
-
-        [HttpPost]
         public ActionResult AntiTrial(string BillNo)
         {
             bool bResult = InBillMasterService.AntiTrial(BillNo);
@@ -199,7 +193,7 @@ namespace Authority.Controllers.Wms.StockIn
         //
         // POST: /InBillMaster/inBillMasterSettle/
 
-        public ActionResult inBillMasterSettle(string BillNo)
+        public ActionResult InBillMasterSettle(string BillNo)
         {
             string strResult = string.Empty;
             bool bResult = InBillMasterService.Settle(BillNo, out strResult);

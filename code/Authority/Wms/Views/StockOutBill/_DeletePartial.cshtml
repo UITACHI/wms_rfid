@@ -1,32 +1,37 @@
 ﻿<script type="text/javascript">
     function deleteClick() {
-        var row = $('#details').datagrid('getSelected');
-        if (row) {
-            if (row.Status != "已录入") {
-                $.messager.alert('错误', '该记录状态不是已录入状态无法删除！');
-            } else {
-                $.messager.confirm('删除', '确认要删除该记录吗？', function (r) {
-                    if (r) {
-                        var j_waitDialog = ShowWaitMessageDialog();
-                        $.ajax({
-                            url: '/StockOutBill/Delete/', type: "GET", dataType: "text",
-                            data: { 'BillNo': row.BillNo },
-                            complete: function () { HideWaitMessageDialog(j_waitDialog); },
-                            success: function (responseText) {
-                                var result = $.evalJSON(responseText);
-                                if (result.success) {
-                                    $.messager.alert(g_MsgBoxTitle, result.msg, "info");
-                                    $('#details').datagrid('reload');
-                                } else {
-                                    $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
-                                }
-                            }
-                        });
-                    }
-                });
+        var billnoRow = "";
+        var rows = $('#details').datagrid('getSelections');
+        if (rows.length > 0) {
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].Status == "已录入") {
+                    //                    billnoRow += rows[i].BillNo + ",";\\多选时要启用
+                    billnoRow += rows[i].BillNo;
+                }
             }
+        }
+        if (billnoRow != "") {
+            $.messager.confirm('删除', '确认要删除该记录吗？', function (r) {
+                if (r) {
+                    var j_waitDialog = ShowWaitMessageDialog();
+                    $.ajax({
+                        url: '/StockOutBill/Delete/', type: "GET", dataType: "text",
+                        data: { 'BillNo': billnoRow },
+                        complete: function () { HideWaitMessageDialog(j_waitDialog); },
+                        success: function (responseText) {
+                            var result = $.evalJSON(responseText);
+                            if (result.success) {
+                                $.messager.alert(g_MsgBoxTitle, result.msg, "info");
+                                $('#details').datagrid('reload');
+                            } else {
+                                $.messager.alert(g_MsgBoxTitle, result.msg + '<br />' + result.data, "error");
+                            }
+                        }
+                    });
+                }
+            });
         } else {
-            $.messager.alert('错误', '没有选择行！');
+            $.messager.alert(g_MsgBoxTitle, '所选择的行没有已录入状态的单据！无法删除！', "error");
         }
     }
 </script>

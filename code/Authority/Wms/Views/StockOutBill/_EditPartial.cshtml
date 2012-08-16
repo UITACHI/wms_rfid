@@ -16,14 +16,6 @@
                 $('#fm .easyui-validatebox').validatebox({
                     required: true
                 });
-                $('#cc').combo({
-                    hasDownArrow: true
-                });
-                if (row.IsActive == '可用') {
-                    $('#cc').combo('setValue', 1).combo('setText', row.IsActive);
-                } else {
-                    $('#cc').combo('setValue', 0).combo('setText', row.IsActive);
-                }
                 $('form input').removeAttr("disabled");
                 $('form textarea').removeAttr("disabled");               
                 url = '/StockOutBill/Edit/';

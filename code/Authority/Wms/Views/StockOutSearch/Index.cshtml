@@ -8,8 +8,8 @@
     function detail(index) {
         var row = $('#details').datagrid('getSelected');
         if (row) {
-            $('#infos').datagrid({ url: '/StockOutSearch/DetailInfos/?BillNo=' + row.BillNo });
-            $('#DetailInfos').dialog('open').dialog('setTitle', '出库单' + row.BillNo + '明细');
+            $('#infos2').datagrid({ url: '/StockOutSearch/DetailInfos/?BillNo=' + row.BillNo });
+            $('#DetailInfos2').dialog('open').dialog('setTitle', '出库单' + row.BillNo + '明细');
         }
     }
 
@@ -18,7 +18,7 @@
             onClickRow: function () {
                 var row = $('#details').datagrid('getSelected');
                 if (row) {
-                    $('#infodetails').datagrid({ url: '/StockOutSearch/InfoDetails/?BillNo=' + row.BillNo });
+                    $('#InfoDetails').datagrid({ url: '/StockOutSearch/InfoDetails/?BillNo=' + row.BillNo });
                 } else {
                     $.messager.show({ title: '系统提示', msg: '失败!请检查原因！' });
                 }
@@ -39,8 +39,8 @@
                 <th field="Status" width="120" align="center">处理状态</th>
                 <th field="VerifyPersonName" width="120" align="center">审核人</th>
                 <th field="VerifyDate" width="120" align="center">审核日期</th>
-                <th  id="detailformatAction" field="detail" width="80" align="center" formatter="formatAction">商品明细</th>
                 <th field="Description" width="120" align="center">备注</th>
+                <th  id="detailformatAction" field="detail" width="80" align="center" formatter="formatAction">商品明细</th>
             </tr>
         </thead>
     </table>
@@ -50,7 +50,7 @@
         url="/StockOutSearch/InfoDetails/" border="false" singleSelect="true"
         fit="true"  pagination="true" rownumbers="true">
         <thead>
-            <tr>
+            @*<tr>
                 <th field="IdNo" width="80" align="center">序号</th>
                 <th field="ProduceCode" width="100" align="center">产品代码</th>
                 <th field="ProduceName" width="140" align="center">产品名称</th>
@@ -60,8 +60,20 @@
                 <th field="RealQuantity" width="100" align="center">实际出库量</th>
                 <th field="Price" width="80" align="center">单价</th>
                 <th field="DetailRemark" width="80" align="center">备注</th>
+            </tr>*@
+            <tr>
+                <th field="ID" width="80">序号</th>
+                <th field="ProductCode" width="80">产品代码</th>
+                <th field="ProductName" width="140">产品名称</th>
+                <th field="UnitCode" width="80">单位编码</th>
+                <th field="UnitName" width="80">单位名称</th>
+                <th field="BillQuantity" width="80">订单数量</th>
+                <th field="AllotQuantity" width="80">分配数量</th>
+                <th field="RealQuantity" width="80">已出库量</th>
+                <th field="Price" width="80">单价</th>
+                <th field="Description" width="80">备注</th>
             </tr>
         </thead>
     </table>
 </div>
-@Html.Partial("_Detail") 
+@Html.Partial("_Detail")

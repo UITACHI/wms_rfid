@@ -17,6 +17,7 @@
         fit="true" fitColumns="true" toolbar="#tool"  pagination="true" rownumbers="true">
         <thead>
             <tr>
+                <th field="ck" checkbox="true">
                 <th field="BillNo" width="80" >入库单号</th>               
                 <th field="WarehouseCode" hidden="true" width="80" >仓库编码</th>
                 <th field="WarehouseName" width="60" >仓库名称</th>
@@ -26,12 +27,10 @@
                 <th field="OperatePersonName" width="60" >操作员</th>               
                 <th field="VerifyPersonID" hidden="true" width="80" >审核人ID</th>
                 <th field="VerifyPersonName" width="60" >审核人</th>
-                
-                <th field="Status" width="60" >处理状态</th>                            
+                <th field="Status" width="60" >处理状态</th>
                 <th field="BillDate" width="90">制单时间</th>
-                <th field="VerifyDate" width="90" >审核时间</th>  
+                <th field="VerifyDate" width="90" >审核时间</th>
                 <th field="UpdateTime" width="90" >更新时间</th>
-                 
                 <th field="Description" width="60">备注</th>
             </tr>
         </thead>

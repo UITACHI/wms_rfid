@@ -39,7 +39,7 @@ namespace Authority.Controllers.Wms.StockOut
         public ActionResult AllotConfirm(string billNo)
         {
             string strResult = string.Empty;
-            bool bResult = OutBillAllotService.AllotConfirm(billNo,out strResult);
+            bool bResult = OutBillAllotService.AllotConfirm(billNo, this.User.Identity.Name.ToString(),ref strResult);
             string msg = bResult ? "确认分配成功" : "确认分配失败";
             return Json(JsonMessageHelper.getJsonMessage(bResult, msg, strResult), "text", JsonRequestBehavior.AllowGet);
         }

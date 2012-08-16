@@ -31,7 +31,7 @@ namespace THOK.Wms.Bll.Service
                 && ul.UniformCode.Contains(uls.UniformCode)
                 && ul.UnitCode01.Contains(uls.UnitCode01)
                 && ul.UnitName01.Contains(uls.UnitName01)
-               && ul.UnitCode02.Contains(uls.UnitCode02)
+                && ul.UnitCode02.Contains(uls.UnitCode02)
                 && ul.UnitName02.Contains(uls.UnitName02)
                 && ul.UnitCode03.Contains(uls.UnitCode03)
                 && ul.UnitName03.Contains(uls.UnitName03)
@@ -43,6 +43,10 @@ namespace THOK.Wms.Bll.Service
                 ul.UnitListCode,
                 ul.UniformCode,
                 ul.UnitListName,
+                Unit01 = ul.UnitName01.ToString() + " ： " + ul.UnitCode01.ToString(),
+                Unit02 = ul.UnitName02.ToString() + " ： " + ul.UnitCode02.ToString(),
+                Unit03 = ul.UnitName03.ToString() + " ： " + ul.UnitCode03.ToString(),
+                Unit04 = ul.UnitName04.ToString() + " ： " + ul.UnitCode04.ToString(),
                 ul.UnitCode01,
                 ul.UnitName01,
                 ul.Quantity01,

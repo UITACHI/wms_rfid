@@ -58,7 +58,7 @@ namespace THOK.Wms.Bll.Service
                                                          && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
                                                          //&& i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
                                                          && i.Status.Contains(Operate_Status))
-                                                .OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                                                .OrderBy(i => i.BillNo).ToList().Select(i => new
                  { 
                 i.BillNo, 
                 i.Warehouse.WarehouseName,
@@ -91,7 +91,7 @@ namespace THOK.Wms.Bll.Service
         public object GetDetailInfos(int page, int rows, string BillNo)
         {
             IQueryable<InBillDetail> StockIntoQuery = InBillDetailRepository.GetQueryable();
-            var StockIntoDetail = StockIntoQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+            var StockIntoDetail = StockIntoQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).Select(i => new
                  {
                      i.ID,
                      i.BillNo,

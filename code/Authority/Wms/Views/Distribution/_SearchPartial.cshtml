@@ -1,31 +1,24 @@
 ﻿<script type="text/javascript">
     function searchClick() {
-        SearchLoad();
-        $('#dlg-search').dialog('open').dialog('setTitle', '库存分布查询');
+        $('#warehouseTree').combotree({
+            url: '/Area/GetDetailsTree/',
+            multiple: true,
+            width: 160
+        });
+        $('#dlg-search').dialog('open').dialog('setTitle', '当前库存查询');
         $("input[type=text]").attr("value", "");
     };
-    function SearchLoad() {
-        $('#product').combogrid({
-            required: true,
-            disabled: false,
-            width: 140,
-            panelWidth: 340,
-            url: '/Product/Details/?page=1&rows=10',
-            idField: 'ProductCode',
-            textField: 'ProductName',
-            mode: 'local',
-            editable: false,
-            fitColumns: true,
-            columns: [[
-					{ field: 'ProductCode', title: '卷烟编码', align: 'left', width: 40 },
-					{ field: 'ProductName', title: '卷烟名称', align: 'left', width: 40 },
-					{ field: 'IsActive', title: '是否可用', align: 'left', width: 30 }
-				]]
-        });
+
+    //选择产品信息
+    function productSelect() {
+        $('#productData').dialog('open').dialog('setTitle', '选择产品信息');
+        $('#productDetail').datagrid({ url: '/StockInBill/GetProductDetails/' });
+        $("#productDetail").datagrid('reload');
     }
+
     function select() {
         ware = "", area = "";
-        var roots = $('#warehouseTree').tree('getRoots');
+        var roots = $('#warehouseTree').combotree('tree').tree('getRoots');
         //仓库
         for (i = 0; i < roots.length; i++) {
             if (roots[i].attributes == "ware" && roots[i].checked == true) {
@@ -41,32 +34,54 @@
                 }
             }
         }
-        var queryParams = $('#details').datagrid('options').queryParams;
-        queryParams.ProductCode = $('#product').combo('getValue');
+        var queryParams = $('#listdetails').datagrid('options').queryParams;
+        queryParams.ProductCode = $('#productCode').val();
         queryParams.Ware = ware;
         queryParams.Area = area;
-        $('#details').datagrid('options').queryParams = queryParams;
-        $('#details').datagrid({
+        queryParams.UnitType = $('#unit_Type').combo('getValue');
+        $('#listdetails').datagrid('options').queryParams = queryParams;
+        $('#listdetails').datagrid({
             pageNumber: 1,
             pageSize: 10
         });
-        $("#details").datagrid('reload');
+        $("#listdetails").datagrid('reload');
         $('#dlg-search').dialog('close');
     }
 </script>
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width:280px;height:320px;padding:2px 2px"
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:280px;height:200px;padding:2px 2px"
     closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
         <div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc; " overflow: scroll; padding: 1px; margin: 1px">
             <table>
                 <tr>
+                    <td>产品代码:</td>
+                    <td align="left"><input type="text" id="productCode" editable="false"/>
+                    <a href="#" onclick="productSelect()" class="easyui-linkbutton" iconcls="icon-search" plain="true">
+                    </a>
+                    </td>
+                </tr>
+                <tr>
                     <td>产品名称:</td>
-                    <td align="left"><input type="text" id="product"/></td>
+                    <td align="left"><input type="text" id="productName" editable="false" style="width: 150px"/>
+                    </td>
                 </tr>
                 <tr>
                     <td>库区选择:</td>
-                    <td align="left"><ul id="warehouseTree" class="easyui-tree" checkbox="true" url='/Area/GetDetailsTree/'></ul></td>
+                    <td align="left">
+                        <select class="easyui-combotree" url=""valueField="id" textField="text" multiple="true" panelHeight="auto" panelWidth="160px" id="warehouseTree">
+                        </select>
+                    </td>
                 </tr>
+                <tr>
+                    <td>换算单位:</td>
+                    <td align="left">     
+		                <select id="unit_Type" class="easyui-combobox" style="width: 160px; height: 40px" editable="false">
+                            <option value="">请选择</option>                       
+                            <option value="1">标准单位</option>
+                            <option value="2">自然单位</option>
+                   </select>
+	            </td>
+              </tr>
             </table>
         </div>
     </div>
@@ -75,3 +90,4 @@
 	<a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="select()">查询</a>
 	<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg-search').dialog('close')">取消</a>
 </div>
+@Html.Partial("_ProductPartial")

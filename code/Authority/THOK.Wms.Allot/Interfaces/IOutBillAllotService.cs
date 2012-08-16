@@ -13,7 +13,7 @@ namespace THOK.Wms.Allot.Interfaces
 
         bool AllotCancelConfirm(string billNo, out string strResult);
 
-        bool AllotConfirm(string billNo, out string strResult);
+        bool AllotConfirm(string billNo, string userName, ref string strResult);
 
         bool AllotDelete(string billNo, long id, out string strResult);
 

@@ -71,70 +71,46 @@ namespace THOK.Wms.Bll.Service
                     && i.Status != "6"
                     && i.WarehouseCode.Contains(WareHouseCode)
                     && i.OperatePerson.EmployeeCode.Contains(OperatePersonCode)
-                    //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
-                    && i.Status.Contains(Status)
-                ).OrderByDescending(t => t.BillDate)
-                                   .OrderByDescending(t => t.BillNo)
-                                   .AsEnumerable().Select(i => new
-                {
-                    i.BillNo,
-                    BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    i.OperatePersonID,
-                    i.WarehouseCode,
-                    i.BillTypeCode,
-                    i.BillType.BillTypeName,
-                    i.Warehouse.WarehouseName,
-                    OperatePersonCode = i.OperatePerson.EmployeeCode,
-                    OperatePersonName = i.OperatePerson.EmployeeName,
-                    VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
-                    VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                    VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
-                    Status = WhatStatus(i.Status),
-                    IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                    Description = i.Description,
-                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
-                });
-            if (!IsActive.Equals(""))
-            {
-                inBillMaster = inBillMaster.Where(i =>
-                    i.BillNo.Contains(BillNo)
-                    && i.IsActive.Contains(IsActive)
-                    && i.Status != "6").OrderByDescending(t => t.BillDate)
-                                       .OrderByDescending(t => t.BillNo)
-                                       .AsEnumerable().Select(i => new
-                    {
-                        i.BillNo,
-                        i.BillDate,
-                        i.OperatePersonID,
-                        i.WarehouseCode,
-                        i.BillTypeCode,
-                        i.BillTypeName,
-                        i.WarehouseName,
-                        i.OperatePersonCode,
-                        i.OperatePersonName,
-                        i.VerifyPersonID,
-                        i.VerifyPersonName,
-                        i.VerifyDate,
-                        Status = WhatStatus(i.Status),
-                        IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                        Description = i.Description,
-                        UpdateTime = i.UpdateTime
-                    });
-            }
+                //|| i.VerifyPerson.EmployeeCode.Contains(CheckPersonCode)
+                    && i.Status.Contains(Status))
+                    .OrderByDescending(t => t.BillDate)
+                    .OrderByDescending(t => t.BillNo)
+                    .Select(i => i);
+
             if (!BeginDate.Equals(string.Empty))
             {
                 DateTime begin = Convert.ToDateTime(BeginDate);
-                inBillMaster = inBillMaster.Where(i => Convert.ToDateTime(i.BillDate) >= begin);
+                inBillMaster = inBillMaster.Where(i => i.BillDate >= begin);
             }
 
             if (!EndDate.Equals(string.Empty))
             {
                 DateTime end = Convert.ToDateTime(EndDate).AddDays(1);
-                inBillMaster = inBillMaster.Where(i => Convert.ToDateTime(i.BillDate) <= end);
+                inBillMaster = inBillMaster.Where(i => i.BillDate <= end);
             }
             int total = inBillMaster.Count();
             inBillMaster = inBillMaster.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = inBillMaster.ToArray() };
+
+            var tmp = inBillMaster.ToArray().AsEnumerable().Select(i => new
+            {
+                i.BillNo,
+                BillDate = i.BillDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                i.OperatePersonID,
+                i.WarehouseCode,
+                i.BillTypeCode,
+                i.BillType.BillTypeName,
+                i.Warehouse.WarehouseName,
+                OperatePersonCode = i.OperatePerson.EmployeeCode,
+                OperatePersonName = i.OperatePerson.EmployeeName,
+                VerifyPersonID = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
+                VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
+                VerifyDate = (i.VerifyDate == null ? "" : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd HH:mm:ss")),
+                Status = WhatStatus(i.Status),
+                IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                Description = i.Description,
+                UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss")
+            });
+            return new { total, rows = tmp.ToArray() };
         }
 
         public bool Add(InBillMaster inBillMaster, string userName)
@@ -213,7 +189,7 @@ namespace THOK.Wms.Bll.Service
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
             string billNo = "";
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var inBillMaster = inBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             if (inBillMaster.Count() == 0)
             {
                 billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "IN";
@@ -298,7 +274,7 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<BillType> billtypeQuery = BillTypeRepository.GetQueryable();
             var billtype = billtypeQuery.Where(b => b.BillClass == BillClass
-                && b.IsActive.Contains(IsActive)).OrderBy(b => b.BillTypeCode).AsEnumerable().Select(b => new
+                && b.IsActive.Contains(IsActive)).ToArray().OrderBy(b => b.BillTypeCode).Select(b => new
             {
                 b.BillTypeCode,
                 b.BillTypeName,
@@ -322,7 +298,7 @@ namespace THOK.Wms.Bll.Service
         public object GetWareHouseDetail(string IsActive)
         {
             IQueryable<Warehouse> wareQuery = WarehouseRepository.GetQueryable();
-            var warehouse = wareQuery.Where(w => w.IsActive == IsActive).OrderBy(w => w.WarehouseCode).AsEnumerable().Select(w => new
+            var warehouse = wareQuery.Where(w => w.IsActive == IsActive).OrderBy(w => w.WarehouseCode).ToArray().Select(w => new
                 {
                     w.WarehouseCode,
                     w.WarehouseName,

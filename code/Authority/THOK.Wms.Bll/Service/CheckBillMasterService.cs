@@ -75,24 +75,11 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<CheckBillMaster> CheckBillMasterQuery = CheckBillMasterRepository.GetQueryable();
             //var checkBillMasters = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo) && i.OperatePerson.EmployeeName.Contains(OperatePersonCode));
-            var checkBillMasters = CheckBillMasterQuery.AsEnumerable().OrderBy(t => t.BillNo).Select(i => new
-            {
-                i.BillNo,
-                BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
-                i.Warehouse.WarehouseCode,
-                i.Warehouse.WarehouseName,
-                OperatePersonCode = i.OperatePerson.EmployeeCode,
-                OperatePersonName = i.OperatePerson.EmployeeName,
-                VerifyPersonCode = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
-                VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
-                BillTypeCode = i.BillType.BillTypeCode,
-                BillTypeName = i.BillType.BillTypeName,
-                VerifyDate = i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss"),
-                Status = WhatStatus(i.Status),
-                IsActive = i.IsActive == "1" ? "可用" : "不可用",
-                Description = i.Description,
-                UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
-            });
+            var checkBillMasters = CheckBillMasterQuery.Where(i => i.BillNo.Contains(BillNo)
+                && i.Status!="5")
+                .OrderByDescending(t => t.BillDate)
+                .OrderByDescending(t => t.BillNo)
+                .Select(i => i);
             if (!BillNo.Equals(string.Empty) && BillNo != null)
             {
                 checkBillMasters = checkBillMasters.Where(i => i.BillNo.Contains(BillNo));
@@ -109,11 +96,11 @@ namespace THOK.Wms.Bll.Service
             }
             if (!OperatePersonCode.Equals(string.Empty) && OperatePersonCode != null)
             {
-                checkBillMasters = checkBillMasters.Where(i => i.OperatePersonCode.Contains(OperatePersonCode));
+                checkBillMasters = checkBillMasters.Where(i => i.OperatePerson.EmployeeCode.Contains(OperatePersonCode));
             }
             if (!Status.Equals(string.Empty))
             {
-                checkBillMasters = checkBillMasters.Where(i => i.Status.Contains(Status) && i.Status != "6");
+                checkBillMasters = checkBillMasters.Where(i => i.Status.Contains(Status));
             }
             if (!IsActive.Equals(string.Empty))
             {
@@ -122,7 +109,26 @@ namespace THOK.Wms.Bll.Service
 
             int total = checkBillMasters.Count();
             checkBillMasters = checkBillMasters.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = checkBillMasters.ToArray() };
+
+            var temp=checkBillMasters.ToArray().AsEnumerable().Select(i => new
+                {
+                    i.BillNo,
+                    BillDate = i.BillDate.ToString("yyyy-MM-dd hh:mm:ss"),
+                    i.Warehouse.WarehouseCode,
+                    i.Warehouse.WarehouseName,
+                    OperatePersonCode = i.OperatePerson.EmployeeCode,
+                    OperatePersonName = i.OperatePerson.EmployeeName,
+                    VerifyPersonCode = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeCode,
+                    VerifyPersonName = i.VerifyPersonID == null ? string.Empty : i.VerifyPerson.EmployeeName,
+                    BillTypeCode = i.BillType.BillTypeCode,
+                    BillTypeName = i.BillType.BillTypeName,
+                    VerifyDate = i.VerifyDate == null ? string.Empty : ((DateTime)i.VerifyDate).ToString("yyyy-MM-dd hh:mm:ss"),
+                    Status = WhatStatus(i.Status),
+                    IsActive = i.IsActive == "1" ? "可用" : "不可用",
+                    Description = i.Description,
+                    UpdateTime = i.UpdateTime.ToString("yyyy-MM-dd hh:mm:ss")
+                });
+            return new { total, rows = temp.ToArray() };
         }
 
         public bool Add(string billNo, string wareCode)
@@ -178,10 +184,10 @@ namespace THOK.Wms.Bll.Service
         {
             IQueryable<CheckBillMaster> CheckMasterQuery = CheckBillMasterRepository.GetQueryable();
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
-            var inBillMaster = CheckMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var inBillMaster = CheckMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             if (inBillMaster.Count() == 0)
             {
-                return System.DateTime.Now.ToString("yyMMdd") + "0001" + "CK";
+                return System.DateTime.Now.ToString("yyMMdd") + "0001" + "CH";
             }
             else
             {
@@ -193,7 +199,7 @@ namespace THOK.Wms.Bll.Service
                 {
                     newcode = "0" + newcode;
                 }
-                return System.DateTime.Now.ToString("yyMMdd") + newcode + "CK";
+                return System.DateTime.Now.ToString("yyMMdd") + newcode + "CH";
             }
         }
 
@@ -210,20 +216,6 @@ namespace THOK.Wms.Bll.Service
         public object GetCellDetails(int page, int rows, string ware, string area, string shelf, string cell)
         {
             IQueryable<Storage> storageQuery = StorageRepository.GetQueryable();
-            var storages = storageQuery.OrderBy(s => s.StorageCode).AsEnumerable().Select(s => new
-            {
-                s.StorageCode,
-                s.Cell.CellCode,
-                s.Cell.CellName,
-                s.Product.ProductCode,
-                s.Product.ProductName,
-                s.Product.Unit.UnitCode,
-                s.Product.Unit.UnitName,
-                Quantity = s.Quantity / s.Product.Unit.Count,
-                IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-            });
             if (ware != null && ware != string.Empty || area != null && area != string.Empty || shelf != null && shelf != string.Empty || cell != null && cell != string.Empty)
             {
                 if (ware != string.Empty)
@@ -242,10 +234,15 @@ namespace THOK.Wms.Bll.Service
                 {
                     cell = cell.Substring(0, cell.Length - 1);
                 }
+            }
+            var storages = storageQuery.Where(s => (ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)) && s.Quantity > 0 && s.IsLock == "0")
+                                       .OrderBy(s => s.StorageCode)
+                                       .Select(s=>s);
 
-                storages = storageQuery.ToList().Where(s => (ware.Contains(s.Cell.Shelf.Area.Warehouse.WarehouseCode) || area.Contains(s.Cell.Shelf.Area.AreaCode) || shelf.Contains(s.Cell.Shelf.ShelfCode) || cell.Contains(s.Cell.CellCode)) && s.Quantity > 0 && s.IsLock == "0")
-                                       .OrderBy(s => s.StorageCode).AsEnumerable()
-                                       .Select(s => new
+            int total = storages.Count();
+            storages = storages.Skip((page - 1) * rows).Take(rows);
+
+            var temp = storages.ToArray().Select(s => new
                                        {
                                            s.StorageCode,
                                            s.Cell.CellCode,
@@ -259,10 +256,7 @@ namespace THOK.Wms.Bll.Service
                                            StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
                                            UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
                                        });
-            }
-            int total = storages.Count();
-            storages = storages.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = storages.ToArray() };
+            return new { total, rows = temp.ToArray() };
         }
 
         /// <summary>
@@ -466,25 +460,27 @@ namespace THOK.Wms.Bll.Service
             {
                 products = products.Substring(0, products.Length - 1);
 
-                var storages = storageQuery.ToList().Where(s => s.ProductCode != null && products.Contains(s.ProductCode) && s.Quantity > 0 && s.IsLock == "0")
-                                      .OrderBy(s => s.StorageCode).AsEnumerable()
-                                      .Select(s => new
-                                      {
-                                          s.StorageCode,
-                                          s.Cell.CellCode,
-                                          s.Cell.CellName,
-                                          s.Product.ProductCode,
-                                          s.Product.ProductName,
-                                          s.Product.Unit.UnitCode,
-                                          s.Product.Unit.UnitName,
-                                          Quantity = s.Quantity / s.Product.Unit.Count,
-                                          IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                          StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                          UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                      });
+                var storages = storageQuery.Where(s => s.ProductCode != null && products.Contains(s.ProductCode) && s.Quantity > 0 && s.IsLock == "0")
+                                      .OrderBy(s => s.StorageCode)
+                                      .Select(s =>s);
                 int total = storages.Count();
                 storages = storages.Skip((page - 1) * rows).Take(rows);
-                return new { total, rows = storages.ToArray() };
+
+                var temp = storages.ToArray().Select(s => new
+                {
+                    s.StorageCode,
+                    s.Cell.CellCode,
+                    s.Cell.CellName,
+                    s.Product.ProductCode,
+                    s.Product.ProductName,
+                    s.Product.Unit.UnitCode,
+                    s.Product.Unit.UnitName,
+                    Quantity = s.Quantity / s.Product.Unit.Count,
+                    IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                    StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                    UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                });
+                return new { total, rows = temp.ToArray() };
             }
             return null;
         }
@@ -625,25 +621,27 @@ namespace THOK.Wms.Bll.Service
             var outCells = outAllotQuery.Where(o => o.FinishTime >= begin && o.FinishTime <= end).OrderBy(o => o.CellCode).Select(o => o.CellCode);
             var moveInCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end).OrderBy(m => m.InCell.CellCode).Select(m => m.InCell.CellCode);
             var moveOutCells = moveBillQuery.Where(m => m.FinishTime >= begin && m.FinishTime <= end).OrderBy(m => m.OutCell.CellCode).Select(m => m.OutCell.CellCode);
-            var storages = storageQuery.ToList().Where(s => s.Quantity > 0 && s.IsLock == "0" && (inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode)))
-                                       .OrderBy(s => s.ProductCode).AsEnumerable()
-                                       .Select(s => new
-                                       {
-                                           s.StorageCode,
-                                           s.Cell.CellCode,
-                                           s.Cell.CellName,
-                                           s.Product.ProductCode,
-                                           s.Product.ProductName,
-                                           s.Product.Unit.UnitCode,
-                                           s.Product.Unit.UnitName,
-                                           Quantity = s.Quantity / s.Product.Unit.Count,
-                                           IsActive = s.IsActive == "1" ? "可用" : "不可用",
-                                           StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
-                                           UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
-                                       });
+            var storages = storageQuery.Where(s => s.Quantity > 0 && s.IsLock == "0" && (inCells.Any(i => i == s.CellCode) || outCells.Any(o => o == s.CellCode) || moveInCells.Any(mi => mi == s.CellCode) || moveOutCells.Any(mo => mo == s.CellCode)))
+                                       .OrderBy(s => s.ProductCode)
+                                       .Select(s => s);
             int total = storages.Count();
             storages = storages.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = storages.ToArray() };
+
+            var temp = storages.ToArray().Select(s => new
+                {
+                    s.StorageCode,
+                    s.Cell.CellCode,
+                    s.Cell.CellName,
+                    s.Product.ProductCode,
+                    s.Product.ProductName,
+                    s.Product.Unit.UnitCode,
+                    s.Product.Unit.UnitName,
+                    Quantity = s.Quantity / s.Product.Unit.Count,
+                    IsActive = s.IsActive == "1" ? "可用" : "不可用",
+                    StorageTime = s.StorageTime.ToString("yyyy-MM-dd"),
+                    UpdateTime = s.UpdateTime.ToString("yyyy-MM-dd")
+                });
+            return new { total, rows = temp.ToArray() };
         }
 
         /// <summary>
@@ -914,7 +912,7 @@ namespace THOK.Wms.Bll.Service
             string sysTime = System.DateTime.Now.ToString("yyMMdd");
             string billNo = "";
             var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
-            var profitLossBillMaster = profitLossBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).AsEnumerable().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
+            var profitLossBillMaster = profitLossBillMasterQuery.Where(i => i.BillNo.Contains(sysTime)).ToArray().OrderBy(i => i.BillNo).Select(i => new { i.BillNo }.BillNo);
             if (profitLossBillMaster.Count() == 0)
             {
                 billNo = System.DateTime.Now.ToString("yyMMdd") + "0001" + "PL";

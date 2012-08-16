@@ -25,5 +25,7 @@ namespace THOK.Wms.Bll.Interfaces
         object GetBillTypeDetail(string BillClass, string IsActive);
 
         object GetWareHouseDetail(string IsActive);
+
+        bool Settle(string BillNo, out string strResult);
     }
 }

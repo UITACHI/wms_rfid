@@ -1,10 +1,14 @@
 ﻿<script type="text/javascript">
     var url;
+    var settle_Date;
+    var warehouse_Code;
     function formatAction(value, row, index) {
         var e = '<a href="#" onclick=DailyDetail("' + row.WarehouseCode + '","' + row.SettleDate + '")>日结明细</a> <a href="#"  onclick=BalanceAgain("' + row.WarehouseCode + '","' + row.SettleDate + '")>重新日结</a>';
         return e
     }
     function DailyDetail(warehouseCode, settleDate) {
+            settle_Date = settleDate;
+            warehouse_Code = warehouseCode;
             $('#infos').datagrid({ url: '/DailyBalance/InfoDetails/?WarehouseCode=' + warehouseCode + '&&SettleDate=' + settleDate });           
             $('#InfoDetails').dialog('open').dialog('setTitle', '日结明细');
     }

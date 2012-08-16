@@ -27,41 +27,58 @@ namespace THOK.Wms.Bll.Service
         {
             get { return this.GetType(); }
         }
-        
+
+        #region IDailyBalanceService 成员
+
         public object GetDetails(int page, int rows, string beginDate, string endDate, string warehouseCode,string unitType)
         {
             IQueryable<DailyBalance> dailyBalanceQuery = DailyBalanceRepository.GetQueryable();
 
-            var dailyBalance = dailyBalanceQuery.Where(c => c.WarehouseCode.Contains(warehouseCode))
-                                    .OrderBy(c => c.SettleDate).AsEnumerable()
-                                    .GroupBy(c => c.SettleDate)
-                                    .Select(c => new
-                                    {
-                                        SettleDate = c.Key.ToString("yyyy-MM-dd"),
-                                        WarehouseCode = warehouseCode == "" ? "" : c.Max(p => p.WarehouseCode),
-                                        WarehouseName = warehouseCode == "" ? "全部仓库" : c.Max(p => p.Warehouse.WarehouseName),
-                                        UnitName = "",
-                                        Beginning = c.Sum(p => p.Beginning),
-                                        EntryAmount = c.Sum(p => p.EntryAmount),
-                                        DeliveryAmount = c.Sum(p => p.DeliveryAmount),
-                                        ProfitAmount = c.Sum(p => p.ProfitAmount),
-                                        LossAmount = c.Sum(p => p.LossAmount),
-                                        Ending = c.Sum(p => p.Ending)
-                                    });
+            var dailyBalance = dailyBalanceQuery.Where(i => 1==1);
+            if (!beginDate.Equals(string.Empty))
+            {
+                DateTime begin = Convert.ToDateTime(beginDate);
+                dailyBalance = dailyBalance.Where(i => i.SettleDate >= begin);
+            }
 
-            string unitName = "件（标准）";
+            if (!endDate.Equals(string.Empty))
+            {
+                DateTime end = Convert.ToDateTime(endDate);
+                dailyBalance = dailyBalance.Where(i => i.SettleDate <= end);
+            }
+
+            var dailyBalances = dailyBalance.Where(c => c.WarehouseCode.Contains(warehouseCode))
+                                       .OrderBy(c => c.SettleDate)
+                                       .GroupBy(c => c.SettleDate)
+                                       .Select(c => new
+                                       {
+                                           SettleDate = c.Key,
+                                           WarehouseCode = warehouseCode == "" ? "" : c.Max(p => p.WarehouseCode),
+                                           WarehouseName = warehouseCode == "" ? "" : c.Max(p => p.Warehouse.WarehouseName),
+                                           Beginning = c.Sum(p => p.Beginning),
+                                           EntryAmount = c.Sum(p => p.EntryAmount),
+                                           DeliveryAmount = c.Sum(p => p.DeliveryAmount),
+                                           ProfitAmount = c.Sum(p => p.ProfitAmount),
+                                           LossAmount = c.Sum(p => p.LossAmount),
+                                           Ending = c.Sum(p => p.Ending)
+                                       });
+            
+            int total = dailyBalances.Count();
+            dailyBalances = dailyBalances.OrderBy(s => s.SettleDate).Skip((page - 1) * rows).Take(rows);
+
+            string unitName = "标准件";
             decimal count = 10000;
             if (unitType == "2")
             {
-                unitName = "条（标准）";
+                unitName = "标准条";
                 count = 200;
             }
 
-            dailyBalance = dailyBalance.Select(d => new
+            var temp = dailyBalances.ToArray().Select(d => new
             {
-                SettleDate = d.SettleDate,
+                SettleDate = d.SettleDate.ToString("yyyy-MM-dd"),
                 WarehouseCode = d.WarehouseCode,
-                WarehouseName = d.WarehouseName,
+                WarehouseName = d.WarehouseName == "" ? "全部仓库" : d.WarehouseName,
                 UnitName = unitName,
                 Beginning = d.Beginning / count,
                 EntryAmount = d.EntryAmount / count,
@@ -69,41 +86,31 @@ namespace THOK.Wms.Bll.Service
                 ProfitAmount = d.ProfitAmount / count,
                 LossAmount = d.LossAmount / count,
                 Ending = d.Ending / count
-            }
-            );
-
-            if (!beginDate.Equals(string.Empty))
-            {
-                DateTime begin = Convert.ToDateTime(beginDate);
-                dailyBalance = dailyBalance.Where(i => Convert.ToDateTime(i.SettleDate) >= begin);
-            }
-
-            if (!endDate.Equals(string.Empty))
-            {
-                DateTime end = Convert.ToDateTime(endDate);
-                dailyBalance = dailyBalance.Where(i => Convert.ToDateTime(i.SettleDate) <= end);
-            }
-            int total = dailyBalance.Count();
-            dailyBalance = dailyBalance.Skip((page - 1) * rows).Take(rows);
-            return new { total, rows = dailyBalance.ToArray() };
+            });
+            return new { total, rows = temp.ToArray() };
         }
 
         public object GetInfoDetails(int page, int rows, string warehouseCode, string settleDate,string unitType)
         {
+            DateTime date = Convert.ToDateTime(settleDate);
+            if (unitType == null || unitType == "")
+            {
+                unitType = "1";
+            }
             IQueryable<DailyBalance> dailyBalanceQuery = DailyBalanceRepository.GetQueryable();
-            var query = dailyBalanceQuery.AsEnumerable()
-                                         .Where(i => i.WarehouseCode.Contains(warehouseCode)
-                                                    && i.SettleDate.ToString("yyyy-MM-dd") == settleDate
-                                                )
+            var query = dailyBalanceQuery.Where(i => i.WarehouseCode.Contains(warehouseCode) && i.SettleDate == date)
                                          .OrderBy(i => i.SettleDate)
-                                         .OrderBy(i => i.Warehouse.WarehouseName)
-                                         .AsEnumerable().Select(i => new
+                                         .OrderBy(i => i.Warehouse.WarehouseName).Select(i => new
                                          {
-                                             SettleDate = i.SettleDate.ToString("yyyy-MM-dd"),
+                                             i.SettleDate,
                                              i.ProductCode,
                                              i.Product.ProductName,
-                                             i.UnitCode,
-                                             i.Unit.UnitName,
+                                             UnitCode01 = i.Product.UnitList.Unit01.UnitCode,
+                                             UnitName01 = i.Product.UnitList.Unit01.UnitName,
+                                             UnitCode02 = i.Product.UnitList.Unit02.UnitCode,
+                                             UnitName02 = i.Product.UnitList.Unit02.UnitName,
+                                             Count01 = i.Product.UnitList.Unit01.Count,
+                                             Count02 = i.Product.UnitList.Unit02.Count,
                                              i.WarehouseCode,
                                              i.Warehouse.WarehouseName,
                                              Beginning = i.Beginning/i.Unit.Count,
@@ -114,116 +121,69 @@ namespace THOK.Wms.Bll.Service
                                              Ending = i.Ending/i.Unit.Count
                                          });
 
-            //标准件（万支）
-            if (unitType == "1")
-            {
-                query = dailyBalanceQuery.AsEnumerable()
-                                         .Where(i => i.WarehouseCode.Contains(warehouseCode)
-                                                    && i.SettleDate.ToString("yyyy-MM-dd") == settleDate
-                                                )
-                                         .OrderBy(i => i.SettleDate)
-                                         .OrderBy(i => i.Warehouse.WarehouseName)
-                                         .AsEnumerable().Select(i => new
-                                         {
-                                             SettleDate = i.SettleDate.ToString("yyyy-MM-dd"),
-                                             i.ProductCode,
-                                             i.Product.ProductName,
-                                             UnitCode = "",
-                                             UnitName = "标准件（万支）",
-                                             i.WarehouseCode,
-                                             i.Warehouse.WarehouseName,
-                                             Beginning = i.Beginning / 10000,
-                                             EntryAmount = i.EntryAmount / 10000,
-                                             DeliveryAmount = i.DeliveryAmount / 10000,
-                                             ProfitAmount = i.ProfitAmount / 10000,
-                                             LossAmount = i.LossAmount / 10000,
-                                             Ending = i.Ending / 10000
-                                         });
-            }
-
-            //标准条（200支）
-            if (unitType == "2")
-            {
-                query = dailyBalanceQuery.AsEnumerable()
-                                         .Where(i => i.WarehouseCode.Contains(warehouseCode)
-                                                    && i.SettleDate.ToString("yyyy-MM-dd") == settleDate
-                                                )
-                                         .OrderBy(i => i.SettleDate)
-                                         .OrderBy(i => i.Warehouse.WarehouseName)
-                                         .AsEnumerable().Select(i => new
-                                         {
-                                             SettleDate = i.SettleDate.ToString("yyyy-MM-dd"),
-                                             i.ProductCode,
-                                             i.Product.ProductName,
-                                             UnitCode = "",
-                                             UnitName = "标准条（200支）",
-                                             i.WarehouseCode,
-                                             i.Warehouse.WarehouseName,
-                                             Beginning = i.Beginning / 200,
-                                             EntryAmount = i.EntryAmount / 200,
-                                             DeliveryAmount = i.DeliveryAmount / 200,
-                                             ProfitAmount = i.ProfitAmount / 200,
-                                             LossAmount = i.LossAmount / 200,
-                                             Ending = i.Ending / 200
-                                         });
-            }
-
-            //自然件
-            if (unitType == "3")
-            {
-                query = dailyBalanceQuery.AsEnumerable()
-                                         .Where(i => i.WarehouseCode.Contains(warehouseCode)
-                                                    && i.SettleDate.ToString("yyyy-MM-dd") == settleDate
-                                                )
-                                         .OrderBy(i => i.SettleDate)
-                                         .OrderBy(i => i.Warehouse.WarehouseName)
-                                         .AsEnumerable().Select(i => new
-                                         {
-                                             SettleDate = i.SettleDate.ToString("yyyy-MM-dd"),
-                                             i.ProductCode,
-                                             i.Product.ProductName,
-                                             i.Product.UnitList.Unit01.UnitCode,
-                                             i.Product.UnitList.Unit01.UnitName,
-                                             i.WarehouseCode,
-                                             i.Warehouse.WarehouseName,
-                                             Beginning = i.Beginning / i.Product.UnitList.Unit01.Count,
-                                             EntryAmount = i.EntryAmount / i.Product.UnitList.Unit01.Count,
-                                             DeliveryAmount = i.DeliveryAmount / i.Product.UnitList.Unit01.Count,
-                                             ProfitAmount = i.ProfitAmount / i.Product.UnitList.Unit01.Count,
-                                             LossAmount = i.LossAmount / i.Product.UnitList.Unit01.Count,
-                                             Ending = i.Ending / i.Product.UnitList.Unit01.Count
-                                         });
-            }
-
-            //自然条
-            if (unitType == "4")
-            {
-                query = dailyBalanceQuery.AsEnumerable()
-                                         .Where(i => i.WarehouseCode.Contains(warehouseCode)
-                                                    && i.SettleDate.ToString("yyyy-MM-dd") == settleDate
-                                                )
-                                         .OrderBy(i => i.SettleDate)
-                                         .OrderBy(i => i.Warehouse.WarehouseName)
-                                         .AsEnumerable().Select(i => new
-                                         {
-                                             SettleDate = i.SettleDate.ToString("yyyy-MM-dd"),
-                                             i.ProductCode,
-                                             i.Product.ProductName,
-                                             i.Product.UnitList.Unit02.UnitCode,
-                                             i.Product.UnitList.Unit02.UnitName,
-                                             i.WarehouseCode,
-                                             i.Warehouse.WarehouseName,
-                                             Beginning = i.Beginning / i.Product.UnitList.Unit02.Count,
-                                             EntryAmount = i.EntryAmount / i.Product.UnitList.Unit02.Count,
-                                             DeliveryAmount = i.DeliveryAmount / i.Product.UnitList.Unit02.Count,
-                                             ProfitAmount = i.ProfitAmount / i.Product.UnitList.Unit02.Count,
-                                             LossAmount = i.LossAmount / i.Product.UnitList.Unit02.Count,
-                                             Ending = i.Ending / i.Product.UnitList.Unit02.Count
-                                         });
-            }
+            
+            
 
             int total = query.Count();
             query = query.Skip((page - 1) * rows).Take(rows);
+
+            string unitName = "";
+            decimal count = 1;
+            
+            //标准单位（标准件||标准条）
+            if (unitType == "1" || unitType == "2")
+            {
+                if (unitType == "1")
+                {
+                    unitName = "标准件";
+                    count = 10000;
+                }
+
+                if (unitType == "2")
+                {
+                    unitName = "标准条";
+                    count = 200;
+                }
+                var dailyBalance = query.ToArray().Select(i => new
+                                         {
+                                             SettleDate = i.SettleDate.ToString("yyyy-MM-dd"),
+                                             i.ProductCode,
+                                             i.ProductName,
+                                             UnitCode = "",
+                                             UnitName = unitName,
+                                             i.WarehouseCode,
+                                             i.WarehouseName,
+                                             Beginning = i.Beginning / count,
+                                             EntryAmount = i.EntryAmount / count,
+                                             DeliveryAmount = i.DeliveryAmount / count,
+                                             ProfitAmount = i.ProfitAmount / count,
+                                             LossAmount = i.LossAmount / count,
+                                             Ending = i.Ending / count
+                                         });
+                return new { total, rows = dailyBalance.ToArray() };
+            }
+
+            //自然件
+            if (unitType == "3" || unitType == "4")
+            {
+                var dailyBalance = query.ToArray().Select(i => new
+                                         {
+                                             SettleDate = i.SettleDate.ToString("yyyy-MM-dd"),
+                                             i.ProductCode,
+                                             i.ProductName,
+                                             UnitCode = unitType == "3" ? i.UnitCode01 : i.UnitCode02,
+                                             UnitName = unitType == "3" ? i.UnitName01 : i.UnitName02,
+                                             i.WarehouseCode,
+                                             i.WarehouseName,
+                                             Beginning = i.Beginning / (unitType == "3" ? i.Count01 : i.Count02),
+                                             EntryAmount = i.EntryAmount / (unitType == "3" ? i.Count01 : i.Count02),
+                                             DeliveryAmount = i.DeliveryAmount / (unitType == "3" ? i.Count01 : i.Count02),
+                                             ProfitAmount = i.ProfitAmount / (unitType == "3" ? i.Count01 : i.Count02),
+                                             LossAmount = i.LossAmount / (unitType == "3" ? i.Count01 : i.Count02),
+                                             Ending = i.Ending / (unitType == "3" ? i.Count01 : i.Count02),
+                                         });
+                return new { total, rows = dailyBalance.ToArray() };
+            }
             return new { total, rows = query.ToArray() };
         }
 
@@ -423,5 +383,8 @@ namespace THOK.Wms.Bll.Service
                 return false;
             }
         }
+
+        #endregion
+
     }
 }

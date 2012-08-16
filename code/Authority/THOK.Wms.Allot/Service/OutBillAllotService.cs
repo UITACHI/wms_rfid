@@ -35,6 +35,8 @@ namespace THOK.Wms.Allot.Service
         [Dependency]
         public IMoveBillMasterRepository MoveBillMasterRepository { get; set; }
         [Dependency]
+        public IEmployeeRepository EmployeeRepository { get; set; }
+        [Dependency]
         public IStorageLocker Locker { get; set; } 
 
         protected override Type LogPrefix
@@ -357,73 +359,67 @@ namespace THOK.Wms.Allot.Service
             return result;
         }
 
-        public bool AllotConfirm(string billNo, out string strResult)
+        public bool AllotConfirm(string billNo, string userName, ref string errorInfo)
         {
-            bool result = false;
-            var ibm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo && i.Status == "3");
-            if (ibm != null)
+            try
             {
-                if (ibm.OutBillDetails.All(b => b.BillQuantity == b.AllotQuantity)
-                    && ibm.OutBillDetails.Sum(b => b.BillQuantity) == ibm.OutBillAllots.Sum(a => a.AllotQuantity))
+                var ibm = OutBillMasterRepository.GetQueryable().FirstOrDefault(i => i.BillNo == billNo && i.Status == "3");
+                var employee = EmployeeRepository.GetQueryable().FirstOrDefault(i => i.UserName == userName);
+
+                if (employee == null)
                 {
-                    if (string.IsNullOrEmpty(ibm.LockTag))
-                    {
-                        try
-                        {
-                            using (var scope = new TransactionScope())
-                            {
-                                if (MoveBillCreater.CheckIsNeedSyncMoveBill(ibm.WarehouseCode))
-                                {
-                                    var moveBillMaster = MoveBillCreater.CreateMoveBillMaster(ibm.WarehouseCode, "3001", "0e566f01-bbb3-486d-b28a-d5fc33f93d40");
-                                    MoveBillCreater.CreateSyncMoveBillDetail(moveBillMaster);
-                                    moveBillMaster.Status = "2";
-                                    moveBillMaster.VerifyDate = DateTime.Now;
-                                    moveBillMaster.VerifyPersonID = Guid.Parse("0e566f01-bbb3-486d-b28a-d5fc33f93d40");
-                                    if (MoveBillCreater.CheckIsNeedSyncMoveBill(ibm.WarehouseCode))
-                                    {
-                                        MoveBillCreater.DeleteMoveBillDetail(moveBillMaster);
-                                        MoveBillMasterRepository.Delete(moveBillMaster);
-                                        MoveBillMasterRepository.SaveChanges();
-                                        strResult = "生成同步移库单不完整，请重新确认！";
-                                        return false;
-                                    }
-                                    else
-                                    {
-                                        ibm.MoveBillMasterBillNo = moveBillMaster.BillNo;
-                                    }
-                                }
-
-                                ibm.Status = "4";
-                                ibm.UpdateTime = DateTime.Now;
-                                OutBillMasterRepository.SaveChanges();
-                                result = true;
-                                strResult = "确认成功";
-
-                                scope.Complete();
-                            }
-
-                        }
-                        catch (Exception)
-                        {
-                            strResult = "当前订单其他人正在操作，请稍候重试！";
-                        }
-
-                    }
-                    else
-                    {
-                        strResult = "当前订单其他人正在操作，请稍候重试！";
-                    }
+                    errorInfo = "当前用户不存在或不可用，未能审核！";
+                    return false;
                 }
-                else
+                if (ibm == null)
                 {
-                    strResult = "当前订单分配未完成或分配结果不正确！";
+                    errorInfo = "当前订单状态不是已分配，或当前订单不存在！";
+                    return false;
+                }
+                if (!(ibm.OutBillDetails.All(b => b.BillQuantity == b.AllotQuantity)
+                    && ibm.OutBillDetails.Sum(b => b.BillQuantity) == ibm.OutBillAllots.Sum(a => a.AllotQuantity)))
+                {
+                    errorInfo = "当前订单分配未完成或分配结果不正确！";
+                    return false;
+                }
+                if (!string.IsNullOrEmpty(ibm.LockTag))
+                {
+                    errorInfo = "当前订单其他人正在操作，请稍候重试！";
+                    return false;
+                }
+                using (var scope = new TransactionScope())
+                {
+                    if (MoveBillCreater.CheckIsNeedSyncMoveBill(ibm.WarehouseCode))
+                    {
+                        var moveBillMaster = MoveBillCreater.CreateMoveBillMaster(ibm.WarehouseCode, "3001", employee.ID.ToString());
+                        MoveBillCreater.CreateSyncMoveBillDetail(moveBillMaster);
+                        moveBillMaster.Status = "2";
+                        moveBillMaster.Description = "出库生成同步移库单！";
+                        moveBillMaster.VerifyDate = DateTime.Now;
+                        moveBillMaster.VerifyPersonID = employee.ID;
+                        if (MoveBillCreater.CheckIsNeedSyncMoveBill(ibm.WarehouseCode))
+                        {
+                            errorInfo = "生成同步移库单不完整，请重新确认！";
+                            return false;
+                        }
+                        else
+                        {
+                            ibm.MoveBillMasterBillNo = moveBillMaster.BillNo;
+                        }
+                    }
+
+                    ibm.Status = "4";
+                    ibm.UpdateTime = DateTime.Now;
+                    OutBillMasterRepository.SaveChanges();
+                    scope.Complete();
+                    return true;
                 }
             }
-            else
+            catch (Exception e)
             {
-                strResult = "当前订单状态不是已分配，或当前订单不存在！";
+                errorInfo = "确认分配失败，详情：" + e.Message;
+                return false;
             }
-            return result;
         }
 
         public bool AllotCancelConfirm(string billNo, out string strResult)

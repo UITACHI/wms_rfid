@@ -33,16 +33,10 @@ namespace THOK.Wms.Bll.Service
                     statusStr = "已审核";
                     break;
                 case "3":
-                    statusStr = "已分配";
-                    break;
-                case "4":
-                    statusStr = "已确认";
-                    break;
-                case "5":
                     statusStr = "执行中";
                     break;
-                case "6":
-                    statusStr = "已入库";
+                case "4":
+                    statusStr = "已结单";
                     break;
             }
             return statusStr;

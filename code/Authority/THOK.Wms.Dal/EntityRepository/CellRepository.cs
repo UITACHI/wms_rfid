@@ -9,7 +9,12 @@ namespace THOK.Wms.Dal.EntityRepository
     {
         public new IQueryable<Cell> GetQueryable()
         {
-            return this.dbSet//.Include("Storages")
+            return this.dbSet.AsQueryable<Cell>();
+        }
+
+        public IQueryable<Cell> GetQueryableIncludeStorages()
+        {
+            return this.dbSet.Include("Storages")
                              .AsQueryable<Cell>();
         }
     }

@@ -66,7 +66,7 @@ $(function () {
             var j_waitDialog = ShowWaitMessageDialog();
             $.ajaxSender.complete = callback;
             $.ajax({
-                url: url, type: "GET", dataType: "text",
+                url: url, type: "POST", dataType: "text",
                 data: data,
                 complete: function () { HideWaitMessageDialog(j_waitDialog); },
                 success: function (responseText) {

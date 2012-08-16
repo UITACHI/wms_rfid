@@ -142,6 +142,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                                                                                     item.SortingLine.MoveBillTypeCode,
                                                                                                     operatePersonID);
                             moveBillMaster.Origin = "2";
+                            moveBillMaster.Description = "分拣调度生成！";
                             lastMoveBillMaster = moveBillMaster;
                             foreach (var product in item.Products.ToArray())
                             {
@@ -186,9 +187,19 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                 }
 
                                 if (cancellationToken.IsCancellationRequested) return;
+
                                 //获取移库量（按整件计）
-                                decimal quantity = Math.Ceiling((product.SumQuantity + lowerlimitQuantity - storQuantity) / product.Product.Unit.Count)
+                                decimal quantity = 0;
+
+                                if (lowerlimitQuantity == 0)
+                                {
+                                    quantity = product.SumQuantity - storQuantity;
+                                }
+                                else
+                                {
+                                    quantity = Math.Ceiling((product.SumQuantity + lowerlimitQuantity - storQuantity) / product.Product.Unit.Count)
                                                    * product.Product.Unit.Count;
+                                }
 
                                 if (cancellationToken.IsCancellationRequested) return;
                                 AlltoMoveBill(moveBillMaster, product.Product, item.SortingLine.Cell, ref quantity,cancellationToken);
@@ -211,6 +222,7 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                                                                                     item.SortingLine.OutBillTypeCode,
                                                                                                     operatePersonID);
                                 outBillMaster.Origin = "2";
+                                outBillMaster.Description = "分拣调度生成!";
                                 //添加出库单细单
                                 foreach (var product in item.Products.ToArray())
                                 {
@@ -232,7 +244,6 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                                     if (cancellationToken.IsCancellationRequested) return;
                                     sortDisp.SortWorkDispatchID = sortWorkDisp.ID;
                                     sortDisp.WorkStatus = "2";
-
                                 }
                                 if (cancellationToken.IsCancellationRequested) return;
                                 SortWorkDispatchRepository.SaveChanges();
@@ -387,7 +398,9 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                     {
                         var sourceStorage = Locker.LockNoEmptyStorage(s, s.Product);
                         var targetStorage = Locker.LockStorage(cell);
-                        if (sourceStorage != null && targetStorage != null)
+                        if (sourceStorage != null && targetStorage != null
+                            && targetStorage.Quantity == 0
+                            && targetStorage.InFrozenQuantity ==0)
                         {
                             MoveBillCreater.AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, allotQuantity);
                             quantity -= allotQuantity;
@@ -414,7 +427,9 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                     {
                         var sourceStorage = Locker.LockNoEmptyStorage(s, s.Product);
                         var targetStorage = Locker.LockStorage(cell);
-                        if (sourceStorage != null && targetStorage != null)
+                        if (sourceStorage != null && targetStorage != null
+                            && targetStorage.Quantity == 0
+                            && targetStorage.InFrozenQuantity == 0)
                         {
                             MoveBillCreater.AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, allotQuantity);
                             quantity -= allotQuantity;
@@ -440,7 +455,9 @@ namespace THOK.Wms.SignalR.Dispatch.Service
                     {
                         var sourceStorage = Locker.LockNoEmptyStorage(s, s.Product);
                         var targetStorage = Locker.LockStorage(cell);
-                        if (sourceStorage != null && targetStorage != null)
+                        if (sourceStorage != null && targetStorage != null
+                            && targetStorage.Quantity == 0
+                            && targetStorage.InFrozenQuantity ==0)
                         {
                             MoveBillCreater.AddToMoveBillDetail(moveBillMaster, sourceStorage, targetStorage, allotQuantity);
                             quantity -= allotQuantity;

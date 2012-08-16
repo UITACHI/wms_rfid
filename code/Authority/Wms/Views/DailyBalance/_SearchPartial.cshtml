@@ -1,13 +1,15 @@
 ﻿<script type="text/javascript">
     function searchClick() {
-        $("input[type=text]").attr("value", "");
         SearchLoad();
         $('#dlg-search').dialog('open').dialog('setTitle', '每日库存查询');
+        $("input[type=text]").attr("value", "");
+        $('#wareHouse').combogrid('clear');
+        $('#beginDate').datebox('setValue', "");
+        $('#endDate').datebox('setValue', "");
     };
     function SearchLoad() {
 
         $('#wareHouse').combogrid({
-            required: true,
             disabled: false,
             width: 130,
             panelWidth: 340,
@@ -29,6 +31,8 @@
         queryParams.BeginDate = $('#beginDate').datebox('getValue');
         queryParams.EndDate = $('#endDate').datebox('getValue');
         queryParams.WarehouseCode = $('#wareHouse').combo('getValue');
+        queryParams.UnitType = $('#unit_Type').combo('getValue');
+        alert(queryParams.UnitType);
         $('#details').datagrid('options').queryParams = queryParams;
         $('#details').datagrid({
             pageNumber: 1,
@@ -38,11 +42,11 @@
         $('#dlg-search').dialog('close');
     }
 </script>
-<div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:210px;padding:2px 2px"
+<div id="dlg-search" class="easyui-dialog" modal="true" style="width:300px;height:220px;padding:10px 10px"
 		closed="true" buttons="#dlg-buttons-search">
     <div class="easyui-layout" fit="true">
 		<div region="center" border="false" style="padding:10px 10px;background:#fff;border:1px solid #ccc;">   
-            <table width="250">
+            <table width="240" style="padding:5px 10px">
               <tr>
                 <td width="60">起始日期:</td>
                 <td align="left"><input id="beginDate" type="text" class="easyui-datebox" ></input></td>
@@ -52,9 +56,19 @@
                 <td align="left"><input id="endDate" type="text" class="easyui-datebox" ></input></td>
               </tr>
               <tr style="padding-top:10px;">
-                <td>仓库:</td>
-                <td align="left">      
+                <td>日结仓库:</td>
+                <td align="left">     
 		            <input type="text" id="wareHouse"/>
+	            </td>
+              </tr>
+              <tr style="padding-top:10px;">
+                <td>换算单位:</td>
+                <td align="left">     
+		           <select id="unit_Type" class="easyui-combobox" style="width: 130px; height: 40px" editable="false">
+                      <option value="">请选择</option>                       
+                      <option value="1">标准件</option>
+                      <option value="2">标准条</option>
+                   </select>
 	            </td>
               </tr>
             </table>

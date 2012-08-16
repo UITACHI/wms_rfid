@@ -64,6 +64,12 @@ namespace THOK.Common.Ef.EntityRepository
                 .ObjectContext.CreateObjectSet<T>();
         }
 
+        public ObjectQuery<T> GetObjectQuery()
+        {
+            return ((IObjectContextAdapter)RepositoryContext.DbContext)
+                .ObjectContext.CreateObjectSet<T>() as ObjectQuery<T>;
+        }
+
         public ObjectContext GetObjectContext()
         {
             return ((IObjectContextAdapter)RepositoryContext.DbContext)

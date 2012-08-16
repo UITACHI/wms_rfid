@@ -29,7 +29,11 @@ namespace THOK.Wms.Bll.Service
             IQueryable<CheckBillDetail> checkBillDetailQuery = CheckBillDetailRepository.GetQueryable();
             if (BillNo != null && BillNo != string.Empty)
             {
-                var checkBillDetail = checkBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).AsEnumerable().Select(i => new
+                var checkBillDetail = checkBillDetailQuery.Where(i => i.BillNo.Contains(BillNo)).OrderBy(i => i.BillNo).Select(i =>i);
+                int total = checkBillDetail.Count();
+                checkBillDetail = checkBillDetail.Skip((page - 1) * rows).Take(rows);
+
+                var temp = checkBillDetail.ToArray().AsEnumerable().Select(i => new
                 {
                     i.ID,
                     i.BillNo,
@@ -40,7 +44,7 @@ namespace THOK.Wms.Bll.Service
                     i.Product.ProductName,
                     i.Unit.UnitCode,
                     i.Unit.UnitName,
-                    Quantity=i.Quantity/i.Unit.Count,
+                    Quantity = i.Quantity / i.Unit.Count,
                     RealProductCode = i.RealProduct.ProductCode,
                     RealProductName = i.RealProduct.ProductName,
                     RealUnitCode = i.RealUnit.UnitCode,
@@ -51,9 +55,7 @@ namespace THOK.Wms.Bll.Service
                     FinishTime = i.FinishTime == null ? string.Empty : i.FinishTime.ToString(),
                     i.Status
                 });
-                int total = checkBillDetail.Count();
-                checkBillDetail = checkBillDetail.Skip((page - 1) * rows).Take(rows);
-                return new { total, rows = checkBillDetail.ToArray() };
+                return new { total, rows = temp.ToArray() };
             }
             return "";
         }

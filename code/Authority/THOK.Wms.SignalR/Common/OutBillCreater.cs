@@ -30,10 +30,10 @@ namespace THOK.Wms.SignalR.Common
             outBillMaster.BillNo = billNo;
             outBillMaster.BillDate = DateTime.Now;
             outBillMaster.BillTypeCode = billTypeCode;
+            outBillMaster.Origin = "1";
             outBillMaster.WarehouseCode = warehouseCode;
             outBillMaster.OperatePersonID = Guid.Parse(operatePersonID);
-            outBillMaster.Status = "1";
-            outBillMaster.Description = "分拣调度生成出库单！";
+            outBillMaster.Status = "1";            ;
             outBillMaster.IsActive = "1";
             outBillMaster.UpdateTime = DateTime.Now;
             OutBillMasterRepository.Add(outBillMaster);

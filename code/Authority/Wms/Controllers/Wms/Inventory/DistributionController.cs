@@ -34,8 +34,17 @@ namespace Authority.Controllers.Wms.Inventory
             string productCode = collection["ProductCode"] ?? "";
             string ware = collection["Ware"] ?? "";
             string area = collection["Area"] ?? "";
-            var storage = DistributionService.GetCellDetails(page, rows, productCode, ware, area);
+            string unitType = collection["UnitType"] ?? "";
+            var storage = DistributionService.GetCellDetails(page, rows, productCode, ware, area, unitType);
             return Json(storage, "text", JsonRequestBehavior.AllowGet);
+        }
+
+        //获取库存商品分布树
+        // GET: /Distribution/GetProductTreeDetails/
+        public ActionResult GetProductTreeDetails()
+        {
+            var wareCell = DistributionService.GetProductTree();
+            return Json(wareCell, "text", JsonRequestBehavior.AllowGet);
         }
     }
 }

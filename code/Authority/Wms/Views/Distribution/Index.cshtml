@@ -1,18 +1,41 @@
-﻿<div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
-    <table id="details" class="easyui-datagrid" 
-        url="/Distribution/Details/" border="false" singleSelect="true"
-        fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
-        <thead>
-            <tr>
-                <th field="ProductCode" width="120" align="center">产品编码</th>
-                <th field="ProductName" width="140" align="center">产品名称</th>
-                <th field="CellCode" width="120" align="center">货位编码</th>
-                <th field="CellName" width="120" align="center">货位名称</th>
-                <th field="Quantity" width="100" align="center">数量</th>
-                <th field="UnitCode" width="120" align="center">单位编码</th>
-                <th field="UnitName" width="120" align="center">单位名称</th>
-                <th field="StorageTime" width="120" align="center">入库时间</th>
-            </tr>
-        </thead>
-    </table>
+﻿<script type="text/javascript">
+    $(function () {
+        $('#Tree').tree({
+            onClick: function (node) {
+                if (node) {
+                    $('#listdetails').datagrid('options').url = '/Distribution/Details/?type=' + node.attributes + '&id=' + node.id;
+                    $('#listdetails').datagrid('reload');
+                }
+            }
+        });
+    });
+</script>
+<div id="sidebar" region="west" style="width: 320px; overflow: scroll; padding: 1px; margin: 1px">
+    <ul id="Tree" class="easyui-tree" url='/Distribution/GetProductTreeDetails/'></ul>
+</div>
+<div region="center" split="true" border="false" style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #99BBE8">    
+    <div id="spaceTabs" class="easyui-tabs" fit="true"> 
+        <div title="列表模式" data-options="tools:'#p-tools'" style="padding:1px;">
+            <table id="listdetails" class="easyui-datagrid" 
+                    url="/Distribution/Details/" border="false" singleSelect="true"
+                        fit="true" toolbar="#tool"  pagination="true" rownumbers="true">
+                <thead>
+                    <tr>
+                        <th field="ProductCode" width="120" align="center">产品编码</th>
+                        <th field="ProductName" width="140" align="center">产品名称</th>
+                        <th field="CellCode" width="120" align="center">货位编码</th>
+                        <th field="CellName" width="120" align="center">货位名称</th>
+                        <th field="UnitName1" width="100" align="center">单位（件）</th>
+                        <th field="Quantity1" width="80" align="center">数量（件）</th>
+                        <th field="UnitName2" width="100" align="center">单位（条）</th>
+                        <th field="Quantity2" width="80" align="center">数量（条）</th>
+                        <th field="StorageTime" width="80" align="center">入库时间</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+         <div title="图形模式" data-options="tools:'#p-tools'" style="padding:1px;"> 
+        未完成
+        </div> 
+    </div>
 </div>

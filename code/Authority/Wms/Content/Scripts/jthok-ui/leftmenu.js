@@ -19,8 +19,8 @@
                 if (!data.Identity.IsAuthenticated) {
                     clearMenu();
                     $('#login-bg').addClass("login");
-                    show('#c', 350, 350);
-                    $('#dlg-logon').dialog('open');
+                    show('#c', 306, 551);
+//                    $('#dlg-logon').dialog('open');
                 }
                 else {
                     hide('#c');
@@ -40,8 +40,8 @@
             }
             else {
                 $('#login - bg').addClass("login");
-                show('#c', 350, 350);
-                $('#dlg-logon').dialog('open');
+                show('#c', 306, 551);
+//                $('#dlg-logon').dialog('open');
             }
         });
     }

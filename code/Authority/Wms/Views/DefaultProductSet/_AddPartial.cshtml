@@ -1,11 +1,12 @@
 ﻿<script type="text/javascript">
     var url;
+    var editType;
     function addClick() {
+        editType = 'add';
         $('#dlg').dialog('open').dialog('setTitle', '新增');
         $('#productCode').attr("readonly", true);
         $('#productName').attr("readonly", true);
         $('#productTree').tree({ url: '/Cell/GetCheckDetails/' }); //加载树形数据
-
     }
     function productSearchClick() {
         $('#productData').dialog('open').dialog('setTitle', '选择卷烟信息');
@@ -14,9 +15,11 @@
     }
 
     function enterSave() {
-        var ware="", area="", shelf="", cell="";
-        var roots = $('#productTree').tree('getRoots'); //根节点集合
+        var ware = "", area = "", shelf = "", cell = "";
         var areaChildren, shelfChildren, cellChildren;
+        //根节点集合
+        var roots = $('#productTree').tree('getRoots'); 
+
         //仓库
         for (i = 0; i < roots.length; i++) {
             if (roots[i].attributes == "ware" && roots[i].checked == true) {
@@ -28,19 +31,20 @@
                 for (j = 0; j < areaChildren.length; j++) {
                     if (areaChildren[j].attributes == "area" && areaChildren[j].checked == true) {
                         area += areaChildren[j].id + ",";
-                    } else {
+                    }
+                    else {
                         shelfChildren = $('#productTree').tree('getChildren', areaChildren[j].target);
                         //货架
                         for (h = 0; h < shelfChildren.length; h++) {
                             if (shelfChildren[h].attributes == "shelf" && shelfChildren[h].checked == true) {
                                 shelf += shelfChildren[h].id + ",";
-                            } else {
+                            }
+                            else {
                                 cellChildren = $('#productTree').tree('getChildren', shelfChildren[h].target);
                                 //货位
                                 for (k = 0; k < cellChildren.length; k++) {
                                     if (cellChildren[k].attributes == "cell" && cellChildren[k].checked == true) {
-                                        cell += cellChildren[k].id + ",";
-                                        }
+                                        cell += cellChildren[k].id + "," + cellChildren[k].checked + ",";
                                     }
                                 }
                             }
@@ -49,31 +53,29 @@
                 }
             }
         }
-        if ($('#productCode').val() != "") {
-            $.getJSON('/DefaultProductSet/CellInsertCode/?wareCodes=' + ware + '&areaCodes=' + area + '&shelfCodes=' + shelf + '&cellCodes=' + cell + '&defaultProductCode=' + $("#productCode").val(), function (json) {
-                if (json) {
-                    if (json.success) {
-                        $.messager.show({ title: '成功', msg: json.msg });
-                        $('#details').datagrid('reload');
-                        $("#productCode").attr("value", "");
-                        $("#productName").attr("value", "");
-                        $('#dlg').dialog('close'); 
 
-                    } else {
-                        $.messager.show({ title: '错误', msg: result.msg });
-                        $('#details').datagrid('reload');
-                    }
-                }
-                else {
-                    $.messager.show({ title: '系统提示', msg: '失败！0000x1' });
-                }
-            });
+        if ((ware != "" || area != "" || shelf != "" || cell != "") 
+            && ($('#productCode').val() != "")) {
+            $.ajaxSender.send('/DefaultProductSet/CellInsertCode/',
+                        {
+                            'wareCodes': ware,
+                            'areaCodes': area,
+                            'shelfCodes': shelf,
+                            'cellCodes': cell,
+                            'defaultProductCode': $("#productCode").val(),
+                            'editType': editType
+                        },
+                        function (data) {
+                            $('#details').datagrid('reload');
+                            $("#productCode").attr("value", "");
+                            $("#productName").attr("value", "");
+                            $('#dlg').dialog('close');
+                        });
         }
         else {
-            $.messager.show({ title: '系统提示', msg: '失败！输入的信息不完整！' });
+            $.messager.show({ title: '系统信息', msg: '保存失败！输入的信息不完整！' });
         }
-    }
-    
+    }    
 </script>
 <div id="dlg" class="easyui-dialog" modal="true" style="width: 800px; height: 500px;
     padding: 1px 1px" closed="true" buttons="#dlg-buttons">
@@ -91,7 +93,8 @@
                             卷烟编码:
                         </div>
                         <div>
-                            <input id="productCode" name="DefaultProductCode" type="text" class="easyui-validatebox" style="width: 140px;" missingmessage="必填" required="true"  />
+                            <input id="productCode" name="DefaultProductCode" type="text" class="easyui-validatebox"
+                                style="width: 140px;" missingmessage="必填" required="true" />
                             <a href="#" id="productSearch" class="easyui-linkbutton" iconcls="icon-search" plain="true"
                                 onclick="productSearchClick()"></a>
                         </div>
@@ -111,7 +114,6 @@
 </div>
 <div id="dlg-buttons">
     <a href="#" class="easyui-linkbutton" iconcls="icon-ok" onclick="enterSave()">确定</a>
-    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">
-        取消</a>
+    <a href="#" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 @Html.Partial("_ProductPartial")
