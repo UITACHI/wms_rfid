@@ -20,8 +20,6 @@ namespace THOK.Wms.Bll.Service
             get { return this.GetType(); }
         }
 
-        #region IDistributionService 成员
-
         public object GetCellDetails(int page, int rows, string productCode, string ware, string area, string unitType)
         {
             if (unitType == null || unitType == "")
@@ -94,74 +92,114 @@ namespace THOK.Wms.Bll.Service
 
         public object GetProductTree()
         {
-            IQueryable<Storage> products = StorageRepository.GetQueryable().Where(p => p.Quantity > 0 && p.IsLock == "0")
-                                                                           .OrderBy(p => p.Product.ProductName);
-            var productRepository = products.ToArray().OrderBy(p => p.Product.ProductName).GroupBy(s => s.Product.ProductCode)
-                                                                           .Select(s => new
-                                                                           {
-                                                                               ProductCode = s.Max(p => p.Product.ProductCode),
-                                                                               ProductName = s.Max(p => p.Product.ProductName),
-                                                                               Quantity = s.Sum(p => p.Quantity)
-                                                                           });
+            IQueryable<Storage> storageQuery = StorageRepository.GetQueryable().Where(p => p.Quantity > 0);
+            var tmp = storageQuery.GroupBy(s => new
+                                                {
+                                                    s.ProductCode,
+                                                    s.Product.ProductName,
+                                                    s.Cell.WarehouseCode,
+                                                    s.Cell.Warehouse.WarehouseName,
+                                                    s.Cell.AreaCode,
+                                                    s.Cell.Area.AreaName,
+                                                    s.Cell.ShelfCode,
+                                                    s.Cell.Shelf.ShelfName
+                                                }
+                                   )
+                                   .Select(s => new
+                                   {
+                                       s.Key.ProductCode,
+                                       s.Key.ProductName,
+                                       s.Key.WarehouseCode,
+                                       s.Key.WarehouseName,
+                                       s.Key.AreaCode,
+                                       s.Key.AreaName,
+                                       s.Key.ShelfCode,
+                                       s.Key.ShelfName,
+                                       Quantity = s.Sum(p => p.Quantity)
+                                   })
+                                   .GroupBy(s => new
+                                   {
+                                       s.ProductCode,
+                                       s.ProductName
+                                   })
+                                   .Select(s => new
+                                   {
+                                       s.Key.ProductCode,
+                                       s.Key.ProductName,
+                                       Quantity = s.Sum(p => p.Quantity),
+                                       WareHouses = s.GroupBy(w => new
+                                       {
+                                           w.WarehouseCode,
+                                           w.WarehouseName
+                                       })
+                                       .Select(w => new
+                                       {
+                                           w.Key.WarehouseCode,
+                                           w.Key.WarehouseName,
+                                           Quantity = w.Sum(q => q.Quantity),
+                                           Areas = w.GroupBy(a => new
+                                           {
+                                               a.AreaCode,
+                                               a.AreaName
+                                           })
+                                           .Select(a => new
+                                           {
+                                               a.Key.AreaCode,
+                                               a.Key.AreaName,
+                                               Quantity = a.Sum(q => q.Quantity),
+                                               Shelfs = a.GroupBy(sh => new
+                                               {
+                                                   sh.ShelfCode,
+                                                   sh.ShelfName
+                                               })
+                                               .Select(sh => new
+                                               {
+                                                   sh.Key.ShelfCode,
+                                                   sh.Key.ShelfName,
+                                                   Quantity = sh.Sum(q => q.Quantity)
+                                               })
+                                           })
+                                       })
+                                   }).ToArray();
+
             HashSet<Tree> productSet = new HashSet<Tree>();
-            int aaa = productRepository.Count();
-            foreach (var product in productRepository)
+            foreach (var product in tmp)
             {
                 Tree productTree = new Tree();
                 productTree.id = product.ProductCode;
-                productTree.text =product.ProductName+ "(  数量："+ product.Quantity +" )";
+                productTree.text = product.ProductName + "(  数量：" + product.Quantity + " )";
                 productTree.state = "open";
                 productTree.attributes = "product";
 
-                var warehouses = products.Where(w => w.ProductCode == product.ProductCode)
-                                         .OrderBy(w => w.Cell.Area.WarehouseCode)
-                                         .GroupBy(w => w.Cell.Area.WarehouseCode)
-                                         .Select(w => new
-                                         {
-                                             WarehouseCode = w.Max(p => p.Cell.Area.WarehouseCode),
-                                             WarehouseName = w.Max(p => p.Cell.Area.Warehouse.WarehouseName),
-                                             Quantity = w.Sum(p => p.Quantity)
-                                         });
                 HashSet<Tree> warehouseSet = new HashSet<Tree>();
-                int bbb = warehouses.Count();
-                foreach (var warehouse in warehouses)
+                foreach (var wareHouse in product.WareHouses)
                 {
                     Tree warehouseTree = new Tree();
-                    warehouseTree.id = warehouse.WarehouseCode;
-                    warehouseTree.text = "仓库：" + warehouse.WarehouseName + "(  数量：" + warehouse.Quantity + " )";
+                    warehouseTree.id = wareHouse.WarehouseCode;
+                    warehouseTree.text = "仓库：" + wareHouse.WarehouseName + "(  数量：" + wareHouse.Quantity + " )";
                     warehouseTree.state = "open";
                     warehouseTree.attributes = "warehouse";
-                    var areas = products.Where(a => a.Cell.Area.WarehouseCode == warehouse.WarehouseCode &&  a.ProductCode == product.ProductCode)
-                                          .OrderBy(a => a.Cell.AreaCode)
-                                          .GroupBy(a => a.Cell.AreaCode)
-                                          .Select(a => new
-                                          {
-                                              AreaCode = a.Max(p => p.Cell.AreaCode),
-                                              AreaName = a.Max(p => p.Cell.Area.AreaName),
-                                              Quantity = a.Sum(p => p.Quantity)
-                                          });
+
                     HashSet<Tree> areaSet = new HashSet<Tree>();
-                    int ccc = areas.Count();
-                    foreach (var area in areas)
+                    foreach (var area in wareHouse.Areas)
                     {
                         Tree areaTree = new Tree();
                         areaTree.id = area.AreaCode;
                         areaTree.text = "库区：" + area.AreaName + "(  数量：" + area.Quantity + " )";
                         areaTree.state = "close";
                         areaTree.attributes = "area";
-                        //var shelfs = warehouses.Where(s => s.Cell.AreaCode == area.Cell.AreaCode)
-                        //                       .OrderBy(s => s.Cell.ShelfCode).Select(s => s);
-                        //HashSet<Tree> shelfSet = new HashSet<Tree>();
-                        //foreach (var shelf in shelfs)
-                        //{
-                        //    Tree shelfTree = new Tree();
-                        //    shelfTree.id = shelf.Cell.ShelfCode;
-                        //    shelfTree.text = "货架：" + shelf.Cell.Shelf.ShelfName;
-                        //    shelfTree.state = "close";
-                        //    shelfTree.attributes = "shelf";
-                        //    shelfSet.Add(shelfTree);
-                        //}
-                        //areaTree.children = shelfSet.ToArray();
+
+                        HashSet<Tree> shelfSet = new HashSet<Tree>();
+                        foreach (var shelf in area.Shelfs)
+                        {
+                            Tree shelfTree = new Tree();
+                            shelfTree.id = shelf.ShelfCode;
+                            shelfTree.text = "货架：" + shelf.ShelfName + "(  数量：" + shelf.Quantity + " )";
+                            shelfTree.state = "close";
+                            shelfTree.attributes = "shelf";
+                            shelfSet.Add(shelfTree);
+                        }
+                        areaTree.children = shelfSet.ToArray();
                         areaSet.Add(areaTree);
                     }
                     warehouseTree.children = areaSet.ToArray();
@@ -170,10 +208,8 @@ namespace THOK.Wms.Bll.Service
                 productTree.children = warehouseSet.ToArray();
                 productSet.Add(productTree);
             }
+
             return productSet.ToArray();
         }
-
-        #endregion
-
     }
 }
